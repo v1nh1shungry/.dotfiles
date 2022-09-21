@@ -1,0 +1,5 @@
+build/
+.xmake/
+.root
+.tasks
+.vimspector.json

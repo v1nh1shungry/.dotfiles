@@ -1,0 +1,6 @@
+[custom.cpp]
+command = "gcc -dumpversion"
+symbol = ""
+extensions = ["cpp", "cc", "hpp"]
+style = "bold cyan"
+format = "via [$symbol v$output]($style) "

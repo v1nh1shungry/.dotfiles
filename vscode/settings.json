@@ -1,0 +1,33 @@
+{
+    "workbench.startupEditor": "none",
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "workbench.iconTheme": "material-icon-theme",
+    "C_Cpp.intelliSenseEngine": "Disabled",
+    "xmake.compileCommandsDirectory": "build",
+    "clangd.arguments": [
+        "--compile-commands-dir=build",
+        "--all-scopes-completion",
+        "--background-index",
+        "--clang-tidy",
+        "--completion-style=detailed",
+        "--fallback-style=Google",
+        "--folding-ranges",
+        "--function-arg-placeholders",
+        "--header-insertion=never",
+        "--include-cleaner-stdlib",
+        "--enable-config",
+        "-j=12",
+        "--pch-storage=memory"
+    ],
+    "[cpp]": {
+        "editor.tabSize": 2
+    },
+    "python.formatting.autopep8Path": "/home/vinh/.local/bin/autopep8",
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.guides.bracketPairs": true,
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.smoothScrolling": true,
+    "workbench.list.smoothScrolling": true,
+    "terminal.integrated.shellIntegration.enabled": false,
+    "rust-analyzer.server.path": "~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer"
+}

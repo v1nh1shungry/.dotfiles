@@ -1,0 +1,28 @@
+[user]
+  email = v1nh1shungry@outlook.com
+  name = v1nh1shungry
+
+[init]
+  defaultBranch = main
+
+[core]
+  pager = delta
+  excludesfile = ~/.dotfiles/.gitignore_global
+
+[interactive]
+  diffFilter = delta --color-only
+[add.interactive]
+  useBuiltin = false
+
+[delta]
+  navigate = true
+  light = false
+  side-by-side = true
+  line-numbers = true
+  syntax-theme = Dracula
+
+[merge]
+  conflictstyle = diff3
+
+[diff]
+  colorMoved = default

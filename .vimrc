@@ -2,6 +2,7 @@
 " ========================== Basic Settings ==================================
 " ============================================================================
 let mapleader = ' '
+
 set shortmess+=I
 set number
 set relativenumber
@@ -17,6 +18,21 @@ set expandtab
 set nowrap
 set splitbelow
 set splitright
+set backup
+set backupdir=~/.vim/backup
+set backupext=.bak
+set noswapfile
+set showcmd
+set hlsearch
+
+inoremap <C-h> <left>
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+inoremap <C-l> <right>
+cnoremap <C-h> <left>
+cnoremap <C-j> <down>
+cnoremap <C-k> <up>
+cnoremap <C-l> <right>
 inoremap <silent> <C-S> <ESC>:w<CR>
 nnoremap <silent> <C-S> :w<CR>
 nnoremap <silent> q :q<CR>
@@ -24,6 +40,13 @@ nnoremap <silent> Q :qa!<CR>
 nnoremap <silent> <m-.> :bn<CR>
 nnoremap <silent> <m-,> :bp<CR>
 nnoremap <silent> <m-w> :bd<CR>
+
+silent! call mkdir(expand('~/.vim/backup'), "p", 0755)
+
+autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \	 exe "normal! g`\"" |
+    \ endif
 
 " ============================================================================
 " ============================= Plugins' Setting =============================
@@ -39,12 +62,16 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'gelguy/wilder.nvim'
 Plug 'easymotion/vim-easymotion'
-Plug 'justinmk/vim-sneak'
+Plug 'kshenoy/vim-signature'
+Plug 't9md/vim-choosewin'
+Plug 'simeji/winresizer'
+Plug 'terryma/vim-expand-region'
 " Edit Enhancement
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 " Beautify
 Plug 'mhinz/vim-startify'
 Plug 'vim-airline/vim-airline'
@@ -81,7 +108,6 @@ let g:rainbow_conf = {
 
 " indentLine
 let g:indentLine_bufTypeExclude = ['help', 'terminal']
-" cppman
 let g:indentLine_bufNameExclude = ['/dev/.*', 'man.*']
 let g:indentLine_fileTypeExclude = ['startify', 'man']
 
@@ -101,41 +127,35 @@ function! CheckBackspace() abort
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
 " Use gh to show documentation in preview window.
 nnoremap <silent> gh :call CocActionAsync('doHover')<CR>
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 " Symbol renaming.
-nmap <silent> <leader>rn <Plug>(coc-rename)
-nmap <silent> <leader>f :call CocActionAsync('format')<CR>
-augroup cocgroup
-    autocmd!
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+nnoremap <silent> <leader>rn <Plug>(coc-rename)
+nnoremap <silent> <leader>f :call CocActionAsync('format')<CR>
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 " Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+nnoremap <leader>qf  <Plug>(coc-fix-current)
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
+xnoremap if <Plug>(coc-funcobj-i)
+onoremap if <Plug>(coc-funcobj-i)
+xnoremap af <Plug>(coc-funcobj-a)
+onoremap af <Plug>(coc-funcobj-a)
+xnoremap ic <Plug>(coc-classobj-i)
+onoremap ic <Plug>(coc-classobj-i)
+xnoremap ac <Plug>(coc-classobj-a)
+onoremap ac <Plug>(coc-classobj-a)
 " Remap <C-j> and <C-k> for scroll float windows/popups.
 nnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-j>"
 nnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-k>"
-inoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-inoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-vnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-j>"
-vnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-k>"
+inoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Down>"
+inoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Up>"
 " close outline when it's the last window automatically
 autocmd BufEnter * call CheckOutline()
 function! CheckOutline() abort
@@ -148,7 +168,7 @@ function! CheckOutline() abort
     endif
 endfunction
 " toggle outline
-nnoremap <silent><nowait> <space>o  :call ToggleOutline()<CR>
+nnoremap <silent> <leader>o  :call ToggleOutline()<CR>
 function! ToggleOutline() abort
     let winid = coc#window#find('cocViewId', 'OUTLINE')
     if winid == -1
@@ -157,6 +177,9 @@ function! ToggleOutline() abort
         call coc#window#close(winid)
     endif
 endfunction
+nnoremap <silent> <leader>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <leader>x  :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>s  :<C-u>CocList -I symbols<cr>
 
 " coc-snippets
 inoremap <silent><expr> <TAB>
@@ -165,6 +188,12 @@ inoremap <silent><expr> <TAB>
     \ CheckBackspace() ? "\<TAB>" :
     \ coc#refresh()
 let g:coc_snippet_next = '<tab>'
+
+" coc-tasks
+nnoremap <silent> <leader>t  :<C-u>CocList tasks<cr>
+
+" coc-lists
+nnoremap <silent> <leader>h :<C-u>CocList helptags<cr>
 
 " vim-startify
 let g:startify_custom_header =
@@ -182,8 +211,8 @@ let g:terminal_kill = 1
 
 " vimspector
 let g:vimspector_enable_mappings = 'HUMAN'
-nmap <silent> <Leader>di <Plug>VimspectorBalloonEval
-xmap <silent> <Leader>di <Plug>VimspectorBalloonEval
+nnoremap <silent> <Leader>di <Plug>VimspectorBalloonEval
+xnoremap <silent> <Leader>di <Plug>VimspectorBalloonEval
 
 " asynctasks
 let g:asyncrun_open = 6
@@ -200,6 +229,10 @@ noremap <silent> <leader>pc :AsyncTask project-clean<CR>
 " nerdtree
 let NERDTreeQuitOnOpen = 1
 nnoremap <silent><leader>n :NERDTreeToggle<CR>
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
 " Exit Vim if NERDTree is the only window remaining in the only tab.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 " Close the tab if NERDTree is the only window remaining in it.
@@ -245,6 +278,17 @@ autocmd FileType c,cpp setlocal keywordprg=:Cppman
 
 " vim-easymotion
 let g:EasyMotion_verbose = 0
+noremap <Leader> <Plug>(easymotion-prefix)
+nnoremap s <Plug>(easymotion-overwin-f2)
+nnoremap f <Plug>(easymotion-overwin-f)
+
+" vim-choosewin
+nnoremap <m-e> <Plug>(choosewin)
+let g:choosewin_overlay_enable = 1
+
+" vim-expand-region
+noremap <m--> <Plug>(expand_region_expand)
+noremap <m-_> <Plug>(expand_region_shrink)
 
 " ============================================================================
 " ================================ Theme =====================================
@@ -252,7 +296,7 @@ let g:EasyMotion_verbose = 0
 
 autocmd ColorScheme * call Highlight()
 function! Highlight() abort
-    hi CocErrorHighlight cterm=bold ctermbg=DarkRed ctermfg=White
+    hi CocErrorHighlight cterm=bold,underline ctermfg=DarkRed
 endfunction
 
 " choose the theme
@@ -260,7 +304,7 @@ autocmd vimenter * ++nested colorscheme codedark
 let g:airline_theme = 'codedark'
 
 " [MUST BE AFTER COLORSCHEME]
-" enable true color
+" enable true color in TMUX
 " if exists('+termguicolors')
 "     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 "     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"

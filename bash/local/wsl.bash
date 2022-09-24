@@ -1,6 +1,4 @@
 export PATH=$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export PATH=/mnt/c/Windows/system32:$PATH
-export PATH=/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
 export PATH=/mnt/d/wslutils/gsudo:$PATH
 export PATH=/mnt/d/Microsoft\ VS\ Code/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH

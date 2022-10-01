@@ -1,14 +1,38 @@
 cmake_minimum_required(VERSION 3.1...3.24)
 project(
-  AsynctaskProjectInitProjectName
-  VERSION 0.1.0
-  LANGUAGES CXX)
+    $ProjectName
+    VERSION 0.1.0
+    DESCRIPTION ""
+    HOMEPAGE_URL "https://github.com/v1nh1shungry/$ProjectName"
+    LANGUAGES CXX C
+)
 
+# Enable LTO
+include(CheckIPOSupported)
+check_ipo_supported(RESULT supported OUTPUT error)
+
+# Enable ccache
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
   set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
 endif()
 
-add_executable(AsynctaskProjectInitProjectName src/main.cpp)
-target_compile_features(AsynctaskProjectInitProjectName PUBLIC cxx_std_23)
-target_compile_options(AsynctaskProjectInitProjectName PRIVATE -Wall -Wextra)
+add_executable($ProjectName src/main.cpp)
+target_compile_features($ProjectName PUBLIC cxx_std_23)
+target_compile_options($ProjectName PRIVATE
+    -Wall -Wextra -Weffc++
+# Enable ASAN and UBSAN
+    $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined>
+)
+# Enable ASAN and UBSAN
+target_link_options(playground PRIVATE
+    $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined>
+)
+
+# Enable LTO
+if( supported )
+    message(STATUS "IPO / LTO enabled")
+    set_property(TARGET $ProjectName PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+else()
+    message(STATUS "IPO / LTO not supported: <${error}>")
+endif()

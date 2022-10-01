@@ -8,8 +8,6 @@ export DISPLAY=$WINIP:0
 export PULSE_SERVER=tcp:$WINIP
 export BROWSER=wslview
 
-export DOTNET_CLI_TELEMETRY_OPTOUT=true
-
 export HSTR_CONFIG=hicolor
 export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
 
@@ -17,12 +15,7 @@ eval "$(register-python-argcomplete pipx)"
 
 source "/usr/share/xmake/scripts/profile-unix.sh"
 
-source /usr/share/nvm/init-nvm.sh
-
 eval "$(starship init bash)"
-
-sed -i '/\[ProxyList\]/,$d' ~/.config/proxychains.conf
-echo -e "[ProxyList]\nsocks5 $WINIP 10810" >> ~/.config/proxychains.conf
 
 alias ls='exa --icons'
 alias la='ls -a'

@@ -1,22 +1,30 @@
 {
-    "coc.preferences.enableMarkdown": true,
+    "coc.preferences.enableMessageDialog": true,
     "coc.preferences.formatOnSaveFiletypes": [
         "c",
         "cpp",
         "json",
         "python",
-        "ruby",
         "rust",
         "zig"
     ],
-    "diagnostic.refreshOnInsertMode": true,
+    "coc.preferences.formatOnType": true,
+    "coc.preferences.formatOnTypeFiletypes": [
+        "c",
+        "cpp",
+        "python",
+        "rust"
+    ],
     "diagnostic.checkCurrentLine": true,
     "diagnostic.errorSign": " ",
     "diagnostic.hintSign": "",
-    "inlayHint.filetypes": [],
-    "semanticTokens.filetypes": [
-        "*"
-    ],
+    "diagnostic.refreshOnInsertMode": true,
+    "diagnostic.virtualText": true,
+    "diagnostic.virtualTextCurrentLineOnly": false,
+    "diagnostic.virtualTextPrefix": "  ● ",
+    "inlayHint.refreshOnInsertMode": true,
+    "notification.statusLineProgress": false,
+    "semanticTokens.enable": true,
     "suggest.completionItemKindLabels": {
         "keyword": "\uf1de",
         "variable": "\ue79b",
@@ -60,6 +68,10 @@
         "-j=12",
         "--pch-storage=memory"
     ],
+    "explorer.file.column.indent.indentLine": true,
+    "explorer.icon.enableNerdfont": true,
+    "explorer.icon.source": "vim-devicons",
+    "explorer.quitOnOpen": true,
     "python.formatting.autopep8Path": "~/.local/bin/autopep8",
     "rust-analyzer.server.path": "~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer",
     "zig.path": "/usr/sbin/zls"

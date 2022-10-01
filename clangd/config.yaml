@@ -18,6 +18,7 @@ If:
 CompileFlags:
   Add: [
     -std=c++2b,
+    -Weffc++,
   ]
 ---
 CompileFlags:

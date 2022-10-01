@@ -1,7 +1,6 @@
 include "/usr/share/nano/*.nanorc"
 set autoindent
 set jumpyscrolling
-set mouse
 set linenumbers
 set noconvert
 set nohelp

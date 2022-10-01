@@ -28,6 +28,5 @@
     "editor.cursorSmoothCaretAnimation": true,
     "editor.smoothScrolling": true,
     "workbench.list.smoothScrolling": true,
-    "terminal.integrated.shellIntegration.enabled": false,
     "rust-analyzer.server.path": "~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer"
 }

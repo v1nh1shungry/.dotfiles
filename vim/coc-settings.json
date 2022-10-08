@@ -8,14 +8,8 @@
         "rust",
         "zig"
     ],
-    "coc.preferences.formatOnType": true,
-    "coc.preferences.formatOnTypeFiletypes": [
-        "c",
-        "cpp",
-        "python",
-        "rust"
-    ],
     "diagnostic.checkCurrentLine": true,
+    "diagnostic.enableMessage": "never",
     "diagnostic.errorSign": " ",
     "diagnostic.hintSign": "",
     "diagnostic.refreshOnInsertMode": true,
@@ -53,6 +47,7 @@
         "typeParameter": "\uf728",
         "default": "\uf29c"
     },
+    "suggest.noselect": true,
     "clangd.arguments": [
         "--compile-commands-dir=build",
         "--all-scopes-completion",
@@ -76,3 +71,4 @@
     "rust-analyzer.server.path": "~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer",
     "zig.path": "/usr/sbin/zls"
 }
+// vim: filetype=jsonc

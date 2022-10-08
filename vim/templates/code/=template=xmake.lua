@@ -1,4 +1,4 @@
-set_project("$ProjectName")
+set_project("%HERE%%FDIR%")
 set_version("0.1.0")
 
 add_rules("mode.debug", "mode.release")
@@ -6,7 +6,7 @@ add_rules("mode.debug", "mode.release")
 set_defaultmode("debug")
 set_policy("build.warning", true)
 
-target("$ProjectName")
+target("%FDIR%")
     add_files("src/*.cpp")
 
     set_languages("c++latest")

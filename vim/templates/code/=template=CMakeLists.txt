@@ -24,7 +24,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_23)
 target_compile_options(${PROJECT_NAME} PRIVATE
     -Wall -Wextra -Weffc++
 # Enable ASAN and UBSAN
-    $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined>
+    $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer>
 )
 # Enable ASAN and UBSAN
 target_link_options(playground PRIVATE

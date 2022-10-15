@@ -101,7 +101,6 @@ Diagnostics:
       hicpp-multiway-paths-covered,
       misc-misplaced-const,
       misc-new-delete-overloads,
-      misc-no-recursion,
       misc-non-copyable-objects,
       misc-throw-by-value-catch-by-reference,
       misc-unconventional-assign-operator,

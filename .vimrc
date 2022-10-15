@@ -8,8 +8,8 @@ let &t_EI.="\e[2 q"
 let g:netrw_browsex_viewer = system('echo -n $BROWSER')
 
 set hidden
+set number
 set relativenumber
-set noshowmode
 set ignorecase
 set expandtab
 set nowrap
@@ -19,25 +19,25 @@ set nowritebackup
 set noswapfile
 set showcmd
 set hlsearch
+set nofoldenable
 set helpheight=10
 set scrolloff=5
-set foldlevel=99
 set mouse=a
 set shell=/bin/bash
 
-inoremap <C-h> <left>
-inoremap <C-j> <down>
-inoremap <C-k> <up>
-inoremap <C-l> <right>
-cnoremap <C-h> <left>
-cnoremap <C-j> <down>
-cnoremap <C-k> <up>
-cnoremap <C-l> <right>
-inoremap <silent> <C-S> <ESC>:w<CR>
-nnoremap <silent> <C-S> <cmd>w<CR>
-nnoremap <silent> q <cmd>q<CR>
-nnoremap <silent> Q <cmd>qa!<CR>
-nnoremap <silent> <C-q> <cmd>bd<CR>
+inoremap <C-H> <Left>
+inoremap <C-J> <Down>
+inoremap <C-K> <Up>
+inoremap <C-L> <Right>
+cnoremap <C-H> <Left>
+cnoremap <C-J> <Down>
+cnoremap <C-K> <Up>
+cnoremap <C-L> <Right>
+inoremap <C-S> <ESC>:w<CR>
+nnoremap <C-S> <Cmd>w<CR>
+nnoremap q <Cmd>q<CR>
+nnoremap Q <Cmd>qa!<CR>
+nnoremap <C-Q> <Cmd>bd<CR>
 
 " ============================================================================
 " ============================= Plugins' Setting =============================
@@ -54,7 +54,6 @@ Plug 'markonm/traces.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-unimpaired'
 Plug 'wellle/context.vim'
-Plug 'gelguy/wilder.nvim'
 Plug 'kshenoy/vim-signature'
 Plug 'skywind3000/vim-terminal-help'
 Plug 'lambdalisue/suda.vim', { 'on': ['SudaRead', 'SudaWrite'] }
@@ -62,13 +61,15 @@ Plug 'farmergreg/vim-lastplace'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sleuth'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'dhruvasagar/vim-zoom'
+Plug 'machakann/vim-highlightedyank'
+Plug 'simeji/winresizer', { 'on': 'WinResizerStartResize' }
+Plug 'junegunn/vim-peekaboo'
+Plug 'rhysd/clever-f.vim'
 " |  +--- Text Objects
 Plug 'wellle/targets.vim'
-Plug 'kana/vim-textobj-user'
-Plug 'adriaanzon/vim-textobj-matchit'
-Plug 'kana/vim-textobj-indent'
+Plug 'michaeljsmith/vim-indent-object', { 'for': ['python', 'vim'] }
 " +--- Edit Enhancement
+Plug 'tpope/vim-rsi'
 Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -78,18 +79,24 @@ Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(EasyAlign)' }
 Plug 'tommcdo/vim-exchange'
 Plug 'sickill/vim-pasta'
+Plug 'chrisbra/NrrwRgn', { 'on': 'NR' }
+Plug 'brooth/far.vim', { 'on': ['Far', 'F', 'Farr', 'Farf'] }
+Plug 'rhysd/vim-grammarous', { 'on': 'GrammarousCheck' }
+Plug 'vim-scripts/ReplaceWithRegister'
 " +--+ Beautify
 Plug 'mhinz/vim-startify'
 Plug 'vim-airline/vim-airline'
 Plug 'lambdalisue/glyph-palette.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'skywind3000/vim-quickui'
-Plug 'liuchengxu/vista.vim', { 'on': 'Vista!!' }
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 " |  +--- Theme
+Plug 'vim-airline/vim-airline-themes'
 Plug 'wuelnerdotexe/vim-enfocado'
 Plug 'srcery-colors/srcery-vim'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'bluz71/vim-moonfly-colors'
 " +--+ Programming Enhancement
 Plug 'mhinz/vim-signify'
 Plug 'Yggdroot/indentLine'
@@ -101,33 +108,43 @@ Plug 'segeljakt/vim-silicon', { 'on': 'Silicon' }
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() }, 'on': 'DogeGenerate' }
 Plug 'aperezdc/vim-template'
 Plug 'honza/vim-snippets'
+Plug 'tpope/vim-endwise', { 'for': ['fish', 'lua', 'ruby', 'vim'] }
 "    +--- Git
-Plug 'rhysd/committia.vim'
-Plug 'tpope/vim-fugitive', { 'on': ['Git', 'Gvdiffsplit', 'Gedit'] }
-Plug 'rbong/vim-flog', { 'on': 'Flog' }
+Plug 'tpope/vim-fugitive', { 'on': ['Git', 'Gvdiffsplit', 'Gvsplit'] }
 "    +--- C/C++
-Plug 'skywind3000/vim-cppman', { 'for': ['c', 'cpp'], 'on': 'Cppman' }
-Plug 'v1nh1shungry/vim-cppinsights', { 'for': 'cpp', 'on': ['Insights', 'InsightsDiff'] }
-"    +--- HTML/CSS/Javascript
+Plug 'skywind3000/vim-cppman', { 'on': 'Cppman' }
+"    +--- HTML/CSS/JavaScript
 Plug 'alvan/vim-closetag', { 'for': ['html', 'xml'] }
 Plug 'ap/vim-css-color'
-Plug 'turbio/bracey.vim', { 'do': 'npm install --prefix server', 'for': ['html', 'css'], 'on': 'Bracey' }
+Plug 'turbio/bracey.vim', { 'do': 'npm install --prefix server', 'on': 'Bracey' }
 "    +--- markdown
 Plug 'preservim/vim-markdown'
 Plug 'preservim/vim-pencil', { 'for': 'markdown' }
 "    +--- SQL
-Plug 'tpope/vim-dadbod', { 'on': 'DBUIAddConnection' }
-Plug 'kristijanhusak/vim-dadbod-ui', { 'on': 'DBUIAddConnection' }
+Plug 'tpope/vim-dadbod', { 'on': 'DBUIToggle' }
+Plug 'kristijanhusak/vim-dadbod-ui', { 'on': 'DBUIToggle' }
 call plug#end()
 
 " vim-airline
+set noshowmode
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>0 <Plug>AirlineSelectTab0
 
 " indentLine
 let g:indentLine_bufTypeExclude = ['help', 'terminal']
-let g:indentLine_bufNameExclude = ['/dev/.*', 'man.*', '__vista__']
-let g:indentLine_fileTypeExclude = ['startify', 'coc-explorer']
+let g:indentLine_bufNameExclude = ['/dev/.*', 'man.*', '\[Grammarous\]']
+let g:indentLine_fileTypeExclude = ['startify', 'coc-explorer', 'dbui', 'dbout']
 
 " coc.nvim
 let g:airline#extensions#coc#error_symbol = ' '
@@ -137,16 +154,16 @@ set updatetime=100
 set shortmess+=c
 set signcolumn=yes
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                            \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+    \: "\<C-G>u\<CR>\<C-R>=coc#on_enter()\<CR>"
+nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
 nnoremap <silent> gd <Plug>(coc-definition)
 nnoremap <silent> gy <Plug>(coc-type-definition)
 nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap <silent> gr <Plug>(coc-references)
-nnoremap <silent> gh <cmd>call CocActionAsync('doHover')<CR>
-nnoremap <silent> <leader>rn <Plug>(coc-rename)
-nnoremap <silent> <leader>a <Plug>(coc-codeaction-cursor)
-nnoremap <silent> <leader>f <Plug>(coc-format)
-nnoremap <silent> <leader>qf  <Plug>(coc-fix-current)
+nnoremap <silent> gr <Plug>(coc-references-used)
+nnoremap <silent> gh <Cmd>call CocActionAsync('doHover')<CR>
+nnoremap <silent> <Leader>rn <Plug>(coc-rename)
+nnoremap <silent> <Leader>qf  <Plug>(coc-fix-current)
 xnoremap if <Plug>(coc-funcobj-i)
 onoremap if <Plug>(coc-funcobj-i)
 xnoremap af <Plug>(coc-funcobj-a)
@@ -155,40 +172,60 @@ xnoremap ic <Plug>(coc-classobj-i)
 onoremap ic <Plug>(coc-classobj-i)
 xnoremap ac <Plug>(coc-classobj-a)
 onoremap ac <Plug>(coc-classobj-a)
-nnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-j>"
-nnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-k>"
-inoremap <silent><nowait><expr> <C-j> coc#pum#visible() ? coc#pum#next(1) :
-                                    \ coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Down>"
-inoremap <silent><nowait><expr> <C-k> coc#pum#visible() ? coc#pum#prev(1) :
-                                    \ coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Up>"
+nnoremap <silent><nowait><expr> <C-J> coc#float#has_scroll() ? coc#float#scroll(1) : "\<Down>"
+nnoremap <silent><nowait><expr> <C-K> coc#float#has_scroll() ? coc#float#scroll(0) : "\<Up>"
+inoremap <silent><nowait><expr> <C-J> coc#pum#visible() ? coc#pum#next(1) :
+    \ coc#float#has_scroll() ? "\<C-R>=coc#float#scroll(1)\<CR>" : "\<Down>"
+inoremap <silent><nowait><expr> <C-K> coc#pum#visible() ? coc#pum#prev(1) :
+    \ coc#float#has_scroll() ? "\<C-R>=coc#float#scroll(0)\<CR>" : "\<Up>"
+nnoremap <silent><nowait> <Leader>o  :call ToggleOutline()<CR>
+function! ToggleOutline() abort
+    let winid = coc#window#find('cocViewId', 'OUTLINE')
+    if winid == -1
+        call CocActionAsync('showOutline', 1)
+    else
+        call coc#window#close(winid)
+    endif
+endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+autocmd BufEnter * call CheckOutline()
+function! CheckOutline() abort
+    if &filetype ==# 'coctree' && winnr('$') == 1
+        if tabpagenr('$') != 1
+            close
+        else
+            bdelete
+        endif
+    endif
+endfunction
 
 " coc-snippets
 inoremap <silent><expr> <TAB>
     \ coc#pum#visible() ? coc#_select_confirm() :
-    \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+    \ coc#expandableOrJumpable() ? "\<C-R>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
     \ CheckBackspace() ? "\<TAB>" :
     \ coc#refresh()
 function! CheckBackspace() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-let g:coc_snippet_prev = '<s-tab>'
-let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<S-TAB>'
+let g:coc_snippet_next = '<TAB>'
 
 " coc-lists
-nnoremap <silent> <leader>h <cmd>CocList helptags<cr>
+nnoremap <silent> <Leader>h <Cmd>CocList helptags<CR>
 
 " coc-explorer
-nnoremap <silent> <leader>e <Cmd>CocCommand explorer<CR>
+nnoremap <silent> <Leader>e <Cmd>CocCommand explorer<CR>
 
-" coc-yank
-nnoremap <silent> <space>y  <cmd>CocList -A --normal yank<CR>
+" coc-typos
+nmap ]s <Plug>(coc-typos-next)
+nmap [s <Plug>(coc-typos-prev)
+nmap z= <Plug>(coc-typos-fix)
 
 " vim-startify
-let g:startify_custom_header =
-    \ startify#center(split(system('cat ~/.dotfiles/vim/banner.txt'), '\n'))
+let g:startify_custom_header = startify#center(split(system('cat ~/.dotfiles/vim/banner.txt'), '\n'))
 
 " vim-terminal-help
 let g:terminal_cwd = 2
@@ -203,51 +240,17 @@ xnoremap <silent> <Leader>di <Plug>VimspectorBalloonEval
 let g:asyncrun_open = 6
 let g:asynctasks_term_reuse = 1
 let g:asynctasks_term_pos = 'termhelp'
-noremap <silent> <leader>fb :AsyncTask file-build<CR>
-noremap <silent> <leader>fr :AsyncTask file-run<CR>
-noremap <silent> <leader>pf :AsyncTask project-configure<CR>
-noremap <silent> <leader>pb :AsyncTask project-build<CR>
-noremap <silent> <leader>pr :AsyncTask project-run<CR>
-
-" wilder.nvim
-call wilder#setup({'modes': [':', '/', '?']})
-call wilder#set_option('pipeline', [
-    \  wilder#branch(
-    \      wilder#cmdline_pipeline({
-    \          'language': 'vim',
-    \          'fuzzy': 1,
-    \          'fuzzy_filter': wilder#vim_fuzzy_filter(),
-    \      }),
-    \      wilder#vim_search_pipeline()
-    \  ),
-    \ ])
-call wilder#set_option('renderer', wilder#renderer_mux({
-    \ ':': wilder#popupmenu_renderer(wilder#popupmenu_border_theme({
-            \ 'highlighter': wilder#basic_highlighter(),
-            \ 'highlights': {
-            \   'border': 'Normal',
-            \ },
-            \ 'left': [
-            \   ' ', wilder#popupmenu_devicons(),
-            \ ],
-            \ 'right': [
-            \   ' ', wilder#popupmenu_scrollbar(),
-            \ ],
-            \ 'border': 'rounded',
-    \ })),
-    \ '/': wilder#wildmenu_renderer(
-            \ wilder#wildmenu_airline_theme({
-            \   'highlighter': wilder#basic_highlighter(),
-            \ })),
-    \ }))
+noremap <silent> <Leader>fb <Cmd>AsyncTask file-build<CR>
+noremap <silent> <Leader>fr <Cmd>AsyncTask file-run<CR>
+noremap <silent> <Leader>pf <Cmd>AsyncTask project-configure<CR>
+noremap <silent> <Leader>pb <Cmd>AsyncTask project-build<CR>
+noremap <silent> <Leader>pr <Cmd>AsyncTask project-run<CR>
 
 " vim-easymotion
 let g:EasyMotion_verbose = 0
 noremap <Leader> <Plug>(easymotion-prefix)
 
 " vim-better-whitespace
-let g:better_whitespace_guicolor = 'lightgreen'
-let g:better_whitespace_ctermcolor = 'lightgreen'
 let g:better_whitespace_filetypes_blacklist = ['startify', 'help', 'git']
 
 " glyph-palette.vim
@@ -262,9 +265,9 @@ let g:table_mode_corner = '|'
 " vim-quickui
 let g:quickui_border_style = 2
 let g:quickui_show_tip = 1
-nnoremap <silent><space><space> <cmd>call quickui#menu#open()<cr>
-nnoremap <silent><RightMouse> <cmd>call quickui#context#open(g:context_k, {})<CR>
-nnoremap <silent>K <cmd>call CleverK()<CR>
+nnoremap <Space><Space> <Cmd>call quickui#menu#open()<CR>
+nnoremap <RightMouse> <Cmd>call quickui#context#open(g:context_k, {})<CR>
+nnoremap K <Cmd>call CleverK()<CR>
 function! CleverK() abort
     if &filetype == 'help'
         call feedkeys('K', 'in')
@@ -278,14 +281,7 @@ let g:pencil#wrapModeDefault = 'soft'
 autocmd FileType markdown call pencil#init()
 
 " undotree
-nnoremap <silent> <leader>u <cmd>UndotreeToggle<CR>
-
-" vista.vim
-let g:airline#extensions#vista#enabled = 0
-let g:vista_echo_cursor = 0
-let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
-let g:vista_default_executive = 'coc'
-nnoremap <silent><nowait> <leader>o  <cmd>Vista!!<CR>
+nnoremap <silent> <Leader>u <Cmd>UndotreeToggle<CR>
 
 " vim-enfocado
 let g:enfocado_plugins = [
@@ -295,25 +291,22 @@ let g:enfocado_plugins = [
     \ 'plug',
     \ 'signify',
     \ 'startify',
-    \ 'vista',
     \ 'visual-multi',
-    \ ]
+  \ ]
 
 " goyo.vim
 function! s:goyo_enter()
     if executable('tmux') && strlen($TMUX)
         silent !tmux set status off
     endif
-    setlocal noshowcmd
-    setlocal scrolloff=0
+    setlocal noshowcmd scrolloff=0
     Limelight
 endfunction
 function! s:goyo_leave()
     if executable('tmux') && strlen($TMUX)
         silent !tmux set status on
     endif
-    setlocal showcmd
-    setlocal scrolloff=10
+    setlocal showcmd scrolloff=5
     Limelight!
 endfunction
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
@@ -328,6 +321,48 @@ let g:username = system('git config user.name')[:-2]
 let g:email = system('git config user.email')[:-2]
 let g:templates_no_builtin_templates = 1
 let g:templates_directory = '$HOME/.dotfiles/vim/templates/code'
+
+" vim-doge
+let g:doge_enable_mappings = 0
+
+" vim-grammarous
+let g:grammarous#show_first_error = 1
+let g:grammarous#default_comments_only_filetypes = {
+        \ '*' : 1, 'help' : 0, 'markdown' : 0,
+    \ }
+let g:grammarous#languagetool_cmd = 'languagetool'
+
+" papercolor-theme
+let g:PaperColor_Theme_Options = {
+  \     'language': {
+  \         'python': {
+  \             'highlight_builtins' : 1
+  \         },
+  \         'cpp': {
+  \             'highlight_standard_library': 1
+  \         },
+  \         'c': {
+  \             'highlight_builtins' : 1
+  \         }
+  \     }
+  \ }
+
+" vim-markdown
+let g:vim_markdown_folding_disabled = 1
+
+" context.vim
+let g:context_filetype_blacklist = ['coc-explorer', 'coctree', 'undotree', 'help']
+
+" clever-f.vim
+noremap ; <Plug>(clever-f-repeat-forward)
+noremap , <Plug>(clever-f-repeat-back)
+
+" far.vim
+let g:far#enable_undo = 1
+
+" vim-dadbod-ui
+let g:db_ui_show_database_icon = 1
+let g:db_ui_use_nerd_fonts = 1
 
 " ============================================================================
 " ================================== UI ======================================
@@ -352,119 +387,122 @@ call quickui#menu#install('&File', [
         \ ["&Open\t:e", 'call feedkeys(":e ")'],
         \ ["Sudo Open", "call feedkeys(':SudaRead ')", 'Open files with SUDO privilege'],
         \ ["--", ''],
-        \ ["&Save\tCTRL + S", 'w'],
+        \ ["&Save\t<C-S>", 'w'],
         \ ["Save &All", 'wa'],
         \ ["Sudo Save", 'SudaWrite', 'Write files with SUDO privilege'],
         \ ["--", ''],
         \ ["&Exit\tQ", 'qa!'],
-      \ ])
+    \ ])
 call quickui#menu#install('&Edit', [
         \ ["&Strip Trailing", 'StripWhitespace'],
         \ ["--", ''],
-        \ ["Explore &Yank History\t<leader>y", 'CocList -A --normal yank'],
-        \ ["&Clean Yank History", 'CocCommand yank.clean'],
-        \ ["--", ''],
         \ ["&Generate Template", 'Template', 'Generate template codes for current filetype'],
-        \ ["&Doge Here\t<leader>d", 'DogeGenerate', 'Generate document comments for current symbol'],
-        \ ["&Markdown TOC", 'CocCommand markdown-preview-enhanced.insertTOC', 'Generate TOC under the current cursor'],
+        \ ["Generate &Markdown TOC", 'CocCommand markdown-preview-enhanced.insertTOC', 'Generate TOC under the current cursor'],
         \ ["--", ''],
-        \ ["&Table Mode\t<leader>tm", 'TableModeToggle', 'A fancy mode for creating tables'],
+        \ ["&Table Mode", 'TableModeToggle', 'A fancy mode for creating tables'],
         \ ["--", ''],
-        \ ["&Format Codes\t<leader>f", "call CocActionAsync('format')"],
-      \ ])
+        \ ["&Format Codes", "call feedkeys('\<Plug>(coc-format)')"],
+    \ ])
 call quickui#menu#install('&View', [
         \ ["Switch &Buffer", "call quickui#tools#list_buffer('e')"],
-        \ ["Display &Messages", 'call quickui#tools#display_messages()'],
+        \ ["&Resize Windows", 'WinResizerStartResize', 'A fancy mode for easy resizing windows'],
         \ ["--", ''],
-        \ ["&Explorer\t<leader>e", 'CocCommand explorer', 'Open file explorer'],
-        \ ["&Outline\t<leader>o", 'Vista!!', 'Open symbols outline tree'],
-        \ ["&Undotree\t<leader>u", 'UndotreeToggle', 'Open undo history'],
-        \ ["&Terminal\tALT + =", "call feedkeys('\<m-=>')"],
+        \ ["&Explorer\t<Leader>e", 'CocCommand explorer', 'Open file explorer'],
+        \ ["&Terminal\t<M-=>", "call feedkeys('\<m-=>')"],
+        \ ["&Outline\t<Leader>o", 'call ToggleOutline()', 'Open symbols outline tree'],
+        \ ["&Undotree\t<Leader>u", 'UndotreeToggle', 'Open undo history'],
         \ ["--", ''],
-        \ ["Ma&ximize Current Window\t<C-W>m", "call feedkeys('\<c-w>m')"],
+        \ ["Data&base Dashboard", 'DBUIToggle'],
+        \ ["Markdown TO&C", 'Toc'],
+        \ ["--", ''],
         \ ["&Zen Mode", 'Goyo'],
-      \ ])
+    \ ])
+call quickui#menu#install('&Navigation', [
+        \ ["&Find", 'Farf'],
+        \ ["Find And Re&place", 'Farr'],
+        \ ["--", ''],
+        \ ["Goto &Definition\tgd", "call feedkeys('\<Plug>(coc-definition)')"],
+        \ ["Goto &Type Definition\tgy", "call feedkeys('\<Plug>(coc-type-definition)')"],
+        \ ["Goto &Implementation\tgi", "call feedkeys('\<Plug>(coc-implementation)')"],
+        \ ["&References\tgr", "call feedkeys('\<Plug>(coc-references-used)')"],
+    \ ])
 call quickui#menu#install('&Git', [
         \ ["Git &Status", 'Git'],
         \ ["Git &Diff", 'Gvdiffsplit'],
-        \ ["&Browse Branches", 'Flog'],
         \ ["--", ''],
-        \ ["Git &Edit", "call feedkeys('Gedit ')", 'View any blob, tree, commit, or tag in the repository'],
-      \ ])
+        \ ["Git &Edit", "call feedkeys(':Gvsplit ')", 'View any blob, tree, commit, or tag in the repository'],
+    \ ])
 call quickui#menu#install('&Build', [
         \ ["Browse &Tasks", 'CocList tasks'],
         \ ["--", ''],
-        \ ["File &Compile\t<leader>fb", 'AsyncTask file-build'],
-        \ ["File &Execute\t<leader>fr", 'AsyncTask file-run'],
+        \ ["File &Compile\t<Leader>fb", 'AsyncTask file-build'],
+        \ ["File &Execute\t<Leader>fr", 'AsyncTask file-run'],
         \ ["--", ''],
-        \ ["Project Con&figure\t<leader>pf", 'AsyncTask project-configure'],
-        \ ["Project &Build\t<leader>pb", 'AsyncTask project-build'],
-        \ ["Project &Run\t<leader>pr", 'AsyncTask project-run'],
-        \ ["Project C&lean", 'AsyncTask project-clean']
-      \ ])
+        \ ["Project Con&figure\t<Leader>pf", 'AsyncTask project-configure'],
+        \ ["Project &Build\t<Leader>pb", 'AsyncTask project-build'],
+        \ ["Project &Run\t<Leader>pr", 'AsyncTask project-run'],
+        \ ["Project Clea&n", 'AsyncTask project-clean']
+    \ ])
 call quickui#menu#install('&Debug', [
-        \ ["Start &/ Continue\tF5", "call feedkeys('\<F5>')"],
-        \ ["&Stop\tF3", "call feedkeys('\<F3>')"],
-        \ ["&Restart\tF4", "call feedkeys('\<F4>')"],
-        \ ["&Pause\tF6", "call feedkeys('\<F6>')"],
+        \ ["Start &/ Continue\tF5", "call feedkeys('\<Plug>VimspectorContinue')"],
+        \ ["&Stop\tF3", "call feedkeys('\<Plug>VimspectorStop')"],
+        \ ["&Restart\tF4", "call feedkeys('\<Plug>VimspectorRestart')"],
+        \ ["&Pause\tF6", "call feedkeys('\<Plug>VimspectorPause')"],
         \ ["R&eset", 'VimspectorReset'],
         \ ["--", ''],
-        \ ["&Breakpoint\tF9", "call feedkeys('\<F9>')"],
-        \ ["&Conditional Breakpoint\t<leader>F9", "call feedkeys(' \<F9>')"],
-        \ ["&Function Breakpoint\tF8", "call feedkeys('\<F8>')"],
+        \ ["&Breakpoint\tF9", "call feedkeys('\<Plug>VimspectorToggleBreakpoint')"],
+        \ ["&Conditional Breakpoint\t<Leader>F9", "call feedkeys('\<Plug>VimspectorToggleConditionalBreakpoint')"],
+        \ ["&Function Breakpoint\tF8", "call feedkeys('\<Plug>VimspectorAddFunctionBreakpoint')"],
         \ ["--", ''],
-        \ ["Ru&n To Cursor\t<leader>F8", "call feedkeys(' \<F8>')"],
-        \ ["Step &Over\tF10", "call feedkeys('\<F10>')"],
-        \ ["Step &Into\tF11", "call feedkeys('\<F11>')"],
-        \ ["Step O&ut\tF12", "call feedkeys('\<F12>')"],
+        \ ["Ru&n To Cursor\t<Leader>F8", "call feedkeys('\<Plug>VimspectorRunToCursor')"],
+        \ ["Step &Over\tF10", "call feedkeys('\<Plug>VimspectorStepOver')"],
+        \ ["Step &Into\tF11", "call feedkeys('\<Plug>VimspectorStepInto')"],
+        \ ["Step O&ut\tF12", "call feedkeys('\<Plug>VimspectorStepOut')"],
         \ ["--", ''],
-        \ ["S&how Debug Information\t<leader>di", "call feedkeys(' di')"],
-      \ ])
+        \ ["S&how Debug Information\t<Leader>di", "call feedkeys('\<Plug>VimspectorBalloonEval')"],
+    \ ])
 call quickui#menu#install('&Plugin', [
         \ ["&Install Plugins", 'PlugInstall'],
         \ ["&Update Plugins", 'PlugUpdate'],
         \ ["Plugin &Status", 'PlugStatus'],
-        \ ["&Remove Unused Plugins", 'source $MYVIMRC | PlugClean'],
+        \ ["&Remove Unused Plugins", 'PlugClean'],
         \ ["--", ''],
-        \ ["Install &Coc Plugins", 'exec "CocInstall " .. quickui#input#open("Plugin name:")'],
         \ ["U&pdate Coc Plugins", 'CocUpdate'],
         \ ["Lis&t Coc Plugins", 'CocList extensions'],
+        \ ["Coc Plugins' Con&fig", 'CocConfig'],
+        \ ["--", ''],
         \ ["Coc Co&mmands", 'CocList commands'],
-        \ ["Coc Plugins Con&fig", 'CocConfig'],
-      \ ])
+    \ ])
 call quickui#menu#install("&Tools", [
+        \ ["&Diff Modification", 'vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis'],
         \ ["Code &Snapshot", 'Silicon'],
         \ ["--", ''],
-        \ ["Cpp&Insights", 'Insights', 'Run cppinsights'],
-        \ ["CppInsights Diff", 'InsightsDiff', 'Run cppinsights and diff with source'],
+        \ ["&Grammar Check", 'GrammarousCheck'],
+        \ ["&Typos Check", 'CocList typos'],
         \ ["--", ''],
         \ ["&Markdown Preview", 'CocCommand markdown-preview-enhanced.openPreview'],
         \ ["Live &Preview", 'Bracey', 'Launch a live server for HTML/CSS/JAVASCRIPT preview'],
-      \ ])
+    \ ])
 call quickui#menu#install('Help (&?)', [
-        \ ["Help\t<leader>h", 'CocList helptags'],
+        \ ["Help\t<Leader>h", 'CocList helptags'],
+        \ ["Display &Messages", 'call quickui#tools#display_messages()'],
         \ ["--", ''],
         \ ["&Welcome", 'Startify'],
         \ ["&About", "call quickui#textbox#open(g:about_text, {'title': 'About'})"],
-      \ ])
+    \ ])
 let g:context_k = [
-        \ ["&Open Path\tgf", "call feedkeys('gf')", 'Open file under the cursor'],
-        \ ["Open &URL\tgx", "call feedkeys('gx')", 'Open URL under the cursor in default browser'],
+        \ ["H&over\tgh", "call CocActionAsync('doHover')"],
         \ ["--", ''],
-        \ ["Goto &Definition\tgd", "call CocActionAsync('jumpDefinition')"],
-        \ ["Goto &Type Definition\tgy", "call CocActionAsync('jumpTypeDefinition')"],
-        \ ["Goto &Implementation\tgi", "call CocActionAsync('jumpImplementation')"],
+        \ ["Re&name\t<Leader>rn", "call feedkeys('\<Plug>(coc-rename)')"],
+        \ ["Quick &Fix\t<Leader>qf", "call feedkeys('\<Plug>(coc-fix-current)')", 'Execute quick fix for the current line'],
+        \ ["Code &Actions", "call feedkeys('\<Plug>(coc-codeaction-cursor)')", 'Trigger code actions for the current symbol'],
         \ ["--", ''],
-        \ ["List &References\tgr", "call CocActionAsync('jumpImplementation')"],
-        \ ["Show &Hover\tgh", "call CocActionAsync('doHover')", 'Show information for the current symbol'],
-        \ ["Re&name\t<leader>rn", "call CocActionAsync('rename')"],
-        \ ["Code &Actions\t<leader>a", "call feedkeys(' a')", 'Trigger code actions for the current symbol'],
-        \ ["Quick &Fix\t<leader>qf", "call feedkeys(' qf')", 'Execute quick fix for the current line'],
+        \ ["Do&ge Here", 'DogeGenerate', 'Generate document comments for current symbol'],
         \ ["--", ''],
         \ ["&Help", "call feedkeys('K', 'in')"],
         \ ["&Cppman", 'exec "Cppman " . expand("<cword>")'],
         \ ["&Pydoc", 'call quickui#tools#python_help(expand("<cword>"))'],
-      \ ]
+    \ ]
 
 " Fix termguicolors in TMUX
 if executable('tmux') && strlen($TMUX)
@@ -475,9 +513,10 @@ set termguicolors
 
 autocmd ColorScheme * call Highlight()
 function! Highlight() abort
-    hi CocErrorHighlight cterm=bold ctermfg=Red gui=bold guifg=#EF2F27
+    hi CocErrorHighlight cterm=bold ctermfg=Red ctermbg=NONE gui=bold guifg=#EF2F27 guibg=NONE
+    hi CocErrorSign cterm=bold ctermfg=Red ctermbg=NONE gui=bold guifg=#EF2F27 guibg=NONE
     hi CocInlayHint ctermfg=White ctermbg=DarkGrey guifg=#d8d8d8 guibg=#3a3a3a
 endfunction
 
 set background=dark
-autocmd vimenter * ++nested colorscheme enfocado
+autocmd VimEnter * ++nested colorscheme srcery

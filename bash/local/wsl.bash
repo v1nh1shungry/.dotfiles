@@ -17,6 +17,9 @@ source "/usr/share/xmake/scripts/profile-unix.sh"
 
 eval "$(starship init bash)"
 
+sed -i '/\[ProxyList\]/,$d' ~/.config/proxychains.conf
+echo -e "[ProxyList]\nsocks5 $WINIP 10810" >> ~/.config/proxychains.conf
+
 alias ls='exa --icons'
 alias la='ls -a'
 alias ll='ls -al --git'

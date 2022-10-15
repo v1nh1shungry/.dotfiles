@@ -4,18 +4,13 @@
         "c",
         "cpp",
         "json",
-        "python",
         "rust",
         "zig"
     ],
     "diagnostic.checkCurrentLine": true,
-    "diagnostic.enableMessage": "never",
     "diagnostic.errorSign": " ",
     "diagnostic.hintSign": "",
     "diagnostic.refreshOnInsertMode": true,
-    "diagnostic.virtualText": true,
-    "diagnostic.virtualTextCurrentLineOnly": false,
-    "diagnostic.virtualTextPrefix": "  ● ",
     "inlayHint.refreshOnInsertMode": true,
     "notification.statusLineProgress": false,
     "semanticTokens.enable": true,
@@ -67,8 +62,7 @@
     "explorer.icon.enableNerdfont": true,
     "explorer.icon.source": "vim-devicons",
     "explorer.quitOnOpen": true,
-    "python.formatting.autopep8Path": "~/.local/bin/autopep8",
     "rust-analyzer.server.path": "~/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/bin/rust-analyzer",
-    "zig.path": "/usr/sbin/zls"
+    "zig.path": "/usr/bin/zls"
 }
 // vim: filetype=jsonc

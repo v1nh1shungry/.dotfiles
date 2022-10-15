@@ -16,6 +16,6 @@ target("%FDIR%")
     set_policy("build.optimization.lto", true)
 
     if is_mode("debug") then
-        add_cxxflags("-fsanitize=address", "-fsanitize=undefined")
+        add_cxxflags("-fsanitize=address", "-fsanitize=undefined", "-fno-omit-frame-pointer")
         add_ldflags("-fsanitize=address", "-fsanitize=undefined")
     end

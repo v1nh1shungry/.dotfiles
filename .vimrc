@@ -82,15 +82,12 @@ Plug 'sickill/vim-pasta'
 Plug 'chrisbra/NrrwRgn', { 'on': 'NR' }
 Plug 'brooth/far.vim', { 'on': ['Far', 'F', 'Farr', 'Farf'] }
 Plug 'rhysd/vim-grammarous', { 'on': 'GrammarousCheck' }
-Plug 'vim-scripts/ReplaceWithRegister'
 " +--+ Beautify
 Plug 'mhinz/vim-startify'
 Plug 'vim-airline/vim-airline'
 Plug 'lambdalisue/glyph-palette.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'skywind3000/vim-quickui'
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 " |  +--- Theme
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wuelnerdotexe/vim-enfocado'
@@ -294,24 +291,6 @@ let g:enfocado_plugins = [
     \ 'visual-multi',
   \ ]
 
-" goyo.vim
-function! s:goyo_enter()
-    if executable('tmux') && strlen($TMUX)
-        silent !tmux set status off
-    endif
-    setlocal noshowcmd scrolloff=0
-    Limelight
-endfunction
-function! s:goyo_leave()
-    if executable('tmux') && strlen($TMUX)
-        silent !tmux set status on
-    endif
-    setlocal showcmd scrolloff=5
-    Limelight!
-endfunction
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
 " vim-easy-align
 vnoremap <Enter> <Plug>(EasyAlign)
 nnoremap ga <Plug>(EasyAlign)
@@ -414,8 +393,6 @@ call quickui#menu#install('&View', [
         \ ["--", ''],
         \ ["Data&base Dashboard", 'DBUIToggle'],
         \ ["Markdown TO&C", 'Toc'],
-        \ ["--", ''],
-        \ ["&Zen Mode", 'Goyo'],
     \ ])
 call quickui#menu#install('&Navigation', [
         \ ["&Find", 'Farf'],

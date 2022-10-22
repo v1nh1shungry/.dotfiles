@@ -17,6 +17,9 @@ source "/usr/share/xmake/scripts/profile-unix.sh"
 
 eval "$(starship init bash)"
 
+eval "$(fnm env)"
+export FNM_NODE_DIST_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
+
 sed -i '/\[ProxyList\]/,$d' ~/.config/proxychains.conf
 echo -e "[ProxyList]\nsocks5 $WINIP 10810" >> ~/.config/proxychains.conf
 

@@ -1,0 +1,10 @@
+[Unit]
+Description=Launch X server
+
+[Service]
+ExecStart=/mnt/d/wslutils/VcXsrv/vcxsrv.exe -multiwindow -clipboard -wgl -ac
+ExecStop=/mnt/c/Windows/System32/taskkill.exe /F /IM vcxsrv.exe /T
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

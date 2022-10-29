@@ -27,7 +27,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer>
 )
 # Enable ASAN and UBSAN
-target_link_options(playground PRIVATE
+target_link_options(${PROJECT_NAME} PRIVATE
     $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined>
 )
 

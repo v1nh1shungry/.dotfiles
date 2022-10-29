@@ -24,7 +24,7 @@ if status is-interactive
     alias v nvim
     alias vi nvim
     alias vim nvim
-    alias neovide '/mnt/d/wslutils/neovide.exe --wsl --maximized'
+    alias neovide '/mnt/d/wslutils/neovide.exe --wsl --maximized --multigrid'
     alias bat 'bat --theme Dracula'
     alias grep 'grep --color=auto'
     alias ls 'exa --icons'
@@ -40,6 +40,8 @@ if status is-interactive
     bind -M insert \ch accept-autosuggestion
     bind -M insert \ck history-prefix-search-backward
     bind -M insert \cj history-prefix-search-forward
+
+    bind -M insert -k f5 'asynctask -f'
 
     function proxy
         set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')

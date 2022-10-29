@@ -6,7 +6,7 @@ return {
     '--background-index',
     '--clang-tidy',
     '--completion-style=detailed',
-    '--fallback-style=Google',
+    '--fallback-style=LLVM',
     '--folding-ranges',
     '--function-arg-placeholders',
     '--header-insertion=never',

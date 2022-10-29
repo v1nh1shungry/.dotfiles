@@ -1,5 +1,3 @@
-local nnoremap = require('utils.keymaps').nnoremap
-
 local signs = {
   { name = "DiagnosticSignError", text = "" },
   { name = "DiagnosticSignWarn", text = "" },
@@ -29,6 +27,3 @@ local config = {
 }
 
 vim.diagnostic.config(config)
-
-nnoremap('[d', vim.diagnostic.goto_prev)
-nnoremap(']d', vim.diagnostic.goto_next)

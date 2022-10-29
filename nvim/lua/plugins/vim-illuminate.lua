@@ -1,13 +1,14 @@
-local status_ok, illuminate = pcall(require, 'illuminate')
-if not status_ok then
-  return
-end
-
-illuminate.configure {
-  filetypes_denylist = {
-    'NvimTree',
-    'toggleterm',
-    'help',
-    'lspsagaoutline',
+return function()
+  require('illuminate').configure {
+    filetypes_denylist = {
+      'NvimTree',
+      'alpha',
+      'checkhealth',
+      'help',
+      'lspsagaoutline',
+      'packer',
+      'startuptime',
+      'toggleterm',
+    }
   }
-}
+end

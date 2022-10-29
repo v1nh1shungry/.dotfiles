@@ -233,7 +233,7 @@ let g:vimspector_enable_mappings = 'HUMAN'
 nnoremap <silent> <Leader>di <Plug>VimspectorBalloonEval
 xnoremap <silent> <Leader>di <Plug>VimspectorBalloonEval
 
-" asynctasks
+" asynctasks.vim
 let g:asyncrun_open = 6
 let g:asynctasks_term_reuse = 1
 let g:asynctasks_term_pos = 'termhelp'

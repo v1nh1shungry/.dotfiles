@@ -1,6 +1,8 @@
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.laststatus = 0
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
-vim.opt.fillchars.eob=' '
+vim.opt.fillchars.eob = ' '
 vim.opt.foldenable = false
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
@@ -9,6 +11,7 @@ vim.opt.mouse = 'a'
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 8
+vim.opt.shell = '/bin/fish'
 vim.opt.shiftround = true
 vim.opt.shiftwidth = 2
 vim.opt.shortmess:append 'c'

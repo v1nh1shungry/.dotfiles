@@ -4,18 +4,16 @@ M.servers = {
   'bashls',
   'clangd',
   'cmake',
-  'cssls',
   'grammarly',
-  'html',
   'jsonls',
-  'tsserver',
-  'sumneko_lua',
+  'marksman',
+  'ocamllsp',
   'pyright',
   'rust_analyzer',
+  'solargraph',
+  'sumneko_lua',
   'taplo',
-  'vimls',
   'yamlls',
-  'zls',
 }
 
 return M

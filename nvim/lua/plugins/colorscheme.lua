@@ -1,8 +1,9 @@
 local M = {}
 
-M.colorscheme = 'enfocado'
+M.colorscheme = 'nightfox'
 
 function M.setup()
+  vim.opt.background = 'dark'
   vim.cmd('colorscheme ' .. M.colorscheme)
 end
 

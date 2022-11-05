@@ -1,10 +1,7 @@
 return function()
-  vim.cmd [[packadd nui.nvim]]
   require('neo-tree').setup {
     close_if_last_window = true,
-    source_selector = {
-      winbar = true,
-    },
+    source_selector = { winbar = true },
     filesystem = {
       filtered_items = {
         hide_dotfiles = false,
@@ -26,9 +23,7 @@ return function()
     event_handlers = {
       {
         event = "file_opened",
-        handler = function(_)
-          require("neo-tree").close_all()
-        end
+        handler = function(_) require("neo-tree").close_all() end
       },
     },
   }

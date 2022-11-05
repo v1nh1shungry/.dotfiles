@@ -20,6 +20,10 @@ M.tmap = function(from, to)
   vim.keymap.set('t', from, to, { silent = true })
 end
 
+M.xmap = function(from, to)
+  vim.keymap.set('x', from, to, { silent = true })
+end
+
 M.map = function(from, to)
   vim.keymap.set('', from, to, { silent = true })
 end
@@ -42,6 +46,10 @@ end
 
 M.tnoremap = function(from, to)
   vim.keymap.set('t', from, to, { noremap = true, silent = true })
+end
+
+M.xnoremap = function(from, to)
+  vim.keymap.set('x', from, to, { noremap = true, silent = true })
 end
 
 M.noremap = function(from, to)

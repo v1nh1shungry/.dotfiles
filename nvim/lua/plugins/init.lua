@@ -33,16 +33,14 @@ end
 local packer_bootstrap = ensure_packer()
 
 require('packer').startup(function(use)
-  use {
-    'wbthomason/packer.nvim',
-  }
+  use 'wbthomason/packer.nvim'
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                    Basic Enhancement                     │
   --  ╰──────────────────────────────────────────────────────────╯
   use {
     'andymass/vim-matchup',
-    after = 'nvim-treesitter',
     config = function() vim.cmd [[ let g:matchup_matchparen_offscreen = { 'method': '' } ]] end,
+    event = { 'BufNewFile', 'BufReadPost' },
   }
   use { 'tpope/vim-unimpaired', event = { 'BufNewFile', 'BufReadPost' } }
   use { 'tpope/vim-sleuth', event = { 'BufNewFile', 'BufReadPost' } }
@@ -53,14 +51,11 @@ require('packer').startup(function(use)
     config = require('plugins.nvim-treesitter'),
     event = { 'BufNewFile', 'BufReadPost' },
     requires = {
-      { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
-      { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' },
-      { 'windwp/nvim-ts-autotag', after = 'nvim-treesitter' },
-      { 'p00f/nvim-ts-rainbow', after = 'nvim-treesitter' },
+      { 'nvim-treesitter/nvim-treesitter-textobjects', event = { 'BufNewFile', 'BufReadPost' } },
       {
         'nvim-treesitter/nvim-treesitter-context',
-        after = 'nvim-treesitter',
         config = function() require('treesitter-context').setup() end,
+        event = { 'BufNewFile', 'BufReadPost' },
       },
     },
     run = ':TSUpdate',
@@ -84,12 +79,16 @@ require('packer').startup(function(use)
     config = require('plugins.vim-better-whitespace'),
     event = { 'BufNewFile', 'BufReadPost' },
   }
-  use { 'junegunn/vim-easy-align', cmd = 'EasyAlign' }
+  use {
+    'junegunn/vim-easy-align',
+    config = require('plugins.vim-easy-align'),
+    event = { 'BufNewFile', 'BufReadPost' },
+  }
   use { 'lukas-reineke/indent-blankline.nvim', event = { 'BufNewFile', 'BufReadPost' } }
   use {
     'numToStr/Comment.nvim',
-    after = 'nvim-ts-context-commentstring',
-    config = require('plugins.Comment'),
+    config = function() require('Comment').setup() end,
+    event = { 'BufNewFile', 'BufReadPost' },
   }
   use {
     'windwp/nvim-autopairs',
@@ -108,9 +107,15 @@ require('packer').startup(function(use)
     config = function() require('registers').setup() end,
     event = { 'BufNewFile', 'BufReadPost' },
   }
-  use { 'AndrewRadev/splitjoin.vim', event = { 'BufNewFile', 'BufReadPost' } }
+  use {
+    'AndrewRadev/splitjoin.vim',
+    config = function() vim.g.splitjoin_quiet = 1 end,
+    ft = { 'lua', 'rust' },
+  }
   use { 'mg979/vim-visual-multi', event = { 'BufNewFile', 'BufReadPost' } }
-  use { 'LudoPinelli/comment-box.nvim', cmd = { 'CBcbox' } }
+  use { 'LudoPinelli/comment-box.nvim', cmd = 'CBcbox' }
+  use { 'vim-scripts/ReplaceWithRegister', event = { 'BufNewFile', 'BufReadPost' } }
+  use { 'tommcdo/vim-exchange', event = { 'BufNewFile', 'BufReadPost' } }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                       Intellisense                       │
   --  ╰──────────────────────────────────────────────────────────╯
@@ -121,42 +126,66 @@ require('packer').startup(function(use)
     requires = {
       {
         'L3MON4D3/LuaSnip',
-        after = 'nvim-cmp',
-        config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
-        requires = { { 'rafamadriz/friendly-snippets', after = 'nvim-cmp' } },
+        opt = true,
+        requires = { { 'rafamadriz/friendly-snippets', opt = true } },
       },
-      { 'onsails/lspkind.nvim', opt = true },
       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
       { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-emoji', after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
+      { 'onsails/lspkind.nvim', opt = true },
     },
   }
   use {
     'neovim/nvim-lspconfig',
     config = function() require('plugins.lspconfig') end,
-    event = { 'BufNewFile', 'BufReadPre' },
     requires = {
-      { 'lukas-reineke/lsp-format.nvim', after = 'nvim-lspconfig' },
-      { 'ray-x/lsp_signature.nvim', after = 'nvim-lspconfig' },
+      'hrsh7th/cmp-nvim-lsp',
       {
         'glepnir/lspsaga.nvim',
-        after = 'nvim-lspconfig',
+        event = 'LspAttach',
         branch = 'main',
         config = require('plugins.lspsaga'),
       },
+      {
+        'lvimuser/lsp-inlayhints.nvim',
+        config = require('plugins.lsp-inlayhints'),
+        event = 'LspAttach',
+      },
+      'folke/neodev.nvim',
+      'p00f/clangd_extensions.nvim',
     },
   }
-  use { 'folke/neodev.nvim', ft = 'lua' }
-  use { 'simrat39/rust-tools.nvim', ft = 'rust' }
-  use { 'p00f/clangd_extensions.nvim', ft = { 'c', 'cpp' } }
+  use {
+    'jose-elias-alvarez/null-ls.nvim',
+    config = require('plugins.null-ls'),
+    event = { 'BufNewFile', 'BufReadPost' },
+    requires = 'nvim-lua/plenary.nvim',
+  }
+  --  ╭──────────────────────────────────────────────────────────╮
+  --  │                          Debug                           │
+  --  ╰──────────────────────────────────────────────────────────╯
+  use {
+    'mfussenegger/nvim-dap',
+    cmd = { 'DapContinue', 'DapToggleBreakpoint' },
+    config = require('plugins.nvim-dap'),
+    requires = {
+      { 'rcarriga/nvim-dap-ui', opt = true },
+      {
+        'theHamsta/nvim-dap-virtual-text',
+        opt = true,
+        requires = 'nvim-treesitter/nvim-treesitter',
+      },
+    },
+  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                            UI                            │
   --  ╰──────────────────────────────────────────────────────────╯
   use {
     'RRethy/vim-illuminate',
-    config = require('plugins.vim-illuminate'),
+    config = function() require('illuminate').configure { providers = { 'lsp', 'treesitter' } } end,
     event = { 'BufNewFile', 'BufReadPost' },
   }
   use { 'machakann/vim-highlightedyank', event = 'TextYankPost' }
@@ -166,7 +195,7 @@ require('packer').startup(function(use)
     cmd = 'ToggleTerm',
     config = function() require('toggleterm').setup { size = 10 } end,
   }
-  use { 'folke/trouble.nvim', cmd = { 'Trouble', 'TroubleToggle', 'TroubleRefresh' } }
+  use { 'folke/trouble.nvim', cmd = { 'TroubleToggle', 'TroubleRefresh', 'TodoTrouble' } }
   use { 'skywind3000/vim-quickui', config = require('plugins.vim-quickui') }
   use {
     'akinsho/bufferline.nvim',
@@ -177,7 +206,7 @@ require('packer').startup(function(use)
   }
   use {
     'folke/todo-comments.nvim',
-    config = function() require('todo-comments').setup() end,
+    config = function() require('todo-comments').setup { signs = false } end,
     event = { 'BufNewFile', 'BufReadPost' },
     requires = 'nvim-lua/plenary.nvim',
   }
@@ -185,11 +214,6 @@ require('packer').startup(function(use)
     'lewis6991/gitsigns.nvim',
     config = function() require('gitsigns').setup() end,
     event = { 'BufReadPost', 'BufNewFile' },
-  }
-  use {
-    'norcalli/nvim-colorizer.lua',
-    config = function() require('colorizer').setup() end,
-    event = { 'BufNewFile', 'BufReadPost' },
   }
   use {
     'windwp/windline.nvim',
@@ -201,7 +225,17 @@ require('packer').startup(function(use)
     config = function() require('alpha').setup(require('alpha.themes.theta').config) end,
     requires = 'kyazdani42/nvim-web-devicons',
   }
-  use { 'rcarriga/nvim-notify', config = function() vim.notify = require('notify') end }
+  use {
+    'folke/noice.nvim',
+    cond = function() return vim.g.neovide == nil end,
+    config = require('plugins.noice'),
+    requires = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' },
+  }
+  use {
+    'preservim/vim-pencil',
+    config = require('plugins.vim-pencil'),
+    ft = 'markdown',
+  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                          Tools                           │
   --  ╰──────────────────────────────────────────────────────────╯
@@ -210,11 +244,7 @@ require('packer').startup(function(use)
     branch = 'v2.x',
     cmd = 'NeoTreeFocusToggle',
     config = require('plugins.neo-tree'),
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'kyazdani42/nvim-web-devicons',
-      { 'MunifTanjim/nui.nvim', opt = true },
-    },
+    requires = { 'nvim-lua/plenary.nvim', 'kyazdani42/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
   }
   use {
     'brooth/far.vim',
@@ -233,7 +263,6 @@ require('packer').startup(function(use)
     config = require('plugins.clever-f'),
     event = { 'BufNewFile', 'BufReadPost' },
   }
-  use { 'simeji/winresizer', cmd = 'WinResizerStartResize' }
   use { 'tpope/vim-fugitive', cmd = { 'Git', 'Gvdiffsplit', 'Gvsplit' } }
   use {
     'williamboman/mason.nvim',
@@ -242,7 +271,12 @@ require('packer').startup(function(use)
       {
         'williamboman/mason-lspconfig.nvim',
         after = 'mason.nvim',
-        config = require('plugins.mason-lspconfig'),
+        config = function() require('mason-lspconfig').setup { ensure_installed = require('utils.lsp').servers } end,
+      },
+      {
+        'WhoIsSethDaniel/mason-tool-installer.nvim',
+        after = 'mason.nvim',
+        config = require('plugins.mason-tool-installer'),
       },
     },
   }
@@ -271,7 +305,8 @@ require('packer').startup(function(use)
   use {
     'krady21/compiler-explorer.nvim',
     cmd = { 'CECompile', 'CECompileLive' },
-    requires = { { 'stevearc/dressing.nvim', after = 'compiler-explorer.nvim' } },
+    config = function() vim.cmd [[packadd dressing.nvim]] end,
+    requires = { { 'stevearc/dressing.nvim', opt = true } },
   }
   use {
     'skywind3000/asynctasks.vim',
@@ -279,19 +314,10 @@ require('packer').startup(function(use)
     config = require('plugins.asynctasks'),
     requires = { { 'skywind3000/asyncrun.vim', cmd = { 'AsyncRun', 'AsyncStop' } } },
   }
+  use { 'skywind3000/vim-cppman', cmd = 'Cppman' }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                          Themes                          │
   --  ╰──────────────────────────────────────────────────────────╯
-  use {
-    'Mofiqul/vscode.nvim',
-    cond = function() return require('plugins.colorscheme').colorscheme == 'vscode' end,
-    config = function() require('plugins.colorscheme').setup() end,
-  }
-  use {
-    'ellisonleao/gruvbox.nvim',
-    cond = function() return require('plugins.colorscheme').colorscheme == 'gruvbox' end,
-    config = function() require('plugins.colorscheme').setup() end,
-  }
   use {
     'rebelot/kanagawa.nvim',
     cond = function() return require('plugins.colorscheme').colorscheme == 'kanagawa' end,
@@ -300,6 +326,16 @@ require('packer').startup(function(use)
   use {
     'wuelnerdotexe/vim-enfocado',
     cond = function() return require('plugins.colorscheme').colorscheme == 'enfocado' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'folke/tokyonight.nvim',
+    cond = function() return string.find(require('plugins.colorscheme').colorscheme, 'tokyonight') ~= nil end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'EdenEast/nightfox.nvim',
+    cond = function() return string.find(require('plugins.colorscheme').colorscheme, 'fox') ~= nil end,
     config = function() require('plugins.colorscheme').setup() end,
   }
 

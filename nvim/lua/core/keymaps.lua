@@ -44,30 +44,22 @@ tnoremap('<M-K>', '<C-\\><C-n><C-w>k')
 tnoremap('<M-L>', '<C-\\><C-n><C-w>l')
 
 tnoremap('<M-q>', '<C-\\><C-n>')
-
-vnoremap('p', '"_dP')
+tnoremap('<M-p>', '<C-\\><C-n>pa')
 
 vnoremap('<', '<gv')
 vnoremap('>', '>gv')
-
---  ╭──────────────────────────────────────────────────────────╮
---  │                       GUI keymaps                        │
---  ╰──────────────────────────────────────────────────────────╯
-if vim.g.neovide then
-  inoremap('<C-v>', '<ESC>"+pa')
-end
 
 --  ╭──────────────────────────────────────────────────────────╮
 --  │             Plugins' Keymaps (for lazy load)             │
 --  ╰──────────────────────────────────────────────────────────╯
 
 -- hop.nvim
-nnoremap('<Leader>s', '<Cmd>HopChar1<CR>')
-nnoremap('<Leader>w', '<Cmd>HopWord<CR>')
-nnoremap('<Leader>l', '<Cmd>HopLine<CR>')
-vnoremap('<Leader>s', '<Cmd>HopChar1<CR>')
-vnoremap('<Leader>w', '<Cmd>HopWord<CR>')
-vnoremap('<Leader>l', '<Cmd>HopLine<CR>')
+nnoremap('gs', '<Cmd>HopChar1<CR>')
+nnoremap('gw', '<Cmd>HopWord<CR>')
+nnoremap('gl', '<Cmd>HopLine<CR>')
+vnoremap('gs', '<Cmd>HopChar1<CR>')
+vnoremap('gw', '<Cmd>HopWord<CR>')
+vnoremap('gl', '<Cmd>HopLine<CR>')
 
 -- neo-tree,nvim
 nnoremap('<Leader>e', '<Cmd>NeoTreeFocusToggle<CR>')
@@ -76,9 +68,6 @@ nnoremap('<Leader>e', '<Cmd>NeoTreeFocusToggle<CR>')
 nnoremap('<Leader>h', '<Cmd>Telescope help_tags<CR>')
 nnoremap('<C-p>', '<Cmd>Telescope file_browser<CR>')
 
--- vim-easy-align
-vnoremap('<Enter>', '<Cmd>EasyAlign<CR>')
-
 -- undotree
 nnoremap('<Leader>u', '<Cmd>UndotreeToggle<CR>')
 
@@ -86,9 +75,10 @@ nnoremap('<Leader>u', '<Cmd>UndotreeToggle<CR>')
 nnoremap('<M-=>', '<Cmd>ToggleTerm<CR>')
 tnoremap('<M-=>', '<C-\\><C-n>:ToggleTerm<CR>')
 
--- comment-box.nvim
-nnoremap('<Leader>cb', '<Cmd>CBcbox<CR>')
-
 -- asynctasks.vim
 nnoremap('<Leader>fb', '<Cmd>AsyncTask file-build<CR>')
 nnoremap('<Leader>fr', '<Cmd>AsyncTask file-run<CR>')
+
+-- nvim-dap
+nnoremap('<F9>', '<Cmd>DapToggleBreakpoint<CR>')
+nnoremap('<F5>', '<Cmd>DapContinue<CR>')

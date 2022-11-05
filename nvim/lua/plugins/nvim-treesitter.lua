@@ -6,17 +6,25 @@ return function()
       'cmake',
       'cpp',
       'css',
+      'dockerfile',
       'fish',
+      'go',
       'html',
+      'java',
       'javascript',
       'json',
       'lua',
       'make',
       'markdown',
       'markdown_inline',
+      'ocaml',
+      'ocaml_interface',
       'python',
       'regex',
+      'ruby',
       'rust',
+      'scheme',
+      'sql',
       'toml',
       'typescript',
       'vim',
@@ -30,12 +38,6 @@ return function()
     indent = { enable = true },
     autopairs = { enable = true },
     matchup = { enable = true },
-    rainbow = { enable = true },
-    autotag = { enable = true },
-    context_commentstring = {
-      enable = true,
-      enable_autocmd = false,
-    },
     textobjects = {
       select = {
         enable = true,
@@ -55,15 +57,6 @@ return function()
           ['as'] = '@statement.outer',
         },
       },
-      swap = {
-        enable = true,
-        swap_next = {
-          ['<A-l>'] = '@parameter.inner',
-        },
-        swap_previous = {
-          ['<A-h>'] = '@parameter.inner',
-        },
-      },
-    }
+    },
   }
 end

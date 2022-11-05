@@ -21,10 +21,9 @@ if status is-interactive
     fnm env | source
     set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
 
-    alias v nvim
-    alias vi nvim
+    source /home/vinh/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
+
     alias vim nvim
-    alias neovide '/mnt/d/wslutils/neovide.exe --wsl --maximized --multigrid'
     alias bat 'bat --theme Dracula'
     alias grep 'grep --color=auto'
     alias ls 'exa --icons'
@@ -32,7 +31,8 @@ if status is-interactive
     alias ll 'ls -al --git'
     alias tree 'exa -T --icons --level 3 --ignore-glob=".git"'
     alias ps procs
-    alias diff difft
+    alias rm 'echo Use `trash-put` instead 🤗; false'
+    alias tp trash-put
 
     fish_vi_key_bindings
     bind -M insert \ca beginning-of-line

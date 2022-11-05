@@ -8,9 +8,6 @@ export DISPLAY=$WINIP:0
 export PULSE_SERVER=tcp:$WINIP
 export BROWSER=wslview
 
-export HSTR_CONFIG=hicolor
-export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
-
 eval "$(register-python-argcomplete pipx)"
 
 source "/usr/share/xmake/scripts/profile-unix.sh"
@@ -21,14 +18,11 @@ eval "$(fnm env)"
 export FNM_NODE_DIST_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
 
 sed -i '/\[ProxyList\]/,$d' ~/.config/proxychains.conf
-echo -e "[ProxyList]\nsocks5 $WINIP 10810" >> ~/.config/proxychains.conf
+echo -e "[ProxyList]\nsocks5 $WINIP 10810" >>~/.config/proxychains.conf
 
 alias ls='exa --icons'
 alias la='ls -a'
 alias ll='ls -al --git'
 alias tree='exa -T --icons --level 3 --ignore-glob=".git"'
 alias ps=procs
-alias diff=difft
 alias proxy='proxychains4 -q -f ~/.config/proxychains.conf'
-
-if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi

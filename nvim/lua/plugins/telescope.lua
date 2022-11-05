@@ -4,9 +4,6 @@ return function()
   vim.cmd [[packadd telescope-file-browser.nvim]]
 
   telescope.setup {
-    pickers = {
-      colorscheme = { enable_preview = true },
-    },
     extensions = {
       file_browser = {
         hidden = true,
@@ -16,5 +13,5 @@ return function()
   }
 
   telescope.load_extension 'file_browser'
-  telescope.load_extension 'notify'
+  telescope.load_extension 'noice'
 end

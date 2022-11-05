@@ -14,6 +14,7 @@ return {
     '--enable-config',
     '-j=12',
     '--pch-storage=memory',
+    '--offset-encoding=utf-16', -- compatible with `null-ls`
   },
   single_file_support = true,
 }

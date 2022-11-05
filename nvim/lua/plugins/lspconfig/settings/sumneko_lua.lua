@@ -1,9 +1,7 @@
 return {
   settings = {
     Lua = {
-      telemetry = {
-        enable = false,
-      },
+      telemetry = { enable = false },
     },
   },
 }

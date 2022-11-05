@@ -1,7 +1,5 @@
 return function()
-  require('nvim-autopairs').setup {
-    check_ts = true,
-  }
+  require('nvim-autopairs').setup { check_ts = true }
 
   local cmp_autopairs = require('nvim-autopairs.completion.cmp')
   local cmp_status_ok, cmp = pcall(require, 'cmp')

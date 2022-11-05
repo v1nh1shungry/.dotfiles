@@ -1,3 +1,7 @@
+require 'core.autocmds'
+require 'core.keymaps'
+require 'core.options'
+
 if vim.g.neovide == nil then
   vim.g.clipboard = {
     name = 'win32yank-WSL',
@@ -11,9 +15,6 @@ if vim.g.neovide == nil then
     },
     cache_enabled = 0,
   }
+else
+  require 'core.gui'
 end
-
-require 'core.autocmd'
-require 'core.gui'
-require 'core.keymaps'
-require 'core.options'

@@ -5,6 +5,7 @@ if status is-interactive
     set -gx PATH /mnt/d/wslutils/gsudo $PATH
     set -gx PATH /mnt/d/Microsoft\ VS\ Code/bin $PATH
     set -gx PATH $HOME/.cargo/bin $PATH
+    set -gx PATH $HOME/github/llvm-project/build/bin $PATH
 
     set fish_cursor_default block
     set fish_cursor_insert line
@@ -24,15 +25,16 @@ if status is-interactive
     source /home/vinh/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
     alias vim nvim
+    alias nvim 'VIMRUNTIME=~/github/neovim/runtime ~/github/neovim/build/bin/nvim'
     alias bat 'bat --theme Dracula'
     alias grep 'grep --color=auto'
     alias ls 'exa --icons'
     alias la 'ls -a'
     alias ll 'ls -al --git'
     alias tree 'exa -T --icons --level 3 --ignore-glob=".git"'
-    alias ps procs
     alias rm 'echo Use `trash-put` instead 🤗; false'
     alias tp trash-put
+    alias mdv 'rich -m --pager'
 
     fish_vi_key_bindings
     bind -M insert \ca beginning-of-line

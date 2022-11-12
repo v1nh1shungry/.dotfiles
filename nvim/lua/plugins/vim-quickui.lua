@@ -29,12 +29,15 @@ return function()
   vim.fn['quickui#menu#install']('&Navigation', {
     { '&Find', 'Farf' },
     { 'Find And Re&place', 'Farr' },
+    { 'Live &Grep', 'Telescope live_grep' },
     { '--', '' },
     { 'Goto &Definitions\tgd', 'TroubleToggle lsp_definitions' },
     { 'Goto &Implementation', 'TroubleToggle lsp_implementations' },
     { 'Goto T&ype Definitions', 'TroubleToggle lsp_type_definitions' },
     { 'Goto &References', 'TroubleToggle lsp_references' },
     { '--', '' },
+    { 'Document &Symbols', 'Telescope lsp_document_symbols' },
+    { 'Works&pace Symbols', 'Telescope lsp_workspace_symbols' },
     { 'Document Di&agnostics', 'TroubleToggle document_diagnostics' },
     { '&Workspace Diagnostics', 'TroubleToggle workspace_diagnostics' },
     { '--', '' },
@@ -43,8 +46,12 @@ return function()
   vim.fn['quickui#menu#install']('&Git', {
     { 'Git &Status', 'Git status' },
     { 'Git &Diff', 'Gvdiffsplit' },
-    { 'Git &Browse', "call feedkeys(':Gvsplit ', 'in')" },
     { 'Git Bl&ame', 'Gitsigns toggle_current_line_blame' },
+    { '--', '' },
+    { 'Git &Browse', "call feedkeys(':Gvsplit ', 'in')" },
+    { 'Git Branc&hes', 'Telescope git_branches' },
+    { 'Git &Commits', 'Telescope git_commits' },
+    { 'Git &Files', 'Telescope git_files' },
   })
   vim.fn['quickui#menu#install']('&Build', {
     { '&Build\t<Leader>fb', 'AsyncTask file-build' },
@@ -81,9 +88,12 @@ return function()
     { '&REPL', 'Codi!!' },
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
-    { 'Help\t<Leader>h', 'Telescope help_tags' },
+    { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },
+    { 'M&an Pages', 'Telescope man_pages' },
     { '&Welcome', 'Alpha' },
     { '--', '' },
+    { '&Options', 'Telescope vim_options' },
+    { 'Auto&cmds', 'Telescope autocommands' },
     { 'Ke&ymaps', 'Telescope keymaps' },
     { '--', '' },
     { '&Messages', 'Noice' },
@@ -97,6 +107,8 @@ return function()
     { '&Rename\t<Leader>rn', 'Lspsaga rename' },
     { '&Code Action\t<Leader>ca', 'Lspsaga code_action' },
     { 'Do&ge Here', 'DogeGenerate' },
+    { '--', '' },
+    { '&Grep', 'Telescope grep_string' },
     { '--', '' },
     { 'Cpp&man', 'exec "Cppman " . expand("<cword>")' },
   }

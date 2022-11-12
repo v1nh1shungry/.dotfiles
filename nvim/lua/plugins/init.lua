@@ -116,6 +116,11 @@ require('packer').startup(function(use)
   use { 'LudoPinelli/comment-box.nvim', cmd = 'CBcbox' }
   use { 'vim-scripts/ReplaceWithRegister', event = { 'BufNewFile', 'BufReadPost' } }
   use { 'tommcdo/vim-exchange', event = { 'BufNewFile', 'BufReadPost' } }
+  use {
+    'ThePrimeagen/refactoring.nvim',
+    config = require('plugins.refactoring'),
+    ft = { 'c', 'cpp', 'lua', 'python' },
+  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                       Intellisense                       │
   --  ╰──────────────────────────────────────────────────────────╯
@@ -151,6 +156,7 @@ require('packer').startup(function(use)
       },
       {
         'lvimuser/lsp-inlayhints.nvim',
+        branch = 'anticonceal',
         config = require('plugins.lsp-inlayhints'),
         event = 'LspAttach',
       },
@@ -266,19 +272,8 @@ require('packer').startup(function(use)
   use { 'tpope/vim-fugitive', cmd = { 'Git', 'Gvdiffsplit', 'Gvsplit' } }
   use {
     'williamboman/mason.nvim',
-    config = function() require('mason').setup() end,
-    requires = {
-      {
-        'williamboman/mason-lspconfig.nvim',
-        after = 'mason.nvim',
-        config = function() require('mason-lspconfig').setup { ensure_installed = require('utils.lsp').servers } end,
-      },
-      {
-        'WhoIsSethDaniel/mason-tool-installer.nvim',
-        after = 'mason.nvim',
-        config = require('plugins.mason-tool-installer'),
-      },
-    },
+    config = require('plugins.mason'),
+    requires = { 'williamboman/mason-lspconfig.nvim', 'WhoIsSethDaniel/mason-tool-installer.nvim' },
   }
   use {
     'dhruvasagar/vim-table-mode',
@@ -336,6 +331,41 @@ require('packer').startup(function(use)
   use {
     'EdenEast/nightfox.nvim',
     cond = function() return string.find(require('plugins.colorscheme').colorscheme, 'fox') ~= nil end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'savq/melange',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'melange' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'Mofiqul/vscode.nvim',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'vscode' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'shaunsingh/nord.nvim',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'nord' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'Mofiqul/dracula.nvim',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'dracula' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'bluz71/vim-moonfly-colors',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'moonfly' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'bluz71/vim-nightfly-colors',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'nightfly' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'luisiacc/gruvbox-baby',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'gruvbox-baby' end,
     config = function() require('plugins.colorscheme').setup() end,
   }
 

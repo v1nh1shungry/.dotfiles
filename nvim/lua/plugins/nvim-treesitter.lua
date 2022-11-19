@@ -54,7 +54,6 @@ return function()
           ['ai'] = '@conditional.outer',
           ['ii'] = '@conditional.inner',
           ['a/'] = '@comment.outer',
-          ['as'] = '@statement.outer',
         },
       },
     },

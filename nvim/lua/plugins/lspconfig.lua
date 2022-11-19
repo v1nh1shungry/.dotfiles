@@ -23,11 +23,13 @@ local setup_keymaps = function(bufnr)
     vim.keymap.set(modes, from, to, { noremap = true, silent = true, buffer = bufnr })
   end
 
-  keymap('n', '<Leader>f', function() vim.lsp.buf.format { async = true } end)
+  keymap('n', '=', function() vim.lsp.buf.format { async = true } end)
   keymap('n', 'gh', '<Cmd>Lspsaga hover_doc<CR>')
   keymap({ 'n', 'v' }, '<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
   keymap('n', '<Leader>rn', '<Cmd>Lspsaga rename<CR>')
   keymap('n', 'gd', '<Cmd>TroubleToggle lsp_definitions<CR>')
+  keymap('n', 'gy', '<Cmd>TroubleToggle lsp_type_definitions<CR>')
+  keymap('n', 'gR', '<Cmd>TroubleToggle lsp_references<CR>')
   keymap('n', '<Leader>o', '<Cmd>LSoutlineToggle<CR>')
   keymap('n', ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
   keymap('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>')
@@ -56,7 +58,6 @@ local servers = {
   'bashls',
   'cmake',
   'grammarly',
-  'jsonls',
   'marksman',
   'pyright',
   'rust_analyzer',
@@ -83,7 +84,6 @@ require('clangd_extensions').setup {
       '--clang-tidy',
       '--completion-style=detailed',
       '--fallback-style=LLVM',
-      '--folding-ranges',
       '--function-arg-placeholders',
       '--header-insertion=never',
       '--include-cleaner-stdlib',
@@ -95,10 +95,13 @@ require('clangd_extensions').setup {
   extensions = { autoSetHints = false },
 }
 
-lspconfig.ocamllsp.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  single_file_support = true,
+lspconfig.jsonls.setup {
+  settings = {
+    json = {
+      schemas = require('schemastore').json.schemas(),
+      validate = { enable = true },
+    },
+  },
 }
 
 require('neodev').setup()
@@ -106,10 +109,4 @@ lspconfig.sumneko_lua.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = { Lua = { telemetry = { enable = false } } },
-}
-
-lspconfig.solargraph.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  single_file_support = true,
 }

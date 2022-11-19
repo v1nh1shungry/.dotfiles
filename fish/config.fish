@@ -25,7 +25,6 @@ if status is-interactive
     source /home/vinh/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
     alias vim nvim
-    alias nvim 'VIMRUNTIME=~/github/neovim/runtime ~/github/neovim/build/bin/nvim'
     alias bat 'bat --theme Dracula'
     alias grep 'grep --color=auto'
     alias ls 'exa --icons'
@@ -35,6 +34,7 @@ if status is-interactive
     alias rm 'echo Use `trash-put` instead 🤗; false'
     alias tp trash-put
     alias mdv 'rich -m --pager'
+    alias ps 'ps aux'
 
     fish_vi_key_bindings
     bind -M insert \ca beginning-of-line

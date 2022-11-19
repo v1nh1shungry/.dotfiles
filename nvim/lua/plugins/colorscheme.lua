@@ -1,6 +1,6 @@
 local M = {}
 
-M.colorscheme = 'enfocado'
+M.colorscheme = 'kanagawa'
 
 function M.setup()
   -- nord.nvim

@@ -6,7 +6,6 @@ return function()
   require('null-ls').setup {
     sources = {
       actions.gitsigns,
-      actions.refactoring,
       actions.shellcheck,
       diagnostics.cmake_lint,
       diagnostics.fish,

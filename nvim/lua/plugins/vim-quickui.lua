@@ -18,7 +18,7 @@ return function()
     { '&Table Mode', 'TableModeToggle' },
     { '--', '' },
     { '&Strip Trailing', 'StripWhitespace' },
-    { '&Format Codes\t<Leader>f', 'lua vim.lsp.buf.format { async = true }' },
+    { '&Format Codes\t=', 'lua vim.lsp.buf.format { async = true }' },
   })
   vim.fn['quickui#menu#install']('&View', {
     { '&Terminal\t<M-=>', 'ToggleTerm' },
@@ -33,8 +33,8 @@ return function()
     { '--', '' },
     { 'Goto &Definitions\tgd', 'TroubleToggle lsp_definitions' },
     { 'Goto &Implementation', 'TroubleToggle lsp_implementations' },
-    { 'Goto T&ype Definitions', 'TroubleToggle lsp_type_definitions' },
-    { 'Goto &References', 'TroubleToggle lsp_references' },
+    { 'Goto T&ype Definitions\tgy', 'TroubleToggle lsp_type_definitions' },
+    { 'Goto &References\tgR', 'TroubleToggle lsp_references' },
     { '--', '' },
     { 'Document &Symbols', 'Telescope lsp_document_symbols' },
     { 'Works&pace Symbols', 'Telescope lsp_workspace_symbols' },
@@ -44,14 +44,9 @@ return function()
     { '&TODO', 'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&Git', {
-    { 'Git &Status', 'Git status' },
-    { 'Git &Diff', 'Gvdiffsplit' },
+    { 'Git &Diff', 'DiffviewOpen' },
+    { 'Git Histor&y', 'DiffviewFileHistory' },
     { 'Git Bl&ame', 'Gitsigns toggle_current_line_blame' },
-    { '--', '' },
-    { 'Git &Browse', "call feedkeys(':Gvsplit ', 'in')" },
-    { 'Git Branc&hes', 'Telescope git_branches' },
-    { 'Git &Commits', 'Telescope git_commits' },
-    { 'Git &Files', 'Telescope git_files' },
   })
   vim.fn['quickui#menu#install']('&Build', {
     { '&Build\t<Leader>fb', 'AsyncTask file-build' },

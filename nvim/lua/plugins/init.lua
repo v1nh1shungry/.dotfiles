@@ -71,6 +71,11 @@ require('packer').startup(function(use)
     config = function() require 'nvim-lastplace'.setup() end,
     event = { 'BufNewFile', 'BufReadPost' },
   }
+  use {
+    'nacro90/numb.nvim',
+    config = function() require('numb').setup() end,
+    event = { 'BufNewFile', 'BufReadPost' },
+  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                     Edit Enhancement                     │
   --  ╰──────────────────────────────────────────────────────────╯
@@ -84,7 +89,11 @@ require('packer').startup(function(use)
     config = require('plugins.vim-easy-align'),
     event = { 'BufNewFile', 'BufReadPost' },
   }
-  use { 'lukas-reineke/indent-blankline.nvim', event = { 'BufNewFile', 'BufReadPost' } }
+  use {
+    'lukas-reineke/indent-blankline.nvim',
+    config = require('plugins.indent-blankline'),
+    event = { 'BufNewFile', 'BufReadPost' },
+  }
   use {
     'numToStr/Comment.nvim',
     config = function() require('Comment').setup() end,
@@ -117,9 +126,9 @@ require('packer').startup(function(use)
   use { 'vim-scripts/ReplaceWithRegister', event = { 'BufNewFile', 'BufReadPost' } }
   use { 'tommcdo/vim-exchange', event = { 'BufNewFile', 'BufReadPost' } }
   use {
-    'ThePrimeagen/refactoring.nvim',
-    config = require('plugins.refactoring'),
-    ft = { 'c', 'cpp', 'lua', 'python' },
+    'monaqa/dial.nvim',
+    config = require('plugins.dial'),
+    event = { 'BufNewFile', 'BufReadPost' },
   }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                       Intellisense                       │
@@ -162,6 +171,7 @@ require('packer').startup(function(use)
       },
       'folke/neodev.nvim',
       'p00f/clangd_extensions.nvim',
+      'b0o/schemastore.nvim',
     },
   }
   use {
@@ -242,6 +252,11 @@ require('packer').startup(function(use)
     config = require('plugins.vim-pencil'),
     ft = 'markdown',
   }
+  use {
+    'sindrets/diffview.nvim',
+    cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
+    requires = 'nvim-lua/plenary.nvim',
+  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                          Tools                           │
   --  ╰──────────────────────────────────────────────────────────╯
@@ -269,7 +284,6 @@ require('packer').startup(function(use)
     config = require('plugins.clever-f'),
     event = { 'BufNewFile', 'BufReadPost' },
   }
-  use { 'tpope/vim-fugitive', cmd = { 'Git', 'Gvdiffsplit', 'Gvsplit' } }
   use {
     'williamboman/mason.nvim',
     config = require('plugins.mason'),
@@ -366,6 +380,11 @@ require('packer').startup(function(use)
   use {
     'luisiacc/gruvbox-baby',
     cond = function() return require('plugins.colorscheme').colorscheme == 'gruvbox-baby' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'projekt0n/github-nvim-theme',
+    cond = function() return string.find(require('plugins.colorscheme').colorscheme, 'github') ~= nil end,
     config = function() require('plugins.colorscheme').setup() end,
   }
 

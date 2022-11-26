@@ -9,7 +9,6 @@ return function()
       actions.shellcheck,
       diagnostics.cmake_lint,
       diagnostics.fish,
-      diagnostics.pylint,
       formatting.autopep8,
       formatting.cmake_format,
       formatting.shfmt,

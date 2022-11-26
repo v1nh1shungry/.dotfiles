@@ -1,4 +1,5 @@
 vim.opt.clipboard = 'unnamedplus'
+vim.opt.cursorline = true
 vim.opt.laststatus = 0
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'

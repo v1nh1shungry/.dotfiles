@@ -12,17 +12,10 @@ if status is-interactive
     set fish_cursor_replace_one underscore
     set fish_cursor_visual block
 
-    set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')
-    set -gx DISPLAY $winip:0
-    set -gx PULSE_SERVER tcp:$winip
-    set --erase winip
-
     starship init fish | source
 
     fnm env | source
     set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
-
-    source /home/vinh/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
 
     alias vim nvim
     alias bat 'bat --theme Dracula'

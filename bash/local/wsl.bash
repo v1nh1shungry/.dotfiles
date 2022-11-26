@@ -4,8 +4,6 @@ export PATH=/mnt/d/Microsoft\ VS\ Code/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 
 WINIP=$(grep nameserver /etc/resolv.conf | awk '{print $2}')
-export DISPLAY=$WINIP:0
-export PULSE_SERVER=tcp:$WINIP
 export BROWSER=wslview
 
 eval "$(register-python-argcomplete pipx)"

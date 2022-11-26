@@ -18,7 +18,6 @@ return function()
     ensure_installed = {
       'autopep8',
       'cmakelang',
-      'pylint',
       'shellcheck',
       'shfmt',
     },

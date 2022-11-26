@@ -43,6 +43,15 @@ local on_attach = function(client, bufnr)
     illuminate.on_attach(client)
   end
 
+  local status_signature_ok, signature = pcall(require, 'lsp_signature')
+  if status_signature_ok then
+    signature.on_attach({
+      hint_prefix = '🤗 ',
+      hi_parameter = 'IncSearch',
+      handler_opts = { border = 'none' },
+    }, bufnr)
+  end
+
   if client.supports_method('textDocument/formatting') then
     vim.api.nvim_create_autocmd('BufWritePre', {
       buffer = bufnr,
@@ -86,6 +95,7 @@ require('clangd_extensions').setup {
       '--fallback-style=LLVM',
       '--function-arg-placeholders',
       '--header-insertion=never',
+      '--hidden-features',
       '--include-cleaner-stdlib',
       '-j=12',
       '--pch-storage=memory',

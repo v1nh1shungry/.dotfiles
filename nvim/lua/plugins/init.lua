@@ -148,7 +148,6 @@ require('packer').startup(function(use)
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
       { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-emoji', after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
       { 'onsails/lspkind.nvim', opt = true },
     },
   }
@@ -169,6 +168,7 @@ require('packer').startup(function(use)
         config = require('plugins.lsp-inlayhints'),
         event = 'LspAttach',
       },
+      { 'ray-x/lsp_signature.nvim', event = 'LspAttach' },
       'folke/neodev.nvim',
       'p00f/clangd_extensions.nvim',
       'b0o/schemastore.nvim',
@@ -243,7 +243,6 @@ require('packer').startup(function(use)
   }
   use {
     'folke/noice.nvim',
-    cond = function() return vim.g.neovide == nil end,
     config = require('plugins.noice'),
     requires = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' },
   }
@@ -385,6 +384,23 @@ require('packer').startup(function(use)
   use {
     'projekt0n/github-nvim-theme',
     cond = function() return string.find(require('plugins.colorscheme').colorscheme, 'github') ~= nil end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'rose-pine/neovim',
+    as = 'rose-pine',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'rose-pine' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'catppuccin/nvim',
+    as = 'catppuccin',
+    cond = function() return string.find(require('plugins.colorscheme').colorscheme, 'catppuccin') ~= nil end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'marko-cerovac/material.nvim',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'material' end,
     config = function() require('plugins.colorscheme').setup() end,
   }
 

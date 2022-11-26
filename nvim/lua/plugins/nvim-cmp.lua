@@ -14,14 +14,6 @@ return function()
       format = require('lspkind').cmp_format {
         mode = 'symbol_text',
         maxwidth = 50,
-        before = function(entry, vim_item)
-          local source = entry.source.name
-          if source == 'nvim_lsp_signature_help' then
-            vim_item.kind = ''
-            vim_item.menu = ''
-          end
-          return vim_item
-        end
       },
     },
     mapping = cmp.mapping.preset.insert({
@@ -56,7 +48,6 @@ return function()
       { name = 'buffer' },
       { name = 'path' },
       { name = 'emoji' },
-      { name = 'nvim_lsp_signature_help' },
     }),
     sorting = {
       comparators = {

@@ -1,12 +1,12 @@
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
-source "$HOME/.dotfiles/bash/bash-sensible/sensible.bash"
+source ~/.dotfiles/bash/bash-sensible/sensible.bash
 
 if grep WSL <(uname -a) >/dev/null; then
-    source "$HOME/.dotfiles/bash/local/wsl.bash"
+	source ~/.dotfiles/bash/local/wsl.bash
 fi
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"

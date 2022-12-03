@@ -1,6 +1,6 @@
 local M = {}
 
-M.colorscheme = 'material'
+M.colorscheme = 'darkplus'
 
 function M.setup()
   -- nord.nvim

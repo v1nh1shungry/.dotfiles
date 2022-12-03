@@ -252,9 +252,9 @@ require('packer').startup(function(use)
     ft = 'markdown',
   }
   use {
-    'sindrets/diffview.nvim',
-    cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
-    requires = 'nvim-lua/plenary.nvim',
+    'https://gitlab.com/yorickpeterse/nvim-pqf',
+    after = 'asyncrun.vim',
+    config = function() require('pqf').setup() end,
   }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                          Tools                           │
@@ -323,6 +323,17 @@ require('packer').startup(function(use)
     requires = { { 'skywind3000/asyncrun.vim', cmd = { 'AsyncRun', 'AsyncStop' } } },
   }
   use { 'skywind3000/vim-cppman', cmd = 'Cppman' }
+  use { 'tpope/vim-fugitive', cmd = { 'Gvdiffsplit' } }
+  use {
+    "iamcco/markdown-preview.nvim",
+    cmd = 'MarkdownPreview',
+    run = function() vim.fn["mkdp#util#install"]() end,
+  }
+  use {
+    'jbyuki/venn.nvim',
+    cmd = 'VBox',
+    config = function() vim.cmd [[setlocal ve=all]] end,
+  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                          Themes                          │
   --  ╰──────────────────────────────────────────────────────────╯
@@ -347,16 +358,6 @@ require('packer').startup(function(use)
     config = function() require('plugins.colorscheme').setup() end,
   }
   use {
-    'savq/melange',
-    cond = function() return require('plugins.colorscheme').colorscheme == 'melange' end,
-    config = function() require('plugins.colorscheme').setup() end,
-  }
-  use {
-    'Mofiqul/vscode.nvim',
-    cond = function() return require('plugins.colorscheme').colorscheme == 'vscode' end,
-    config = function() require('plugins.colorscheme').setup() end,
-  }
-  use {
     'shaunsingh/nord.nvim',
     cond = function() return require('plugins.colorscheme').colorscheme == 'nord' end,
     config = function() require('plugins.colorscheme').setup() end,
@@ -374,11 +375,6 @@ require('packer').startup(function(use)
   use {
     'bluz71/vim-nightfly-colors',
     cond = function() return require('plugins.colorscheme').colorscheme == 'nightfly' end,
-    config = function() require('plugins.colorscheme').setup() end,
-  }
-  use {
-    'luisiacc/gruvbox-baby',
-    cond = function() return require('plugins.colorscheme').colorscheme == 'gruvbox-baby' end,
     config = function() require('plugins.colorscheme').setup() end,
   }
   use {
@@ -401,6 +397,16 @@ require('packer').startup(function(use)
   use {
     'marko-cerovac/material.nvim',
     cond = function() return require('plugins.colorscheme').colorscheme == 'material' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'glepnir/zephyr-nvim',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'zephyr' end,
+    config = function() require('plugins.colorscheme').setup() end,
+  }
+  use {
+    'lunarvim/darkplus.nvim',
+    cond = function() return require('plugins.colorscheme').colorscheme == 'darkplus' end,
     config = function() require('plugins.colorscheme').setup() end,
   }
 

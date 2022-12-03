@@ -1,20 +1,18 @@
-require 'core.autocmds'
-require 'core.keymaps'
-require 'core.options'
-
-if vim.g.neovide == nil then
+if require('utils.environment').is_wsl then
   vim.g.clipboard = {
-    name = 'win32yank-WSL',
+    name = 'WslClipboard',
     copy = {
-      ['+'] = '/mnt/d/wslutils/win32yank.exe -i --crlf',
-      ['*'] = '/mnt/d/wslutils/win32yank.exe -i --crlf',
+      ['+'] = 'clip.exe',
+      ['*'] = 'clip.exe',
     },
     paste = {
-      ['+'] = '/mnt/d/wslutils/win32yank.exe -o --lf',
-      ['*'] = '/mnt/d/wslutils/win32yank.exe -o --lf',
+      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
     },
     cache_enabled = 0,
   }
-else
-  require 'core.gui'
 end
+
+require 'core.autocmds'
+require 'core.keymaps'
+require 'core.options'

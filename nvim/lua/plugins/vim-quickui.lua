@@ -14,6 +14,7 @@ return function()
   })
   vim.fn['quickui#menu#install']('&Edit', {
     { '&Comment Box', 'CBcbox' },
+    { '&Venn Box', 'VBox' },
     { '--', '' },
     { '&Table Mode', 'TableModeToggle' },
     { '--', '' },
@@ -44,8 +45,7 @@ return function()
     { '&TODO', 'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&Git', {
-    { 'Git &Diff', 'DiffviewOpen' },
-    { 'Git Histor&y', 'DiffviewFileHistory' },
+    { 'Git &Diff', 'Gvdiffsplit' },
     { 'Git Bl&ame', 'Gitsigns toggle_current_line_blame' },
   })
   vim.fn['quickui#menu#install']('&Build', {
@@ -78,9 +78,9 @@ return function()
   })
   vim.fn['quickui#menu#install']('&Tools', {
     { '&Package Manager', 'Mason' },
-    { '--', '' },
     { '&Startup Time', 'StartupTime' },
     { '&REPL', 'Codi!!' },
+    { '&Markdown Preview', 'MarkdownPreview' },
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
     { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },

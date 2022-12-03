@@ -2,6 +2,8 @@ if status is-interactive
     set -g fish_greeting
 
     set -gx PATH $HOME/.local/bin /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+    set -gx PATH /mnt/c/Windows/System32/ $PATH
+    set -gx PATH /mnt/c/Windows/System32/WindowsPowerShell/v1.0/ $PATH
     set -gx PATH /mnt/d/wslutils/gsudo $PATH
     set -gx PATH /mnt/d/Microsoft\ VS\ Code/bin $PATH
     set -gx PATH $HOME/.cargo/bin $PATH
@@ -28,6 +30,7 @@ if status is-interactive
     alias tp trash-put
     alias mdv 'rich -m --pager'
     alias ps 'ps aux'
+    alias diff difft
 
     fish_vi_key_bindings
     bind -M insert \ca beginning-of-line

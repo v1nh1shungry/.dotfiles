@@ -42,9 +42,13 @@ if status is-interactive
     bind -M insert -k f5 'asynctask -f'
 
     function proxy
-        set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')
-        sed -i '/\[ProxyList\]/,$d' ~/.config/proxychains.conf
-        echo -e "[ProxyList]\nsocks5 $winip 10810" >> ~/.config/proxychains.conf
-        proxychains4 -q -f ~/.config/proxychains.conf $argv
+        if test "$argv" = "unset"
+            set --erase http_proxy
+            set --erase https_proxy
+        else
+            set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')
+            set -gx http_proxy "$winip:10811"
+            set -gx https_proxy "$winip:10811"
+        end
     end
 end

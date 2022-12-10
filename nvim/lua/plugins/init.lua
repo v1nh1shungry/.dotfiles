@@ -71,11 +71,6 @@ require('packer').startup(function(use)
     config = function() require 'nvim-lastplace'.setup() end,
     event = { 'BufNewFile', 'BufReadPost' },
   }
-  use {
-    'nacro90/numb.nvim',
-    config = function() require('numb').setup() end,
-    event = { 'BufNewFile', 'BufReadPost' },
-  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                     Edit Enhancement                     │
   --  ╰──────────────────────────────────────────────────────────╯
@@ -161,12 +156,6 @@ require('packer').startup(function(use)
         event = 'LspAttach',
         branch = 'main',
         config = require('plugins.lspsaga'),
-      },
-      {
-        'lvimuser/lsp-inlayhints.nvim',
-        branch = 'anticonceal',
-        config = require('plugins.lsp-inlayhints'),
-        event = 'LspAttach',
       },
       { 'ray-x/lsp_signature.nvim', event = 'LspAttach' },
       'folke/neodev.nvim',
@@ -365,16 +354,6 @@ require('packer').startup(function(use)
   use {
     'Mofiqul/dracula.nvim',
     cond = function() return require('plugins.colorscheme').colorscheme == 'dracula' end,
-    config = function() require('plugins.colorscheme').setup() end,
-  }
-  use {
-    'bluz71/vim-moonfly-colors',
-    cond = function() return require('plugins.colorscheme').colorscheme == 'moonfly' end,
-    config = function() require('plugins.colorscheme').setup() end,
-  }
-  use {
-    'bluz71/vim-nightfly-colors',
-    cond = function() return require('plugins.colorscheme').colorscheme == 'nightfly' end,
     config = function() require('plugins.colorscheme').setup() end,
   }
   use {

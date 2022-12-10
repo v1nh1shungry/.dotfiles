@@ -18,12 +18,25 @@ vim.diagnostic.config {
 
 local lspconfig = require('lspconfig')
 
+local format_range_operator = function()
+  local old_func = vim.go.operatorfunc
+  _G.op_func_formatting = function()
+    local start = vim.api.nvim_buf_get_mark(0, '[')
+    local finish = vim.api.nvim_buf_get_mark(0, ']')
+    vim.lsp.buf.format({ async = true, range = { start, finish } })
+    vim.go.operatorfunc = old_func
+    _G.op_func_formatting = nil
+  end
+  vim.go.operatorfunc = 'v:lua.op_func_formatting'
+  vim.api.nvim_feedkeys('g@', 'n', false)
+end
+
 local setup_keymaps = function(bufnr)
   local keymap = function(modes, from, to)
     vim.keymap.set(modes, from, to, { noremap = true, silent = true, buffer = bufnr })
   end
 
-  keymap('n', '=', function() vim.lsp.buf.format { async = true } end)
+  keymap('n', '=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
   keymap('n', 'gh', '<Cmd>Lspsaga hover_doc<CR>')
   keymap({ 'n', 'v' }, '<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
   keymap('n', '<Leader>rn', '<Cmd>Lspsaga rename<CR>')
@@ -57,6 +70,11 @@ local on_attach = function(client, bufnr)
       buffer = bufnr,
       callback = function() vim.lsp.buf.format({ bufnr = bufnr }) end,
     })
+  end
+
+  if client.supports_method('textDocument/rangeFormatting') then
+    vim.keymap.set('v', '=', function() format_range_operator() end,
+      { noremap = true, silent = true, buffer = bufnr })
   end
 end
 

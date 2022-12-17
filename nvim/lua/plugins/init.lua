@@ -39,10 +39,16 @@ require('packer').startup(function(use)
   --  ╰──────────────────────────────────────────────────────────╯
   use {
     'andymass/vim-matchup',
-    config = function() vim.cmd [[ let g:matchup_matchparen_offscreen = { 'method': '' } ]] end,
+    config = function() vim.cmd [[let g:matchup_matchparen_offscreen = { 'method': '' }]] end,
     event = { 'BufNewFile', 'BufReadPost' },
   }
-  use { 'tpope/vim-unimpaired', event = { 'BufNewFile', 'BufReadPost' } }
+  use {
+    'tpope/vim-unimpaired',
+    keys = {
+      { 'n', '[' },
+      { 'n', ']' },
+    },
+  }
   use { 'tpope/vim-sleuth', event = { 'BufNewFile', 'BufReadPost' } }
   use { 'wellle/targets.vim', event = { 'BufNewFile', 'BufReadPost' } }
   use { 'lewis6991/impatient.nvim', config = function() require('impatient').enable_profile() end }
@@ -51,12 +57,13 @@ require('packer').startup(function(use)
     config = require('plugins.nvim-treesitter'),
     event = { 'BufNewFile', 'BufReadPost' },
     requires = {
-      { 'nvim-treesitter/nvim-treesitter-textobjects', event = { 'BufNewFile', 'BufReadPost' } },
+      { 'nvim-treesitter/nvim-treesitter-textobjects', opt = true },
       {
         'nvim-treesitter/nvim-treesitter-context',
         config = function() require('treesitter-context').setup() end,
-        event = { 'BufNewFile', 'BufReadPost' },
+        opt = true,
       },
+      { 'nvim-treesitter/playground', opt = true },
     },
     run = ':TSUpdate',
   }
@@ -81,8 +88,7 @@ require('packer').startup(function(use)
   }
   use {
     'junegunn/vim-easy-align',
-    config = require('plugins.vim-easy-align'),
-    event = { 'BufNewFile', 'BufReadPost' },
+    cmd = 'EasyAlign',
   }
   use {
     'lukas-reineke/indent-blankline.nvim',
@@ -92,38 +98,78 @@ require('packer').startup(function(use)
   use {
     'numToStr/Comment.nvim',
     config = function() require('Comment').setup() end,
-    event = { 'BufNewFile', 'BufReadPost' },
+    keys = {
+      { 'n', 'gc' },
+      { 'v', 'gc' },
+    },
   }
   use {
     'windwp/nvim-autopairs',
+    after = 'nvim-cmp',
     config = require('plugins.nvim-autopairs'),
-    event = 'InsertEnter',
   }
   use {
     'kylechui/nvim-surround',
     config = function() require('nvim-surround').setup() end,
-    event = { 'BufNewFile', 'BufReadPost' },
-    tag = '*',
+    keys = {
+      { 'n', 'ys' },
+      { 'n', 'yS' },
+      { 'n', 'cs' },
+      { 'n', 'cS' },
+      { 'n', 'ds' },
+      { 'n', 'dS' },
+      { 'x', 's' },
+      { 'x', 'S' },
+    },
   }
-  use { 'mbbill/undotree', cmd = 'UndotreeToggle' }
   use {
     'tversteeg/registers.nvim',
     config = function() require('registers').setup() end,
-    event = { 'BufNewFile', 'BufReadPost' },
+    keys = {
+      { 'n', '"' },
+      { 'i', '<C-r>' },
+    },
   }
   use {
     'AndrewRadev/splitjoin.vim',
     config = function() vim.g.splitjoin_quiet = 1 end,
-    ft = { 'lua', 'rust' },
+    keys = {
+      { 'n', 'gS' },
+      { 'n', 'gJ' },
+    },
   }
   use { 'mg979/vim-visual-multi', event = { 'BufNewFile', 'BufReadPost' } }
   use { 'LudoPinelli/comment-box.nvim', cmd = 'CBcbox' }
-  use { 'vim-scripts/ReplaceWithRegister', event = { 'BufNewFile', 'BufReadPost' } }
-  use { 'tommcdo/vim-exchange', event = { 'BufNewFile', 'BufReadPost' } }
+  use {
+    'vim-scripts/ReplaceWithRegister',
+    keys = { { 'n', 'gr' } },
+  }
+  use {
+    'tommcdo/vim-exchange',
+    keys = {
+      { 'n', 'cx' },
+      { 'v', 'X' },
+    },
+  }
   use {
     'monaqa/dial.nvim',
     config = require('plugins.dial'),
-    event = { 'BufNewFile', 'BufReadPost' },
+    keys = {
+      { 'n', '<C-a>' },
+      { 'n', '<C-x>' },
+    },
+  }
+  use {
+    'dhruvasagar/vim-table-mode',
+    cmd = 'TableModeToggle',
+    config = function() vim.g.table_mode_corner = '|' end,
+    keys = { { 'n', '<Leader>tm' } },
+  }
+  use {
+    'kkoomen/vim-doge',
+    cmd = 'DogeGenerate',
+    config = function() vim.g.doge_enable_mappings = false end,
+    run = ':call doge#install()',
   }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                       Intellisense                       │
@@ -144,6 +190,7 @@ require('packer').startup(function(use)
       { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-emoji', after = 'nvim-cmp' },
       { 'onsails/lspkind.nvim', opt = true },
+      { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
     },
   }
   use {
@@ -154,10 +201,8 @@ require('packer').startup(function(use)
       {
         'glepnir/lspsaga.nvim',
         event = 'LspAttach',
-        branch = 'main',
         config = require('plugins.lspsaga'),
       },
-      { 'ray-x/lsp_signature.nvim', event = 'LspAttach' },
       'folke/neodev.nvim',
       'p00f/clangd_extensions.nvim',
       'b0o/schemastore.nvim',
@@ -166,7 +211,6 @@ require('packer').startup(function(use)
   use {
     'jose-elias-alvarez/null-ls.nvim',
     config = require('plugins.null-ls'),
-    event = { 'BufNewFile', 'BufReadPost' },
     requires = 'nvim-lua/plenary.nvim',
   }
   --  ╭──────────────────────────────────────────────────────────╮
@@ -174,8 +218,11 @@ require('packer').startup(function(use)
   --  ╰──────────────────────────────────────────────────────────╯
   use {
     'mfussenegger/nvim-dap',
-    cmd = { 'DapContinue', 'DapToggleBreakpoint' },
     config = require('plugins.nvim-dap'),
+    keys = {
+      { 'n', '<F9>' },
+      { 'n', '<F5>' },
+    },
     requires = {
       { 'rcarriga/nvim-dap-ui', opt = true },
       {
@@ -197,8 +244,8 @@ require('packer').startup(function(use)
   use { 'romainl/vim-cool', event = 'CmdlineEnter' }
   use {
     'akinsho/toggleterm.nvim',
-    cmd = 'ToggleTerm',
-    config = function() require('toggleterm').setup { size = 10 } end,
+    config = function() require('toggleterm').setup { open_mapping = '<M-=>', size = 10 } end,
+    keys = { { 'n', '<M-=>' } }
   }
   use { 'folke/trouble.nvim', cmd = { 'TroubleToggle', 'TroubleRefresh', 'TodoTrouble' } }
   use { 'skywind3000/vim-quickui', config = require('plugins.vim-quickui') }
@@ -206,8 +253,7 @@ require('packer').startup(function(use)
     'akinsho/bufferline.nvim',
     config = require('plugins.bufferline'),
     event = { 'BufNewFile', 'BufReadPost' },
-    requires = 'kyazdani42/nvim-web-devicons',
-    tag = 'v3.*',
+    requires = 'nvim-tree/nvim-web-devicons',
   }
   use {
     'folke/todo-comments.nvim',
@@ -227,8 +273,8 @@ require('packer').startup(function(use)
   }
   use {
     'goolord/alpha-nvim',
-    config = function() require('alpha').setup(require('alpha.themes.theta').config) end,
-    requires = 'kyazdani42/nvim-web-devicons',
+    config = require('plugins.alpha-nvim'),
+    requires = 'nvim-tree/nvim-web-devicons',
   }
   use {
     'folke/noice.nvim',
@@ -245,16 +291,23 @@ require('packer').startup(function(use)
     after = 'asyncrun.vim',
     config = function() require('pqf').setup() end,
   }
+  use {
+    'gorbit99/codewindow.nvim',
+    config = require('plugins.codewindow'),
+    keys = {
+      { 'n', '<Leader>mo' },
+      { 'n', '<Leader>mm' },
+    },
+  }
+  use {
+    'nvim-neo-tree/neo-tree.nvim',
+    config = require('plugins.neo-tree'),
+    keys = { { 'n', '<Leader>e' } },
+    requires = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
+  }
   --  ╭──────────────────────────────────────────────────────────╮
   --  │                          Tools                           │
   --  ╰──────────────────────────────────────────────────────────╯
-  use {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    cmd = 'NeoTreeFocusToggle',
-    config = require('plugins.neo-tree'),
-    requires = { 'nvim-lua/plenary.nvim', 'kyazdani42/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
-  }
   use {
     'brooth/far.vim',
     cmd = { 'Farf', 'Farr' },
@@ -263,14 +316,14 @@ require('packer').startup(function(use)
   use { 'dstein64/vim-startuptime', cmd = 'StartupTime' }
   use { 'metakirby5/codi.vim', cmd = 'Codi!!' }
   use {
-    'phaazon/hop.nvim',
-    cmd = { 'HopChar1', 'HopWord', 'HopLine' },
-    config = function() require('hop').setup() end,
-  }
-  use {
     'rhysd/clever-f.vim',
     config = require('plugins.clever-f'),
-    event = { 'BufNewFile', 'BufReadPost' },
+    keys = {
+      { 'n', 'f' },
+      { 'n', 'F' },
+      { 'v', 'f' },
+      { 'v', 'F' },
+    },
   }
   use {
     'williamboman/mason.nvim',
@@ -278,25 +331,17 @@ require('packer').startup(function(use)
     requires = { 'williamboman/mason-lspconfig.nvim', 'WhoIsSethDaniel/mason-tool-installer.nvim' },
   }
   use {
-    'dhruvasagar/vim-table-mode',
-    cmd = 'TableModeToggle',
-    config = function() vim.g.table_mode_corner = '|' end,
-  }
-  use {
-    'kkoomen/vim-doge',
-    cmd = 'DogeGenerate',
-    config = function() vim.g.doge_enable_mappings = false end,
-    run = ':call doge#install()',
-  }
-  use {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     config = require('plugins.telescope'),
+    keys = {
+      { 'n', '<Leader>h' },
+      { 'n', '<C-p>' },
+    },
     requires = {
       'nvim-lua/plenary.nvim',
       { 'nvim-telescope/telescope-file-browser.nvim', opt = true },
     },
-    tag = '0.1.0',
   }
   use { 'lambdalisue/suda.vim', cmd = { 'SudoRead', 'SudoWrite' } }
   use {
@@ -309,14 +354,18 @@ require('packer').startup(function(use)
     'skywind3000/asynctasks.vim',
     cmd = { 'AsyncTask', 'AsyncTaskMacro', 'AsyncTaskList', 'AsyncTaskEdit' },
     config = require('plugins.asynctasks'),
+    keys = {
+      { 'n', '<Leader>fb' },
+      { 'n', '<Leader>fr' },
+    },
     requires = { { 'skywind3000/asyncrun.vim', cmd = { 'AsyncRun', 'AsyncStop' } } },
   }
   use { 'skywind3000/vim-cppman', cmd = 'Cppman' }
   use { 'tpope/vim-fugitive', cmd = { 'Gvdiffsplit' } }
   use {
-    "iamcco/markdown-preview.nvim",
+    'iamcco/markdown-preview.nvim',
     cmd = 'MarkdownPreview',
-    run = function() vim.fn["mkdp#util#install"]() end,
+    run = function() vim.fn['mkdp#util#install']() end,
   }
   use {
     'jbyuki/venn.nvim',

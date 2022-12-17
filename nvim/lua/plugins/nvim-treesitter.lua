@@ -1,4 +1,8 @@
 return function()
+  vim.cmd [[packadd nvim-treesitter-textobjects]]
+  vim.cmd [[packadd nvim-treesitter-context]]
+  vim.cmd [[packadd playground]]
+
   require('nvim-treesitter.configs').setup {
     ensure_installed = {
       'bash',
@@ -20,6 +24,7 @@ return function()
       'ocaml',
       'ocaml_interface',
       'python',
+      'query',
       'regex',
       'ruby',
       'rust',
@@ -56,6 +61,12 @@ return function()
           ['a/'] = '@comment.outer',
         },
       },
+    },
+    playground = { enable = true },
+    query_linter = {
+      enable = true,
+      use_virtual_text = true,
+      lint_events = { "BufWrite", "CursorHold" },
     },
   }
 end

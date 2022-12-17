@@ -4,9 +4,6 @@ local tnoremap = require('utils.keymaps').tnoremap
 local cnoremap = require('utils.keymaps').cnoremap
 local vnoremap = require('utils.keymaps').vnoremap
 
---  ╭──────────────────────────────────────────────────────────╮
---  │                      Basic Keymaps                       │
---  ╰──────────────────────────────────────────────────────────╯
 require('utils.keymaps').map('<Space>', '<Nop>')
 vim.g.mapleader = ' '
 
@@ -48,37 +45,3 @@ tnoremap('<M-p>', '<C-\\><C-n>pa')
 
 vnoremap('<', '<gv')
 vnoremap('>', '>gv')
-
---  ╭──────────────────────────────────────────────────────────╮
---  │             Plugins' Keymaps (for lazy load)             │
---  ╰──────────────────────────────────────────────────────────╯
-
--- hop.nvim
-nnoremap('gs', '<Cmd>HopChar1<CR>')
-nnoremap('gw', '<Cmd>HopWord<CR>')
-nnoremap('gl', '<Cmd>HopLine<CR>')
-vnoremap('gs', '<Cmd>HopChar1<CR>')
-vnoremap('gw', '<Cmd>HopWord<CR>')
-vnoremap('gl', '<Cmd>HopLine<CR>')
-
--- neo-tree,nvim
-nnoremap('<Leader>e', '<Cmd>NeoTreeFocusToggle<CR>')
-
--- nvim-telescope
-nnoremap('<Leader>h', '<Cmd>Telescope help_tags<CR>')
-nnoremap('<C-p>', '<Cmd>Telescope file_browser<CR>')
-
--- undotree
-nnoremap('<Leader>u', '<Cmd>UndotreeToggle<CR>')
-
--- toggleterm.nvim
-nnoremap('<M-=>', '<Cmd>ToggleTerm<CR>')
-tnoremap('<M-=>', '<C-\\><C-n>:ToggleTerm<CR>')
-
--- asynctasks.vim
-nnoremap('<Leader>fb', '<Cmd>AsyncTask file-build<CR>')
-nnoremap('<Leader>fr', '<Cmd>AsyncTask file-run<CR>')
-
--- nvim-dap
-nnoremap('<F9>', '<Cmd>DapToggleBreakpoint<CR>')
-nnoremap('<F5>', '<Cmd>DapContinue<CR>')

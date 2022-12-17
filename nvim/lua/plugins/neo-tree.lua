@@ -6,11 +6,7 @@ return function()
       filtered_items = {
         hide_dotfiles = false,
         hide_gitignored = false,
-        hide_by_name = {
-          '.git',
-          'node_modules',
-          '.DS_Store',
-        },
+        hide_by_name = { '.git' },
       },
       hijack_netrw_behavior = 'disabled',
     },
@@ -27,4 +23,6 @@ return function()
       },
     },
   }
+
+  require('utils.keymaps').nnoremap('<Leader>e', '<Cmd>NeoTreeFocusToggle<CR>')
 end

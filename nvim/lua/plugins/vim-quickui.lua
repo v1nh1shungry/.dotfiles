@@ -16,7 +16,7 @@ return function()
     { '&Comment Box', 'CBcbox' },
     { '&Venn Box', 'VBox' },
     { '--', '' },
-    { '&Table Mode', 'TableModeToggle' },
+    { '&Table Mode\t<Leader>tm', 'TableModeToggle' },
     { '--', '' },
     { '&Strip Trailing', 'StripWhitespace' },
     { '&Format Codes\t=', 'lua vim.lsp.buf.format { async = true }' },
@@ -24,8 +24,8 @@ return function()
   vim.fn['quickui#menu#install']('&View', {
     { '&Terminal\t<M-=>', 'ToggleTerm' },
     { 'File &Explorer\t<Leader>e', 'NeoTreeShowToggle' },
-    { '&Undotree\t<Leader>u', 'UndotreeToggle' },
     { '&Outline\t<Leader>o', 'LSoutlineToggle' },
+    { '&Minimap\t<Leader>mm', 'lua require("codewindow").toggle_minimap()' },
   })
   vim.fn['quickui#menu#install']('&Navigation', {
     { '&Find', 'Farf' },
@@ -92,7 +92,6 @@ return function()
     { 'Ke&ymaps', 'Telescope keymaps' },
     { '--', '' },
     { '&Messages', 'Noice' },
-    { 'Messages &Picker', 'Telescope noice' },
   })
   vim.g.context_menu_k = {
     { '&Hover\tgh', 'Lspsaga hover_doc' },

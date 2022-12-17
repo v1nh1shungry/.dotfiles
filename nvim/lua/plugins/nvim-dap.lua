@@ -16,6 +16,8 @@ return function()
   require('nvim-dap-virtual-text').setup()
 
   local nnoremap = require('utils.keymaps').nnoremap
+  nnoremap('<F9>', '<Cmd>DapToggleBreakpoint<CR>')
+  nnoremap('<F5>', '<Cmd>DapContinue<CR>')
   nnoremap('<F10>', '<Cmd>DapStepOver<CR>')
   nnoremap('<F11>', '<Cmd>DapStepInto<CR>')
   nnoremap('<F12>', '<Cmd>DapStepOut<CR>')
@@ -40,5 +42,6 @@ return function()
       cwd = '${workspaceFolder}',
     },
   }
+
   dap.configurations.c = dap.configurations.cpp
 end

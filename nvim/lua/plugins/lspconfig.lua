@@ -43,7 +43,7 @@ local setup_keymaps = function(bufnr)
   keymap('n', 'gd', '<Cmd>TroubleToggle lsp_definitions<CR>')
   keymap('n', 'gy', '<Cmd>TroubleToggle lsp_type_definitions<CR>')
   keymap('n', 'gR', '<Cmd>TroubleToggle lsp_references<CR>')
-  keymap('n', '<Leader>o', '<Cmd>LSoutlineToggle<CR>')
+  keymap('n', '<Leader>o', '<Cmd>Lspsaga outline<CR>')
   keymap('n', ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
   keymap('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>')
 end
@@ -54,15 +54,6 @@ local on_attach = function(client, bufnr)
   local status_illuminate_ok, illuminate = pcall(require, 'illuminate')
   if status_illuminate_ok then
     illuminate.on_attach(client)
-  end
-
-  local status_signature_ok, signature = pcall(require, 'lsp_signature')
-  if status_signature_ok then
-    signature.on_attach({
-      hint_prefix = '🤗 ',
-      hi_parameter = 'IncSearch',
-      handler_opts = { border = 'none' },
-    }, bufnr)
   end
 
   if client.supports_method('textDocument/formatting') then
@@ -113,14 +104,12 @@ require('clangd_extensions').setup {
       '--fallback-style=LLVM',
       '--function-arg-placeholders',
       '--header-insertion=never',
-      '--hidden-features',
       '--include-cleaner-stdlib',
       '-j=12',
       '--pch-storage=memory',
       '--offset-encoding=utf-16', -- compatible with `null-ls`
     },
   },
-  extensions = { autoSetHints = false },
 }
 
 lspconfig.jsonls.setup {

@@ -47,8 +47,8 @@ if status is-interactive
             set --erase https_proxy
         else
             set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')
-            set -gx http_proxy "$winip:10811"
-            set -gx https_proxy "$winip:10811"
+            set -gx http_proxy "http://$winip:10811"
+            set -gx https_proxy "http://$winip:10811"
         end
     end
 end

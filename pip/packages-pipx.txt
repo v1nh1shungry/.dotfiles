@@ -1,0 +1,8 @@
+cmake-init 0.34.0
+cppman 0.5.4
+httpie 3.2.1
+pip-search 0.0.12
+pipreqs 0.4.11
+ptpython 3.0.22
+trash-cli 0.23.2.13.2
+yq 3.1.0

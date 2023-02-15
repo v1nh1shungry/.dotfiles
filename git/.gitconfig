@@ -1,0 +1,31 @@
+[user]
+  email = v1nh1shungry@outlook.com
+  name = v1nh1shungry
+
+[init]
+  defaultBranch = main
+
+[core]
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[add.interactive]
+  useBuiltin = false
+
+[delta]
+  navigate = true
+  light = false
+  side-by-side = true
+  line-numbers = true
+  syntax-theme = Dracula
+
+[merge]
+  conflictstyle = diff3
+
+[diff]
+  colorMoved = default
+
+[http]
+  sslverify = false

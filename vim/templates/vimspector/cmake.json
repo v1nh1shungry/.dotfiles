@@ -1,0 +1,30 @@
+{
+  "$schema": "http://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "configurations": {
+    "cmake": {
+      "adapter": "CodeLLDB",
+      "filetypes": [
+        "cpp"
+      ],
+      "variables": {
+        "root": {
+          "shell": "asynctask project-root"
+        }
+      },
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/build/${root}",
+        "args": [
+          "*${arguments}"
+        ],
+        "stopOnEntry": false
+      },
+      "breakpoints": {
+        "exception": {
+          "cpp_throw": "",
+          "cpp_catch": ""
+        }
+      }
+    }
+  }
+}

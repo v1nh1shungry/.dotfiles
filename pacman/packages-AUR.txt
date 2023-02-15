@@ -1,0 +1,4 @@
+danmaku2ass-git
+emojify
+fnm-bin
+zig-dev-bin

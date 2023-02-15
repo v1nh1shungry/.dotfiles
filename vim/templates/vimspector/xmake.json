@@ -1,0 +1,37 @@
+{
+  "$schema": "http://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "configurations": {
+    "xmake": {
+      "adapter": "CodeLLDB",
+      "filetypes": [
+        "c",
+        "cpp"
+      ],
+      "variables": {
+        "plat": {
+          "shell": "xmake l -c 'import(\"core.project.config\");config.load();print(config.get(\"plat\"))'"
+        },
+        "arch": {
+          "shell": "xmake l -c 'import(\"core.project.config\");config.load();print(config.get(\"arch\"))'"
+        },
+        "root": {
+          "shell": "asynctask project-root"
+        }
+      },
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/build/${plat}/${arch}/debug/${root}",
+        "args": [
+          "*${arguments}"
+        ],
+        "stopOnEntry": false
+      },
+      "breakpoints": {
+        "exception": {
+          "cpp_throw": "",
+          "cpp_catch": ""
+        }
+      }
+    }
+  }
+}

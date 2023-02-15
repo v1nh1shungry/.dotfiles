@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.1...3.24)
+project(
+    %HERE%%FDIR%
+    VERSION 0.1.0
+    DESCRIPTION ""
+    HOMEPAGE_URL "https://github.com/v1nh1shungry/%FDIR%"
+    LANGUAGES CXX C
+)
+
+# Enable LTO
+include(CheckIPOSupported)
+check_ipo_supported(RESULT supported OUTPUT error)
+
+# Enable ccache
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+  set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+endif()
+
+add_executable(${PROJECT_NAME}
+    src/main.cpp
+)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_23)
+target_compile_options(${PROJECT_NAME} PRIVATE
+    -Wall -Wextra -Weffc++
+# Enable ASAN and UBSAN
+    $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer>
+)
+# Enable ASAN and UBSAN
+target_link_options(${PROJECT_NAME} PRIVATE
+    $<$<CONFIG:Debug>:-fsanitize=address -fsanitize=undefined>
+)
+
+# Enable LTO
+if( supported )
+    message(STATUS "IPO / LTO enabled")
+    set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+else()
+    message(STATUS "IPO / LTO not supported: <${error}>")
+endif()

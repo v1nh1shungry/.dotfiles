@@ -1,0 +1,48 @@
+If:
+  PathMatch: .*\.c
+CompileFlags:
+  Add: -std=c2x
+---
+If:
+  PathMatch: [
+    .*\.cpp,
+    .*\.cc,
+    .*\.cxx,
+    .*\.h,
+    .*\.hpp,
+    .*\.hxx,
+  ]
+CompileFlags:
+  Add: [
+    -std=c++2b,
+    -Weffc++,
+  ]
+---
+CompileFlags:
+  Add: [
+    -Wall,
+    -Wextra,
+  ]
+Diagnostics:
+  ClangTidy:
+    Add: '*'
+    Remove: [
+      abseil-*,
+      altera-*,
+      android-*,
+      fuchsia-*,
+      google-*,
+      llvm*,
+      modernize-use-trailing-return-type,
+      zircon-*,
+      readability-else-after-return,
+      readability-static-accessed-through-instance,
+      readability-avoid-const-params-in-decls,
+      cppcoreguidelines-non-private-member-variables-in-classes,
+      misc-non-private-member-variables-in-classes,
+    ]
+  UnusedIncludes: Strict
+Completion:
+  AllScopes: Yes
+Hover:
+  ShowAKA: Yes

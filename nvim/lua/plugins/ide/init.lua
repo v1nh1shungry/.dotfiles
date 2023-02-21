@@ -24,6 +24,14 @@ return {
         'glepnir/lspsaga.nvim',
         config = config.lspsaga,
       },
+      {
+        'folke/trouble.nvim',
+        cmd = { 'TroubleToggle', 'TroubleRefresh', 'TodoTrouble' },
+      },
+      {
+        'DNLHC/glance.nvim',
+        cmd = 'Glance',
+      },
     },
     event = events.enter_buffer,
   },
@@ -83,9 +91,5 @@ return {
       { '<F9>', '<Cmd>DapToggleBreakpoint<CR>' },
       { '<F5>', '<Cmd>DapContinue<CR>' },
     },
-  },
-  {
-    'folke/trouble.nvim',
-    cmd = { 'TroubleToggle', 'TroubleRefresh', 'TodoTrouble' },
   },
 }

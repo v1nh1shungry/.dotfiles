@@ -2,11 +2,6 @@ local config = require('plugins.tools.config')
 
 return {
   {
-    'brooth/far.vim',
-    cmd = { 'Farf', 'Farr' },
-    config = function() vim.g.enable_undo = true end,
-  },
-  {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     config = config.telescope,
@@ -93,5 +88,18 @@ return {
       },
     },
     opts = { signs = { section = { '', '' }, item = { '', '' } } },
+  },
+  {
+    'phaazon/hop.nvim',
+    config = true,
+    keys = { { 'gs', '<Cmd>HopChar1<CR>' }, { 'gw', '<Cmd>HopWord<CR>' }, { 'gl', '<Cmd>HopLine<CR>' } },
+  },
+  {
+    'roobert/search-replace.nvim',
+    config = true,
+    keys = {
+      { '<Leader>rw', '<Cmd>SearchReplaceSingleBufferCWord<CR>' },
+      { '<C-r>', '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', mode = 'v' },
+    },
   },
 }

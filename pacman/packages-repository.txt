@@ -8,10 +8,8 @@ ccache
 choose
 clang
 cmake
-curlie
 difftastic
 diffutils
-dog
 exa
 fakeroot
 fd
@@ -24,7 +22,6 @@ gdb
 gettext
 git
 git-delta
-git-extras
 go
 grep
 groff
@@ -43,6 +40,7 @@ make
 man-db
 man-pages
 manjaro-keyring
+mdcat
 mold
 msgpack-c
 ncdu
@@ -63,6 +61,7 @@ starship
 sudo
 tealdeer
 tmux
+tokei
 tree-sitter
 unibilium
 unzip
@@ -71,4 +70,3 @@ which
 wtf
 xmake
 yay
-zip

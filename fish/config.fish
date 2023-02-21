@@ -11,6 +11,11 @@ if status is-interactive
     fnm env --use-on-cd | source
     set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
 
+    set -gx LESS_TERMCAP_mb (set_color -o red)
+    set -gx LESS_TERMCAP_md (set_color -o 5fafd7)
+    set -gx LESS_TERMCAP_so (set_color 949494)
+    set -gx LESS_TERMCAP_us (set_color -u afafd7)
+
     alias vim nvim
     alias bat 'bat --theme Dracula'
     alias grep 'grep --color=auto'

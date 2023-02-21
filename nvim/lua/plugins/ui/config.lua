@@ -63,7 +63,6 @@ M.codewindow = function()
 end
 
 M.quickui = function()
-  vim.g.quickui_border_style = 2
   vim.fn['quickui#menu#reset']()
   vim.fn['quickui#menu#install']('&File', {
     { '&Open\t<C-p>', 'Telescope find_files' },
@@ -72,8 +71,8 @@ M.quickui = function()
     { '&Save\t<C-s>', 'write' },
     { 'Save &All',    'wall' },
     { '--',           '' },
-    { 'Sudo Open',    'SudaEdit' },
-    { 'Sudo Save',    'SudaWrite' },
+    { 'Sudo O&pen',   'SudaEdit' },
+    { 'Sudo Sa&ve',   'SudaWrite' },
     { '--',           '' },
     { '&Delete',      'Delete' },
     { '--',           '' },
@@ -86,8 +85,7 @@ M.quickui = function()
     { '&Format Codes\t=',        'lua vim.lsp.buf.format { async = true }' },
   })
   vim.fn['quickui#menu#install']('&View', {
-    { '&Only Buffer',              'BufferCloseAllButCurrent' },
-    { 'Resize Windows\t<C-e>',     'WinResizerStartResize' },
+    { '&Resize Windows\t<C-e>',    'WinResizerStartResize' },
     { '--',                        '' },
     { '&Terminal\t<M-=>',          'ToggleTerm' },
     { 'File &Explorer\t<Leader>e', 'NeoTreeFocusToggle' },
@@ -95,18 +93,17 @@ M.quickui = function()
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
   })
   vim.fn['quickui#menu#install']('&Navigation', {
-    { '&Find',                      'Farf' },
-    { 'Find And Re&place',          'Farr' },
-    { 'Live &Grep',                 'Telescope live_grep' },
-    { '--',                         '' },
-    { 'Goto &Definitions\tgd',      'Trouble lsp_definitions' },
-    { 'Goto T&ype Definitions\tgy', 'Trouble lsp_type_definitions' },
-    { 'Goto &References\tgr',       'Trouble lsp_references' },
-    { '--',                         '' },
-    { 'Document &Symbols',          'Telescope lsp_document_symbols' },
-    { '&Workspace Symbols',         'Telescope lsp_workspace_symbols' },
-    { '--',                         '' },
-    { '&TODO',                      'TodoTrouble' },
+    { '&Find And Replace\t<Leader>rw', 'SearchReplaceSingleBufferCWord' },
+    { 'Live &Grep',                    'Telescope live_grep' },
+    { '--',                            '' },
+    { 'Goto &Definitions\tgd',         'Glance definitions' },
+    { 'Goto T&ype Definitions\tgy',    'Glance type_definitions' },
+    { 'Goto &References\tgR',          'Glance references' },
+    { '--',                            '' },
+    { '&Symbols',                      'Telescope lsp_document_symbols' },
+    { 'Di&agnostics',                  'Trouble document_diagnostics' },
+    { '--',                            '' },
+    { '&TODO',                         'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&Git', {
     { 'Git Bl&ame', 'Gitsigns toggle_current_line_blame' },
@@ -137,22 +134,22 @@ M.quickui = function()
     { '&Update',       'Lazy sync' },
     { '&Clean Unused', 'Lazy clean' },
     { '--',            '' },
-    { '&Status',       'Lazy home' },
+    { 'H&ome',         'Lazy home' },
+    { '&Mason',        'Mason' },
     { '&Profile',      'Lazy profile' },
   })
   vim.fn['quickui#menu#install']('&Tools', {
-    { '&Mason',                 'Mason' },
-    { '&REPL',                  'Codi' },
+    { '&REPL',                  'Codi!!' },
     { '&Treesitter Playground', 'TSPlaygroundToggle' },
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
     { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },
-    { 'Welcome',              'Alpha' },
+    { '&Welcome',             'Alpha' },
     { '--',                   '' },
     { '&Autocmds',            'Telescope autocommands' },
     { 'Ke&ymaps',             'Telescope keymaps' },
     { '--',                   '' },
-    { 'M&essages',            'Messages' },
+    { '&Messages',            'Messages' },
     { '&Notifications',       'Messages Notifications' },
   })
 

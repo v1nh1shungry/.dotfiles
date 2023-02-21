@@ -47,7 +47,7 @@ return {
       { 't', mode = { 'n', 'x' } },
       { 'T', mode = { 'n', 'x' } },
       { ';', '<Plug>(clever-f-repeat-forward)', mode = { 'n', 'x' } },
-      { ',', '<Plug>(clever-f-repeat-back)', mode = { 'n', 'x' } },
+      { ',', '<Plug>(clever-f-repeat-back)',    mode = { 'n', 'x' } },
     },
   },
   {
@@ -102,8 +102,12 @@ return {
     event = events.enter_buffer,
   },
   {
-    'phaazon/hop.nvim',
+    'kana/vim-operator-replace',
+    dependencies = 'kana/vim-operator-user',
+    keys = { { 'gr', '<Plug>(operator-replace)' } },
+  },
+  {
+    'tiagovla/scope.nvim',
     config = true,
-    keys = { { 'gs', '<Cmd>HopChar1<CR>' }, { 'gw', '<Cmd>HopWord<CR>' }, { 'gl', '<Cmd>HopLine<CR>' } },
   },
 }

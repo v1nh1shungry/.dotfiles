@@ -12,9 +12,9 @@ local setup_keymaps = function(client, bufnr)
   keymap('n', '<Leader>o', '<Cmd>Lspsaga outline<CR>')
   keymap('n', ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
   keymap('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>')
-  keymap('n', 'gd', '<Cmd>Trouble lsp_definitions<CR>')
-  keymap('n', 'gy', '<Cmd>Trouble lsp_type_definitions<CR>')
-  keymap('n', 'gr', '<Cmd>Trouble lsp_references<CR>')
+  keymap('n', 'gd', '<Cmd>Glance definitions<CR>')
+  keymap('n', 'gy', '<Cmd>Glance type_definitions<CR>')
+  keymap('n', 'gR', '<Cmd>Glance references<CR>')
 
   if client.supports_method('textDocument/rangeFormatting') then
     keymap('v', '=', function() vim.lsp.buf.format({ async = true }) end)
@@ -52,7 +52,6 @@ M.lspconfig = function()
       capabilities = capabilities,
       cmd = {
         'clangd',
-        '--compile-commands-dir=build',
         '--header-insertion=never',
         '--include-cleaner-stdlib',
         '--offset-encoding=utf-16', -- compatible with `null-ls`
@@ -107,6 +106,7 @@ M.null_ls = function()
 
   require('null-ls').setup {
     sources = {
+      actions.gitsigns,
       actions.gitrebase,
       actions.shellcheck,
       diagnostics.cmake_lint,
@@ -304,7 +304,10 @@ end
 
 M.lspsaga = function()
   require('lspsaga').setup {
-    code_action = { keys = { quit = '<ESC>' } },
+    code_action = {
+      keys = { quit = '<ESC>' },
+      extend_gitsigns = false,
+    },
     lightbulb = { sign = false },
     diagnostic = { show_code_action = false },
     rename = { quit = '<ESC>' },

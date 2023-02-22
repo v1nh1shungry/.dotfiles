@@ -1,12 +1,12 @@
 local M = {}
 
-local setup_keymaps = function(client, bufnr)
+local on_attach = function(client, bufnr)
   local keymap = function(modes, from, to)
     vim.keymap.set(modes, from, to, { noremap = true, silent = true, buffer = bufnr })
   end
 
   keymap('n', '=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
-  keymap('n', '<Leader>rn', vim.lsp.buf.rename)
+  keymap('n', '<Leader>rn', '<Cmd>Lspsaga rename<CR>')
   keymap('n', 'gh', '<Cmd>Lspsaga hover_doc<CR>')
   keymap({ 'n', 'v' }, '<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
   keymap('n', '<Leader>o', '<Cmd>Lspsaga outline<CR>')
@@ -21,21 +21,17 @@ local setup_keymaps = function(client, bufnr)
   end
 end
 
-local on_attach = function(client, bufnr)
-  setup_keymaps(client, bufnr)
-  require('lsp_signature').on_attach { hint_enable = false, hi_parameter = 'IncSearch' }
-end
-
 M.lspconfig = function()
   local lspconfig = require('lspconfig')
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   local servers = {
     'bashls',
-    'cmake',
     'gopls',
     'grammarly',
+    'neocmake',
     'pyright',
     'rust_analyzer',
+    'tsserver',
     'zls',
   }
 
@@ -113,7 +109,6 @@ M.null_ls = function()
       diagnostics.fish,
       diagnostics.trail_space,
       formatting.autopep8,
-      formatting.cmake_format,
       formatting.fish_indent,
       formatting.markdown_toc,
       formatting.shfmt,
@@ -130,20 +125,20 @@ M.mason = function()
   require('mason-lspconfig').setup {
     ensure_installed = {
       'bashls',
-      'cmake',
       'gopls',
       'grammarly',
       'jsonls',
+      'neocmake',
       'lua_ls',
       'pyright',
       'rust_analyzer',
+      'tsserver',
       'zls',
     },
   }
   require('mason-tool-installer').setup {
     ensure_installed = {
       'autopep8',
-      'cmakelang',
       'shellcheck',
       'shfmt',
     },
@@ -309,7 +304,10 @@ M.lspsaga = function()
       extend_gitsigns = false,
     },
     lightbulb = { sign = false },
-    diagnostic = { show_code_action = false },
+    diagnostic = {
+      on_insert = false,
+      show_code_action = false,
+    },
     rename = { quit = '<ESC>' },
     symbol_in_winbar = { separator = ' > ' },
     ui = { border = 'rounded' },

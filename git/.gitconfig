@@ -29,3 +29,6 @@
 
 [http]
   sslverify = false
+
+[credential]
+  helper = /mnt/d/scoop/apps/git/current/mingw64/bin/git-credential-manager.exe

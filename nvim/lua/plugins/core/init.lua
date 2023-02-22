@@ -23,16 +23,17 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = config.treesitter,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-      {
-        'Wansmer/treesj',
-        config = true,
-        keys = { { 'gS', '<Cmd>TSJSplit<CR>' }, { 'gJ', '<Cmd>TSJJoin<CR>' } },
-      },
-      'RRethy/nvim-treesitter-endwise',
-    },
+    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     event = events.enter_buffer,
+  },
+  {
+    'Wansmer/treesj',
+    config = true,
+    keys = { { 'gS', '<Cmd>TSJSplit<CR>' }, { 'gJ', '<Cmd>TSJJoin<CR>' } },
+  },
+  {
+    'RRethy/nvim-treesitter-endwise',
+    event = events.enter_insert,
   },
   {
     'ethanholz/nvim-lastplace',
@@ -109,5 +110,6 @@ return {
   {
     'tiagovla/scope.nvim',
     config = true,
+    event = 'TabNew',
   },
 }

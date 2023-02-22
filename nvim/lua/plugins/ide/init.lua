@@ -10,30 +10,28 @@ return {
       'folke/neodev.nvim',
       'p00f/clangd_extensions.nvim',
       'b0o/schemastore.nvim',
-      'ray-x/lsp_signature.nvim',
-      {
-        'j-hui/fidget.nvim',
-        opts = { sources = { ['null-ls'] = { ignore = true } } },
-      },
       {
         'jose-elias-alvarez/null-ls.nvim',
         config = config.null_ls,
         dependencies = 'nvim-lua/plenary.nvim',
       },
-      {
-        'glepnir/lspsaga.nvim',
-        config = config.lspsaga,
-      },
-      {
-        'folke/trouble.nvim',
-        cmd = { 'TroubleToggle', 'TroubleRefresh', 'TodoTrouble' },
-      },
-      {
-        'DNLHC/glance.nvim',
-        cmd = 'Glance',
-      },
     },
     event = events.enter_buffer,
+  },
+  {
+    'ray-x/lsp_signature.nvim',
+    event = 'LspAttach',
+    opts = { hint_enable = false, hi_parameter = 'IncSearch' },
+  },
+  {
+    'j-hui/fidget.nvim',
+    event = 'LspAttach',
+    opts = { sources = { ['null-ls'] = { ignore = true } } },
+  },
+  {
+    'glepnir/lspsaga.nvim',
+    config = config.lspsaga,
+    event = 'LspAttach',
   },
   {
     'williamboman/mason.nvim',
@@ -91,5 +89,13 @@ return {
       { '<F9>', '<Cmd>DapToggleBreakpoint<CR>' },
       { '<F5>', '<Cmd>DapContinue<CR>' },
     },
+  },
+  {
+    'folke/trouble.nvim',
+    cmd = { 'TroubleToggle', 'TroubleRefresh', 'TodoTrouble' },
+  },
+  {
+    'DNLHC/glance.nvim',
+    cmd = 'Glance',
   },
 }

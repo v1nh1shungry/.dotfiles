@@ -79,10 +79,11 @@ M.quickui = function()
     { '&Exit\tQ',     'qa!' },
   })
   vim.fn['quickui#menu#install']('&Edit', {
-    { '&Table Mode\t<Leader>tm', 'TableModeToggle' },
-    { '&Emoji Picker',           'Telescope symbols' },
-    { '&Comment Box',            'CBccbox' },
-    { '&Format Codes\t=',        'lua vim.lsp.buf.format { async = true }' },
+    { '&Table Mode\t<Leader>tm',   'TableModeToggle' },
+    { '&Emoji Picker',             'Telescope symbols' },
+    { '&Comment Box',              'CBccbox' },
+    { '&Format Codes\t=',          'lua vim.lsp.buf.format { async = true }' },
+    { 'Edit &Markdown Code Block', 'FeMaco' },
   })
   vim.fn['quickui#menu#install']('&View', {
     { '&Resize Windows\t<C-e>',    'WinResizerStartResize' },
@@ -158,7 +159,7 @@ M.quickui = function()
       { 'Di&agnostics',             'Lspsaga show_line_diagnostics' },
       { '&Preview Definition',      'Lspsaga peek_definition' },
       { '--',                       '' },
-      { '&Rename\t<Leader>rn',      'lua vim.lsp.buf.rename()' },
+      { '&Rename\t<Leader>rn',      'Lspsaga rename' },
       { '&Code Action\t<Leader>ca', 'Lspsaga code_action' },
       { '&Generate Document',       'Neogen' },
       { '--',                       '' },

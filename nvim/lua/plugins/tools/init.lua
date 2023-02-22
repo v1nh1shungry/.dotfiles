@@ -102,4 +102,9 @@ return {
       { '<C-r>', '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', mode = 'v' },
     },
   },
+  {
+    'AckslD/nvim-FeMaco.lua',
+    config = true,
+    cmd = 'FeMaco',
+  },
 }

@@ -3,7 +3,6 @@ vim.opt.cmdheight = 0
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
-vim.opt.guifont = 'MesloLGS NF'
 vim.opt.helpheight = 10
 vim.opt.laststatus = 0
 vim.opt.list = true

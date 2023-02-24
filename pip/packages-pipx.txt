@@ -1,8 +1,6 @@
-cmake-init 0.35.0
+cmake-init 0.35.1
 cppman 0.5.4
 pip-search 0.0.12
 pipreqs 0.4.11
-ptpython 3.0.22
-thefuck 3.32
 trash-cli 0.23.2.13.2
-yq 3.1.0
+yq 3.1.1

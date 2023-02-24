@@ -10,10 +10,11 @@ return {
       'folke/neodev.nvim',
       'p00f/clangd_extensions.nvim',
       'b0o/schemastore.nvim',
+      'williamboman/mason-lspconfig.nvim',
       {
         'jose-elias-alvarez/null-ls.nvim',
         config = config.null_ls,
-        dependencies = 'nvim-lua/plenary.nvim',
+        dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
       },
     },
     event = events.enter_buffer,
@@ -36,9 +37,8 @@ return {
   {
     'williamboman/mason.nvim',
     cmd = 'Mason',
-    config = config.mason,
-    dependencies = { 'williamboman/mason-lspconfig.nvim', 'WhoIsSethDaniel/mason-tool-installer.nvim' },
-    event = events.enter_buffer,
+    config = true,
+    lazy = true,
   },
   {
     'hrsh7th/nvim-cmp',
@@ -84,6 +84,7 @@ return {
         'theHamsta/nvim-dap-virtual-text',
         config = true,
       },
+      'jay-babu/mason-nvim-dap.nvim',
     },
     keys = {
       { '<F9>', '<Cmd>DapToggleBreakpoint<CR>' },

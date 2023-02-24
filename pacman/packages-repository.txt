@@ -49,6 +49,7 @@ ninja
 openssh
 p7zip
 pacman
+pkgconf
 procps-ng
 procs
 psmisc

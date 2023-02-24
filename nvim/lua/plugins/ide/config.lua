@@ -27,13 +27,14 @@ M.lspconfig = function()
   local servers = {
     'bashls',
     'gopls',
-    'grammarly',
     'neocmake',
     'pyright',
     'rust_analyzer',
     'tsserver',
     'zls',
   }
+
+  require('mason-lspconfig').setup { automatic_installation = true }
 
   for _, server in ipairs(servers) do
     lspconfig[server].setup {
@@ -53,7 +54,28 @@ M.lspconfig = function()
         '--offset-encoding=utf-16', -- compatible with `null-ls`
       },
     },
-    extensions = { autoSetHints = false },
+    extensions = {
+      autoSetHints = false,
+      ast = {
+        role_icons = {
+          type = '',
+          declaration = '',
+          expression = '',
+          specifier = '',
+          statement = '',
+          ['template argument'] = '',
+        },
+        kind_icons = {
+          Compound = '',
+          Recovery = '',
+          TranslationUnit = '',
+          PackExpansion = '',
+          TemplateTypeParm = '',
+          TemplateTemplateParm = '',
+          TemplateParamObject = '',
+        },
+      },
+    },
   }
 
   lspconfig.jsonls.setup {
@@ -85,14 +107,6 @@ M.lspconfig = function()
       },
     },
   }
-
-  lspconfig.ds_pinyin_lsp.setup {
-    init_options = {
-      db_path = vim.fn.stdpath('data') .. '/ds-pinyin-lsp/dict.db3',
-      completion_on = true,
-      match_as_same_as_input = true,
-    },
-  }
 end
 
 M.null_ls = function()
@@ -105,12 +119,11 @@ M.null_ls = function()
       actions.gitsigns,
       actions.gitrebase,
       actions.shellcheck,
-      diagnostics.cmake_lint,
       diagnostics.fish,
+      diagnostics.rstcheck,
       diagnostics.trail_space,
       formatting.autopep8,
       formatting.fish_indent,
-      formatting.markdown_toc,
       formatting.shfmt,
       formatting.trim_newlines,
       formatting.trim_whitespace,
@@ -118,31 +131,8 @@ M.null_ls = function()
     on_attach = on_attach,
     update_in_insert = true,
   }
-end
 
-M.mason = function()
-  require('mason').setup()
-  require('mason-lspconfig').setup {
-    ensure_installed = {
-      'bashls',
-      'gopls',
-      'grammarly',
-      'jsonls',
-      'neocmake',
-      'lua_ls',
-      'pyright',
-      'rust_analyzer',
-      'tsserver',
-      'zls',
-    },
-  }
-  require('mason-tool-installer').setup {
-    ensure_installed = {
-      'autopep8',
-      'shellcheck',
-      'shfmt',
-    },
-  }
+  require('mason-null-ls').setup { automatic_installation = true }
 end
 
 M.cmp = function()
@@ -151,7 +141,13 @@ M.cmp = function()
 
   cmp.setup {
     snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
-    formatting = { format = require('lspkind').cmp_format { mode = 'symbol_text', maxwidth = 50 } },
+    formatting = {
+      format = require('lspkind').cmp_format {
+        mode = 'symbol_text',
+        maxwidth = 50,
+        preset = 'codicons',
+      },
+    },
     mapping = cmp.mapping.preset.insert({
       ['<C-j>'] = cmp.mapping.select_next_item(),
       ['<C-k>'] = cmp.mapping.select_prev_item(),
@@ -201,7 +197,6 @@ end
 M.tree = function()
   require('neo-tree').setup {
     close_if_last_window = true,
-    source_selector = { winbar = true },
     filesystem = {
       filtered_items = {
         hide_dotfiles = false,
@@ -260,41 +255,24 @@ M.dap = function()
   dap.listeners.before.event_terminated['dapui_config'] = function() dapui.close() end
   dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
 
-  dapui.setup {
-    icons = { expanded = '', collapsed = '', current_frame = '' },
-    controls = {
-      icons = {
-        pause = icons.pause,
-        play = icons.play,
-        run_last = icons.run_last,
-        step_back = icons.step_back,
-        step_into = icons.step_into,
-        step_out = icons.step_out,
-        step_over = icons.step_over,
-        terminate = icons.terminate,
-      },
-    },
-  }
+  dapui.setup()
 
   local nnoremap = require('utils.keymaps').nnoremap
   nnoremap('<F10>', '<Cmd>DapStepOver<CR>')
   nnoremap('<F11>', '<Cmd>DapStepInto<CR>')
   nnoremap('<F12>', '<Cmd>DapStepOut<CR>')
 
-  dap.adapters.codelldb = {
-    type = 'server',
-    port = '${port}',
-    executable = {
-      command = vim.fn.stdpath('data') .. '/mason/packages/codelldb/extension/adapter/codelldb',
-      args = { '--port', '${port}' },
-    },
-  }
-
   local standalone = require('plugins.ide.dap.standalone')
   dap.configurations.c = standalone.c
   dap.configurations.cpp = standalone.cpp
   dap.configurations.rust = standalone.rust
   dap.configurations.zig = standalone.zig
+
+  require('mason-nvim-dap').setup {
+    ensure_installed = { 'codelldb' },
+    automatic_setup = true,
+  }
+  require('mason-nvim-dap').setup_handlers()
 end
 
 M.lspsaga = function()

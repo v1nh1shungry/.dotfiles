@@ -1,3 +1,4 @@
+dotter-rs-bin
 emojify
 fnm-bin
 zig-dev-bin

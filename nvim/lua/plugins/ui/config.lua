@@ -1,6 +1,7 @@
 local M = {}
 
 local excluded_filetypes = {
+  'ClangdAST',
   'Trouble',
   'alpha',
   'help',

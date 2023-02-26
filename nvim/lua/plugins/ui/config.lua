@@ -4,6 +4,12 @@ local excluded_filetypes = {
   'ClangdAST',
   'Trouble',
   'alpha',
+  'dap-repl',
+  'dapui_breakpoints',
+  'dapui_console',
+  'dapui_scopes',
+  'dapui_stacks',
+  'dapui_watches',
   'help',
   'lazy',
   'lspsagaoutline',
@@ -234,6 +240,16 @@ M.bufferline = function()
     },
   }
   require('utils.keymaps').nnoremap('gb', '<Cmd>BufferLinePick<CR>')
+end
+
+M.ufo = function()
+  vim.o.foldcolumn = '1'
+  vim.o.foldlevel = 99
+  vim.o.foldlevelstart = 99
+  vim.o.foldenable = true
+  vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+  require('ufo').setup { provider_selector = function(_, _, _) return { 'treesitter', 'indent' } end }
+  require('statuscol').setup { foldfunc = 'builtin', setopt = true }
 end
 
 return M

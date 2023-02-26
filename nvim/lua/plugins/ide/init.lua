@@ -9,7 +9,6 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       'folke/neodev.nvim',
       'p00f/clangd_extensions.nvim',
-      'b0o/schemastore.nvim',
       'williamboman/mason-lspconfig.nvim',
       {
         'jose-elias-alvarez/null-ls.nvim',
@@ -21,7 +20,7 @@ return {
   },
   {
     'ray-x/lsp_signature.nvim',
-    event = 'LspAttach',
+    event = events.enter_insert,
     opts = { hint_enable = false, hi_parameter = 'IncSearch' },
   },
   {

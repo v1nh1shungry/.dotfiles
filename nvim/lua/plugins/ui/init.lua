@@ -77,4 +77,13 @@ return {
     cmd = 'Messages',
     config = true,
   },
+  {
+    'kevinhwang91/nvim-ufo',
+    config = config.ufo,
+    dependencies = {
+      'kevinhwang91/promise-async',
+      'luukvbaal/statuscol.nvim',
+    },
+    event = events.enter_buffer,
+  },
 }

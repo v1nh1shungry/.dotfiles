@@ -27,6 +27,7 @@ M.lspconfig = function()
   local servers = {
     'bashls',
     'gopls',
+    'jsonls',
     'neocmake',
     'pyright',
     'rust_analyzer',
@@ -74,17 +75,6 @@ M.lspconfig = function()
           TemplateTemplateParm = '',
           TemplateParamObject = '',
         },
-      },
-    },
-  }
-
-  lspconfig.jsonls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-      json = {
-        schemas = require('schemastore').json.schemas(),
-        validate = { enable = true },
       },
     },
   }
@@ -251,9 +241,18 @@ M.dap = function()
     { text = icons.stopped, texthl = 'DapStopped', linehl = '', numhl = '' }
   )
 
-  dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open() end
-  dap.listeners.before.event_terminated['dapui_config'] = function() dapui.close() end
-  dap.listeners.before.event_exited['dapui_config'] = function() dapui.close() end
+  dap.listeners.after.event_initialized['dapui_config'] = function()
+    vim.diagnostic.config { virtual_text = false, signs = false }
+    dapui.open()
+  end
+  dap.listeners.before.event_terminated['dapui_config'] = function()
+    vim.diagnostic.config { virtual_text = true, signs = true }
+    dapui.close()
+  end
+  dap.listeners.before.event_exited['dapui_config'] = function()
+    vim.diagnostic.config { virtual_text = true, signs = true }
+    dapui.close()
+  end
 
   dapui.setup()
 
@@ -262,17 +261,21 @@ M.dap = function()
   nnoremap('<F11>', '<Cmd>DapStepInto<CR>')
   nnoremap('<F12>', '<Cmd>DapStepOut<CR>')
 
-  local standalone = require('plugins.ide.dap.standalone')
-  dap.configurations.c = standalone.c
-  dap.configurations.cpp = standalone.cpp
-  dap.configurations.rust = standalone.rust
-  dap.configurations.zig = standalone.zig
-
   require('mason-nvim-dap').setup {
     ensure_installed = { 'codelldb' },
     automatic_setup = true,
   }
-  require('mason-nvim-dap').setup_handlers()
+  require('mason-nvim-dap').setup_handlers {
+    codelldb = function(source_name)
+      require('mason-nvim-dap.automatic_setup')(source_name)
+
+      local standalone = require('plugins.ide.dap.standalone')
+      dap.configurations.c = standalone.c
+      dap.configurations.cpp = standalone.cpp
+      dap.configurations.rust = standalone.rust
+      dap.configurations.zig = standalone.zig
+    end
+  }
 end
 
 M.lspsaga = function()

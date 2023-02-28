@@ -40,8 +40,6 @@ ins_left {
 
 ins_left { 'mode', fmt = function(str) return '-- ' .. str .. ' --' end }
 
-ins_right { require('wpm').historic_graph }
-
 ins_right { 'filename', on_click = function() require('telescope.builtin').find_files() end }
 
 ins_right {

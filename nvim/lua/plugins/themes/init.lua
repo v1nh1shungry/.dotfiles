@@ -20,31 +20,12 @@ return {
     lazy = true,
   },
   {
-    'ellisonleao/gruvbox.nvim',
-    lazy = true,
-  },
-  {
     'catppuccin/nvim',
     name = 'catppuccin',
     lazy = true,
   },
   {
     'projekt0n/github-nvim-theme',
-    lazy = true,
-  },
-  {
-    'srcery-colors/srcery-vim',
-    dependencies = 'folke/lsp-colors.nvim',
-    lazy = true,
-  },
-  {
-    'bluz71/vim-moonfly-colors',
-    config = function() vim.g.moonflyVirtualTextColor = true end,
-    lazy = true,
-  },
-  {
-    'bluz71/vim-nightfly-colors',
-    config = function() vim.g.nightflyVirtualTextColor = true end,
     lazy = true,
   },
 }

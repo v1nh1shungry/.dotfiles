@@ -1,4 +1,5 @@
 local config = require('plugins.tools.config')
+local events = require('utils.events')
 
 return {
   {
@@ -26,10 +27,6 @@ return {
       cmd = 'AsyncRun',
     },
     keys = { { '<Leader>fb', '<Cmd>AsyncTask file-build<CR>' }, { '<Leader>fr', '<Cmd>AsyncTask file-run<CR>' } },
-  },
-  {
-    'skywind3000/vim-cppman',
-    cmd = 'Cppman',
   },
   {
     'sQVe/sort.nvim',
@@ -63,12 +60,8 @@ return {
     opts = { snippet_engine = 'luasnip' },
   },
   {
-    'LudoPinelli/comment-box.nvim',
-    cmd = 'CBccbox',
-  },
-  {
     'nvim-treesitter/playground',
-    event = require('utils.events').enter_buffer,
+    event = events.enter_buffer,
   },
   {
     'lambdalisue/suda.vim',

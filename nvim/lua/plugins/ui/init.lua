@@ -56,7 +56,6 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     config = config.lualine,
-    dependencies = { 'jcdickinson/wpm.nvim', config = true },
     event = events.enter_buffer,
   },
   {
@@ -73,11 +72,6 @@ return {
     ft = 'qf',
   },
   {
-    'AckslD/messages.nvim',
-    cmd = 'Messages',
-    config = true,
-  },
-  {
     'kevinhwang91/nvim-ufo',
     config = config.ufo,
     dependencies = {
@@ -85,5 +79,10 @@ return {
       'luukvbaal/statuscol.nvim',
     },
     event = events.enter_buffer,
+  },
+  {
+    config = true,
+    ft = 'qf',
+    url = 'https://gitlab.com/yorickpeterse/nvim-pqf',
   },
 }

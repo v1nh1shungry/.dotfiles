@@ -10,7 +10,6 @@ local excluded_filetypes = {
   'dapui_scopes',
   'dapui_stacks',
   'dapui_watches',
-  'help',
   'lazy',
   'lspsagaoutline',
   'mason',
@@ -88,7 +87,6 @@ M.quickui = function()
   vim.fn['quickui#menu#install']('&Edit', {
     { '&Table Mode\t<Leader>tm',   'TableModeToggle' },
     { '&Emoji Picker',             'Telescope symbols' },
-    { '&Comment Box',              'CBccbox' },
     { '&Format Codes\t=',          'lua vim.lsp.buf.format { async = true }' },
     { 'Edit &Markdown Code Block', 'FeMaco' },
   })
@@ -156,9 +154,6 @@ M.quickui = function()
     { '--',                   '' },
     { '&Autocmds',            'Telescope autocommands' },
     { 'Ke&ymaps',             'Telescope keymaps' },
-    { '--',                   '' },
-    { '&Messages',            'Messages' },
-    { '&Notifications',       'Messages Notifications' },
   })
 
   local smart_k = function()
@@ -169,8 +164,6 @@ M.quickui = function()
       { '&Rename\t<Leader>rn',      'Lspsaga rename' },
       { '&Code Action\t<Leader>ca', 'Lspsaga code_action' },
       { '&Generate Document',       'Neogen' },
-      { '--',                       '' },
-      { 'Cpp&man',                  'exec "Cppman " . expand("<cword>")' },
     }
     if vim.bo.filetype == 'help' then
       vim.fn.feedkeys('K', 'in')
@@ -190,7 +183,7 @@ M.lualine = function()
 
   local theme = require('user').statusline_theme
   local opts = require('plugins.ui.lualine.' .. theme)
-  opts.extensions = { 'fugitive', 'man', 'neo-tree', 'nvim-dap-ui', 'quickfix', 'toggleterm' }
+  opts.extensions = { 'man', 'neo-tree', 'nvim-dap-ui', 'quickfix', 'toggleterm' }
   require('lualine').setup(opts)
 end
 
@@ -249,7 +242,11 @@ M.ufo = function()
   vim.o.foldenable = true
   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
   require('ufo').setup { provider_selector = function(_, _, _) return { 'treesitter', 'indent' } end }
-  require('statuscol').setup { foldfunc = 'builtin', setopt = true }
+  require('statuscol').setup {
+    foldfunc = 'builtin',
+    setopt = true,
+    ft_ignore = excluded_filetypes,
+  }
 end
 
 return M

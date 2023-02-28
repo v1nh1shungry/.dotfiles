@@ -12,7 +12,8 @@ return {
     keys = { '[', ']' },
   },
   {
-    'tpope/vim-sleuth',
+    'nmac427/guess-indent.nvim',
+    config = true,
     event = events.enter_buffer,
   },
   {

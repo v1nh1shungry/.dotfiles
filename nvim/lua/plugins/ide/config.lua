@@ -28,6 +28,7 @@ M.lspconfig = function()
     'bashls',
     'gopls',
     'jsonls',
+    'marksman',
     'neocmake',
     'pyright',
     'rust_analyzer',

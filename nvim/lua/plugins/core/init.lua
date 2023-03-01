@@ -58,10 +58,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'romainl/vim-cool',
-    keys = { '/', '?', '*', '#', 'g*', 'g#', 'n', 'N' },
-  },
-  {
     'lukas-reineke/indent-blankline.nvim',
     event = events.enter_buffer,
     opts = config.indent_blankline,
@@ -83,6 +79,7 @@ return {
   },
   {
     'mg979/vim-visual-multi',
+    config = function() vim.g.VM_set_statusline = 0 end,
     keys = { { '<C-n>', mode = { 'n', 'v' } } },
   },
   {
@@ -112,5 +109,24 @@ return {
     'tiagovla/scope.nvim',
     config = true,
     event = 'TabNew',
+  },
+  {
+    'kevinhwang91/nvim-hlslens',
+    config = config.hlslens,
+    keys = {
+      '/',
+      '?',
+      { '<C-n>', mode = { 'n', 'v' } }, -- integrate with vim-visual-multi
+      { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { '*', [[*<Cmd>lua require('hlslens').start()<CR>]] },
+      { '#', [[#<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]] },
+    },
+  },
+  {
+    'tommcdo/vim-exchange',
+    keys = { 'cx', { 'X', mode = 'v' } },
   },
 }

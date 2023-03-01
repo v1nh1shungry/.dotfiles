@@ -1,5 +1,7 @@
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.cmdheight = 0
+vim.opt.conceallevel = 3
+vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
@@ -15,7 +17,7 @@ vim.opt.shiftwidth = 2
 vim.opt.shortmess:append 'c'
 vim.opt.showcmd = false
 vim.opt.showmode = false
-vim.opt.sidescrolloff = 5
+vim.opt.sidescrolloff = 8
 vim.opt.signcolumn = 'yes'
 vim.opt.smartindent = true
 vim.opt.softtabstop = 2

@@ -1,10 +1,11 @@
 local autocmd = vim.api.nvim_create_autocmd
 
 autocmd('FileType', {
-  callback = function()
-    local bufnr = tonumber(vim.fn.expand('<abuf>'))
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'j', 'gj', { noremap = true, silent = true })
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'k', 'gk', { noremap = true, silent = true })
+  callback = function(opt)
+    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'j', 'gj', { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'k', 'gk', { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'gj', 'j', { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'gk', 'k', { noremap = true, silent = true })
     vim.cmd.setlocal 'wrap'
   end,
   pattern = 'markdown',

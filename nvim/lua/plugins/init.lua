@@ -42,6 +42,10 @@ for _, module in ipairs(modules) do
   end
 end
 
+for _, spec in ipairs(require('user').plugins) do
+  lazy_specs[#lazy_specs + 1] = spec
+end
+
 require('lazy').setup(lazy_specs, {
   install = { colorscheme = { require('user').colorscheme.terminal } },
   performance = {

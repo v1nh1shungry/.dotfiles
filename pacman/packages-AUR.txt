@@ -1,4 +1,5 @@
 dotter-rs-bin
 emojify
 fnm-bin
+tmpwatch
 zig-dev-bin

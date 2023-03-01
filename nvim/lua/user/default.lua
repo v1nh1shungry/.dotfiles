@@ -5,4 +5,5 @@ return {
   },
   mode = 'climax',
   statusline_theme = 'vscode',
+  plugins = {},
 }

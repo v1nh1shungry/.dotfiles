@@ -65,21 +65,14 @@ return {
   },
   {
     'lambdalisue/suda.vim',
-    cmd = { 'SudaEdit', 'SudaWrite' },
+    cmd = { 'SudaRead', 'SudaWrite' },
     config = function() vim.g['suda#nopass'] = true end,
   },
   'milisims/nvim-luaref',
   {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'sindrets/diffview.nvim',
-        cmd = 'DiffviewOpen',
-        dependencies = 'nvim-lua/plenary.nvim',
-      },
-    },
+    dependencies = 'nvim-lua/plenary.nvim',
     opts = { signs = { section = { '', '' }, item = { '', '' } } },
   },
   {
@@ -99,5 +92,16 @@ return {
     'AckslD/nvim-FeMaco.lua',
     config = true,
     cmd = 'FeMaco',
+  },
+  {
+    'cbochs/portal.nvim',
+    keys = {
+      { '<C-o>', '<Cmd>lua require("portal").jump_backward()<CR>' },
+      { '<C-i>', '<Cmd>lua require("portal").jump_forward()<CR>' },
+    },
+  },
+  {
+    'tpope/vim-fugitive',
+    cmd = { 'Gvdiffsplit', 'GDelete' },
   },
 }

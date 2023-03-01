@@ -32,11 +32,11 @@ M.alpha = function()
   ]]
   dashboard.section.header.val = vim.split(logo, '\n')
   dashboard.section.buttons.val = {
-    dashboard.button('r', ' ' .. ' Recent files', ':Telescope oldfiles <CR>'),
-    dashboard.button('f', ' ' .. ' Find file', ':Telescope find_files <CR>'),
-    dashboard.button('g', ' ' .. ' Find text', ':Telescope live_grep <CR>'),
-    dashboard.button('l', '鈴' .. ' Lazy', ':Lazy<CR>'),
-    dashboard.button('q', ' ' .. ' Quit', ':qa<CR>'),
+    dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles<CR>'),
+    dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
+    dashboard.button('g', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
+    dashboard.button('l', '鈴' .. ' Lazy', '<Cmd>Lazy<CR>'),
+    dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
   }
   dashboard.opts.layout[1].val = 4
   require('alpha').setup(dashboard.opts)
@@ -71,18 +71,18 @@ end
 M.quickui = function()
   vim.fn['quickui#menu#reset']()
   vim.fn['quickui#menu#install']('&File', {
-    { '&Open\t<C-p>', 'Telescope find_files' },
-    { '&Browse',      'Telescope file_browser' },
-    { '--',           '' },
-    { '&Save\t<C-s>', 'write' },
-    { 'Save &All',    'wall' },
-    { '--',           '' },
-    { 'Sudo O&pen',   'SudaEdit' },
-    { 'Sudo Sa&ve',   'SudaWrite' },
-    { '--',           '' },
-    { '&Delete',      'Delete' },
-    { '--',           '' },
-    { '&Exit\tQ',     'qa!' },
+    { '&Open\t<C-p>',   'Telescope find_files' },
+    { '&Browse',        'Telescope file_browser' },
+    { 'Open Settin&gs', 'e ~/.nvimrc.lua' },
+    { '--',             '' },
+    { '&Save\t<C-s>',   'write' },
+    { 'Save &All',      'wall' },
+    { 'Sudo Sa&ve',     'SudaWrite' },
+    { '--',             '' },
+    { '&Delete',        'Delete' },
+    { '&Rename',        'lua vim.ui.input({ prompt = "Rename to: " }, function(input) vim.cmd.Rename(input) end)' },
+    { '--',             '' },
+    { '&Exit\tQ',       'qa!' },
   })
   vim.fn['quickui#menu#install']('&Edit', {
     { '&Table Mode\t<Leader>tm',   'TableModeToggle' },
@@ -113,7 +113,8 @@ M.quickui = function()
   })
   vim.fn['quickui#menu#install']('&Git', {
     { 'Git Bl&ame', 'Gitsigns toggle_current_line_blame' },
-    { 'Git &Diff',  'DiffviewOpen' },
+    { 'Git &Diff',  'Gvdiffsplit' },
+    { 'Git &Remove', 'GDelete' },
     { '&Magit',     'Neogit' },
   })
   vim.fn['quickui#menu#install']('&Build', {
@@ -242,8 +243,14 @@ M.ufo = function()
   vim.o.foldenable = true
   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
   require('ufo').setup { provider_selector = function(_, _, _) return { 'treesitter', 'indent' } end }
+  local builtin = require('statuscol.builtin')
   require('statuscol').setup {
-    foldfunc = 'builtin',
+    relculright = true,
+    segments = {
+      { text = { '%s' },                       click = 'v:lua.ScSa' },
+      { text = { builtin.lnumfunc },           click = 'v:lua.ScLa', },
+      { text = { ' ', builtin.foldfunc, ' ' }, click = 'v:lua.ScFa' },
+    },
     setopt = true,
     ft_ignore = excluded_filetypes,
   }

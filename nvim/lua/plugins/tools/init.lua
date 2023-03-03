@@ -33,10 +33,6 @@ return {
     cmd = 'Sort',
   },
   {
-    'metakirby5/codi.vim',
-    cmd = 'Codi',
-  },
-  {
     'tpope/vim-eunuch',
     cmd = { 'Delete', 'Rename' },
     config = config.eunuch,
@@ -103,5 +99,14 @@ return {
   {
     'tpope/vim-fugitive',
     cmd = { 'Gvdiffsplit', 'GDelete' },
+  },
+  {
+    'cshuaimin/ssr.nvim',
+    keys = { { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' } } },
+  },
+  {
+    'junegunn/vim-easy-align',
+    cmd = 'EasyAlign',
+    keys = { { 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'x' } } },
   },
 }

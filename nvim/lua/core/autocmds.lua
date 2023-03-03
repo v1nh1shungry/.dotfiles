@@ -26,3 +26,8 @@ autocmd('InsertLeave', {
     if vim.wo.number then vim.cmd.setlocal 'relativenumber' end
   end,
 })
+
+autocmd('FileType', {
+  command = 'setlocal nonumber norelativenumber',
+  pattern = 'qf',
+})

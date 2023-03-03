@@ -14,6 +14,7 @@ local excluded_filetypes = {
   'lspsagaoutline',
   'mason',
   'neo-tree',
+  'qf',
   'tsplayground',
 }
 
@@ -146,7 +147,6 @@ M.quickui = function()
     { '&Profile',      'Lazy profile' },
   })
   vim.fn['quickui#menu#install']('&Tools', {
-    { '&REPL',                  'Codi!!' },
     { '&Treesitter Playground', 'TSPlaygroundToggle' },
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
@@ -229,6 +229,24 @@ M.bufferline = function()
           text_align = 'center',
           separator = true,
         },
+        {
+          filetype = 'lspsagaoutline',
+          text = 'Outline',
+          text_align = 'center',
+          separator = true,
+        },
+        {
+          filetype = 'tsplayground',
+          text = 'Treesitter Playground',
+          text_align = 'center',
+          separator = true,
+        },
+        {
+          filetype = 'ClangdAST',
+          text = 'Clangd AST',
+          text_align = 'center',
+          separator = true,
+        },
       },
       separator_style = 'slant',
     },
@@ -252,8 +270,11 @@ M.ufo = function()
       { text = { ' ', builtin.foldfunc, ' ' }, click = 'v:lua.ScFa' },
     },
     setopt = true,
-    ft_ignore = excluded_filetypes,
   }
+  vim.api.nvim_create_autocmd('FileType', {
+    command = 'UfoDetach',
+    pattern = excluded_filetypes,
+  })
 end
 
 return M

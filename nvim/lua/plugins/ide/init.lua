@@ -41,7 +41,7 @@ return {
   },
   {
     'hrsh7th/nvim-cmp',
-    config = config.cmp,
+    config = config.cmp.config,
     dependencies = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-cmdline',
@@ -52,8 +52,10 @@ return {
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
+      'RunThem/cmp-xmake',
     },
     event = events.enter_insert,
+    init = config.cmp.init,
   },
   {
     'lewis6991/gitsigns.nvim',

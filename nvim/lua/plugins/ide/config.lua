@@ -65,7 +65,7 @@ M.lspconfig = function()
           expression = '',
           specifier = '',
           statement = '',
-          ['template argument'] = '',
+              ['template argument'] = '',
         },
         kind_icons = {
           Compound = '',
@@ -126,64 +126,83 @@ M.null_ls = function()
   require('mason-null-ls').setup { automatic_installation = true }
 end
 
-M.cmp = function()
-  local cmp = require('cmp')
-  local luasnip = require('luasnip')
+M.cmp = {
+  config = function()
+    local cmp = require('cmp')
+    local luasnip = require('luasnip')
 
-  cmp.setup {
-    snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
-    formatting = {
-      format = require('lspkind').cmp_format {
-        mode = 'symbol_text',
-        maxwidth = 50,
-        preset = 'codicons',
+    cmp.setup {
+      snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+      formatting = {
+        fields = { 'kind', 'abbr', 'menu' },
+        format = function(entry, vim_item)
+          local kind = require('lspkind').cmp_format({
+                mode = 'symbol_text',
+                maxwidth = 50,
+                preset = 'codicons',
+              })(entry, vim_item)
+          local strings = vim.split(kind.kind, '%s', { trimempty = true })
+          kind.kind = strings[1]
+          kind.menu = '    [' .. strings[2] .. ']'
+          return kind
+        end
       },
-    },
-    mapping = cmp.mapping.preset.insert({
-      ['<C-j>'] = cmp.mapping.select_next_item(),
-      ['<C-k>'] = cmp.mapping.select_prev_item(),
-      ['<ESC>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm { select = true },
-      ['<Tab>'] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          if not cmp.get_selected_entry() then
-            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+      mapping = cmp.mapping.preset.insert({
+            ['<C-j>'] = cmp.mapping.select_next_item(),
+            ['<C-k>'] = cmp.mapping.select_prev_item(),
+            ['<ESC>'] = cmp.mapping.abort(),
+            ['<CR>'] = cmp.mapping.confirm { select = true },
+            ['<Tab>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            if not cmp.get_selected_entry() then
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            else
+              cmp.confirm()
+            end
+          elseif luasnip.expand_or_jumpable() then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
           else
-            cmp.confirm()
+            fallback()
           end
-        elseif luasnip.expand_or_jumpable() then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-        else
-          fallback()
-        end
-      end, { 'i', 's', 'c' }),
-      ['<S-Tab>'] = cmp.mapping(function(fallback)
-        if luasnip.jumpable( -1) then
-          vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-        else
-          fallback()
-        end
-      end, { 'i', 's' }),
-    }),
-    sources = cmp.config.sources {
-      { name = 'nvim_lsp' },
-      { name = 'luasnip' },
-      { name = 'buffer' },
-      { name = 'path' },
-      { name = 'rg',      keyword_length = 5 },
-    },
-  }
+        end, { 'i', 's', 'c' }),
+            ['<S-Tab>'] = cmp.mapping(function(fallback)
+          if luasnip.jumpable(-1) then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+      }),
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+      }, {
+        { name = 'buffer' },
+        { name = 'path' },
+        { name = 'rg',    keyword_length = 5 },
+      })
+    }
 
-  cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources { { name = 'cmdline' }, { name = 'path' } },
-  })
+    cmp.setup.cmdline(':', {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources { { name = 'cmdline' }, { name = 'path' } },
+    })
 
-  cmp.setup.cmdline({ '/', '?' }, {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources { { name = 'buffer' } },
-  })
-end
+    cmp.setup.cmdline({ '/', '?' }, {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources { { name = 'buffer' } },
+    })
+  end,
+  init = function()
+    vim.api.nvim_create_autocmd(require('utils.events').enter_buffer, {
+      callback = function()
+        local cmp = require('cmp')
+        cmp.setup.buffer { sources = cmp.config.sources { { name = 'xmake' } } }
+      end,
+      pattern = 'xmake.lua',
+    })
+  end
+}
 
 M.tree = function()
   require('neo-tree').setup {
@@ -197,8 +216,8 @@ M.tree = function()
     },
     window = {
       mappings = {
-        ['h'] = 'close_node',
-        ['l'] = function(state)
+            ['h'] = 'close_node',
+            ['l'] = function(state)
           local node = state.tree:get_node()
           if node.type == 'directory' and not node:is_expanded() then
             require('neo-tree.sources.filesystem').toggle_directory(state, node)

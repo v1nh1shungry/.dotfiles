@@ -22,6 +22,7 @@ gdb
 gettext
 git
 git-delta
+github-cli
 go
 grep
 groff

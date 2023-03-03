@@ -63,11 +63,6 @@ return {
     opts = config.indent_blankline,
   },
   {
-    'junegunn/vim-easy-align',
-    cmd = 'EasyAlign',
-    keys = { { 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'x' } } },
-  },
-  {
     'numToStr/Comment.nvim',
     config = true,
     keys = { { 'gc', mode = { 'n', 'v' } } },
@@ -79,7 +74,7 @@ return {
   },
   {
     'mg979/vim-visual-multi',
-    config = function() vim.g.VM_set_statusline = 0 end,
+    config = config.visual_multi,
     keys = { { '<C-n>', mode = { 'n', 'v' } } },
   },
   {
@@ -128,5 +123,9 @@ return {
   {
     'tommcdo/vim-exchange',
     keys = { 'cx', { 'X', mode = 'v' } },
+  },
+  {
+    'LunarVim/bigfile.nvim',
+    event = events.enter_buffer,
   },
 }

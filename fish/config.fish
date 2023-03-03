@@ -16,6 +16,8 @@ if status is-interactive
     set -gx LESS_TERMCAP_so (set_color 949494)
     set -gx LESS_TERMCAP_us (set_color -u afafd7)
 
+    alias vi nvim
+    alias nv nvim
     alias vim nvim
     alias bat 'bat --theme Dracula'
     alias grep 'grep --color=auto'

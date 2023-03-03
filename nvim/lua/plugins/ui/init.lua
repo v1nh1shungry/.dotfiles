@@ -68,10 +68,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'kevinhwang91/nvim-bqf',
-    ft = 'qf',
-  },
-  {
     'kevinhwang91/nvim-ufo',
     config = config.ufo,
     dependencies = {

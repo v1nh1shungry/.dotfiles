@@ -116,4 +116,9 @@ M.hlslens = function()
   })
 end
 
+M.visual_multi = function()
+  vim.g.VM_silent_exit = true
+  vim.g.VM_set_statusline = 0
+end
+
 return M

@@ -26,7 +26,6 @@ M.treesitter = function()
     },
     highlight = { enable = true, additional_vim_regex_highlighting = true },
     indent = { enable = true },
-    autopairs = { enable = true },
     matchup = { enable = true },
     textobjects = {
       select = {
@@ -71,14 +70,6 @@ M.treesitter = function()
   set foldexpr=nvim_treesitter#foldexpr()
   set nofoldenable
   ]]
-end
-
-M.autopairs = function()
-  require('nvim-autopairs').setup { check_ts = true }
-  local status_ok, cmp = pcall(require, 'cmp')
-  if status_ok then
-    cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done({}))
-  end
 end
 
 M.tabout = function()

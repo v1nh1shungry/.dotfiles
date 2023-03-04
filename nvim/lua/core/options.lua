@@ -1,6 +1,5 @@
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.cmdheight = 0
-vim.opt.conceallevel = 3
 vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true

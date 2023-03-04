@@ -92,8 +92,8 @@ return {
   {
     'cbochs/portal.nvim',
     keys = {
-      { '<C-o>', '<Cmd>lua require("portal").jump_backward()<CR>' },
-      { '<C-i>', '<Cmd>lua require("portal").jump_forward()<CR>' },
+      { '<C-o>', '<Cmd>Portal jumplist backward<CR>' },
+      { '<C-i>', '<Cmd>Portal jumplist forward<CR>' },
     },
   },
   {
@@ -108,5 +108,10 @@ return {
     'junegunn/vim-easy-align',
     cmd = 'EasyAlign',
     keys = { { 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'x' } } },
+  },
+  {
+    'gaoDean/autolist.nvim',
+    config = config.autolist,
+    ft = 'markdown',
   },
 }

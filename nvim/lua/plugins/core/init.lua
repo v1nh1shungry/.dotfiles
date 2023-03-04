@@ -82,8 +82,8 @@ return {
     event = events.enter_insert,
   },
   {
-    'windwp/nvim-autopairs',
-    config = config.autopairs,
+    'altermo/ultimate-autopair.nvim',
+    config = true,
     event = events.enter_insert,
   },
   {

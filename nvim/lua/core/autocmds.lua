@@ -6,7 +6,7 @@ autocmd('FileType', {
     vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'k', 'gk', { noremap = true, silent = true })
     vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'gj', 'j', { noremap = true, silent = true })
     vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'gk', 'k', { noremap = true, silent = true })
-    vim.cmd.setlocal 'wrap'
+    vim.cmd.setlocal 'wrap conceallevel=3'
   end,
   pattern = 'markdown',
 })

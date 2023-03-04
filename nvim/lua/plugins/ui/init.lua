@@ -76,9 +76,4 @@ return {
     },
     event = events.enter_buffer,
   },
-  {
-    config = true,
-    ft = 'qf',
-    url = 'https://gitlab.com/yorickpeterse/nvim-pqf',
-  },
 }

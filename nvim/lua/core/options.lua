@@ -1,4 +1,3 @@
-vim.opt.clipboard = 'unnamedplus'
 vim.opt.cmdheight = 0
 vim.opt.confirm = true
 vim.opt.cursorline = true

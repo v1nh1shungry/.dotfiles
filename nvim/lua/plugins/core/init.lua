@@ -14,7 +14,6 @@ return {
   {
     'nmac427/guess-indent.nvim',
     config = true,
-    event = events.enter_buffer,
   },
   {
     'wellle/targets.vim',
@@ -40,17 +39,6 @@ return {
     'ethanholz/nvim-lastplace',
     config = true,
     event = events.enter_buffer,
-  },
-  {
-    'rhysd/clever-f.vim',
-    keys = {
-      { 'f', mode = { 'n', 'x' } },
-      { 'F', mode = { 'n', 'x' } },
-      { 't', mode = { 'n', 'x' } },
-      { 'T', mode = { 'n', 'x' } },
-      { ';', '<Plug>(clever-f-repeat-forward)', mode = { 'n', 'x' } },
-      { ',', '<Plug>(clever-f-repeat-back)',    mode = { 'n', 'x' } },
-    },
   },
   {
     'RRethy/vim-illuminate',
@@ -83,8 +71,8 @@ return {
   },
   {
     'altermo/ultimate-autopair.nvim',
-    config = true,
     event = events.enter_insert,
+    opts = { cr = { addsemi = {} } },
   },
   {
     'abecodes/tabout.nvim',
@@ -127,5 +115,15 @@ return {
   {
     'LunarVim/bigfile.nvim',
     event = events.enter_buffer,
+  },
+  {
+    'keaising/im-select.nvim',
+    config = config.im_select,
+    event = events.enter_insert,
+  },
+  {
+    'ggandor/lightspeed.nvim',
+    config = true,
+    keys = { 's', 'f', 'S', 'F' },
   },
 }

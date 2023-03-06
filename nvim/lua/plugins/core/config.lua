@@ -63,7 +63,6 @@ M.treesitter = function()
     query_linter = { enable = true },
     rainbow = { enable = true },
     endwise = { enable = true },
-    incremental_selection = { enable = true },
   }
   vim.cmd [[
   set foldmethod=expr
@@ -110,6 +109,14 @@ end
 M.visual_multi = function()
   vim.g.VM_silent_exit = true
   vim.g.VM_set_statusline = 0
+end
+
+M.im_select = function()
+  local opts = {}
+  if vim.fn.has('wsl') then
+    opts = { default_command = '/mnt/d/scoop/apps/im-select/current/im-select.exe' }
+  end
+  require('im_select').setup(opts)
 end
 
 return M

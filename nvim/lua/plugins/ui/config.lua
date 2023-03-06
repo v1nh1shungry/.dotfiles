@@ -33,7 +33,7 @@ M.alpha = function()
   ]]
   dashboard.section.header.val = vim.split(logo, '\n')
   dashboard.section.buttons.val = {
-    dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles<CR>'),
+    dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
     dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
     dashboard.button('g', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
     dashboard.button('l', '鈴' .. ' Lazy', '<Cmd>Lazy<CR>'),
@@ -98,6 +98,9 @@ M.quickui = function()
     { 'File &Explorer\t<Leader>e', 'NeoTreeFocusToggle' },
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
+    { '--',                        '' },
+    { 'Di&agnostics',              'Lspsaga show_line_diagnostics' },
+    { '&Preview Definition',       'Lspsaga peek_definition' },
   })
   vim.fn['quickui#menu#install']('&Navigation', {
     { '&Find And Replace\t<Leader>rw', 'SearchReplaceSingleBufferCWord' },
@@ -113,10 +116,10 @@ M.quickui = function()
     { '&TODO',                         'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&Git', {
-    { 'Git Bl&ame', 'Gitsigns toggle_current_line_blame' },
-    { 'Git &Diff',  'Gvdiffsplit' },
+    { 'Git Bl&ame',  'Gitsigns toggle_current_line_blame' },
+    { 'Git &Diff',   'Gvdiffsplit' },
     { 'Git &Remove', 'GDelete' },
-    { '&Magit',     'Neogit' },
+    { '&Magit',      'Neogit' },
   })
   vim.fn['quickui#menu#install']('&Build', {
     { '&Build\t<Leader>fb', 'AsyncTask file-build' },
@@ -148,6 +151,7 @@ M.quickui = function()
   })
   vim.fn['quickui#menu#install']('&Tools', {
     { '&Treesitter Playground', 'TSPlaygroundToggle' },
+    { '&Generate Document',     'Neogen' },
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
     { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },
@@ -156,25 +160,6 @@ M.quickui = function()
     { '&Autocmds',            'Telescope autocommands' },
     { 'Ke&ymaps',             'Telescope keymaps' },
   })
-
-  local smart_k = function()
-    local context_menu_k = {
-      { 'Di&agnostics',             'Lspsaga show_line_diagnostics' },
-      { '&Preview Definition',      'Lspsaga peek_definition' },
-      { '--',                       '' },
-      { '&Rename\t<Leader>rn',      'Lspsaga rename' },
-      { '&Code Action\t<Leader>ca', 'Lspsaga code_action' },
-      { '&Generate Document',       'Neogen' },
-    }
-    if vim.bo.filetype == 'help' then
-      vim.fn.feedkeys('K', 'in')
-    else
-      vim.fn['quickui#context#open'](context_menu_k, vim.empty_dict())
-    end
-  end
-
-  require('utils.keymaps').nnoremap('<Space><Space>', '<Cmd>call quickui#menu#open()<CR>')
-  require('utils.keymaps').nnoremap('K', smart_k)
 end
 
 M.lualine = function()

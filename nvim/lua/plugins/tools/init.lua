@@ -72,11 +72,6 @@ return {
     opts = { signs = { section = { '', '' }, item = { '', '' } } },
   },
   {
-    'phaazon/hop.nvim',
-    config = true,
-    keys = { { 'gs', '<Cmd>HopChar1<CR>' }, { 'gw', '<Cmd>HopWord<CR>' }, { 'gl', '<Cmd>HopLine<CR>' } },
-  },
-  {
     'roobert/search-replace.nvim',
     config = true,
     keys = {
@@ -113,5 +108,15 @@ return {
     'gaoDean/autolist.nvim',
     config = config.autolist,
     ft = 'markdown',
+  },
+  {
+    'tversteeg/registers.nvim',
+    config = true,
+    keys = { '"', { '<C-r>', mode = 'i' } },
+  },
+  {
+    'Civitasv/cmake-tools.nvim',
+    cmd = 'CMakeGenerate',
+    opts = { cmake_build_directory = 'build' },
   },
 }

@@ -2,12 +2,12 @@ if vim.fn.has('wsl') == 1 then
   vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {
-      ['+'] = 'clip.exe',
-      ['*'] = 'clip.exe',
+      ['+'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -i --crlf',
+      ['*'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -i --crlf',
     },
     paste = {
-      ['+'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-      ['*'] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ['+'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -o --lf',
+      ['*'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -o --lf',
     },
     cache_enabled = 0,
   }

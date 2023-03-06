@@ -6,7 +6,7 @@ return {
     'skywind3000/vim-quickui',
     config = config.quickui,
     init = function() vim.g.quickui_border_style = 2 end,
-    keys = { { '<Space><Space>', mode = { 'n', 'v' } }, { 'K', mode = { 'n', 'v' } } },
+    keys = { { '<Space><Space>', '<Cmd>call quickui#menu#open()<CR>' } },
   },
   {
     'folke/todo-comments.nvim',

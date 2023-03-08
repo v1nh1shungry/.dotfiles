@@ -14,6 +14,7 @@ return {
   {
     'nmac427/guess-indent.nvim',
     config = true,
+    event = events.enter_buffer,
   },
   {
     'wellle/targets.vim',
@@ -23,7 +24,13 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = config.treesitter,
-    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      {
+        'IndianBoy42/tree-sitter-just',
+        config = true,
+      },
+    },
     event = events.enter_buffer,
   },
   {

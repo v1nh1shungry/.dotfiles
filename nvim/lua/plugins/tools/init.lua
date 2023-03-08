@@ -64,7 +64,6 @@ return {
     cmd = { 'SudaRead', 'SudaWrite' },
     config = function() vim.g['suda#nopass'] = true end,
   },
-  'milisims/nvim-luaref',
   {
     'TimUntersberger/neogit',
     cmd = 'Neogit',
@@ -118,5 +117,9 @@ return {
     'Civitasv/cmake-tools.nvim',
     cmd = 'CMakeGenerate',
     opts = { cmake_build_directory = 'build' },
+  },
+  {
+    'rafcamlet/nvim-luapad',
+    cmd = 'Luapad',
   },
 }

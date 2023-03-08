@@ -26,13 +26,11 @@ M.lspconfig = function()
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   local servers = {
     'bashls',
-    'gopls',
     'jsonls',
     'marksman',
     'neocmake',
     'pyright',
     'rust_analyzer',
-    'tsserver',
     'zls',
   }
 
@@ -115,6 +113,7 @@ M.null_ls = function()
       diagnostics.trail_space,
       formatting.autopep8,
       formatting.fish_indent,
+      formatting.just,
       formatting.shfmt,
       formatting.trim_newlines,
       formatting.trim_whitespace,
@@ -133,6 +132,8 @@ M.cmp = {
 
     cmp.setup {
       snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
+      window = { completion = { side_padding = 0 } },
+      experimental = { ghost_text = true },
       formatting = {
         fields = { 'kind', 'abbr', 'menu' },
         format = function(entry, vim_item)
@@ -142,8 +143,8 @@ M.cmp = {
                 preset = 'codicons',
               })(entry, vim_item)
           local strings = vim.split(kind.kind, '%s', { trimempty = true })
-          kind.kind = strings[1]
-          kind.menu = '    [' .. strings[2] .. ']'
+          kind.kind = ' ' .. strings[1] .. ' '
+          kind.menu = '    ' .. strings[2]
           return kind
         end
       },

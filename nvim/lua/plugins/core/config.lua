@@ -12,6 +12,7 @@ M.treesitter = function()
       'help',
       'javascript',
       'json',
+      'just',
       'lua',
       'make',
       'markdown',

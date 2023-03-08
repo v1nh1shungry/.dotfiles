@@ -28,6 +28,7 @@ grep
 groff
 gzip
 jq
+just
 lazygit
 libluv
 libtermkey

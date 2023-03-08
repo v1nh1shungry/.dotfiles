@@ -152,6 +152,7 @@ M.quickui = function()
   vim.fn['quickui#menu#install']('&Tools', {
     { '&Treesitter Playground', 'TSPlaygroundToggle' },
     { '&Generate Document',     'Neogen' },
+    { 'L&uapad',                'Luapad' },
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
     { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },

@@ -31,7 +31,6 @@ M.lspconfig = function()
     'neocmake',
     'pyright',
     'rust_analyzer',
-    'zls',
   }
 
   require('mason-lspconfig').setup { automatic_installation = true }
@@ -113,7 +112,6 @@ M.null_ls = function()
       diagnostics.trail_space,
       formatting.autopep8,
       formatting.fish_indent,
-      formatting.just,
       formatting.shfmt,
       formatting.trim_newlines,
       formatting.trim_whitespace,

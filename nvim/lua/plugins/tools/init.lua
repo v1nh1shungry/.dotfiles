@@ -56,10 +56,6 @@ return {
     opts = { snippet_engine = 'luasnip' },
   },
   {
-    'nvim-treesitter/playground',
-    event = events.enter_buffer,
-  },
-  {
     'lambdalisue/suda.vim',
     cmd = { 'SudaRead', 'SudaWrite' },
     config = function() vim.g['suda#nopass'] = true end,
@@ -121,5 +117,14 @@ return {
   {
     'rafcamlet/nvim-luapad',
     cmd = 'Luapad',
+  },
+  {
+    'stevearc/oil.nvim',
+    cmd = 'Oil',
+    config = true,
+  },
+  {
+    'mbbill/undotree',
+    cmd = 'UndotreeToggle',
   },
 }

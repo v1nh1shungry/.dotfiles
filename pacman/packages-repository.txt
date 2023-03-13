@@ -23,10 +23,13 @@ gettext
 git
 git-delta
 github-cli
+glow
+gnu-netcat
 go
 grep
 groff
 gzip
+inetutils
 jq
 just
 lazygit

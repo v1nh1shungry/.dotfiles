@@ -15,7 +15,6 @@ local excluded_filetypes = {
   'mason',
   'neo-tree',
   'qf',
-  'tsplayground',
 }
 
 M.alpha = function()
@@ -86,10 +85,11 @@ M.quickui = function()
     { '&Exit\tQ',       'qa!' },
   })
   vim.fn['quickui#menu#install']('&Edit', {
-    { '&Table Mode\t<Leader>tm',   'TableModeToggle' },
-    { '&Emoji Picker',             'Telescope symbols' },
-    { '&Format Codes\t=',          'lua vim.lsp.buf.format { async = true }' },
-    { 'Edit &Markdown Code Block', 'FeMaco' },
+    { '&Find And Replace\t<Leader>rw', 'SearchReplaceSingleBufferCWord' },
+    { '&SSR\t<Leader>sr',              'lua require("ssr").open()' },
+    { '&Table Mode\t<Leader>tm',       'TableModeToggle' },
+    { '&Format Codes\t=',              'lua vim.lsp.buf.format { async = true }' },
+    { 'Edit &Markdown Code Block',     'FeMaco' },
   })
   vim.fn['quickui#menu#install']('&View', {
     { '&Resize Windows\t<C-e>',    'WinResizerStartResize' },
@@ -98,22 +98,22 @@ M.quickui = function()
     { 'File &Explorer\t<Leader>e', 'NeoTreeFocusToggle' },
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
+    { '&Undo Tree',                'UndotreeToggle' },
     { '--',                        '' },
     { 'Di&agnostics',              'Lspsaga show_line_diagnostics' },
     { '&Preview Definition',       'Lspsaga peek_definition' },
   })
   vim.fn['quickui#menu#install']('&Navigation', {
-    { '&Find And Replace\t<Leader>rw', 'SearchReplaceSingleBufferCWord' },
-    { 'Live &Grep',                    'Telescope live_grep' },
-    { '--',                            '' },
-    { 'Goto &Definitions\tgd',         'Glance definitions' },
-    { 'Goto T&ype Definitions\tgy',    'Glance type_definitions' },
-    { 'Goto &References\tgR',          'Glance references' },
-    { '--',                            '' },
-    { '&Symbols',                      'Telescope lsp_document_symbols' },
-    { 'Di&agnostics',                  'Trouble document_diagnostics' },
-    { '--',                            '' },
-    { '&TODO',                         'TodoTrouble' },
+    { 'Live &Grep',                 'Telescope live_grep' },
+    { '--',                         '' },
+    { 'Goto &Definitions\tgd',      'Glance definitions' },
+    { 'Goto T&ype Definitions\tgy', 'Glance type_definitions' },
+    { 'Goto &References\tgR',       'Glance references' },
+    { '--',                         '' },
+    { '&Symbols',                   'Telescope lsp_document_symbols' },
+    { 'Di&agnostics',               'Trouble document_diagnostics' },
+    { '--',                         '' },
+    { '&TODO',                      'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&Git', {
     { 'Git Bl&ame',  'Gitsigns toggle_current_line_blame' },
@@ -150,9 +150,11 @@ M.quickui = function()
     { '&Profile',      'Lazy profile' },
   })
   vim.fn['quickui#menu#install']('&Tools', {
-    { '&Treesitter Playground', 'TSPlaygroundToggle' },
-    { '&Generate Document',     'Neogen' },
-    { 'L&uapad',                'Luapad' },
+    { '&Generate Document',  'Neogen' },
+    { 'L&uapad',             'Luapad' },
+    { '&File System',        'Oil' },
+    { '&Emoji Picker',       'Telescope symbols' },
+    { '&Treesitter Inspect', 'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
     { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },
@@ -218,12 +220,6 @@ M.bufferline = function()
         {
           filetype = 'lspsagaoutline',
           text = 'Outline',
-          text_align = 'center',
-          separator = true,
-        },
-        {
-          filetype = 'tsplayground',
-          text = 'Treesitter Playground',
           text_align = 'center',
           separator = true,
         },

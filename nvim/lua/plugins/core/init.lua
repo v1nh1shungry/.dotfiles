@@ -24,13 +24,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = config.treesitter,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-      {
-        'IndianBoy42/tree-sitter-just',
-        config = true,
-      },
-    },
+    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     event = events.enter_buffer,
   },
   {

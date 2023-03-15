@@ -1,4 +1,2 @@
-dotter-rs-bin
-emojify
 fnm-bin
 tmpwatch

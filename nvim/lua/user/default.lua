@@ -1,6 +1,6 @@
 return {
   colorscheme = {
-    terminal = 'darkplus',
+    terminal = 'enfocado',
     firenvim = 'github_light',
   },
   mode = 'climax',

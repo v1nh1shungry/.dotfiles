@@ -67,10 +67,6 @@ return {
     keys = { { '<C-n>', mode = { 'n', 'v' } } },
   },
   {
-    'tpope/vim-rsi',
-    event = events.enter_insert,
-  },
-  {
     'altermo/ultimate-autopair.nvim',
     event = events.enter_insert,
     opts = { cr = { addsemi = {} } },
@@ -83,11 +79,6 @@ return {
   {
     'chrisgrieser/nvim-various-textobjs',
     event = events.enter_buffer,
-  },
-  {
-    'kana/vim-operator-replace',
-    dependencies = 'kana/vim-operator-user',
-    keys = { { 'gr', '<Plug>(operator-replace)' } },
   },
   {
     'tiagovla/scope.nvim',
@@ -123,8 +114,18 @@ return {
     event = events.enter_insert,
   },
   {
-    'ggandor/lightspeed.nvim',
-    config = true,
-    keys = { 's', 'f', 'S', 'F' },
+    'rhysd/clever-f.vim',
+    keys ={
+      { 'f', mode = { 'n', 'x' } },
+      { 'F', mode = { 'n', 'x' } },
+      { 't', mode = { 'n', 'x' } },
+      { 'T', mode = { 'n', 'x' } },
+      { ';', '<Plug>(clever-f-repeat-forward)', mode = { 'n', 'x' } },
+      { ',', '<Plug>(clever-f-repeat-back)', mode = { 'n', 'x' } },
+    },
+  },
+  {
+    'vim-scripts/ReplaceWithRegister',
+    keys = { { 'gr', mode = { 'n', 'v' } } },
   },
 }

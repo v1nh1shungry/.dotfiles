@@ -1,4 +1,4 @@
-local components = require('plugins.ui.lualine.components')
+local components = { basic = require('plugins.ui.lualine.components.basic') }
 
 local config = {
   options = { component_separators = '', section_separators = '' },

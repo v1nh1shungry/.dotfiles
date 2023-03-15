@@ -22,10 +22,8 @@ gdb
 gettext
 git
 git-delta
-github-cli
 glow
 gnu-netcat
-go
 grep
 groff
 gzip
@@ -45,7 +43,6 @@ make
 man-db
 man-pages
 manjaro-keyring
-mdcat
 mold
 msgpack-c
 ncdu

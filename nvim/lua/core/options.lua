@@ -1,13 +1,15 @@
-vim.opt.cmdheight = 0
+vim.opt.clipboard = 'unnamedplus'
 vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
+vim.opt.fillchars = { eob= ' ', fold = ' ', foldopen = '', foldsep = ' ', foldclose = '' }
 vim.opt.helpheight = 10
 vim.opt.laststatus = 0
 vim.opt.list = true
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.ruler = false
 vim.opt.scrolloff = 5
 vim.opt.shell = '/bin/fish'
 vim.opt.shiftround = true

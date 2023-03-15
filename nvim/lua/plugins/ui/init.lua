@@ -38,6 +38,7 @@ return {
     'rcarriga/nvim-notify',
     init = config.notify,
     lazy = true,
+    opts = { top_down = false },
   },
   {
     'simeji/winresizer',

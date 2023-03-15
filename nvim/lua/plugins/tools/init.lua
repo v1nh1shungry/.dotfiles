@@ -1,5 +1,4 @@
 local config = require('plugins.tools.config')
-local events = require('utils.events')
 
 return {
   {
@@ -102,12 +101,7 @@ return {
   {
     'gaoDean/autolist.nvim',
     config = config.autolist,
-    ft = 'markdown',
-  },
-  {
-    'tversteeg/registers.nvim',
-    config = true,
-    keys = { '"', { '<C-r>', mode = 'i' } },
+    event = require('utils.events').enter_insert,
   },
   {
     'Civitasv/cmake-tools.nvim',
@@ -126,5 +120,10 @@ return {
   {
     'mbbill/undotree',
     cmd = 'UndotreeToggle',
+  },
+  {
+    'phaazon/hop.nvim',
+    config = true,
+    keys = { { 'gs', '<Cmd>HopChar1<CR>', mode = { 'n', 'x' } } },
   },
 }

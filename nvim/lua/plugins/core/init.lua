@@ -83,7 +83,7 @@ return {
   {
     'tiagovla/scope.nvim',
     config = true,
-    event = 'TabNew',
+    event = events.enter_buffer,
   },
   {
     'kevinhwang91/nvim-hlslens',

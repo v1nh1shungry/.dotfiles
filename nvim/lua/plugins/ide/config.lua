@@ -7,7 +7,7 @@ local on_attach = function(client, bufnr)
 
   keymap('n', '=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
   keymap('n', '<Leader>rn', '<Cmd>Lspsaga rename<CR>')
-  keymap('n', 'gh', '<Cmd>Lspsaga hover_doc<CR>')
+  keymap('n', 'gh', vim.lsp.buf.hover)
   keymap({ 'n', 'v' }, '<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
   keymap('n', '<Leader>o', '<Cmd>Lspsaga outline<CR>')
   keymap('n', ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
@@ -31,9 +31,10 @@ M.lspconfig = function()
     'neocmake',
     'pyright',
     'rust_analyzer',
+    'tsserver',
   }
 
-  require('mason-lspconfig').setup { automatic_installation = true }
+  require('mason-lspconfig').setup { automatic_installation = { exclude = { 'clangd' } } }
 
   for _, server in ipairs(servers) do
     lspconfig[server].setup {
@@ -94,6 +95,12 @@ M.lspconfig = function()
         },
       },
     },
+  }
+
+  lspconfig.ocamllsp.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    single_file_support = true,
   }
 end
 

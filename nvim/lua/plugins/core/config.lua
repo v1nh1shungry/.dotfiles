@@ -16,6 +16,7 @@ M.treesitter = function()
       'make',
       'markdown',
       'markdown_inline',
+      'ocaml',
       'python',
       'rst',
       'rust',

@@ -47,10 +47,14 @@ mold
 msgpack-c
 ncdu
 neovim-git
+net-tools
 ninja
+ocaml
+opam
 openssh
 p7zip
 pacman
+patch
 pkgconf
 procps-ng
 procs

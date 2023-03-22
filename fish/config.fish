@@ -8,6 +8,8 @@ if status is-interactive
 
     starship init fish | source
 
+    source /home/vinh/.opam/opam-init/init.fish >/dev/null 2>/dev/null; or true
+
     fnm env --use-on-cd | source
     set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
 
@@ -31,14 +33,14 @@ if status is-interactive
     alias diff difft
 
     function proxy
-        if test "$argv" = "unset"
+        if test "$argv" = unset
             set --erase http_proxy
             set --erase https_proxy
-        else if test "$argv" = "host"
+        else if test "$argv" = host
             set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')
             set -gx http_proxy "http://$winip:10811"
             set -gx https_proxy "http://$winip:10811"
-        else if test "$argv" = "github"
+        else if test "$argv" = github
             set -gx http_proxy "http://127.0.0.1:38457"
             set -gx https_proxy "http://127.0.0.1:38457"
         else

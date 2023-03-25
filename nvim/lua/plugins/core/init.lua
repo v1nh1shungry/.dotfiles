@@ -37,11 +37,6 @@ return {
     event = events.enter_insert,
   },
   {
-    'ethanholz/nvim-lastplace',
-    config = true,
-    event = events.enter_buffer,
-  },
-  {
     'RRethy/vim-illuminate',
     config = function() require('illuminate').configure { providers = { 'lsp', 'treesitter' } } end,
     event = events.enter_buffer,

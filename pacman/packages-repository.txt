@@ -28,6 +28,7 @@ grep
 groff
 gzip
 inetutils
+iputils
 jq
 just
 lazygit
@@ -66,7 +67,9 @@ sd
 sed
 starship
 sudo
+tcpdump
 tealdeer
+termshark
 tmux
 tokei
 tree-sitter

@@ -19,6 +19,13 @@ local on_attach = function(client, bufnr)
   if client.supports_method('textDocument/rangeFormatting') then
     keymap('v', '=', function() vim.lsp.buf.format({ async = true }) end)
   end
+
+  require('lsp_signature').on_attach {
+    bind = true,
+    hint_enable = false,
+    hi_parameter = 'IncSearch',
+    handler_opts = { border = 'none' },
+  }
 end
 
 M.lspconfig = function()

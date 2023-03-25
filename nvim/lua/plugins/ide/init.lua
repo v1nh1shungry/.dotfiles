@@ -15,13 +15,9 @@ return {
         config = config.null_ls,
         dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
       },
+      'ray-x/lsp_signature.nvim',
     },
     event = events.enter_buffer,
-  },
-  {
-    'ray-x/lsp_signature.nvim',
-    event = events.enter_insert,
-    opts = { hint_enable = false, hi_parameter = 'IncSearch' },
   },
   {
     'j-hui/fidget.nvim',

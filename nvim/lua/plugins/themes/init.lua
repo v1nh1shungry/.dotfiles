@@ -6,4 +6,5 @@ return {
   { 'catppuccin/nvim', name = 'catppuccin', lazy = true },
   { 'projekt0n/github-nvim-theme', lazy = true },
   { 'nyoom-engineering/oxocarbon.nvim', lazy = true },
+  { 'JoosepAlviste/palenightfall.nvim', lazy = true },
 }

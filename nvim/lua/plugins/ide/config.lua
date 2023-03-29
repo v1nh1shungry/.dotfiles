@@ -103,12 +103,6 @@ M.lspconfig = function()
       },
     },
   }
-
-  lspconfig.ocamllsp.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    single_file_support = true,
-  }
 end
 
 M.null_ls = function()
@@ -120,13 +114,11 @@ M.null_ls = function()
     sources = {
       actions.gitsigns,
       actions.gitrebase,
-      actions.shellcheck,
       diagnostics.fish,
       diagnostics.rstcheck,
       diagnostics.trail_space,
       formatting.autopep8,
       formatting.fish_indent,
-      formatting.shfmt,
       formatting.trim_newlines,
       formatting.trim_whitespace,
     },

@@ -30,3 +30,6 @@
 
 [http]
   sslverify = false
+
+[pull]
+  rebase = true

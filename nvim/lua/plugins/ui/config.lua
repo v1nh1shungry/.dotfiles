@@ -118,7 +118,10 @@ M.quickui = function()
   vim.fn['quickui#menu#install']('&Git', {
     { 'Git Bl&ame',  'Gitsigns toggle_current_line_blame' },
     { 'Git &Diff',   'Gvdiffsplit' },
+    { '--',          '' },
     { 'Git &Remove', 'GDelete' },
+    { 'Git Re&name', 'GRename' },
+    { '--',          '' },
     { '&Magit',      'Neogit' },
   })
   vim.fn['quickui#menu#install']('&Build', {

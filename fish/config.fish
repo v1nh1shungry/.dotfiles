@@ -29,7 +29,6 @@ if status is-interactive
     alias ll 'ls -al --git'
     alias tree 'exa -T --icons --level 3 --ignore-glob=".git"'
     alias rm 'echo Use `trash-put` instead 🤗; false'
-    alias ps procs
     alias diff difft
 
     function proxy

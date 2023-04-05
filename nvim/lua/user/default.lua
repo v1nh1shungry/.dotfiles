@@ -1,8 +1,5 @@
 return {
-  colorscheme = {
-    terminal = 'enfocado',
-    firenvim = 'github_light',
-  },
+  colorscheme = 'enfocado',
   mode = 'climax',
   statusline_theme = 'vscode',
   plugins = {},

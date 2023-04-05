@@ -2,6 +2,7 @@ arcanist-git
 archlinuxcn-keyring
 bash-completion
 bat
+bear
 binutils
 btop
 ccache

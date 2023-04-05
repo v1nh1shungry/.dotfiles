@@ -64,9 +64,4 @@ alias ls='exa --icons'
 alias la='ls -a'
 alias ll='ls -al --git'
 alias tree='exa -T --icons --level 3 --ignore-glob=".git"'
-alias tp=trash-put
-alias te=trash-empty
-alias tr=trash-restore
-alias tl=trash-list
-alias ps=procs
 alias diff=difft

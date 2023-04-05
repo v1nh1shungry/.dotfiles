@@ -13,20 +13,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local modules = {}
-local config = ''
-local lazy_specs = {
-  {
-    'glacambre/firenvim',
-    build = function() vim.fn['firenvim#install'](0) end,
-    cond = not not vim.g.started_by_firenvim,
-  },
-}
+local config = require('user').mode
+local lazy_specs = {}
 
-if not not vim.g.started_by_firenvim then
-  config = 'minimal'
-else
-  config = require('user').mode
-end
 if config == 'minimal' then
   modules = { 'core', 'themes' }
 elseif config == 'ide' then
@@ -47,7 +36,7 @@ for _, spec in ipairs(require('user').plugins) do
 end
 
 require('lazy').setup(lazy_specs, {
-  install = { colorscheme = { require('user').colorscheme.terminal } },
+  install = { colorscheme = { require('user').colorscheme } },
   performance = {
     rtp = {
       disabled_plugins = {

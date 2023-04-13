@@ -46,3 +46,12 @@ nnoremap('<Leader>q', function()
     vim.cmd 'cclose'
   end
 end)
+
+nnoremap('<M-j>', '<Cmd>m .+1<CR>==')
+nnoremap('<M-k>', '<Cmd>m .-2<CR>==')
+vnoremap('<M-j>', ":m '>+1<cr>gv=gv")
+vnoremap("<M-k>", ":m '<-2<cr>gv=gv")
+
+inoremap(',', ',<c-g>u')
+inoremap('.', '.<c-g>u')
+inoremap(';', ';<c-g>u')

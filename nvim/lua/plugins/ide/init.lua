@@ -17,7 +17,6 @@ return {
       },
       'ray-x/lsp_signature.nvim',
     },
-    event = events.enter_buffer,
   },
   {
     'j-hui/fidget.nvim',

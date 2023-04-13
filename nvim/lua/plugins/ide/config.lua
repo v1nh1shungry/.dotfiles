@@ -205,7 +205,7 @@ M.tree = function()
       filtered_items = {
         hide_dotfiles = false,
         hide_hidden = false,
-        hide_by_name = { '.git', 'node_modules', 'build' },
+        hide_by_name = { '.cache', '.git', '.xmake', 'build', 'node_modules' },
       },
       hijack_netrw_behavior = 'disabled',
     },
@@ -278,18 +278,12 @@ M.dap = function()
 
   require('mason-nvim-dap').setup {
     ensure_installed = { 'codelldb' },
-    automatic_setup = true,
-  }
-  require('mason-nvim-dap').setup_handlers {
-    codelldb = function(source_name)
-      require('mason-nvim-dap.automatic_setup')(source_name)
-
-      local standalone = require('plugins.ide.dap.standalone')
-      dap.configurations.c = standalone.c
-      dap.configurations.cpp = standalone.cpp
-      dap.configurations.rust = standalone.rust
-      dap.configurations.zig = standalone.zig
-    end
+    handlers = {
+      codelldb = function(config)
+        config.configurations = require('plugins.ide.dap.standalone')
+        require('mason-nvim-dap').default_setup(config)
+      end
+    }
   }
 end
 

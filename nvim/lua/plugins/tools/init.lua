@@ -7,7 +7,6 @@ return {
     config = config.telescope,
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope-file-browser.nvim',
       'nvim-telescope/telescope-symbols.nvim',
     },
     keys = { { '<Leader>h', '<Cmd>Telescope help_tags<CR>' }, { '<C-p>', '<Cmd>Telescope find_files<CR>' } },
@@ -53,11 +52,6 @@ return {
     'danymat/neogen',
     cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
-  },
-  {
-    'lambdalisue/suda.vim',
-    cmd = { 'SudaRead', 'SudaWrite' },
-    config = function() vim.g['suda#nopass'] = true end,
   },
   {
     'TimUntersberger/neogit',
@@ -107,15 +101,6 @@ return {
     'Civitasv/cmake-tools.nvim',
     cmd = 'CMakeGenerate',
     opts = { cmake_build_directory = 'build' },
-  },
-  {
-    'rafcamlet/nvim-luapad',
-    cmd = 'Luapad',
-  },
-  {
-    'stevearc/oil.nvim',
-    cmd = 'Oil',
-    config = true,
   },
   {
     'mbbill/undotree',

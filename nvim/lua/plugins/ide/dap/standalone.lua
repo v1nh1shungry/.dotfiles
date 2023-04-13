@@ -1,6 +1,4 @@
-local M = {}
-
-M.cpp = {
+return {
   {
     name = 'standalone',
     type = 'codelldb',
@@ -9,9 +7,3 @@ M.cpp = {
     cwd = '${workspaceFolder}',
   },
 }
-
-M.c = M.cpp
-M.rust = M.cpp
-M.zig = M.cpp
-
-return M

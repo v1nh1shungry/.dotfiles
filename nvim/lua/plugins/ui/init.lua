@@ -68,13 +68,4 @@ return {
     'mrjones2014/nvim-ts-rainbow',
     event = events.enter_buffer,
   },
-  {
-    'kevinhwang91/nvim-ufo',
-    config = config.ufo,
-    dependencies = {
-      'kevinhwang91/promise-async',
-      'luukvbaal/statuscol.nvim',
-    },
-    event = events.enter_buffer,
-  },
 }

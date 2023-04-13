@@ -17,14 +17,12 @@ if vim.fn.has('wsl') == 1 then
 end
 
 local icons = require('utils.icons').diagnostics
-
 local signs = {
   { name = 'DiagnosticSignError', text = icons.error },
   { name = 'DiagnosticSignWarn', text = icons.warning },
   { name = 'DiagnosticSignHint', text = icons.hint },
   { name = 'DiagnosticSignInfo', text = icons.info },
 }
-
 for _, sign in ipairs(signs) do
   vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = '' })
 end
@@ -34,3 +32,5 @@ vim.diagnostic.config {
   update_in_insert = true,
   severity_sort = true,
 }
+
+vim.g.markdown_recommended_style = 0

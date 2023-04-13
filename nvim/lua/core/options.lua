@@ -5,8 +5,10 @@ vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
-vim.opt.fillchars = { eob = ' ', fold = ' ', foldopen = '', foldsep = ' ', foldclose = '' }
+vim.opt.fillchars = { eob = ' ' }
 vim.opt.formatoptions = 'qjl1'
+vim.opt.grepformat = '%f:%l:%c:%m'
+vim.opt.grepprg = 'rg --vimgrep'
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.infercase = true
@@ -37,7 +39,7 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 vim.opt.undofile = false
-vim.opt.updatetime = 300
+vim.opt.updatetime = 200
 vim.opt.virtualedit = 'block'
 vim.opt.winblend = 10
 vim.opt.wrap = false

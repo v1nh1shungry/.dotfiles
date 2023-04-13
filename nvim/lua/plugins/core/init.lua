@@ -33,10 +33,6 @@ return {
     keys = { { 'gS', '<Cmd>TSJSplit<CR>' }, { 'gJ', '<Cmd>TSJJoin<CR>' } },
   },
   {
-    'RRethy/nvim-treesitter-endwise',
-    event = events.enter_insert,
-  },
-  {
     'RRethy/vim-illuminate',
     config = function() require('illuminate').configure { providers = { 'lsp', 'treesitter' } } end,
     event = events.enter_buffer,

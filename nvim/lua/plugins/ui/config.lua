@@ -34,7 +34,7 @@ M.alpha = function()
   dashboard.section.buttons.val = {
     dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
     dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
-    dashboard.button('g', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
+    dashboard.button('p', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
     dashboard.button('l', '鈴' .. ' Lazy', '<Cmd>Lazy<CR>'),
     dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
   }
@@ -72,12 +72,10 @@ M.quickui = function()
   vim.fn['quickui#menu#reset']()
   vim.fn['quickui#menu#install']('&File', {
     { '&Open\t<C-p>',   'Telescope find_files' },
-    { '&Browse',        'Telescope file_browser' },
     { 'Open Settin&gs', 'e ~/.nvimrc.lua' },
     { '--',             '' },
     { '&Save\t<C-s>',   'write' },
     { 'Save &All',      'wall' },
-    { 'Sudo Sa&ve',     'SudaWrite' },
     { '--',             '' },
     { '&Delete',        'Delete' },
     { '&Rename',        'lua vim.ui.input({ prompt = "Rename to: " }, function(input) vim.cmd.Rename(input) end)' },
@@ -154,8 +152,6 @@ M.quickui = function()
   })
   vim.fn['quickui#menu#install']('&Tools', {
     { '&Generate Document',  'Neogen' },
-    { 'L&uapad',             'Luapad' },
-    { '&File System',        'Oil' },
     { '&Emoji Picker',       'Telescope symbols' },
     { '&Treesitter Inspect', 'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
   })
@@ -237,28 +233,6 @@ M.bufferline = function()
     },
   }
   require('utils.keymaps').nnoremap('gb', '<Cmd>BufferLinePick<CR>')
-end
-
-M.ufo = function()
-  vim.o.foldcolumn = '1'
-  vim.o.foldlevel = 99
-  vim.o.foldlevelstart = 99
-  vim.o.foldenable = true
-  require('ufo').setup { provider_selector = function(_, _, _) return { 'treesitter', 'indent' } end }
-  local builtin = require('statuscol.builtin')
-  require('statuscol').setup {
-    relculright = true,
-    segments = {
-      { text = { '%s' },                       click = 'v:lua.ScSa' },
-      { text = { builtin.lnumfunc },           click = 'v:lua.ScLa', },
-      { text = { ' ', builtin.foldfunc, ' ' }, click = 'v:lua.ScFa' },
-    },
-    setopt = true,
-  }
-  vim.api.nvim_create_autocmd('FileType', {
-    command = 'UfoDetach',
-    pattern = excluded_filetypes,
-  })
 end
 
 return M

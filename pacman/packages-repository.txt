@@ -23,10 +23,12 @@ gettext
 git
 git-delta
 glow
+gnu-netcat
 grep
 groff
 gzip
 inetutils
+intel-oneapi-tbb
 iputils
 jq
 just
@@ -36,6 +38,7 @@ libtool
 libvterm
 libxcrypt-compat
 llvm-libs
+lsof
 lua
 luajit
 make
@@ -60,7 +63,9 @@ ripgrep
 rustup
 sed
 starship
+strace
 sudo
+tcpdump
 tealdeer
 tmux
 tokei
@@ -69,6 +74,5 @@ unibilium
 unzip
 wget
 which
-wtf
 xmake
 yay

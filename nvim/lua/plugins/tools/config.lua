@@ -13,9 +13,7 @@ M.telescope = function()
       prompt_prefix = '🔎 ',
       selection_caret = '➤ ',
     },
-    extensions = { file_browser = { hidden = true } },
   }
-  telescope.load_extension 'file_browser'
 end
 
 M.eunuch = function()

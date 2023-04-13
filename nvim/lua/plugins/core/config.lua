@@ -8,7 +8,6 @@ M.treesitter = function()
       'cmake',
       'cpp',
       'fish',
-      'go',
       'javascript',
       'json',
       'lua',
@@ -22,10 +21,8 @@ M.treesitter = function()
       'vim',
       'vimdoc',
       'yaml',
-      'zig',
     },
     highlight = { enable = true, additional_vim_regex_highlighting = true },
-    indent = { enable = true },
     matchup = { enable = true },
     textobjects = {
       select = {
@@ -59,9 +56,7 @@ M.treesitter = function()
         },
       },
     },
-    query_linter = { enable = true },
     rainbow = { enable = true },
-    endwise = { enable = true },
   }
   vim.cmd [[
   set foldmethod=expr

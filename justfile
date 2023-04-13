@@ -1,8 +1,8 @@
-deploy-nightly:
-  git checkout nightly
+deploy-github:
+  git checkout main
   pacman -Qqen > ./pacman/packages-repository.txt
   pacman -Qqem > ./pacman/packages-AUR.txt
   pipx list --short > ./pip/packages-pipx.txt
   git add -A
   git commit -m ":arrows_counterclockwise: update $(date +'%Y.%m.%d')"
-  git push origin nightly
+  git push origin main

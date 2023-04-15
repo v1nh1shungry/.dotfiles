@@ -29,7 +29,7 @@ autocmd('InsertLeave', {
 
 autocmd('FileType', {
   command = 'setlocal nonumber norelativenumber',
-  pattern = 'qf',
+  pattern = { 'qf', 'query' },
 })
 
 autocmd('BufReadPost', {

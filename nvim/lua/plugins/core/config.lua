@@ -29,13 +29,13 @@ M.treesitter = function()
         enable = true,
         lookahead = true,
         keymaps = {
-          ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
-          ['ac'] = '@class.outer',
           ['ic'] = '@class.inner',
-          ['aa'] = '@parameter.outer',
+          ['ac'] = '@class.outer',
+          ['if'] = '@function.inner',
+          ['af'] = '@function.outer',
           ['ia'] = '@parameter.inner',
-          ['a/'] = '@comment.outer',
+          ['aa'] = '@parameter.outer',
+          ['as'] = '@statement.outer',
         },
       },
       swap = {
@@ -79,13 +79,6 @@ M.tabout = function()
     },
   }
 end
-
-M.indent_blankline = {
-  show_trailing_blankline_indent = false,
-  show_current_context = true,
-  show_current_context_start = true,
-  use_treesitter = true,
-}
 
 M.hlslens = function()
   require('hlslens').setup { calm_down = true, nearest_only = true }

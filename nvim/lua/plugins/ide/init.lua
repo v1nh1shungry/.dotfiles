@@ -16,7 +16,12 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
       },
       'ray-x/lsp_signature.nvim',
+      {
+        'lvimuser/lsp-inlayhints.nvim',
+        config = true,
+      },
     },
+    event = events.enter_buffer,
   },
   {
     'j-hui/fidget.nvim',

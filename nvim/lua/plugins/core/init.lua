@@ -17,7 +17,8 @@ return {
     event = events.enter_buffer,
   },
   {
-    'wellle/targets.vim',
+    'echasnovski/mini.ai',
+    config = function() require('mini.ai').setup() end,
     event = events.enter_buffer,
   },
   {
@@ -40,7 +41,7 @@ return {
   {
     'lukas-reineke/indent-blankline.nvim',
     event = events.enter_buffer,
-    opts = config.indent_blankline,
+    opts = { show_trailing_blankline_indent = false, show_current_context = true },
   },
   {
     'numToStr/Comment.nvim',
@@ -48,9 +49,9 @@ return {
     keys = { { 'gc', mode = { 'n', 'v' } } },
   },
   {
-    'kylechui/nvim-surround',
-    config = true,
-    keys = { 'ys', 'yS', 'cs', 'cS', 'ds', 'dS', { 's', mode = 'x' }, { 'S', mode = 'x' } },
+    'echasnovski/mini.surround',
+    config = function() require('mini.surround').setup() end,
+    keys = { { 'sa', mode = { 'n', 'v' } }, 'sd', 'sf', 'sF', 'sh', 'sr', 'sn' },
   },
   {
     'mg979/vim-visual-multi',
@@ -70,6 +71,7 @@ return {
   {
     'chrisgrieser/nvim-various-textobjs',
     event = events.enter_buffer,
+    opts = { useDefaultKeymaps = true, },
   },
   {
     'tiagovla/scope.nvim',
@@ -83,12 +85,12 @@ return {
       '/',
       '?',
       { '<C-n>', mode = { 'n', 'v' } }, -- integrate with vim-visual-multi
-      { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { '*', [[*<Cmd>lua require('hlslens').start()<CR>]] },
-      { '#', [[#<Cmd>lua require('hlslens').start()<CR>]] },
-      { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]] },
-      { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'n',     [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { 'N',     [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { '*',     [[*<Cmd>lua require('hlslens').start()<CR>]] },
+      { '#',     [[#<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'g*',    [[g*<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'g#',    [[g#<Cmd>lua require('hlslens').start()<CR>]] },
     },
   },
   {
@@ -106,13 +108,13 @@ return {
   },
   {
     'rhysd/clever-f.vim',
-    keys ={
+    keys = {
       { 'f', mode = { 'n', 'x' } },
       { 'F', mode = { 'n', 'x' } },
       { 't', mode = { 'n', 'x' } },
       { 'T', mode = { 'n', 'x' } },
       { ';', '<Plug>(clever-f-repeat-forward)', mode = { 'n', 'x' } },
-      { ',', '<Plug>(clever-f-repeat-back)', mode = { 'n', 'x' } },
+      { ',', '<Plug>(clever-f-repeat-back)',    mode = { 'n', 'x' } },
     },
   },
   {

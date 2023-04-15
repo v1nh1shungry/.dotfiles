@@ -23,6 +23,7 @@ M.eunuch = function()
 end
 
 M.autolist = function()
+  local _, _ = pcall(require, 'cmp') -- let `cmp` comes first if present
   local autolist = require('autolist')
   autolist.setup()
   autolist.create_mapping_hook('i', '<CR>', autolist.new)

@@ -111,4 +111,9 @@ return {
     config = true,
     keys = { { 'gs', '<Cmd>HopChar1<CR>', mode = { 'n', 'x' } } },
   },
+  {
+    'iamcco/markdown-preview.nvim',
+    build = function() vim.fn['mkdp#util#install']() end,
+    ft = 'markdown',
+  },
 }

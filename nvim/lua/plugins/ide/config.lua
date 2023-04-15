@@ -26,6 +26,8 @@ local on_attach = function(client, bufnr)
     hi_parameter = 'IncSearch',
     handler_opts = { border = 'none' },
   }
+
+  require('lsp-inlayhints').on_attach(client, bufnr)
 end
 
 M.lspconfig = function()
@@ -34,7 +36,6 @@ M.lspconfig = function()
   local servers = {
     'bashls',
     'jsonls',
-    'marksman',
     'neocmake',
     'pyright',
     'rust_analyzer',
@@ -113,9 +114,7 @@ M.null_ls = function()
   require('null-ls').setup {
     sources = {
       actions.gitsigns,
-      actions.gitrebase,
       diagnostics.fish,
-      diagnostics.rstcheck,
       diagnostics.trail_space,
       formatting.autopep8,
       formatting.fish_indent,
@@ -183,7 +182,7 @@ M.cmp = function()
     }, {
       { name = 'buffer' },
       { name = 'path' },
-      { name = 'rg',    keyword_length = 5 },
+      { name = 'rg',      keyword_length = 5 },
     })
   }
 

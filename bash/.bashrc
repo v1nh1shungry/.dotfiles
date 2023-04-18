@@ -36,10 +36,6 @@ shopt -s cdspell 2> /dev/null
 CDPATH="."
 shopt -s cdable_vars
 
-export PATH=$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export PATH=/mnt/c/Windows/System32:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:$PATH
-export PATH=$HOME/github/llvm-project/build/bin:$PATH
-
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
 export LESS_TERMCAP_me=$'\E[0m'

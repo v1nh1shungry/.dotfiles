@@ -9,6 +9,7 @@ vim.opt.fillchars = { eob = ' ' }
 vim.opt.formatoptions = 'qjl1'
 vim.opt.grepformat = '%f:%l:%c:%m'
 vim.opt.grepprg = 'rg --vimgrep'
+vim.opt.guifont = [[MesloLGS\ NFM:h12]]
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.infercase = true

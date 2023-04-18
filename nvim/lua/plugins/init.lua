@@ -12,17 +12,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local modules = {}
-local config = require('user').mode
+local modules = { 'core', 'ide', 'ui', 'tools', 'themes' }
 local lazy_specs = {}
-
-if config == 'minimal' then
-  modules = { 'core', 'themes' }
-elseif config == 'ide' then
-  modules = { 'core', 'ide', 'themes' }
-else
-  modules = { 'core', 'ide', 'ui', 'tools', 'themes' }
-end
 
 for _, module in ipairs(modules) do
   local module_specs = require('plugins.' .. module)
@@ -40,34 +31,14 @@ require('lazy').setup(lazy_specs, {
   performance = {
     rtp = {
       disabled_plugins = {
-        '2html_plugin',
-        'editorconfig',
-        'getscript',
-        'getscriptPlugin',
         'gzip',
-        'health',
-        'logipat',
-        'man',
         'matchit',
         'matchparen',
-        'netrw',
-        'netrwFileHandlers',
         'netrwPlugin',
-        'netrwSettings',
-        'nvim',
         'rplugin',
-        'rrhelper',
-        'shada',
-        'spec',
-        'spellfile',
-        'spellfile_plugin',
-        'tar',
         'tarPlugin',
         'tohtml',
         'tutor',
-        'vimball',
-        'vimballPlugin',
-        'zip',
         'zipPlugin',
       },
     },

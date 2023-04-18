@@ -1,14 +1,8 @@
 local autocmd = vim.api.nvim_create_autocmd
 
 autocmd('FileType', {
-  callback = function(opt)
-    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'j', 'gj', { noremap = true, silent = true })
-    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'k', 'gk', { noremap = true, silent = true })
-    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'gj', 'j', { noremap = true, silent = true })
-    vim.api.nvim_buf_set_keymap(opt.buf, 'n', 'gk', 'k', { noremap = true, silent = true })
-    vim.cmd.setlocal 'wrap conceallevel=3'
-  end,
-  pattern = 'markdown',
+  callback = function() vim.cmd.setlocal 'wrap' end,
+  pattern = { 'gitcommit', 'markdown' },
 })
 
 autocmd('TextYankPost', {
@@ -46,5 +40,24 @@ autocmd({ 'BufWritePre' }, {
   callback = function(event)
     local file = vim.loop.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
+  end,
+})
+
+autocmd({ 'InsertLeave', 'WinEnter' }, {
+  callback = function()
+    local ok, cl = pcall(vim.api.nvim_win_get_var, 0, 'auto-cursorline')
+    if ok and cl then
+      vim.wo.cursorline = true
+      vim.api.nvim_win_del_var(0, 'auto-cursorline')
+    end
+  end,
+})
+autocmd({ 'InsertEnter', 'WinLeave' }, {
+  callback = function()
+    local cl = vim.wo.cursorline
+    if cl then
+      vim.api.nvim_win_set_var(0, 'auto-cursorline', cl)
+      vim.wo.cursorline = false
+    end
   end,
 })

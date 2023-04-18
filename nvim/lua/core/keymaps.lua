@@ -1,4 +1,5 @@
 local map = require('utils.keymaps').map
+local nmap = require('utils.keymaps').nmap
 local nnoremap = require('utils.keymaps').nnoremap
 local inoremap = require('utils.keymaps').inoremap
 local tnoremap = require('utils.keymaps').tnoremap
@@ -55,3 +56,6 @@ vnoremap("<M-k>", ":m '<-2<cr>gv=gv")
 inoremap(',', ',<c-g>u')
 inoremap('.', '.<c-g>u')
 inoremap(';', ';<c-g>u')
+
+nmap('j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
+nmap('k', "v:count == 0 ? 'gk' : 'k'", { expr = true })

@@ -1,23 +1,26 @@
 local M = {}
 
 local on_attach = function(client, bufnr)
-  local keymap = function(modes, from, to)
-    vim.keymap.set(modes, from, to, { noremap = true, silent = true, buffer = bufnr })
+  local nnoremap = function(from, to)
+    require('utils.keymaps').nnoremap(from, to, { buffer = bufnr })
+  end
+  local vnoremap = function(from, to)
+    require('utils.keymaps').vnoremap(from, to, { buffer = bufnr })
   end
 
-  keymap('n', '=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
-  keymap('n', '<Leader>rn', '<Cmd>Lspsaga rename<CR>')
-  keymap('n', 'gh', vim.lsp.buf.hover)
-  keymap({ 'n', 'v' }, '<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
-  keymap('n', '<Leader>o', '<Cmd>Lspsaga outline<CR>')
-  keymap('n', ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
-  keymap('n', '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>')
-  keymap('n', 'gd', '<Cmd>Glance definitions<CR>')
-  keymap('n', 'gy', '<Cmd>Glance type_definitions<CR>')
-  keymap('n', 'gR', '<Cmd>Glance references<CR>')
+  nnoremap('=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
+  nnoremap('gh', vim.lsp.buf.hover)
+  nnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
+  vnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
+  nnoremap('<Leader>o', '<Cmd>Lspsaga outline<CR>')
+  nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
+  nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>')
+  nnoremap('gd', '<Cmd>Glance definitions<CR>')
+  nnoremap('gy', '<Cmd>Glance type_definitions<CR>')
+  nnoremap('gR', '<Cmd>Glance references<CR>')
 
   if client.supports_method('textDocument/rangeFormatting') then
-    keymap('v', '=', function() vim.lsp.buf.format({ async = true }) end)
+    vnoremap('=', function() vim.lsp.buf.format({ async = true }) end)
   end
 
   require('lsp_signature').on_attach {
@@ -35,6 +38,7 @@ M.lspconfig = function()
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   local servers = {
     'bashls',
+    'gopls',
     'jsonls',
     'neocmake',
     'pyright',

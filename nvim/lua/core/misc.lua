@@ -1,16 +1,18 @@
 vim.cmd 'filetype plugin indent on'
-if vim.fn.exists('syntax_on') ~= 1 then vim.cmd([[syntax enable]]) end
+if vim.fn.exists('syntax_on') ~= 1 then
+  vim.cmd([[syntax enable]])
+end
 
 if vim.fn.has('wsl') == 1 then
   vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {
-      ['+'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -i --crlf',
-      ['*'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -i --crlf',
+      ['+'] = 'win32yank.exe -i --crlf',
+      ['*'] = 'win32yank.exe -i --crlf',
     },
     paste = {
-      ['+'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -o --lf',
-      ['*'] = '/mnt/d/scoop/apps/win32yank/current/win32yank.exe -o --lf',
+      ['+'] = 'win32yank.exe -o --lf',
+      ['*'] = 'win32yank.exe -o --lf',
     },
     cache_enabled = 0,
   }
@@ -34,3 +36,5 @@ vim.diagnostic.config {
 }
 
 vim.g.markdown_recommended_style = 0
+
+vim.cmd.aunmenu 'PopUp'

@@ -50,8 +50,22 @@ return {
   },
   {
     'echasnovski/mini.surround',
-    config = function() require('mini.surround').setup() end,
-    keys = { { 'sa', mode = { 'n', 'v' } }, 'sd', 'sf', 'sF', 'sh', 'sr', 'sn' },
+    config = function(_, opts) require('mini.surround').setup(opts) end,
+    keys = { { 'ys', mode = { 'n', 'x' } }, 'ds', 'cs' },
+    opts = {
+      mappings = {
+        add = 'ys',
+        delete = 'ds',
+        find = '',
+        find_left = '',
+        highlight = '',
+        replace = 'cs',
+        update_n_lines = '',
+        suffix_last = '',
+        suffix_next = '',
+      },
+      search_method = 'cover_or_next',
+    },
   },
   {
     'mg979/vim-visual-multi',
@@ -103,7 +117,7 @@ return {
   },
   {
     'keaising/im-select.nvim',
-    config = config.im_select,
+    config = true,
     event = events.enter_insert,
   },
   {

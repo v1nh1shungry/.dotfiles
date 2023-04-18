@@ -68,10 +68,4 @@ return {
     'mrjones2014/nvim-ts-rainbow',
     event = events.enter_buffer,
   },
-  {
-    'b0o/incline.nvim',
-    config = config.incline,
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    event = events.enter_buffer,
-  },
 }

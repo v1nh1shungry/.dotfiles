@@ -24,6 +24,7 @@ git
 git-delta
 glow
 gnu-netcat
+go
 grep
 groff
 gzip

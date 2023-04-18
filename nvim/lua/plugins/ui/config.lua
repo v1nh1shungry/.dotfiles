@@ -97,7 +97,6 @@ M.quickui = function()
     { 'File &Explorer\t<Leader>e', 'NeoTreeFocusToggle' },
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
-    { '&Undo Tree',                'UndotreeToggle' },
     { '--',                        '' },
     { 'Di&agnostics',              'Lspsaga show_line_diagnostics' },
     { '&Preview Definition',       'Lspsaga peek_definition' },
@@ -119,7 +118,7 @@ M.quickui = function()
     { 'Git &Diff',   'Gvdiffsplit' },
     { '--',          '' },
     { 'Git &Remove', 'GDelete' },
-    { 'Git Re&name', 'GRename' },
+    { 'Git Re&name', 'lua vim.ui.input({ prompt = "Rename to:" }, function(input) vim.cmd.GRename(input) end)' },
     { '--',          '' },
     { '&Magit',      'Neogit' },
   })
@@ -148,8 +147,9 @@ M.quickui = function()
     { '&Clean Unused', 'Lazy clean' },
     { '--',            '' },
     { 'H&ome',         'Lazy home' },
-    { '&Mason',        'Mason' },
     { '&Profile',      'Lazy profile' },
+    { '--',            '' },
+    { '&Mason',        'Mason' },
   })
   vim.fn['quickui#menu#install']('&Tools', {
     { '&Generate Document',  'Neogen' },
@@ -240,23 +240,6 @@ M.bufferline = function()
     },
   }
   require('utils.keymaps').nnoremap('gb', '<Cmd>BufferLinePick<CR>')
-end
-
-M.incline = function()
-  require('incline').setup({
-    highlight = {
-      groups = {
-        InclineNormal = { guibg = "#FC56B1", guifg = '#000000' },
-        InclineNormalNC = { guifg = "#FC56B1", guibg = '#000000' },
-      },
-    },
-    window = { margin = { vertical = 0, horizontal = 1 } },
-    render = function(props)
-      local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ':t')
-      local icon, color = require('nvim-web-devicons').get_icon_color(filename)
-      return { { icon, guifg = color }, { ' ' }, { filename } }
-    end,
-  })
 end
 
 return M

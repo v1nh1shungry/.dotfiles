@@ -1,59 +1,73 @@
 local M = {}
 
-M.nmap = function(from, to)
-  vim.keymap.set('n', from, to, { silent = true })
+M.nmap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('n', from, to, vim.tbl_extend('keep', opts, { silent = true }))
 end
 
-M.vmap = function(from, to)
-  vim.keymap.set('v', from, to, { silent = true })
+M.vmap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('v', from, to, vim.tbl_extend('keep', opts, { silent = true }))
 end
 
-M.imap = function(from, to)
-  vim.keymap.set('i', from, to, { silent = true })
+M.imap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('i', from, to, vim.tbl_extend('keep', opts, { silent = true }))
 end
 
-M.cmap = function(from, to)
-  vim.keymap.set('c', from, to)
+M.cmap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('c', from, to, vim.tbl_extend('keep', opts, { silent = true }))
 end
 
-M.tmap = function(from, to)
-  vim.keymap.set('t', from, to, { silent = true })
+M.tmap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('t', from, to, vim.tbl_extend('keep', opts, { silent = true }))
 end
 
-M.xmap = function(from, to)
-  vim.keymap.set('x', from, to, { silent = true })
+M.xmap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('x', from, to, vim.tbl_extend('keep', opts, { silent = true }))
 end
 
-M.map = function(from, to)
-  vim.keymap.set('', from, to, { silent = true })
+M.map = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('', from, to, vim.tbl_extend('keep', opts, { silent = true }))
 end
 
-M.nnoremap = function(from, to)
-  vim.keymap.set('n', from, to, { noremap = true, silent = true })
+M.nnoremap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('n', from, to, vim.tbl_extend('keep', opts, { noremap = true, silent = true  }))
 end
 
-M.vnoremap = function(from, to)
-  vim.keymap.set('v', from, to, { noremap = true, silent = true })
+M.vnoremap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('v', from, to, vim.tbl_extend('keep', opts, { noremap = true, silent = true  }))
 end
 
-M.inoremap = function(from, to)
-  vim.keymap.set('i', from, to, { noremap = true, silent = true })
+M.inoremap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('i', from, to, vim.tbl_extend('keep', opts, { noremap = true, silent = true  }))
 end
 
-M.cnoremap = function(from, to)
-  vim.keymap.set('c', from, to, { noremap = true })
+M.cnoremap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('c', from, to, vim.tbl_extend('keep', opts, { noremap = true, silent = true  }))
 end
 
-M.tnoremap = function(from, to)
-  vim.keymap.set('t', from, to, { noremap = true, silent = true })
+M.tnoremap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('t', from, to, vim.tbl_extend('keep', opts, { noremap = true, silent = true  }))
 end
 
-M.xnoremap = function(from, to)
-  vim.keymap.set('x', from, to, { noremap = true, silent = true })
+M.xnoremap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('x', from, to, vim.tbl_extend('keep', opts, { noremap = true, silent = true  }))
 end
 
-M.noremap = function(from, to)
-  vim.keymap.set('', from, to, { noremap = true, silent = true })
+M.noremap = function(from, to, opts)
+  opts = opts or {}
+  vim.keymap.set('', from, to, vim.tbl_extend('keep', opts, { noremap = true, silent = true  }))
 end
 
 return M

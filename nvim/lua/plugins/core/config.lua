@@ -8,6 +8,7 @@ M.treesitter = function()
       'cmake',
       'cpp',
       'fish',
+      'go',
       'javascript',
       'json',
       'lua',
@@ -15,7 +16,6 @@ M.treesitter = function()
       'markdown',
       'markdown_inline',
       'python',
-      'rst',
       'rust',
       'toml',
       'vim',
@@ -58,11 +58,6 @@ M.treesitter = function()
     },
     rainbow = { enable = true },
   }
-  vim.cmd [[
-  set foldmethod=expr
-  set foldexpr=nvim_treesitter#foldexpr()
-  set nofoldenable
-  ]]
 end
 
 M.tabout = function()
@@ -96,14 +91,6 @@ end
 M.visual_multi = function()
   vim.g.VM_silent_exit = true
   vim.g.VM_set_statusline = 0
-end
-
-M.im_select = function()
-  local opts = {}
-  if vim.fn.has('wsl') then
-    opts = { default_command = '/mnt/d/scoop/apps/im-select/current/im-select.exe' }
-  end
-  require('im_select').setup(opts)
 end
 
 return M

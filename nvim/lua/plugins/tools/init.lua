@@ -73,13 +73,6 @@ return {
     cmd = 'FeMaco',
   },
   {
-    'cbochs/portal.nvim',
-    keys = {
-      { '<C-o>', '<Cmd>Portal jumplist backward<CR>' },
-      { '<C-i>', '<Cmd>Portal jumplist forward<CR>' },
-    },
-  },
-  {
     'tpope/vim-fugitive',
     cmd = { 'Gvdiffsplit', 'GDelete' },
   },
@@ -101,10 +94,6 @@ return {
     'Civitasv/cmake-tools.nvim',
     cmd = 'CMakeGenerate',
     opts = { cmake_build_directory = 'build' },
-  },
-  {
-    'mbbill/undotree',
-    cmd = 'UndotreeToggle',
   },
   {
     'phaazon/hop.nvim',

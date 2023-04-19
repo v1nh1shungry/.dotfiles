@@ -97,11 +97,4 @@ return {
     'DNLHC/glance.nvim',
     cmd = 'Glance',
   },
-  {
-    'smjonas/inc-rename.nvim',
-    config = function(_, opts) require('inc_rename').setup(opts) end,
-    dependencies = 'stevearc/dressing.nvim',
-    keys = { { '<Leader>rn', ':IncRename ' } },
-    opts = { input_buffer_type = 'dressing', },
-  },
 }

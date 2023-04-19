@@ -28,7 +28,6 @@ if status is-interactive
     alias tree 'exa -T --icons --level 3 --ignore-glob=".git"'
     alias rm 'echo Use `trash-put` instead 🤗; false'
     alias diff difft
-    alias neovide 'neovide.exe --wsl --maximized'
 
     function proxy
         if test "$argv" = unset

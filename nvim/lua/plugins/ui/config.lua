@@ -86,9 +86,12 @@ M.quickui = function()
   vim.fn['quickui#menu#install']('&Edit', {
     { '&Find And Replace\t<Leader>rw', 'SearchReplaceSingleBufferCWord' },
     { '&SSR\t<Leader>sr',              'lua require("ssr").open()' },
+    { '--',                            '' },
     { '&Table Mode\t<Leader>tm',       'TableModeToggle' },
-    { '&Format Codes\t=',              'lua vim.lsp.buf.format { async = true }' },
     { 'Edit &Markdown Code Block',     'FeMaco' },
+    { '&Emoji Picker',                 'Telescope symbols' },
+    { '--',                            '' },
+    { '&Format Codes\t=',              'lua vim.lsp.buf.format { async = true }' },
   })
   vim.fn['quickui#menu#install']('&View', {
     { '&Resize Windows\t<C-e>',    'WinResizerStartResize' },
@@ -97,9 +100,9 @@ M.quickui = function()
     { 'File &Explorer\t<Leader>e', 'NeoTreeFocusToggle' },
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
+    { 'Treesitter &Inspect',       'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
     { '--',                        '' },
-    { 'Di&agnostics',              'Lspsaga show_line_diagnostics' },
-    { '&Preview Definition',       'Lspsaga peek_definition' },
+    { 'Markdown Pre&view',         'MarkdownPreview' },
   })
   vim.fn['quickui#menu#install']('&Navigation', {
     { 'Live &Grep',                 'Telescope live_grep' },
@@ -151,18 +154,24 @@ M.quickui = function()
     { '--',            '' },
     { '&Mason',        'Mason' },
   })
-  vim.fn['quickui#menu#install']('&Tools', {
-    { '&Generate Document',  'Neogen' },
-    { '&Emoji Picker',       'Telescope symbols' },
-    { '&Treesitter Inspect', 'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
-  })
   vim.fn['quickui#menu#install']('Help (&?)', {
     { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },
     { '&Welcome',             'Alpha' },
-    { '--',                   '' },
-    { '&Autocmds',            'Telescope autocommands' },
-    { 'Ke&ymaps',             'Telescope keymaps' },
   })
+  require('utils.keymaps').nnoremap('<M-Space>', function()
+    vim.fn['quickui#context#open']({
+      { 'Di&agnostics',            'Lspsaga show_line_diagnostics' },
+      { '&Preview Definition',     'Lspsaga peek_definition' },
+      { '--',                      '' },
+      { '&Lspsaga Finder',         'Lspsaga lsp_finder' },
+      { '&Incoming Calls',         'Lspsaga incoming_calls' },
+      { '&Outgoing Calls',         'Lspsaga outgoing_calls' },
+      { '--',                      '' },
+      { '&Rename\t<Leader>rn',     'Lspsaga rename' },
+      { 'Code &Action\t<M-Enter>', 'Lspsaga code_action' },
+      { '&Generate Document',      'Neogen' },
+    }, vim.empty_dict())
+  end)
 end
 
 M.lualine = function()

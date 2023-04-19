@@ -5,18 +5,15 @@ CompileFlags:
 ---
 If:
   PathMatch: [
-    .*\.cpp,
     .*\.cc,
+    .*\.cpp,
     .*\.cxx,
     .*\.h,
     .*\.hpp,
     .*\.hxx,
   ]
 CompileFlags:
-  Add: [
-    -std=c++2b,
-    -Weffc++,
-  ]
+  Add: -std=c++2b
 ---
 Index:
   StandardLibrary: Yes
@@ -24,6 +21,7 @@ CompileFlags:
   Add: [
     -Wall,
     -Wextra,
+    -Werror,
   ]
 Diagnostics:
   UnusedIncludes: Strict

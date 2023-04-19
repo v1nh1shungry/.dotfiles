@@ -93,4 +93,24 @@ M.visual_multi = function()
   vim.g.VM_set_statusline = 0
 end
 
+M.surround = function()
+  require('mini.surround').setup {
+    mappings = {
+      add = 'ys',
+      delete = 'ds',
+      find = '',
+      find_left = '',
+      highlight = '',
+      replace = 'cs',
+      update_n_lines = '',
+      suffix_last = '',
+      suffix_next = '',
+    },
+    search_method = 'cover_or_next',
+  }
+  vim.keymap.del('x', 'ys')
+  require('utils.keymaps').xmap('S', [[:<C-u>lua MiniSurround.add('visual')<CR>]])
+  require('utils.keymaps').nmap('yss', 'ys_')
+end
+
 return M

@@ -10,11 +10,17 @@ local on_attach = function(client, bufnr)
 
   nnoremap('=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
   nnoremap('gh', vim.lsp.buf.hover)
-  nnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
-  vnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
+  nnoremap('<Leader>rn', '<Cmd>Lspsaga rename<CR>')
+  nnoremap('<M-Enter>', '<Cmd>Lspsaga code_action<CR>')
   nnoremap('<Leader>o', '<Cmd>Lspsaga outline<CR>')
   nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
   nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>')
+  nnoremap(']E', function()
+    require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
+  end)
+  nnoremap('[E', function()
+    require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
+  end)
   nnoremap('gd', '<Cmd>Glance definitions<CR>')
   nnoremap('gy', '<Cmd>Glance type_definitions<CR>')
   nnoremap('gR', '<Cmd>Glance references<CR>')
@@ -38,12 +44,10 @@ M.lspconfig = function()
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   local servers = {
     'bashls',
-    'gopls',
     'jsonls',
     'neocmake',
-    'pyright',
-    'rust_analyzer',
-    'tsserver',
+    'pylsp',
+    'taplo',
   }
 
   require('mason-lspconfig').setup { automatic_installation = { exclude = { 'clangd' } } }
@@ -107,6 +111,74 @@ M.lspconfig = function()
         },
       },
     },
+  }
+
+  lspconfig.gopls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+      gopls = {
+        gofumpt = true,
+        usePlaceholders = true,
+        codelenses = { gc_details = true },
+        hints = {
+          rangeVariableTypes = true,
+          parameterNames = true,
+          constantValues = true,
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          functionTypeParameters = true,
+        },
+      },
+    },
+  }
+
+  lspconfig.rust_analyzer.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+      ['rust-analyzer'] = {
+        diagnostics = { disabled = { 'unresolved-proc-macro' } },
+        cargo = { loadOutDirsFromCheck = true },
+        procMacro = { enable = true },
+      },
+    },
+  }
+
+  lspconfig.tsserver.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+    },
+  }
+
+  lspconfig.yamlls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = { yaml = { keyOrdering = false } },
   }
 end
 
@@ -186,7 +258,7 @@ M.cmp = function()
     }, {
       { name = 'buffer' },
       { name = 'path' },
-      { name = 'rg',      keyword_length = 5 },
+      { name = 'rg',    keyword_length = 5 },
     })
   }
 
@@ -295,6 +367,7 @@ M.lspsaga = function()
     code_action = {
       keys = { quit = '<ESC>' },
       extend_gitsigns = false,
+      show_server_name = true,
     },
     lightbulb = { sign = false },
     diagnostic = {
@@ -303,7 +376,7 @@ M.lspsaga = function()
     },
     rename = { quit = '<ESC>' },
     symbol_in_winbar = { separator = ' > ' },
-    ui = { border = 'rounded' },
+    ui = { winblend = 10 },
   }
 end
 

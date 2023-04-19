@@ -1,5 +1,5 @@
 return {
-  colorscheme = 'enfocado',
+  colorscheme = 'darkplus',
   statusline_theme = 'vscode',
   plugins = {},
 }

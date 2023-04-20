@@ -24,7 +24,10 @@ return {
       'skywind3000/asyncrun.vim',
       cmd = 'AsyncRun',
     },
-    keys = { { '<Leader>fb', '<Cmd>AsyncTask file-build<CR>' }, { '<Leader>fr', '<Cmd>AsyncTask file-run<CR>' } },
+    keys = {
+      { '<Leader>fb', '<Cmd>AsyncTask file-build<CR>', desc = 'Build' },
+      { '<Leader>fr', '<Cmd>AsyncTask file-run<CR>',   desc = 'Run' },
+    },
   },
   {
     'sQVe/sort.nvim',
@@ -46,7 +49,7 @@ return {
     'dhruvasagar/vim-table-mode',
     cmd = 'TableModeToggle',
     config = function() vim.g.table_mode_corner = '|' end,
-    keys = '<Leader>tm',
+    keys = { { '<Leader>tm', desc = 'Toggle table mode' } },
   },
   {
     'danymat/neogen',
@@ -63,8 +66,8 @@ return {
     'roobert/search-replace.nvim',
     config = true,
     keys = {
-      { '<Leader>rw', '<Cmd>SearchReplaceSingleBufferCWord<CR>' },
-      { '<C-r>', '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', mode = 'v' },
+      { '<Leader>rw', '<Cmd>SearchReplaceSingleBufferCWord<CR>',           desc = 'Search and replace' },
+      { '<C-r>',      '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', mode = 'v' },
     },
   },
   {
@@ -78,12 +81,14 @@ return {
   },
   {
     'cshuaimin/ssr.nvim',
-    keys = { { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' } } },
+    keys = {
+      { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structured search and replace' },
+    },
   },
   {
     'junegunn/vim-easy-align',
     cmd = 'EasyAlign',
-    keys = { { 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'x' } } },
+    keys = { { 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'x' }, desc = 'Align' } },
   },
   {
     'gaoDean/autolist.nvim',
@@ -98,7 +103,7 @@ return {
   {
     'phaazon/hop.nvim',
     config = true,
-    keys = { { 'gs', '<Cmd>HopChar1<CR>', mode = { 'n', 'x' } } },
+    keys = { { 'gs', '<Cmd>HopChar1<CR>', mode = { 'n', 'x' }, desc = 'Hop one character' } },
   },
   {
     'iamcco/markdown-preview.nvim',

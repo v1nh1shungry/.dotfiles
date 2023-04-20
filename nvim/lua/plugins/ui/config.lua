@@ -73,7 +73,7 @@ M.quickui = function()
   vim.fn['quickui#menu#reset']()
   vim.fn['quickui#menu#install']('&File', {
     { '&Open\t<C-p>',   'Telescope find_files' },
-    { 'Open Settin&gs', 'e ~/.nvimrc.lua' },
+    { 'Open Settin&gs', 'e ~/.nvimrc' },
     { '--',             '' },
     { '&Save\t<C-s>',   'write' },
     { 'Save &All',      'wall' },
@@ -176,9 +176,6 @@ end
 
 M.lualine = function()
   vim.opt.laststatus = 3
-  vim.opt.cmdheight = 1
-  vim.opt.showcmd = true
-
   local theme = require('user').statusline_theme
   local opts = require('plugins.ui.lualine.' .. theme)
   opts.extensions = { 'man', 'neo-tree', 'nvim-dap-ui', 'quickfix', 'toggleterm' }

@@ -1,29 +1,31 @@
 local M = {}
 
 local on_attach = function(client, bufnr)
-  local nnoremap = function(from, to)
-    require('utils.keymaps').nnoremap(from, to, { buffer = bufnr })
+  local nnoremap = function(from, to, desc)
+    local opts = { buffer = bufnr }
+    if desc ~= nil then opts.desc = desc end
+    require('utils.keymaps').nnoremap(from, to, opts)
   end
   local vnoremap = function(from, to)
     require('utils.keymaps').vnoremap(from, to, { buffer = bufnr })
   end
 
   nnoremap('=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
-  nnoremap('gh', vim.lsp.buf.hover)
-  nnoremap('<Leader>rn', '<Cmd>Lspsaga rename<CR>')
+  nnoremap('gh', vim.lsp.buf.hover, 'Show hover document')
+  nnoremap('<Leader>rn', '<Cmd>Lspsaga rename<CR>', 'Rename')
   nnoremap('<M-Enter>', '<Cmd>Lspsaga code_action<CR>')
   nnoremap('<Leader>o', '<Cmd>Lspsaga outline<CR>')
-  nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>')
-  nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>')
+  nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', 'Next diagnostic')
+  nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', 'Previous diagnostic')
   nnoremap(']E', function()
     require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
-  end)
+  end, 'Next error')
   nnoremap('[E', function()
     require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-  end)
-  nnoremap('gd', '<Cmd>Glance definitions<CR>')
-  nnoremap('gy', '<Cmd>Glance type_definitions<CR>')
-  nnoremap('gR', '<Cmd>Glance references<CR>')
+  end, 'Previous error')
+  nnoremap('gd', '<Cmd>Glance definitions<CR>', 'Go to definition')
+  nnoremap('gy', '<Cmd>Glance type_definitions<CR>', 'Go to type definition')
+  nnoremap('gR', '<Cmd>Glance references<CR>', 'Go to references')
 
   if client.supports_method('textDocument/rangeFormatting') then
     vnoremap('=', function() vim.lsp.buf.format({ async = true }) end)
@@ -384,8 +386,8 @@ M.gitsigns = function()
   local gitsigns = require('gitsigns')
   local nnoremap = require('utils.keymaps').nnoremap
   gitsigns.setup()
-  nnoremap(']h', gitsigns.next_hunk)
-  nnoremap('[h', gitsigns.prev_hunk)
+  nnoremap(']h', gitsigns.next_hunk, { desc = 'Next git hunk' })
+  nnoremap('[h', gitsigns.prev_hunk, { desc = 'Previous git hunk' })
 end
 
 return M

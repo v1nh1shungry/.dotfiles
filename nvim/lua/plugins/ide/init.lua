@@ -71,7 +71,7 @@ return {
     cmd = 'NeoTreeFocusToggle',
     config = config.tree,
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
-    keys = { { '<Leader>e', '<Cmd>NeoTreeFocusToggle<CR>' } },
+    keys = { { '<Leader>e', '<Cmd>NeoTreeFocusToggle<CR>', desc = 'Toggle NeoTree' } },
   },
   {
     'mfussenegger/nvim-dap',

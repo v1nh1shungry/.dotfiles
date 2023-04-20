@@ -31,7 +31,10 @@ return {
   {
     'Wansmer/treesj',
     config = true,
-    keys = { { 'gS', '<Cmd>TSJSplit<CR>' }, { 'gJ', '<Cmd>TSJJoin<CR>' } },
+    keys = {
+      { 'gS', '<Cmd>TSJSplit<CR>', desc = 'Treesj Split' },
+      { 'gJ', '<Cmd>TSJJoin<CR>',  desc = 'Treesj Join' },
+    },
   },
   {
     'RRethy/vim-illuminate',
@@ -46,12 +49,17 @@ return {
   {
     'numToStr/Comment.nvim',
     config = true,
-    keys = { { 'gc', mode = { 'n', 'v' } } },
+    keys = { { 'gc', mode = { 'n', 'v' }, desc = 'Toggle comment' } },
   },
   {
     'echasnovski/mini.surround',
     config = config.surround,
-    keys = { 'ys', 'ds', 'cs', { 'S', mode = 'x' } },
+    keys = {
+      { 'ys', desc = 'Add surrounding' },
+      { 'ds', desc = 'Delete surrounding' },
+      { 'cs', desc = 'Change surrounding' },
+      { 'S',  mode = 'x',                 desc = 'Add surrounding' },
+    },
   },
   {
     'mg979/vim-visual-multi',
@@ -67,11 +75,6 @@ return {
     'abecodes/tabout.nvim',
     config = config.tabout,
     event = events.enter_insert,
-  },
-  {
-    'chrisgrieser/nvim-various-textobjs',
-    event = events.enter_buffer,
-    opts = { useDefaultKeymaps = true, },
   },
   {
     'tiagovla/scope.nvim',
@@ -95,7 +98,10 @@ return {
   },
   {
     'tommcdo/vim-exchange',
-    keys = { 'cx', { 'X', mode = 'v' } },
+    keys = {
+      { 'cx', desc = 'Exchange' },
+      { 'X',  mode = 'v',       desc = 'Exchange' },
+    },
   },
   {
     'LunarVim/bigfile.nvim',
@@ -119,6 +125,6 @@ return {
   },
   {
     'vim-scripts/ReplaceWithRegister',
-    keys = { { 'gr', mode = { 'n', 'v' } } },
+    keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
   },
 }

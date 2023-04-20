@@ -6,7 +6,10 @@ return {
     'skywind3000/vim-quickui',
     config = config.quickui,
     init = function() vim.g.quickui_border_style = 2 end,
-    keys = { { '<Space><Space>', '<Cmd>call quickui#menu#open()<CR>' }, '<M-Space>' },
+    keys = {
+      { '<Space><Space>', '<Cmd>call quickui#menu#open()<CR>', desc = 'Quickui Menu' },
+      '<M-Space>',
+    },
   },
   {
     'folke/todo-comments.nvim',
@@ -14,8 +17,8 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     event = events.enter_buffer,
     keys = {
-      { '[t', function() require('todo-comments').jump_prev() end },
-      { ']t', function() require('todo-comments').jump_next() end },
+      { '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous TODO' },
+      { ']t', function() require('todo-comments').jump_next() end, desc = 'Next TODO' },
     },
     opts = { signs = false },
   },
@@ -27,7 +30,10 @@ return {
   {
     'gorbit99/codewindow.nvim',
     config = config.codewindow,
-    keys = { '<Leader>mo', '<Leader>mm' },
+    keys = {
+      { '<Leader>mo', desc = 'Open Minimap' },
+      { '<Leader>mm', desc = 'Toggle Minimap' },
+    },
   },
   {
     'lewis6991/satellite.nvim',
@@ -67,5 +73,9 @@ return {
   {
     'mrjones2014/nvim-ts-rainbow',
     event = events.enter_buffer,
+  },
+  {
+    'folke/which-key.nvim',
+    config = true,
   },
 }

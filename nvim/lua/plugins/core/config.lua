@@ -18,6 +18,7 @@ M.treesitter = function()
       'python',
       'rust',
       'toml',
+      'typescript',
       'vim',
       'vimdoc',
       'yaml',
@@ -36,6 +37,8 @@ M.treesitter = function()
           ['ia'] = '@parameter.inner',
           ['aa'] = '@parameter.outer',
           ['as'] = '@statement.outer',
+          ['al'] = '@assignment.lhs',
+          ['ar'] = '@assignment.rhs',
         },
       },
       swap = {
@@ -110,7 +113,7 @@ M.surround = function()
   }
   vim.keymap.del('x', 'ys')
   require('utils.keymaps').xmap('S', [[:<C-u>lua MiniSurround.add('visual')<CR>]])
-  require('utils.keymaps').nmap('yss', 'ys_')
+  require('utils.keymaps').nmap('yss', 'ys_', { remap = true })
 end
 
 return M

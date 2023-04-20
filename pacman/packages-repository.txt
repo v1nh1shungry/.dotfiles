@@ -4,6 +4,7 @@ bash-completion
 bat
 bear
 binutils
+boost
 btop
 ccache
 clang

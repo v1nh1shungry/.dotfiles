@@ -3,7 +3,6 @@ local nmap = require('utils.keymaps').nmap
 local nnoremap = require('utils.keymaps').nnoremap
 local inoremap = require('utils.keymaps').inoremap
 local tnoremap = require('utils.keymaps').tnoremap
-local cnoremap = require('utils.keymaps').cnoremap
 local vnoremap = require('utils.keymaps').vnoremap
 
 map('<Space>', '<Nop>')
@@ -16,11 +15,6 @@ nnoremap('<C-q>', ':bd<CR>')
 inoremap('<C-s>', '<Esc>:w<CR>')
 vnoremap('<C-s>', '<Esc>:w<CR>')
 nnoremap('<C-s>', ':w<CR>')
-
-cnoremap('<C-h>', '<Left>')
-cnoremap('<C-j>', '<Down>')
-cnoremap('<C-k>', '<Up>')
-cnoremap('<C-l>', '<Right>')
 
 nnoremap('<M-H>', '<C-w>h')
 nnoremap('<M-J>', '<C-w>j')
@@ -46,7 +40,7 @@ nnoremap('<Leader>q', function()
   if nr == vim.fn.winnr('$') then
     vim.cmd 'cclose'
   end
-end)
+end, { desc = 'Toggle quickfix' })
 
 nnoremap('<M-j>', '<Cmd>m .+1<CR>==')
 nnoremap('<M-k>', '<Cmd>m .-2<CR>==')

@@ -9,7 +9,10 @@ return {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-symbols.nvim',
     },
-    keys = { { '<Leader>h', '<Cmd>Telescope help_tags<CR>' }, { '<C-p>', '<Cmd>Telescope find_files<CR>' } },
+    keys = {
+      { '<Leader>h', '<Cmd>Telescope help_tags<CR>', desc = 'Browse help docs' },
+      { '<C-p>', '<Cmd>Telescope find_files<CR>' },
+    },
   },
   {
     'krady21/compiler-explorer.nvim',
@@ -20,10 +23,7 @@ return {
     'skywind3000/asynctasks.vim',
     cmd = { 'AsyncTask', 'AsyncTaskMacro', 'AsyncTaskList', 'AsyncTaskEdit' },
     config = config.asynctasks,
-    dependencies = {
-      'skywind3000/asyncrun.vim',
-      cmd = 'AsyncRun',
-    },
+    dependencies = { 'skywind3000/asyncrun.vim', cmd = 'AsyncRun' },
     keys = {
       { '<Leader>fb', '<Cmd>AsyncTask file-build<CR>', desc = 'Build' },
       { '<Leader>fr', '<Cmd>AsyncTask file-run<CR>',   desc = 'Run' },
@@ -86,9 +86,12 @@ return {
     },
   },
   {
-    'junegunn/vim-easy-align',
-    cmd = 'EasyAlign',
-    keys = { { 'ga', '<Plug>(EasyAlign)', mode = { 'n', 'x' }, desc = 'Align' } },
+    'echasnovski/mini.align',
+    config = function() require('mini.align').setup() end,
+    keys = {
+      { 'ga', mode = { 'n', 'x' }, desc = 'Align' },
+      { 'gA', mode = { 'n', 'x' }, desc = 'Align with preview' },
+    },
   },
   {
     'gaoDean/autolist.nvim',

@@ -6,17 +6,17 @@ vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
 vim.opt.fillchars = { eob = ' ' }
+vim.opt.foldenable = false
 vim.opt.formatoptions = 'qjl1'
 vim.opt.grepformat = '%f:%l:%c:%m'
 vim.opt.grepprg = 'rg --vimgrep'
-vim.opt.guifont = [[MesloLGS\ NFM:h12]]
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.infercase = true
 vim.opt.laststatus = 0
 vim.opt.linebreak = true
 vim.opt.list = true
-vim.opt.listchars = { extends = '→', nbsp = '+', precedes = '←', tab = '»·', trail = '·' }
+vim.opt.listchars = { extends = '…', nbsp = '␣', precedes = '…', tab = '»·' }
 vim.opt.number = true
 vim.opt.pumblend = 10
 vim.opt.pumheight = 10
@@ -40,7 +40,7 @@ vim.opt.splitright = true
 vim.opt.swapfile = false
 vim.opt.tabstop = 2
 vim.opt.termguicolors = true
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 500
 vim.opt.updatetime = 200
 vim.opt.virtualedit = 'block'
 vim.opt.wildignorecase = true

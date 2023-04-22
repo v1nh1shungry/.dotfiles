@@ -17,12 +17,6 @@ local on_attach = function(client, bufnr)
   nnoremap('<Leader>o', '<Cmd>Lspsaga outline<CR>')
   nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', 'Next diagnostic')
   nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', 'Previous diagnostic')
-  nnoremap(']E', function()
-    require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
-  end, 'Next error')
-  nnoremap('[E', function()
-    require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-  end, 'Previous error')
   nnoremap('gd', '<Cmd>Glance definitions<CR>', 'Go to definition')
   nnoremap('gy', '<Cmd>Glance type_definitions<CR>', 'Go to type definition')
   nnoremap('gR', '<Cmd>Glance references<CR>', 'Go to references')
@@ -388,6 +382,15 @@ M.gitsigns = function()
   gitsigns.setup()
   nnoremap(']h', gitsigns.next_hunk, { desc = 'Next git hunk' })
   nnoremap('[h', gitsigns.prev_hunk, { desc = 'Previous git hunk' })
+end
+
+M.cmp_xmake = function()
+  vim.api.nvim_create_autocmd('BufRead', {
+    callback = function()
+      require('cmp').setup.buffer { sources = { { name = 'xmake' } } }
+    end,
+    pattern = 'xmake.lua',
+  })
 end
 
 return M

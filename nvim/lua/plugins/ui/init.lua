@@ -76,6 +76,6 @@ return {
   },
   {
     'folke/which-key.nvim',
-    config = true,
+    opts = { layout = { height = { max = 10 } } },
   },
 }

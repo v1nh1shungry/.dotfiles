@@ -8,7 +8,8 @@ return {
     event = events.enter_buffer,
   },
   {
-    'tpope/vim-unimpaired',
+    'echasnovski/mini.bracketed',
+    config = config.bracketed,
     keys = { '[', ']' },
   },
   {
@@ -58,7 +59,7 @@ return {
       { 'ys', desc = 'Add surrounding' },
       { 'ds', desc = 'Delete surrounding' },
       { 'cs', desc = 'Change surrounding' },
-      { 'S',  mode = 'x',                 desc = 'Add surrounding' },
+      { 'S',  mode = 'x' },
     },
   },
   {
@@ -79,7 +80,6 @@ return {
   {
     'tiagovla/scope.nvim',
     config = true,
-    event = events.enter_buffer,
   },
   {
     'kevinhwang91/nvim-hlslens',
@@ -98,10 +98,7 @@ return {
   },
   {
     'tommcdo/vim-exchange',
-    keys = {
-      { 'cx', desc = 'Exchange' },
-      { 'X',  mode = 'v',       desc = 'Exchange' },
-    },
+    keys = { { 'cx', desc = 'Exchange' }, { 'X', mode = 'v' } },
   },
   {
     'LunarVim/bigfile.nvim',
@@ -126,5 +123,14 @@ return {
   {
     'vim-scripts/ReplaceWithRegister',
     keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
+  },
+  {
+    'willothy/flatten.nvim',
+    opts = { window = { open = 'alternate' } },
+  },
+  {
+    'chrisgrieser/nvim-various-textobjs',
+    event = events.enter_buffer,
+    opts = { useDefaultKeymaps = true },
   },
 }

@@ -42,14 +42,11 @@ nnoremap('<Leader>q', function()
   end
 end, { desc = 'Toggle quickfix' })
 
-nnoremap('<M-j>', '<Cmd>m .+1<CR>==')
-nnoremap('<M-k>', '<Cmd>m .-2<CR>==')
-vnoremap('<M-j>', ":m '>+1<cr>gv=gv")
-vnoremap("<M-k>", ":m '<-2<cr>gv=gv")
-
 inoremap(',', ',<c-g>u')
 inoremap('.', '.<c-g>u')
 inoremap(';', ';<c-g>u')
 
 nmap('j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
 nmap('k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
+
+nmap('gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = 'Visually select changed text' })

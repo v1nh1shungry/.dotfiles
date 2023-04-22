@@ -43,19 +43,19 @@ M.treesitter = function()
       },
       swap = {
         enable = true,
-        swap_next = { ['<M-l>'] = '@parameter.inner' },
-        swap_previous = { ['<M-h>'] = '@parameter.inner' },
+        swap_next = { [']a'] = '@parameter.inner' },
+        swap_previous = { ['[a'] = '@parameter.inner' },
       },
       move = {
         enable = true,
         set_jumps = true,
         goto_next = {
           [']f'] = '@function.outer',
-          [']s'] = '@class.outer',
+          [']c'] = '@class.outer',
         },
         goto_previous = {
           ['[f'] = '@function.outer',
-          ['[s'] = '@class.outer',
+          ['[c'] = '@class.outer',
         },
       },
     },
@@ -114,6 +114,19 @@ M.surround = function()
   vim.keymap.del('x', 'ys')
   require('utils.keymaps').xmap('S', [[:<C-u>lua MiniSurround.add('visual')<CR>]])
   require('utils.keymaps').nmap('yss', 'ys_', { remap = true })
+end
+
+M.bracketed = function()
+  local nnoremap = require('utils.keymaps').nnoremap
+  require('mini.bracketed').setup {
+    comment = { suffix = '' },
+    diagnostic = { suffix = '' },
+    file = { suffix = '' },
+  }
+  nnoremap('[<Space>', "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>", { desc = 'Put empty line above' })
+  nnoremap(']<Space>', "<Cmd>call append(line('.'), repeat([''], v:count1))<CR>", { desc = 'Put empty line below' })
+  nnoremap('[e', '<Cmd>m .-2<CR>==', { desc = 'Exchange with previous line' })
+  nnoremap(']e', '<Cmd>m .+1<CR>==', { desc = 'Exchange with next line' })
 end
 
 return M

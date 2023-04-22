@@ -5,21 +5,10 @@ autocmd('FileType', {
   pattern = { 'gitcommit', 'markdown' },
 })
 
-autocmd('TextYankPost', {
-  callback = function() vim.highlight.on_yank { timeout = 500 } end,
-  pattern = '*',
-})
+autocmd('TextYankPost', { callback = function() vim.highlight.on_yank { timeout = 500 } end })
 
-autocmd('InsertEnter', {
-  callback = function()
-    if vim.wo.number then vim.cmd.setlocal 'norelativenumber' end
-  end,
-})
-autocmd('InsertLeave', {
-  callback = function()
-    if vim.wo.number then vim.cmd.setlocal 'relativenumber' end
-  end,
-})
+autocmd('InsertEnter', { callback = function() if vim.wo.number then vim.cmd.setlocal 'norelativenumber' end end })
+autocmd('InsertLeave', { callback = function() if vim.wo.number then vim.cmd.setlocal 'relativenumber' end end })
 
 autocmd('FileType', {
   command = 'setlocal nonumber norelativenumber',

@@ -130,7 +130,7 @@ M.quickui = function()
     { '&Run\t<Leader>fr',   'AsyncTask file-run' },
     { '--',                 '' },
     { '&Remote Compile',    'CECompile' },
-    { '&Live Compile',      'CECompileLive' },
+    { 'L&ive Compile',      'CECompileLive' },
   })
   vim.fn['quickui#menu#install']('&Debug', {
     { '&Continue\t<F5>',         'DapContinue' },
@@ -145,7 +145,6 @@ M.quickui = function()
     { 'Step &Out\t<F12>',        'DapStepOut' },
   })
   vim.fn['quickui#menu#install']('&Plugins', {
-    { '&Install',      'Lazy install' },
     { '&Update',       'Lazy sync' },
     { '&Clean Unused', 'Lazy clean' },
     { '--',            '' },
@@ -168,8 +167,10 @@ M.quickui = function()
       { '&Outgoing Calls',         'Lspsaga outgoing_calls' },
       { '--',                      '' },
       { '&Rename\t<Leader>rn',     'Lspsaga rename' },
-      { 'Code &Action\t<M-Enter>', 'Lspsaga code_action' },
+      { '&Code Action\t<M-Enter>', 'Lspsaga code_action' },
       { '&Generate Document',      'Neogen' },
+      { '--',                      '' },
+      { 'Man',                     'Man' },
     }, vim.empty_dict())
   end)
 end

@@ -2,6 +2,7 @@ arcanist-git
 archlinuxcn-keyring
 bash-completion
 bat
+bat-extras
 bear
 binutils
 boost
@@ -9,7 +10,6 @@ btop
 ccache
 clang
 cmake
-difftastic
 diffutils
 exa
 fakeroot

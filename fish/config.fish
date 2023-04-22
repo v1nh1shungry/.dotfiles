@@ -19,15 +19,12 @@ if status is-interactive
     alias vi nvim
     alias nv nvim
     alias vim nvim
-    alias bat 'bat --theme Dracula'
-    alias grep 'grep --color=auto'
     alias ls 'exa --icons'
     alias l ls
     alias la 'ls -a'
     alias ll 'ls -al --git'
     alias tree 'exa -T --icons --level 3 --ignore-glob=".git"'
-    alias rm 'echo Use `trash-put` instead 🤗; false'
-    alias diff difft
+    alias diff 'batdiff --delta'
 
     function proxy
         if test "$argv" = unset

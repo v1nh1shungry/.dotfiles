@@ -51,10 +51,6 @@ return {
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
-      {
-        'RunThem/cmp-xmake',
-        init = config.cmp_xmake,
-      },
     },
     event = events.enter_insert,
   },

@@ -18,7 +18,7 @@ vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = { extends = '…', nbsp = '␣', precedes = '…', tab = '»·' }
 vim.opt.number = true
-vim.opt.pumblend = 10
+vim.opt.pumblend = require('user').ui.blend
 vim.opt.pumheight = 10
 vim.opt.relativenumber = true
 vim.opt.ruler = false
@@ -44,6 +44,6 @@ vim.opt.timeoutlen = 500
 vim.opt.updatetime = 200
 vim.opt.virtualedit = 'block'
 vim.opt.wildignorecase = true
-vim.opt.winblend = 10
+vim.opt.winblend = require('user').ui.blend
 vim.opt.wrap = false
 vim.opt.writebackup = false

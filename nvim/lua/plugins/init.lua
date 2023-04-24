@@ -27,7 +27,7 @@ for _, spec in ipairs(require('user').plugins) do
 end
 
 require('lazy').setup(lazy_specs, {
-  install = { colorscheme = { require('user').colorscheme } },
+  install = { colorscheme = { require('user').ui.colorscheme } },
   performance = {
     rtp = {
       disabled_plugins = {

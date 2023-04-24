@@ -1,8 +1,11 @@
 local default = {
-  colorscheme = 'darkplus',
   g = {},
   plugins = {},
-  statusline_theme = 'vscode',
+  ui = {
+    blend = 10,
+    colorscheme = 'darkplus',
+    statusline_theme = 'vscode',
+  },
 }
 
 local config = dofile(os.getenv('HOME') .. '/.nvimrc')

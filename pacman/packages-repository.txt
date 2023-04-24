@@ -3,7 +3,6 @@ archlinuxcn-keyring
 bash-completion
 bat
 bat-extras
-bear
 binutils
 boost
 btop
@@ -23,14 +22,12 @@ gdb
 gettext
 git
 git-delta
-glow
 gnu-netcat
 go
 grep
 groff
 gzip
 inetutils
-intel-oneapi-tbb
 iputils
 jq
 just
@@ -67,7 +64,6 @@ sed
 starship
 strace
 sudo
-tcpdump
 tealdeer
 tmux
 tokei

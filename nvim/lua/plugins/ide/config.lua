@@ -65,6 +65,7 @@ M.lspconfig = function()
         '--include-cleaner-stdlib',
         '--offset-encoding=utf-16', -- compatible with `null-ls`
       },
+      filetypes = { 'c', 'cpp' },
     },
     extensions = {
       autoSetHints = false,
@@ -97,6 +98,7 @@ M.lspconfig = function()
     settings = {
       Lua = {
         completion = { callSnippet = 'Replace' },
+        diagnostics = { globals = require('plugins.ide.cmp.xmake.items') },
         telemetry = { enable = false },
         workspace = { checkThirdParty = false },
         format = {
@@ -204,6 +206,8 @@ M.cmp = function()
   local cmp = require('cmp')
   local luasnip = require('luasnip')
 
+  require('plugins.ide.cmp')
+
   cmp.setup {
     snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
     window = { completion = { side_padding = 0 } },
@@ -251,6 +255,7 @@ M.cmp = function()
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
       { name = 'luasnip' },
+      { name = 'xmake' },
     }, {
       { name = 'buffer' },
       { name = 'path' },
@@ -304,7 +309,7 @@ end
 
 M.dap = function()
   local dap, dapui = require('dap'), require('dapui')
-  local icons = require('utils.icons').dap
+  local icons = require('utils.ui').icons.dap
 
   vim.fn.sign_define(
     'DapBreakpoint',
@@ -372,7 +377,7 @@ M.lspsaga = function()
     },
     rename = { quit = '<ESC>' },
     symbol_in_winbar = { separator = ' > ' },
-    ui = { winblend = 10 },
+    ui = { winblend = require('user').ui.blend },
   }
 end
 
@@ -382,15 +387,6 @@ M.gitsigns = function()
   gitsigns.setup()
   nnoremap(']h', gitsigns.next_hunk, { desc = 'Next git hunk' })
   nnoremap('[h', gitsigns.prev_hunk, { desc = 'Previous git hunk' })
-end
-
-M.cmp_xmake = function()
-  vim.api.nvim_create_autocmd('BufRead', {
-    callback = function()
-      require('cmp').setup.buffer { sources = { { name = 'xmake' } } }
-    end,
-    pattern = 'xmake.lua',
-  })
 end
 
 return M

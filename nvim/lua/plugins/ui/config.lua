@@ -1,22 +1,6 @@
 local M = {}
 
-local excluded_filetypes = {
-  'ClangdAST',
-  'Trouble',
-  'alpha',
-  'dap-repl',
-  'dapui_breakpoints',
-  'dapui_console',
-  'dapui_scopes',
-  'dapui_stacks',
-  'dapui_watches',
-  'lazy',
-  'lspsagaoutline',
-  'mason',
-  'neo-tree',
-  'qf',
-  'query',
-}
+local excluded_filetypes = require('utils.ui').excluded_filetypes
 
 M.alpha = function()
   local dashboard = require('alpha.themes.dashboard')
@@ -101,6 +85,7 @@ M.quickui = function()
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
     { 'Treesitter &Inspect',       'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
+    { 'Luapad',                    'Luapad' },
     { '--',                        '' },
     { 'Markdown Pre&view',         'MarkdownPreview' },
   })
@@ -170,22 +155,18 @@ M.quickui = function()
       { '&Code Action\t<M-Enter>', 'Lspsaga code_action' },
       { '&Generate Document',      'Neogen' },
       { '--',                      '' },
-      { 'Man',                     'Man' },
+      { 'Cpp&man',                 'exec "Cppman " . expand("<cword>")' },
     }, vim.empty_dict())
   end)
 end
 
 M.lualine = function()
   vim.opt.laststatus = 3
-  local theme = require('user').statusline_theme
+  local theme = require('user').ui.statusline_theme
   local opts = require('plugins.ui.lualine.' .. theme)
   opts.extensions = { 'man', 'neo-tree', 'nvim-dap-ui', 'quickfix', 'toggleterm' }
   require('lualine').setup(opts)
 end
-
-M.satellite = {
-  excluded_filetypes = excluded_filetypes,
-}
 
 M.notify = function()
   ---@diagnostic disable-next-line: duplicate-set-field

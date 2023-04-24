@@ -38,7 +38,7 @@ return {
   {
     'lewis6991/satellite.nvim',
     event = events.enter_buffer,
-    opts = config.satellite,
+    opts = { excluded_filetypes = require('utils.ui').excluded_filetypes },
   },
   {
     'rcarriga/nvim-notify',
@@ -76,6 +76,9 @@ return {
   },
   {
     'folke/which-key.nvim',
-    opts = { layout = { height = { max = 10 } } },
+    opts = {
+      window = { winblend = require('user').ui.blend },
+      layout = { height = { max = 10 } },
+    },
   },
 }

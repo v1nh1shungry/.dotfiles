@@ -1,3 +1,2 @@
 fnm-bin
-tmpwatch
 wtf

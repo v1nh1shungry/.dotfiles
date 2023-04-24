@@ -113,4 +113,13 @@ return {
     build = function() vim.fn['mkdp#util#install']() end,
     ft = 'markdown',
   },
+  {
+    'rafcamlet/nvim-luapad',
+    cmd = 'Luapad',
+  },
+  { 'milisims/nvim-luaref' },
+  {
+    'skywind3000/vim-cppman',
+    cmd = 'Cppman',
+  },
 }

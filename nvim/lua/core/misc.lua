@@ -18,7 +18,7 @@ if vim.fn.has('wsl') == 1 then
   }
 end
 
-local icons = require('utils.icons').diagnostics
+local icons = require('utils.ui').icons.diagnostics
 local signs = {
   { name = 'DiagnosticSignError', text = icons.error },
   { name = 'DiagnosticSignWarn', text = icons.warning },

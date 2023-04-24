@@ -4,4 +4,4 @@ for k, v in pairs(require('user').g) do
   vim.g[k] = v
 end
 
-vim.cmd.colorscheme(config.colorscheme)
+vim.cmd.colorscheme(config.ui.colorscheme)

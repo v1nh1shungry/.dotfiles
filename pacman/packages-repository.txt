@@ -4,7 +4,6 @@ bash-completion
 bat
 bat-extras
 binutils
-boost
 btop
 ccache
 clang

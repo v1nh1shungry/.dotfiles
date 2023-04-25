@@ -7,6 +7,7 @@ local vnoremap = require('utils.keymaps').vnoremap
 
 map('<Space>', '<Nop>')
 vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 nnoremap('q', ':q<CR>')
 nnoremap('Q', ':qa!<CR>')

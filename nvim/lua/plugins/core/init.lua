@@ -73,11 +73,6 @@ return {
     opts = { cr = { addsemi = {} } },
   },
   {
-    'abecodes/tabout.nvim',
-    config = config.tabout,
-    event = events.enter_insert,
-  },
-  {
     'tiagovla/scope.nvim',
     config = true,
   },
@@ -121,10 +116,6 @@ return {
   {
     'vim-scripts/ReplaceWithRegister',
     keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
-  },
-  {
-    'willothy/flatten.nvim',
-    opts = { window = { open = 'alternate' } },
   },
   {
     'chrisgrieser/nvim-various-textobjs',

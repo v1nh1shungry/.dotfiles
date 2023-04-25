@@ -85,7 +85,7 @@ M.quickui = function()
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
     { 'Treesitter &Inspect',       'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
-    { 'Luapad',                    'Luapad' },
+    { 'Lua&pad',                    'Luapad' },
     { '--',                        '' },
     { 'Markdown Pre&view',         'MarkdownPreview' },
   })

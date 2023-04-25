@@ -22,24 +22,4 @@ M.eunuch = function()
   vim.api.nvim_del_user_command 'SudoWrite'
 end
 
-M.autolist = function()
-  local _, _ = pcall(require, 'cmp') -- let `cmp` comes first if present
-  local autolist = require('autolist')
-  autolist.setup()
-  autolist.create_mapping_hook('i', '<CR>', autolist.new)
-  autolist.create_mapping_hook('i', '<Tab>', autolist.indent)
-  autolist.create_mapping_hook('i', '<S-Tab>', autolist.indent, '<C-d>')
-  autolist.create_mapping_hook('n', 'o', autolist.new)
-  autolist.create_mapping_hook('n', 'O', autolist.new_before)
-  autolist.create_mapping_hook('n', '>>', autolist.indent)
-  autolist.create_mapping_hook('n', '<<', autolist.indent)
-  autolist.create_mapping_hook('n', '<leader>x', autolist.invert_entry, '')
-  vim.api.nvim_create_autocmd('TextChanged', {
-    callback = function()
-      vim.cmd.normal { autolist.force_recalculate(nil, nil), bang = false }
-    end,
-    pattern = '*',
-  })
-end
-
 return M

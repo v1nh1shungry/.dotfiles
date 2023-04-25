@@ -19,7 +19,6 @@ M.treesitter = function()
       'rust',
       'toml',
       'typescript',
-      'vim',
       'vimdoc',
       'yaml',
     },
@@ -58,22 +57,6 @@ M.treesitter = function()
           ['[c'] = '@class.outer',
         },
       },
-    },
-    rainbow = { enable = true },
-  }
-end
-
-M.tabout = function()
-  local _, _ = pcall(require, 'cmp') -- cmp use tab too, let it first if present
-  require('tabout').setup {
-    tabouts = {
-      { open = "'", close = "'" },
-      { open = '"', close = '"' },
-      { open = '`', close = '`' },
-      { open = '(', close = ')' },
-      { open = '[', close = ']' },
-      { open = '<', close = '>' },
-      { open = '#', close = ']' },
     },
   }
 end

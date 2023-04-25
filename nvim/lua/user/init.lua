@@ -3,7 +3,7 @@ local default = {
   plugins = {},
   ui = {
     blend = 10,
-    colorscheme = 'darkplus',
+    colorscheme = 'tokyonight',
     statusline_theme = 'vscode',
   },
 }

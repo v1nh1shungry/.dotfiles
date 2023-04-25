@@ -71,10 +71,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'mrjones2014/nvim-ts-rainbow',
-    event = events.enter_buffer,
-  },
-  {
     'folke/which-key.nvim',
     opts = {
       window = { winblend = require('user').ui.blend },

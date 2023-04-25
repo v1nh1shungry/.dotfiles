@@ -94,11 +94,6 @@ return {
     },
   },
   {
-    'gaoDean/autolist.nvim',
-    config = config.autolist,
-    event = require('utils.events').enter_insert,
-  },
-  {
     'Civitasv/cmake-tools.nvim',
     cmd = 'CMakeGenerate',
     opts = { cmake_build_directory = 'build' },
@@ -117,7 +112,6 @@ return {
     'rafcamlet/nvim-luapad',
     cmd = 'Luapad',
   },
-  { 'milisims/nvim-luaref' },
   {
     'skywind3000/vim-cppman',
     cmd = 'Cppman',

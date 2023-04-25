@@ -11,7 +11,7 @@ autocmd('InsertEnter', { callback = function() if vim.wo.number then vim.cmd.set
 autocmd('InsertLeave', { callback = function() if vim.wo.number then vim.cmd.setlocal 'relativenumber' end end })
 
 autocmd('FileType', {
-  command = 'setlocal nonumber norelativenumber',
+  command = 'setlocal nonumber norelativenumber nobuflisted',
   pattern = { 'qf', 'query' },
 })
 

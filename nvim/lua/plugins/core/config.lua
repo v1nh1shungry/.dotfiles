@@ -58,6 +58,7 @@ M.treesitter = function()
         },
       },
     },
+    endwise = { enable = true },
   }
 end
 

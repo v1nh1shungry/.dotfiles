@@ -1,14 +1,12 @@
 local config = require('plugins.tools.config')
+local events = require('utils.events')
 
 return {
   {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     config = config.telescope,
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope-symbols.nvim',
-    },
+    dependencies = 'nvim-lua/plenary.nvim',
     keys = {
       { '<Leader>h', '<Cmd>Telescope help_tags<CR>', desc = 'Browse help docs' },
       { '<C-p>', '<Cmd>Telescope find_files<CR>' },
@@ -23,7 +21,10 @@ return {
     'skywind3000/asynctasks.vim',
     cmd = { 'AsyncTask', 'AsyncTaskMacro', 'AsyncTaskList', 'AsyncTaskEdit' },
     config = config.asynctasks,
-    dependencies = { 'skywind3000/asyncrun.vim', cmd = 'AsyncRun' },
+    dependencies = {
+      'skywind3000/asyncrun.vim',
+      cmd = 'AsyncRun',
+    },
     keys = {
       { '<Leader>fb', '<Cmd>AsyncTask file-build<CR>', desc = 'Build' },
       { '<Leader>fr', '<Cmd>AsyncTask file-run<CR>',   desc = 'Run' },
@@ -115,5 +116,10 @@ return {
   {
     'skywind3000/vim-cppman',
     cmd = 'Cppman',
+  },
+  {
+    'RRethy/nvim-treesitter-endwise',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    event = events.enter_insert,
   },
 }

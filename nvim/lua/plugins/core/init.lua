@@ -122,4 +122,8 @@ return {
     event = events.enter_buffer,
     opts = { useDefaultKeymaps = true },
   },
+  {
+    'tpope/vim-rsi',
+    event = events.enter_insert,
+  },
 }

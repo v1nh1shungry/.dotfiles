@@ -77,4 +77,15 @@ return {
       layout = { height = { max = 10 } },
     },
   },
+  {
+    'chikko80/error-lens.nvim',
+    config = true,
+    dependencies = 'nvim-telescope/telescope.nvim',
+    event = 'LspAttach',
+  },
+  {
+    'rainbowhxch/beacon.nvim',
+    event = events.enter_buffer,
+    opts = { ignore_filetypes = require('utils.ui').excluded_filetypes },
+  },
 }

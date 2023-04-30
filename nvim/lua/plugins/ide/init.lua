@@ -15,11 +15,6 @@ return {
         config = config.null_ls,
         dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
       },
-      'ray-x/lsp_signature.nvim',
-      {
-        'lvimuser/lsp-inlayhints.nvim',
-        config = true,
-      },
     },
   },
   {
@@ -51,6 +46,9 @@ return {
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
+      'hrsh7th/cmp-emoji',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'lukas-reineke/cmp-under-comparator',
     },
     event = events.enter_insert,
   },
@@ -96,5 +94,11 @@ return {
   {
     'DNLHC/glance.nvim',
     cmd = 'Glance',
+  },
+  {
+    'lvimuser/lsp-inlayhints.nvim',
+    config = true,
+    init = config.inlayhints,
+    lazy = true,
   },
 }

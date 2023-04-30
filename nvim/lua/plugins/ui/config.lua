@@ -73,7 +73,6 @@ M.quickui = function()
     { '--',                            '' },
     { '&Table Mode\t<Leader>tm',       'TableModeToggle' },
     { 'Edit &Markdown Code Block',     'FeMaco' },
-    { '&Emoji Picker',                 'Telescope symbols' },
     { '--',                            '' },
     { '&Format Codes\t=',              'lua vim.lsp.buf.format { async = true }' },
   })

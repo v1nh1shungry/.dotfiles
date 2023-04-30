@@ -24,15 +24,6 @@ local on_attach = function(client, bufnr)
   if client.supports_method('textDocument/rangeFormatting') then
     vnoremap('=', function() vim.lsp.buf.format({ async = true }) end)
   end
-
-  require('lsp_signature').on_attach {
-    bind = true,
-    hint_enable = false,
-    hi_parameter = 'IncSearch',
-    handler_opts = { border = 'none' },
-  }
-
-  require('lsp-inlayhints').on_attach(client, bufnr)
 end
 
 M.lspconfig = function()
@@ -52,6 +43,7 @@ M.lspconfig = function()
     lspconfig[server].setup {
       on_attach = on_attach,
       capabilities = capabilities,
+      single_file_support = true,
     }
   end
 
@@ -256,11 +248,24 @@ M.cmp = function()
       { name = 'nvim_lsp' },
       { name = 'luasnip' },
       { name = 'xmake' },
+      { name = 'nvim_lsp_signature_help' },
     }, {
       { name = 'buffer' },
       { name = 'path' },
       { name = 'rg',    keyword_length = 5 },
-    })
+    }),
+    sorting = {
+      comparators = {
+        cmp.config.compare.offset,
+        cmp.config.compare.exact,
+        cmp.config.compare.score,
+        require 'cmp-under-comparator'.under,
+        cmp.config.compare.kind,
+        cmp.config.compare.sort_text,
+        cmp.config.compare.length,
+        cmp.config.compare.order,
+      },
+    },
   }
 
   cmp.setup.cmdline(':', {
@@ -272,6 +277,8 @@ M.cmp = function()
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources { { name = 'buffer' } },
   })
+
+  cmp.setup.filetype('markdown', { sources = cmp.config.sources { { name = 'emoji' } } })
 end
 
 M.tree = function()
@@ -366,7 +373,6 @@ end
 M.lspsaga = function()
   require('lspsaga').setup {
     code_action = {
-      keys = { quit = '<ESC>' },
       extend_gitsigns = false,
       show_server_name = true,
     },
@@ -375,9 +381,9 @@ M.lspsaga = function()
       on_insert = false,
       show_code_action = false,
     },
-    rename = { quit = '<ESC>' },
     symbol_in_winbar = { separator = ' > ' },
     ui = { winblend = require('user').ui.blend },
+    beacon = { enable = false },
   }
 end
 
@@ -387,6 +393,18 @@ M.gitsigns = function()
   gitsigns.setup()
   nnoremap(']h', gitsigns.next_hunk, { desc = 'Next git hunk' })
   nnoremap('[h', gitsigns.prev_hunk, { desc = 'Previous git hunk' })
+end
+
+M.inlayhints = function()
+  vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+      if args.data and args.data.client_id then
+        local bufnr = args.buf
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        require('lsp-inlayhints').on_attach(client, bufnr)
+      end
+    end,
+  })
 end
 
 return M

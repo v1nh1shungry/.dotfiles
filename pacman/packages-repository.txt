@@ -21,7 +21,6 @@ gdb
 gettext
 git
 git-delta
-gnu-netcat
 go
 grep
 groff

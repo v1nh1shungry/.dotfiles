@@ -41,13 +41,8 @@ return {
     opts = { excluded_filetypes = require('utils.ui').excluded_filetypes },
   },
   {
-    'rcarriga/nvim-notify',
-    init = config.notify,
-    lazy = true,
-    opts = { top_down = false },
-  },
-  {
     'simeji/winresizer',
+    cmd = 'WinResizerStartResize',
     keys = '<C-e>',
   },
   {
@@ -72,6 +67,7 @@ return {
   },
   {
     'folke/which-key.nvim',
+    event = 'VeryLazy',
     opts = {
       window = { winblend = require('user').ui.blend },
       layout = { height = { max = 10 } },
@@ -84,8 +80,9 @@ return {
     event = 'LspAttach',
   },
   {
-    'rainbowhxch/beacon.nvim',
-    event = events.enter_buffer,
-    opts = { ignore_filetypes = require('utils.ui').excluded_filetypes },
+    'folke/noice.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' },
+    event = 'VeryLazy',
+    opts = { lsp = { progress = { enabled = false } } },
   },
 }

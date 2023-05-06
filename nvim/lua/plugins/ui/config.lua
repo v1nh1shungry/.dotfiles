@@ -84,7 +84,6 @@ M.quickui = function()
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
     { 'Treesitter &Inspect',       'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
-    { 'Lua&pad',                    'Luapad' },
     { '--',                        '' },
     { 'Markdown Pre&view',         'MarkdownPreview' },
   })
@@ -101,13 +100,15 @@ M.quickui = function()
     { '&TODO',                      'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&Git', {
-    { 'Git Bl&ame',  'Gitsigns toggle_current_line_blame' },
-    { 'Git &Diff',   'Gvdiffsplit' },
-    { '--',          '' },
-    { 'Git &Remove', 'GDelete' },
-    { 'Git Re&name', 'lua vim.ui.input({ prompt = "Rename to:" }, function(input) vim.cmd.GRename(input) end)' },
-    { '--',          '' },
-    { '&Magit',      'Neogit' },
+    { 'Git Bl&ame',        'Gitsigns toggle_current_line_blame' },
+    { 'Git &Diff',         'Gvdiffsplit' },
+    { 'Git &Preview Hunk', 'Gitsigns preview_hunk' },
+    { 'Git Re&set Hunk',   'Gitsigns reset_hunk' },
+    { '--',                '' },
+    { 'Git &Remove',       'GDelete' },
+    { 'Git Re&name',       'lua vim.ui.input({ prompt = "Rename to:" }, function(input) vim.cmd.GRename(input) end)' },
+    { '--',                '' },
+    { '&Magit',            'Neogit' },
   })
   vim.fn['quickui#menu#install']('&Build', {
     { '&Build\t<Leader>fb', 'AsyncTask file-build' },
@@ -139,7 +140,7 @@ M.quickui = function()
   })
   vim.fn['quickui#menu#install']('Help (&?)', {
     { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },
-    { '&Welcome',             'Alpha' },
+    { '&Notifications',       'Noice' },
   })
   require('utils.keymaps').nnoremap('<M-Space>', function()
     vim.fn['quickui#context#open']({
@@ -165,20 +166,6 @@ M.lualine = function()
   local opts = require('plugins.ui.lualine.' .. theme)
   opts.extensions = { 'man', 'neo-tree', 'nvim-dap-ui', 'quickfix', 'toggleterm' }
   require('lualine').setup(opts)
-end
-
-M.notify = function()
-  ---@diagnostic disable-next-line: duplicate-set-field
-  vim.notify = function(...)
-    local notify = require('notify')
-    notify.setup {
-      timeout = 3000,
-      max_height = function() return math.floor(vim.o.lines * 0.75) end,
-      max_width = function() return math.floor(vim.o.columns * 0.75) end,
-    }
-    vim.notify = notify
-    return vim.notify(...)
-  end
 end
 
 M.dressing = function()

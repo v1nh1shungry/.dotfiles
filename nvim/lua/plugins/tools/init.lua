@@ -110,10 +110,6 @@ return {
     ft = 'markdown',
   },
   {
-    'rafcamlet/nvim-luapad',
-    cmd = 'Luapad',
-  },
-  {
     'skywind3000/vim-cppman',
     cmd = 'Cppman',
   },
@@ -121,5 +117,10 @@ return {
     'RRethy/nvim-treesitter-endwise',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_insert,
+  },
+  {
+    'echasnovski/mini.trailspace',
+    config = function() require('mini.trailspace').setup() end,
+    event = events.enter_buffer,
   },
 }

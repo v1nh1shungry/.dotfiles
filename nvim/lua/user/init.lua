@@ -1,5 +1,6 @@
 local default = {
   g = {},
+  lsp = { format_on_save = false },
   plugins = {},
   ui = {
     blend = 10,

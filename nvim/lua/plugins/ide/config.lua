@@ -1,5 +1,21 @@
 local M = {}
 
+local format = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local ft = vim.bo[bufnr].filetype
+  local have_nls = package.loaded['null-ls']
+      and (#require('null-ls.sources').get_available(ft, 'NULL_LS_FORMATTING') > 0)
+  vim.lsp.buf.format {
+    bufnr = bufnr,
+    filter = function(client)
+      if have_nls then
+        return client.name == 'null-ls'
+      end
+      return client.name ~= 'null-ls'
+    end
+  }
+end
+
 local on_attach = function(client, bufnr)
   local nnoremap = function(from, to, desc)
     local opts = { buffer = bufnr }
@@ -10,7 +26,8 @@ local on_attach = function(client, bufnr)
     require('utils.keymaps').vnoremap(from, to, { buffer = bufnr })
   end
 
-  nnoremap('=', function() vim.lsp.buf.format { async = true, bufnr = bufnr } end)
+  nnoremap('=', format)
+  vnoremap('=', format)
   nnoremap('gh', vim.lsp.buf.hover, 'Show hover document')
   nnoremap('<Leader>rn', '<Cmd>Lspsaga rename<CR>', 'Rename')
   nnoremap('<M-Enter>', '<Cmd>Lspsaga code_action<CR>')
@@ -21,8 +38,11 @@ local on_attach = function(client, bufnr)
   nnoremap('gy', '<Cmd>Glance type_definitions<CR>', 'Go to type definition')
   nnoremap('gR', '<Cmd>Glance references<CR>', 'Go to references')
 
-  if client.supports_method('textDocument/rangeFormatting') then
-    vnoremap('=', function() vim.lsp.buf.format({ async = true }) end)
+  if client.supports_method('textDocument/formatting') and require('user').lsp.format_on_save then
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      buffer = bufnr,
+      callback = format,
+    })
   end
 end
 
@@ -30,7 +50,6 @@ M.lspconfig = function()
   local lspconfig = require('lspconfig')
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   local servers = {
-    'bashls',
     'jsonls',
     'neocmake',
     'pylsp',
@@ -132,6 +151,7 @@ M.lspconfig = function()
         diagnostics = { disabled = { 'unresolved-proc-macro' } },
         cargo = { loadOutDirsFromCheck = true },
         procMacro = { enable = true },
+        check = { command = 'clippy' },
       },
     },
   }
@@ -179,13 +199,13 @@ M.null_ls = function()
 
   require('null-ls').setup {
     sources = {
-      actions.gitsigns,
+      actions.shellcheck,
       diagnostics.fish,
-      diagnostics.trail_space,
-      formatting.autopep8,
+      diagnostics.shellcheck,
       formatting.fish_indent,
-      formatting.trim_newlines,
-      formatting.trim_whitespace,
+      formatting.just,
+      formatting.markdown_toc,
+      formatting.shfmt,
     },
     on_attach = on_attach,
     update_in_insert = true,
@@ -203,7 +223,7 @@ M.cmp = function()
   cmp.setup {
     snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
     window = { completion = { side_padding = 0 } },
-    experimental = { ghost_text = true },
+    experimental = { ghost_text = { hl_group = 'LspCodeLens' } },
     formatting = {
       fields = { 'kind', 'abbr', 'menu' },
       format = function(entry, vim_item)
@@ -248,7 +268,6 @@ M.cmp = function()
       { name = 'nvim_lsp' },
       { name = 'luasnip' },
       { name = 'xmake' },
-      { name = 'nvim_lsp_signature_help' },
     }, {
       { name = 'buffer' },
       { name = 'path' },

@@ -7,7 +7,7 @@ vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
 vim.opt.fillchars = { eob = ' ' }
 vim.opt.foldenable = false
-vim.opt.formatoptions = 'qjl1'
+vim.opt.formatoptions = 'jcroqlnt'
 vim.opt.grepformat = '%f:%l:%c:%m'
 vim.opt.grepprg = 'rg --vimgrep'
 vim.opt.helpheight = 10
@@ -26,7 +26,7 @@ vim.opt.scrolloff = 5
 vim.opt.shell = '/bin/fish'
 vim.opt.shiftround = true
 vim.opt.shiftwidth = 2
-vim.opt.shortmess:append 'WcC'
+vim.opt.shortmess:append({ C = true, I = true, W = true, c = true })
 vim.opt.showcmd = false
 vim.opt.showmode = false
 vim.opt.sidescrolloff = 8
@@ -43,7 +43,9 @@ vim.opt.termguicolors = true
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 200
 vim.opt.virtualedit = 'block'
+vim.opt.wildmode = 'longest:full,full'
 vim.opt.wildignorecase = true
 vim.opt.winblend = require('user').ui.blend
+vim.opt.winminwidth = 5
 vim.opt.wrap = false
 vim.opt.writebackup = false

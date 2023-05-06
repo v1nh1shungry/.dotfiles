@@ -47,7 +47,6 @@ return {
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
       'hrsh7th/cmp-emoji',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
       'lukas-reineke/cmp-under-comparator',
     },
     event = events.enter_insert,

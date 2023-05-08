@@ -75,19 +75,7 @@ return {
   {
     'tiagovla/scope.nvim',
     config = true,
-  },
-  {
-    'kevinhwang91/nvim-hlslens',
-    config = config.hlslens,
-    keys = {
-      '/',
-      '?',
-      { '<C-n>', mode = { 'n', 'v' } }, -- integrate with vim-visual-multi
-      { 'n',     [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { 'N',     [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { '*',     [[*<Cmd>lua require('hlslens').start()<CR>]] },
-      { '#',     [[#<Cmd>lua require('hlslens').start()<CR>]] },
-    },
+    event = 'VeryLazy',
   },
   {
     'tommcdo/vim-exchange',
@@ -123,7 +111,7 @@ return {
     opts = { useDefaultKeymaps = true },
   },
   {
-    'tpope/vim-rsi',
-    event = events.enter_insert,
-  },
+    'romainl/vim-cool',
+    keys = { '/', '?', 'n', 'N', '*', '#' },
+  }
 }

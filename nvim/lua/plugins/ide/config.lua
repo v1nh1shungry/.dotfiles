@@ -118,6 +118,7 @@ M.lspconfig = function()
             align_call_args = true,
           },
         },
+        hint = { enable = true },
       },
     },
   }
@@ -208,7 +209,6 @@ M.null_ls = function()
       formatting.shfmt,
     },
     on_attach = on_attach,
-    update_in_insert = true,
   }
 
   require('mason-null-ls').setup { automatic_installation = true }
@@ -273,18 +273,6 @@ M.cmp = function()
       { name = 'path' },
       { name = 'rg',    keyword_length = 5 },
     }),
-    sorting = {
-      comparators = {
-        cmp.config.compare.offset,
-        cmp.config.compare.exact,
-        cmp.config.compare.score,
-        require 'cmp-under-comparator'.under,
-        cmp.config.compare.kind,
-        cmp.config.compare.sort_text,
-        cmp.config.compare.length,
-        cmp.config.compare.order,
-      },
-    },
   }
 
   cmp.setup.cmdline(':', {
@@ -298,6 +286,8 @@ M.cmp = function()
   })
 
   cmp.setup.filetype('markdown', { sources = cmp.config.sources { { name = 'emoji' } } })
+
+  cmp.setup.filetype('fennel', { sources = cmp.config.sources { { name = 'conjure' } } })
 end
 
 M.tree = function()

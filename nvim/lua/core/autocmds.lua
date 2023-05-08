@@ -50,3 +50,8 @@ autocmd({ 'InsertEnter', 'WinLeave' }, {
     end
   end,
 })
+
+autocmd('FileType', {
+  command = 'setlocal nofoldenable',
+  pattern = require('utils.ui').excluded_filetypes,
+})

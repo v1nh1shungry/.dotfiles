@@ -10,17 +10,7 @@ return {
       'folke/neodev.nvim',
       'p00f/clangd_extensions.nvim',
       'williamboman/mason-lspconfig.nvim',
-      {
-        'jose-elias-alvarez/null-ls.nvim',
-        config = config.null_ls,
-        dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
-      },
     },
-  },
-  {
-    'j-hui/fidget.nvim',
-    event = 'LspAttach',
-    opts = { sources = { ['null-ls'] = { ignore = true } } },
   },
   {
     'glepnir/lspsaga.nvim',
@@ -47,7 +37,7 @@ return {
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
       'hrsh7th/cmp-emoji',
-      'lukas-reineke/cmp-under-comparator',
+      'PaterJason/cmp-conjure',
     },
     event = events.enter_insert,
   },
@@ -99,5 +89,11 @@ return {
     config = true,
     init = config.inlayhints,
     lazy = true,
+  },
+  {
+    'jose-elias-alvarez/null-ls.nvim',
+    config = config.null_ls,
+    dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
+    ft = { 'fish', 'just', 'markdown', 'sh' },
   },
 }

@@ -22,6 +22,7 @@ CompileFlags:
     -Wall,
     -Wextra,
     -Werror,
+    -Wshadow,
   ]
 Diagnostics:
   UnusedIncludes: Strict

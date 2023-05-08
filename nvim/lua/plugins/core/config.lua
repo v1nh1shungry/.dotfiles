@@ -7,6 +7,7 @@ M.treesitter = function()
       'c',
       'cmake',
       'cpp',
+      'fennel',
       'fish',
       'go',
       'javascript',
@@ -60,19 +61,6 @@ M.treesitter = function()
     },
     endwise = { enable = true },
   }
-end
-
-M.hlslens = function()
-  require('hlslens').setup { calm_down = true, nearest_only = true }
-  vim.opt.shortmess:append 'S'
-  vim.api.nvim_create_autocmd('User', {
-    callback = require('hlslens').start,
-    pattern = 'visual_multi_start',
-  })
-  vim.api.nvim_create_autocmd('User', {
-    callback = require('hlslens').stop,
-    pattern = 'visual_multi_exit',
-  })
 end
 
 M.visual_multi = function()

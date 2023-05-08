@@ -5,7 +5,7 @@ vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
-vim.opt.fillchars = { eob = ' ' }
+vim.opt.fillchars = { eob = ' ', fold = ' ', foldclose = '', foldopen = '', foldsep = ' ' }
 vim.opt.foldenable = false
 vim.opt.formatoptions = 'jcroqlnt'
 vim.opt.grepformat = '%f:%l:%c:%m'

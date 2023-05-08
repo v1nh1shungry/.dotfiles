@@ -41,11 +41,6 @@ return {
     opts = { excluded_filetypes = require('utils.ui').excluded_filetypes },
   },
   {
-    'simeji/winresizer',
-    cmd = 'WinResizerStartResize',
-    keys = '<C-e>',
-  },
-  {
     'akinsho/bufferline.nvim',
     config = config.bufferline,
     event = events.enter_buffer,
@@ -81,8 +76,24 @@ return {
   },
   {
     'folke/noice.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' },
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      {
+        'rcarriga/nvim-notify',
+        opts = { top_down = false },
+      },
+    },
     event = 'VeryLazy',
-    opts = { lsp = { progress = { enabled = false } } },
+    opts = { routes = { { view = 'split', filter = { event = 'msg_show', min_height = 10 } } } },
+  },
+  {
+    'kevinhwang91/nvim-ufo',
+    config = config.ufo,
+    dependencies = {
+      'kevinhwang91/promise-async',
+      'nvim-treesitter/nvim-treesitter',
+      'luukvbaal/statuscol.nvim',
+    },
+    event = events.enter_buffer,
   },
 }

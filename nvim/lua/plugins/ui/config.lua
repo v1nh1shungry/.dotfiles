@@ -77,8 +77,6 @@ M.quickui = function()
     { '&Format Codes\t=',              'lua vim.lsp.buf.format { async = true }' },
   })
   vim.fn['quickui#menu#install']('&View', {
-    { '&Resize Windows\t<C-e>',    'WinResizerStartResize' },
-    { '--',                        '' },
     { '&Terminal\t<M-=>',          'ToggleTerm' },
     { 'File &Explorer\t<Leader>e', 'NeoTreeFocusToggle' },
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
@@ -103,8 +101,8 @@ M.quickui = function()
     { 'Git Bl&ame',        'Gitsigns toggle_current_line_blame' },
     { 'Git &Diff',         'Gvdiffsplit' },
     { 'Git &Preview Hunk', 'Gitsigns preview_hunk' },
-    { 'Git Re&set Hunk',   'Gitsigns reset_hunk' },
     { '--',                '' },
+    { 'Git Re&set Hunk',   'Gitsigns reset_hunk' },
     { 'Git &Remove',       'GDelete' },
     { 'Git Re&name',       'lua vim.ui.input({ prompt = "Rename to:" }, function(input) vim.cmd.GRename(input) end)' },
     { '--',                '' },
@@ -214,6 +212,56 @@ M.bufferline = function()
     },
   }
   require('utils.keymaps').nnoremap('gb', '<Cmd>BufferLinePick<CR>')
+end
+
+M.ufo = function()
+  vim.opt.foldcolumn = '1'
+  vim.opt.foldlevel = 99
+  vim.opt.foldlevelstart = 99
+  vim.opt.foldenable = true
+
+  local builtin = require('statuscol.builtin')
+  require('statuscol').setup({
+    bt_ignore = { 'terminal' },
+    ft_ignore = require('utils.ui').excluded_filetypes,
+    relculright = true,
+    segments = {
+      { sign = { name = { '.*' } },       click = 'v:lua.ScSa' },
+      { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
+      { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
+      { text = { builtin.foldfunc },      click = 'v:lua.ScFa' },
+    },
+  })
+
+  require('ufo').setup {
+    provider_selector = function(_, _, _) return { 'treesitter', 'indent' } end,
+    fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+      local newVirtText = {}
+      local suffix = ('  %d '):format(endLnum - lnum)
+      local sufWidth = vim.fn.strdisplaywidth(suffix)
+      local targetWidth = width - sufWidth
+      local curWidth = 0
+      for _, chunk in ipairs(virtText) do
+        local chunkText = chunk[1]
+        local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+        if targetWidth > curWidth + chunkWidth then
+          table.insert(newVirtText, chunk)
+        else
+          chunkText = truncate(chunkText, targetWidth - curWidth)
+          local hlGroup = chunk[2]
+          table.insert(newVirtText, { chunkText, hlGroup })
+          chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if curWidth + chunkWidth < targetWidth then
+            suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+          end
+          break
+        end
+        curWidth = curWidth + chunkWidth
+      end
+      table.insert(newVirtText, { suffix, 'MoreMsg' })
+      return newVirtText
+    end,
+  }
 end
 
 return M

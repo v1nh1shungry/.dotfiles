@@ -286,8 +286,6 @@ M.cmp = function()
   })
 
   cmp.setup.filetype('markdown', { sources = cmp.config.sources { { name = 'emoji' } } })
-
-  cmp.setup.filetype('fennel', { sources = cmp.config.sources { { name = 'conjure' } } })
 end
 
 M.tree = function()

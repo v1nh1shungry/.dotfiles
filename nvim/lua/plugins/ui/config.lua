@@ -71,7 +71,6 @@ M.quickui = function()
     { '&Find And Replace\t<Leader>rw', 'SearchReplaceSingleBufferCWord' },
     { '&SSR\t<Leader>sr',              'lua require("ssr").open()' },
     { '--',                            '' },
-    { '&Table Mode\t<Leader>tm',       'TableModeToggle' },
     { 'Edit &Markdown Code Block',     'FeMaco' },
     { '--',                            '' },
     { '&Format Codes\t=',              'lua vim.lsp.buf.format { async = true }' },
@@ -221,7 +220,7 @@ M.ufo = function()
   vim.opt.foldenable = true
 
   local builtin = require('statuscol.builtin')
-  require('statuscol').setup({
+  require('statuscol').setup {
     bt_ignore = { 'terminal' },
     ft_ignore = require('utils.ui').excluded_filetypes,
     relculright = true,
@@ -231,7 +230,7 @@ M.ufo = function()
       { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
       { text = { builtin.foldfunc },      click = 'v:lua.ScFa' },
     },
-  })
+  }
 
   require('ufo').setup {
     provider_selector = function(_, _, _) return { 'treesitter', 'indent' } end,

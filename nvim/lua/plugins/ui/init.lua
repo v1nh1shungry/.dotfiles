@@ -69,12 +69,6 @@ return {
     },
   },
   {
-    'chikko80/error-lens.nvim',
-    config = true,
-    dependencies = 'nvim-telescope/telescope.nvim',
-    event = 'LspAttach',
-  },
-  {
     'folke/noice.nvim',
     dependencies = {
       'MunifTanjim/nui.nvim',

@@ -37,7 +37,6 @@ return {
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
       'hrsh7th/cmp-emoji',
-      'PaterJason/cmp-conjure',
     },
     event = events.enter_insert,
   },

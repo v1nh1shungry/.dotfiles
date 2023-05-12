@@ -11,8 +11,8 @@ autocmd('InsertEnter', { callback = function() if vim.wo.number then vim.cmd.set
 autocmd('InsertLeave', { callback = function() if vim.wo.number then vim.cmd.setlocal 'relativenumber' end end })
 
 autocmd('FileType', {
-  command = 'setlocal nonumber norelativenumber nobuflisted',
-  pattern = { 'qf', 'query' },
+  command = 'setlocal nonumber norelativenumber nobuflisted nofoldenable',
+  pattern = require('utils.ui').excluded_filetypes,
 })
 
 autocmd('BufReadPost', {
@@ -49,9 +49,4 @@ autocmd({ 'InsertEnter', 'WinLeave' }, {
       vim.wo.cursorline = false
     end
   end,
-})
-
-autocmd('FileType', {
-  command = 'setlocal nofoldenable',
-  pattern = require('utils.ui').excluded_filetypes,
 })

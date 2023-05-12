@@ -7,7 +7,6 @@ M.treesitter = function()
       'c',
       'cmake',
       'cpp',
-      'fennel',
       'fish',
       'go',
       'javascript',

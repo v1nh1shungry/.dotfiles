@@ -106,11 +106,6 @@ return {
     keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
   },
   {
-    'chrisgrieser/nvim-various-textobjs',
-    event = events.enter_buffer,
-    opts = { useDefaultKeymaps = true },
-  },
-  {
     'romainl/vim-cool',
     keys = { '/', '?', 'n', 'N', '*', '#' },
   }

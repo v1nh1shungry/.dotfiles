@@ -5,6 +5,7 @@ vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = 'utf-8'
+vim.opt.fileencodings = 'utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1'
 vim.opt.fillchars = { eob = ' ', fold = ' ', foldclose = '', foldopen = '', foldsep = ' ' }
 vim.opt.foldenable = false
 vim.opt.formatoptions = 'jcroqlnt'
@@ -43,8 +44,8 @@ vim.opt.termguicolors = true
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 200
 vim.opt.virtualedit = 'block'
-vim.opt.wildmode = 'longest:full,full'
 vim.opt.wildignorecase = true
+vim.opt.wildmode = 'longest:full,full'
 vim.opt.winblend = require('user').ui.blend
 vim.opt.winminwidth = 5
 vim.opt.wrap = false

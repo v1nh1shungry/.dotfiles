@@ -47,12 +47,6 @@ return {
     },
   },
   {
-    'dhruvasagar/vim-table-mode',
-    cmd = 'TableModeToggle',
-    config = function() vim.g.table_mode_corner = '|' end,
-    keys = { { '<Leader>tm', desc = 'Toggle table mode' } },
-  },
-  {
     'danymat/neogen',
     cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
@@ -95,11 +89,6 @@ return {
     },
   },
   {
-    'Civitasv/cmake-tools.nvim',
-    cmd = 'CMakeGenerate',
-    opts = { cmake_build_directory = 'build' },
-  },
-  {
     'phaazon/hop.nvim',
     config = true,
     keys = { { 'gs', '<Cmd>HopChar1<CR>', mode = { 'n', 'x' }, desc = 'Hop one character' } },
@@ -123,5 +112,4 @@ return {
     config = function() require('mini.trailspace').setup() end,
     event = events.enter_buffer,
   },
-  'Olical/conjure',
 }

@@ -12,8 +12,27 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Bootstrap hotpot.nvim
+local hotpot_path = vim.fn.stdpath('data') .. '/lazy/hotpot.nvim'
+if not vim.loop.fs_stat(hotpot_path) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    '--single-branch',
+    'https://github.com/rktjmp/hotpot.nvim.git',
+    hotpot_path,
+  })
+end
+vim.opt.runtimepath:prepend(hotpot_path)
+
 local modules = { 'core', 'ide', 'ui', 'tools', 'themes' }
-local lazy_specs = {}
+local lazy_specs = {
+  {
+    'rktjmp/hotpot.nvim',
+    event = 'VeryLazy',
+  },
+}
 
 for _, module in ipairs(modules) do
   local module_specs = require('plugins.' .. module)
@@ -44,3 +63,5 @@ require('lazy').setup(lazy_specs, {
     },
   },
 })
+
+require('hotpot').setup { provide_require_fennel = true }

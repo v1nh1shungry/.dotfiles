@@ -37,6 +37,23 @@ return {
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
       'hrsh7th/cmp-emoji',
+      {
+        'abecodes/tabout.nvim',
+        dependencies = 'nvim-treesitter/nvim-treesitter',
+        opts = {
+          tabouts = {
+            { open = "'", close = "'" },
+            { open = '"', close = '"' },
+            { open = '`', close = '`' },
+            { open = '(', close = ')' },
+            { open = '[', close = ']' },
+            { open = '{', close = '}' },
+            { open = '<', close = '>' },
+            { open = '#', close = ']' },
+          },
+        },
+      },
+      'PaterJason/cmp-conjure',
     },
     event = events.enter_insert,
   },

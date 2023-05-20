@@ -7,7 +7,9 @@ M.treesitter = function()
       'c',
       'cmake',
       'cpp',
+      'fennel',
       'fish',
+      'haskell',
       'go',
       'javascript',
       'json',
@@ -59,6 +61,7 @@ M.treesitter = function()
       },
     },
     endwise = { enable = true },
+    rainbow = { enable = true },
   }
 end
 

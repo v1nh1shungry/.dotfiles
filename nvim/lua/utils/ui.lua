@@ -29,6 +29,7 @@ M.excluded_filetypes = {
   'lspsagaoutline',
   'mason',
   'neo-tree',
+  'noice',
   'qf',
   'query',
 }

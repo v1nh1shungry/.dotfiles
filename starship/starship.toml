@@ -7,3 +7,6 @@ format = "via [$symbol v$output]($style) "
 
 [cmake]
 detect_extensions = ["cmake"]
+
+[haskell]
+symbol = " "

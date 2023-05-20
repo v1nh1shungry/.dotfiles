@@ -11,6 +11,9 @@ if status is-interactive
     fnm env --use-on-cd | source
     set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
 
+    set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
+    set -gx PATH $HOME/.cabal/bin /home/vinh/.ghcup/bin $PATH
+
     set -gx LESS_TERMCAP_mb (set_color -o red)
     set -gx LESS_TERMCAP_md (set_color -o 5fafd7)
     set -gx LESS_TERMCAP_so (set_color 949494)

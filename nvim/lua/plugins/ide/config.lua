@@ -44,12 +44,20 @@ local on_attach = function(client, bufnr)
       callback = format,
     })
   end
+
+  if client.supports_method('textDocument/codeLens') then
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+      buffer = bufnr,
+      command = 'lua vim.lsp.codelens.refresh()',
+    })
+  end
 end
 
 M.lspconfig = function()
   local lspconfig = require('lspconfig')
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   local servers = {
+    'hls',
     'jsonls',
     'neocmake',
     'pylsp',
@@ -286,6 +294,8 @@ M.cmp = function()
   })
 
   cmp.setup.filetype('markdown', { sources = cmp.config.sources { { name = 'emoji' } } })
+
+  cmp.setup.filetype('fennel', { sources = cmp.config.sources { { name = 'conjure' } } })
 end
 
 M.tree = function()
@@ -295,7 +305,7 @@ M.tree = function()
       filtered_items = {
         hide_dotfiles = false,
         hide_hidden = false,
-        hide_by_name = { '.cache', '.git', '.xmake', 'build', 'node_modules' },
+        hide_by_name = { '.cache', '.git', '.xmake', 'build', 'dist-newstyle', 'node_modules' },
       },
       hijack_netrw_behavior = 'disabled',
     },

@@ -3,6 +3,7 @@ local default = {
   lsp = { format_on_save = false },
   plugins = {},
   ui = {
+    background = 'dark',
     blend = 10,
     colorscheme = 'tokyonight',
     statusline_theme = 'vscode',

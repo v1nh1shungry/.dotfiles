@@ -1,3 +1,4 @@
+vim.opt.background = require('user').ui.background
 vim.opt.breakindent = true
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.completeopt = { 'menuone', 'noinsert', 'noselect' }

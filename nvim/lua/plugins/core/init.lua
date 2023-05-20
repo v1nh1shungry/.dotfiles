@@ -70,7 +70,10 @@ return {
   {
     'altermo/ultimate-autopair.nvim',
     event = events.enter_insert,
-    opts = { cr = { addsemi = {} } },
+    opts = {
+      cr = { addsemi = {} },
+      extensions = { filetype = { nft = { 'fennel' } } },
+    },
   },
   {
     'tiagovla/scope.nvim',

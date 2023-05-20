@@ -78,7 +78,10 @@ return {
       },
     },
     event = 'VeryLazy',
-    opts = { routes = { { view = 'split', filter = { event = 'msg_show', min_height = 10 } } } },
+    opts = {
+      routes = { { view = 'split', filter = { event = 'msg_show', min_height = 10 } } },
+      views = { split = { enter = true } },
+    },
   },
   {
     'kevinhwang91/nvim-ufo',
@@ -88,6 +91,11 @@ return {
       'nvim-treesitter/nvim-treesitter',
       'luukvbaal/statuscol.nvim',
     },
+    event = events.enter_buffer,
+  },
+  {
+    'HiPhish/nvim-ts-rainbow2',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
   },
 }

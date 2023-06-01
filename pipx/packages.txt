@@ -1,4 +1,4 @@
-cmake-init 0.36.0
+cmake-init 0.36.1
 cppman 0.5.6
 gdbgui 0.15.1.0
 pip-search 0.0.12

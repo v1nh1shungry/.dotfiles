@@ -52,6 +52,7 @@ procps-ng
 psmisc
 python-pipx
 ripgrep
+ruby
 rustup
 sed
 starship

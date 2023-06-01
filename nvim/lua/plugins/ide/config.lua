@@ -61,10 +61,11 @@ M.lspconfig = function()
     'jsonls',
     'neocmake',
     'pylsp',
+    'solargraph',
     'taplo',
   }
 
-  require('mason-lspconfig').setup { automatic_installation = { exclude = { 'clangd' } } }
+  require('mason-lspconfig').setup { automatic_installation = true }
 
   for _, server in ipairs(servers) do
     lspconfig[server].setup {
@@ -294,8 +295,6 @@ M.cmp = function()
   })
 
   cmp.setup.filetype('markdown', { sources = cmp.config.sources { { name = 'emoji' } } })
-
-  cmp.setup.filetype('fennel', { sources = cmp.config.sources { { name = 'conjure' } } })
 end
 
 M.tree = function()

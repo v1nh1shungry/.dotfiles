@@ -112,6 +112,4 @@ return {
     config = function() require('mini.trailspace').setup() end,
     event = events.enter_buffer,
   },
-  'Olical/conjure',
-  'gpanders/nvim-parinfer',
 }

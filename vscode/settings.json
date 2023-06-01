@@ -1,0 +1,32 @@
+{
+    "workbench.startupEditor": "none",
+    "editor.fontFamily": "JetBrainsMono NFM",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "vim.argumentObjectClosingDelimiters": [
+        ")",
+        "]",
+        ">"
+    ],
+    "vim.argumentObjectOpeningDelimiters": [
+        "(",
+        "[",
+        "<"
+    ],
+    "vim.autoSwitchInputMethod.enable": true,
+    "vim.autoSwitchInputMethod.defaultIM": "1033",
+    "vim.autoSwitchInputMethod.obtainIMCmd": "D:\\scoop\\apps\\im-select\\current\\im-select.exe",
+    "vim.autoSwitchInputMethod.switchIMCmd": "D:\\scoop\\apps\\im-select\\current\\im-select.exe {im}",
+    "vim.easymotion": true,
+    "vim.hlsearch": true,
+    "vim.highlightedyank.enable": true,
+    "vim.leader": " ",
+    "vim.replaceWithRegister": true,
+    "vim.smartRelativeLine": true,
+    "vim.scroll": 5,
+    "vim.sneakReplacesF": true,
+    "vim.targets.enable": true,
+    "vim.useSystemClipboard": true,
+    "vim.visualstar": true,
+    "editor.cursorBlinking": "solid",
+    "AutoHotkey2.InterpreterPath": "D:\\scoop\\apps\\autohotkey\\current\\v2\\AutoHotkey64.exe"
+}

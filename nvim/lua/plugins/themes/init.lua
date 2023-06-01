@@ -4,4 +4,6 @@ return {
   { 'EdenEast/nightfox.nvim',     lazy = true },
   { 'catppuccin/nvim',            lazy = true, name = 'catppuccin' },
   { 'LunarVim/darkplus.nvim',     lazy = true },
+  { 'Shatur/neovim-ayu',          lazy = true },
+  { 'rebelot/kanagawa.nvim',      lazy = true },
 }

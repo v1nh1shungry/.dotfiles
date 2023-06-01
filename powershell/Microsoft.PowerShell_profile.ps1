@@ -1,6 +1,7 @@
 Invoke-Expression (&starship init powershell)
 
 Set-PSReadLineOption -EditMode Emacs
+Set-PSReadLineOption -BellStyle None
 Set-PSReadLineKeyHandler -Chord '"',"'" `
                          -BriefDescription SmartInsertQuote `
                          -LongDescription "Insert paired quotes if not already on a quote" `
@@ -19,12 +20,10 @@ Set-PSReadLineKeyHandler -Chord '"',"'" `
     }
 }
 
-Import-Module -Name Terminal-Icons
+Import-Module posh-git
 
-Import-Module PSFzf
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
-
-function which ($command) {
-  Get-Command -Name $command -ErrorAction SilentlyContinue |
-    Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
-}
+Remove-Item alias:ls
+Remove-Item alias:rm
+Remove-Item alias:mv
+function la ($arg) { ls -a $arg }
+function ll ($arg) { ls -al $arg }

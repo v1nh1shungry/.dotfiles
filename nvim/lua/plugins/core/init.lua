@@ -70,10 +70,7 @@ return {
   {
     'altermo/ultimate-autopair.nvim',
     event = events.enter_insert,
-    opts = {
-      cr = { addsemi = {} },
-      extensions = { filetype = { nft = { 'fennel' } } },
-    },
+    opts = { cr = { addsemi = {} } },
   },
   {
     'tiagovla/scope.nvim',
@@ -111,5 +108,5 @@ return {
   {
     'romainl/vim-cool',
     keys = { '/', '?', 'n', 'N', '*', '#' },
-  }
+  },
 }

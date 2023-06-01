@@ -6,8 +6,6 @@ if status is-interactive
 
     starship init fish | source
 
-    source /home/vinh/.opam/opam-init/init.fish >/dev/null 2>/dev/null; or true
-
     fnm env --use-on-cd | source
     set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
 
@@ -20,7 +18,6 @@ if status is-interactive
     set -gx LESS_TERMCAP_us (set_color -u afafd7)
 
     alias vi nvim
-    alias nv nvim
     alias vim nvim
     alias ls 'exa --icons'
     alias l ls

@@ -79,8 +79,8 @@ return {
     },
     event = 'VeryLazy',
     opts = {
-      routes = { { view = 'split', filter = { event = 'msg_show', min_height = 10 } } },
       views = { split = { enter = true } },
+      presets = { long_message_to_split = true },
     },
   },
   {

@@ -53,7 +53,6 @@ return {
           },
         },
       },
-      'PaterJason/cmp-conjure',
     },
     event = events.enter_insert,
   },
@@ -102,7 +101,6 @@ return {
   },
   {
     'lvimuser/lsp-inlayhints.nvim',
-    config = true,
     init = config.inlayhints,
     lazy = true,
   },

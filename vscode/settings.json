@@ -28,5 +28,12 @@
     "vim.useSystemClipboard": true,
     "vim.visualstar": true,
     "editor.cursorBlinking": "solid",
-    "AutoHotkey2.InterpreterPath": "D:\\scoop\\apps\\autohotkey\\current\\v2\\AutoHotkey64.exe"
+    "AutoHotkey2.InterpreterPath": "D:\\scoop\\apps\\autohotkey\\current\\v2\\AutoHotkey64.exe",
+    "leetcode.defaultLanguage": "cpp",
+    "leetcode.endpoint": "leetcode-cn",
+    "leetcode.workspaceFolder": "e:\\repos\\cpp\\leetcode",
+    "leetcode.hint.configWebviewMarkdown": false,
+    "editor.fontLigatures": true,
+    "leetcode.hint.commandShortcut": false,
+    "leetcode.hint.commentDescription": false
 }

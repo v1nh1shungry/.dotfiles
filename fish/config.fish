@@ -32,8 +32,8 @@ if status is-interactive
             set --erase https_proxy
         else if test "$argv" = host
             set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')
-            set -gx http_proxy "http://$winip:10809"
-            set -gx https_proxy "http://$winip:10809"
+            set -gx http_proxy "http://$winip:7890"
+            set -gx https_proxy "http://$winip:7890"
         else if test "$argv" = github
             set -gx http_proxy "http://127.0.0.1:38457"
             set -gx https_proxy "http://127.0.0.1:38457"

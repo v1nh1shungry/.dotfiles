@@ -7,5 +7,5 @@ deploy-github:
   cp /mnt/c/Users/lenovo/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1 powershell/Microsoft.PowerShell_profile.ps1
   cp /mnt/d/scoop/persist/vscode/data/user-data/User/settings.json vscode/settings.json
   git add -A
-  git commit -m "update $(date +'%Y.%m.%d')"
+  git commit -m "update"
   git push origin main

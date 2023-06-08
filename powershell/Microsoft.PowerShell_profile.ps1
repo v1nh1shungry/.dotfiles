@@ -22,6 +22,8 @@ Set-PSReadLineKeyHandler -Chord '"',"'" `
 
 Import-Module posh-git
 
+Import-Module scoop-completion
+
 Remove-Item alias:ls
 Remove-Item alias:rm
 Remove-Item alias:mv

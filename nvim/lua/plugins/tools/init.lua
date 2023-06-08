@@ -99,10 +99,6 @@ return {
     ft = 'markdown',
   },
   {
-    'skywind3000/vim-cppman',
-    cmd = 'Cppman',
-  },
-  {
     'RRethy/nvim-treesitter-endwise',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_insert,

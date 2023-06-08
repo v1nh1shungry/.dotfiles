@@ -11,7 +11,7 @@ M.diagnostics = {
 }
 
 M.tab = {
-  function() return 'Spaces: ' .. vim.api.nvim_buf_get_option(0, 'shiftwidth') end,
+  function() return 'Spaces: ' .. vim.bo.shiftwidth end,
   on_click = function()
     vim.ui.input({ prompt = 'Tab Size: ' }, function(input)
       vim.bo.shiftwidth = tonumber(input)

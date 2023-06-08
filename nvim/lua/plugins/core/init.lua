@@ -105,8 +105,4 @@ return {
     'vim-scripts/ReplaceWithRegister',
     keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
   },
-  {
-    'romainl/vim-cool',
-    keys = { '/', '?', 'n', 'N', '*', '#' },
-  },
 }

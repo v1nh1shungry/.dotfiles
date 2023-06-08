@@ -81,6 +81,7 @@ return {
     opts = {
       views = { split = { enter = true } },
       presets = { long_message_to_split = true },
+      messages = { view_search = false },
     },
   },
   {
@@ -97,5 +98,18 @@ return {
     'HiPhish/nvim-ts-rainbow2',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
+  },
+  {
+    'kevinhwang91/nvim-hlslens',
+    config = config.hlslens,
+    keys = {
+      '/',
+      '?',
+      { '<C-n>', mode = { 'n', 'v' } }, -- integrate with vim-visual-multi
+      { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { '*', [[*<Cmd>lua require('hlslens').start()<CR>]] },
+      { '#', [[#<Cmd>lua require('hlslens').start()<CR>]] },
+    },
   },
 }

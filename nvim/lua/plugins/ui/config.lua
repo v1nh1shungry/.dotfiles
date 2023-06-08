@@ -151,8 +151,6 @@ M.quickui = function()
       { '&Rename\t<Leader>rn',     'Lspsaga rename' },
       { '&Code Action\t<M-Enter>', 'Lspsaga code_action' },
       { '&Generate Document',      'Neogen' },
-      { '--',                      '' },
-      { 'Cpp&man',                 'exec "Cppman " . expand("<cword>")' },
     }, vim.empty_dict())
   end)
 end
@@ -261,6 +259,18 @@ M.ufo = function()
       return newVirtText
     end,
   }
+end
+
+M.hlslens = function()
+  require('hlslens').setup { calm_down = true, nearest_only = true }
+  vim.api.nvim_create_autocmd('User', {
+    callback = require('hlslens').start,
+    pattern = 'visual_multi_start',
+  })
+  vim.api.nvim_create_autocmd('User', {
+    callback = require('hlslens').stop,
+    pattern = 'visual_multi_exit',
+  })
 end
 
 return M

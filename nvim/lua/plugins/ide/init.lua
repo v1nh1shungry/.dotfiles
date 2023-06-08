@@ -36,7 +36,6 @@ return {
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
-      'hrsh7th/cmp-emoji',
       {
         'abecodes/tabout.nvim',
         dependencies = 'nvim-treesitter/nvim-treesitter',
@@ -101,6 +100,8 @@ return {
   },
   {
     'lvimuser/lsp-inlayhints.nvim',
+    branch = 'anticonceal',
+    config = true,
     init = config.inlayhints,
     lazy = true,
   },

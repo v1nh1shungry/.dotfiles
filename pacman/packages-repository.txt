@@ -49,6 +49,7 @@ pacman
 patch
 pkgconf
 procps-ng
+progress
 psmisc
 python-pipx
 ripgrep

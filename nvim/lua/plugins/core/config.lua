@@ -68,6 +68,8 @@ end
 M.visual_multi = function()
   vim.g.VM_silent_exit = true
   vim.g.VM_set_statusline = 0
+  vim.g.VM_quit_after_leaving_insert_mode = true
+  vim.g.VM_show_warnings = 0
 end
 
 M.surround = function()

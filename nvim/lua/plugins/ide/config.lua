@@ -232,7 +232,6 @@ M.cmp = function()
   cmp.setup {
     snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
     window = { completion = { side_padding = 0 } },
-    experimental = { ghost_text = { hl_group = 'LspCodeLens' } },
     formatting = {
       fields = { 'kind', 'abbr', 'menu' },
       format = function(entry, vim_item)
@@ -415,9 +414,8 @@ M.inlayhints = function()
   vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
       if args.data and args.data.client_id then
-        local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        require('lsp-inlayhints').on_attach(client, bufnr)
+        require('lsp-inlayhints').on_attach(client, args.buf)
       end
     end,
   })

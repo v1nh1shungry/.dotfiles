@@ -66,11 +66,6 @@ return {
     },
   },
   {
-    'AckslD/nvim-FeMaco.lua',
-    config = true,
-    cmd = 'FeMaco',
-  },
-  {
     'tpope/vim-fugitive',
     cmd = { 'Gvdiffsplit', 'GDelete' },
   },

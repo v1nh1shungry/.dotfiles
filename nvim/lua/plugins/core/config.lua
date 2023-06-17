@@ -17,6 +17,7 @@ M.treesitter = function()
       'markdown',
       'markdown_inline',
       'python',
+      'query',
       'ruby',
       'rust',
       'toml',

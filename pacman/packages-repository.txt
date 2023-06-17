@@ -21,6 +21,7 @@ gdb
 gettext
 git
 git-delta
+gnu-netcat
 go
 grep
 groff
@@ -56,6 +57,7 @@ ripgrep
 ruby
 rustup
 sed
+sloccount
 starship
 strace
 sudo

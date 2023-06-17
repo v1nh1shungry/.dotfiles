@@ -280,6 +280,8 @@ M.cmp = function()
       { name = 'buffer' },
       { name = 'path' },
       { name = 'rg',    keyword_length = 5 },
+    }, {
+      { name = 'nvim_lsp_signature_help' },
     }),
   }
 

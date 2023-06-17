@@ -35,5 +35,25 @@
     "leetcode.hint.configWebviewMarkdown": false,
     "editor.fontLigatures": true,
     "leetcode.hint.commandShortcut": false,
-    "leetcode.hint.commentDescription": false
+    "leetcode.hint.commentDescription": false,
+    "vim.visualModeKeyBindings": [
+        {
+            "before": [
+                ">"
+            ],
+            "commands": [
+                "editor.action.indentLines"
+            ]
+        },
+        {
+            "before": [
+                "<"
+            ],
+            "commands": [
+                "editor.action.outdentLines"
+            ]
+        },
+    ],
+    "vim.camelCaseMotion.enable": true,
+    "vim.showMarksInGutter": true
 }

@@ -52,6 +52,7 @@ return {
           },
         },
       },
+      'hrsh7th/cmp-nvim-lsp-signature-help',
     },
     event = events.enter_insert,
   },

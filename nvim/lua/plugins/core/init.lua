@@ -50,7 +50,10 @@ return {
   {
     'numToStr/Comment.nvim',
     config = true,
-    keys = { { 'gc', mode = { 'n', 'v' }, desc = 'Toggle comment' } },
+    keys = {
+      { 'gc',    mode = { 'n', 'v' },                       desc = 'Toggle comment' },
+      { '<C-_>', '<ESC><Plug>(comment_toggle_linewise_current)i', mode = 'i' },
+    },
   },
   {
     'echasnovski/mini.surround',
@@ -86,11 +89,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'keaising/im-select.nvim',
-    config = true,
-    event = events.enter_insert,
-  },
-  {
     'rhysd/clever-f.vim',
     keys = {
       { 'f', mode = { 'n', 'x' } },
@@ -104,5 +102,10 @@ return {
   {
     'vim-scripts/ReplaceWithRegister',
     keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
+  },
+  {
+    'axkirillov/hbac.nvim',
+    opts = { threshold = 5 },
+    event = events.enter_buffer,
   },
 }

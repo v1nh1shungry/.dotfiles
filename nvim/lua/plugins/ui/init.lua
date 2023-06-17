@@ -82,6 +82,7 @@ return {
       views = { split = { enter = true } },
       presets = { long_message_to_split = true },
       messages = { view_search = false },
+      lsp = { signature = { enabled = false } },
     },
   },
   {

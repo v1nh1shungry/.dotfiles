@@ -68,14 +68,6 @@ return {
     opts = { open_mapping = '<M-=>', size = 10 },
   },
   {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    cmd = 'NeoTreeFocusToggle',
-    config = config.tree,
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
-    keys = { { '<Leader>e', '<Cmd>NeoTreeFocusToggle<CR>', desc = 'Toggle NeoTree' } },
-  },
-  {
     'mfussenegger/nvim-dap',
     config = config.dap,
     dependencies = {

@@ -75,7 +75,7 @@ M.quickui = function()
   })
   vim.fn['quickui#menu#install']('&View', {
     { '&Terminal\t<M-=>',          'ToggleTerm' },
-    { 'File &Explorer\t<Leader>e', 'NeoTreeFocusToggle' },
+    { 'File &Explorer\t<Leader>e', 'lua MiniFiles.open()' },
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
     { 'Treesitter &Inspect',       'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
@@ -157,7 +157,7 @@ M.lualine = function()
   vim.opt.laststatus = 3
   local theme = require('user').ui.statusline_theme
   local opts = require('plugins.ui.lualine.' .. theme)
-  opts.extensions = { 'man', 'neo-tree', 'nvim-dap-ui', 'quickfix', 'toggleterm' }
+  opts.extensions = { 'man', 'nvim-dap-ui', 'quickfix', 'toggleterm' }
   require('lualine').setup(opts)
 end
 
@@ -178,12 +178,6 @@ M.bufferline = function()
   require('bufferline').setup {
     options = {
       offsets = {
-        {
-          filetype = 'neo-tree',
-          text = 'File Explorer',
-          text_align = 'center',
-          separator = true,
-        },
         {
           filetype = 'lspsagaoutline',
           text = 'Outline',

@@ -9,7 +9,7 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     keys = {
       { '<Leader>h', '<Cmd>Telescope help_tags<CR>', desc = 'Browse help docs' },
-      { '<C-p>', '<Cmd>Telescope find_files<CR>' },
+      { '<C-p>',     '<Cmd>Telescope find_files<CR>' },
     },
   },
   {
@@ -67,7 +67,7 @@ return {
   },
   {
     'tpope/vim-fugitive',
-    cmd = { 'Gvdiffsplit', 'GDelete' },
+    cmd = { 'G', 'Git', 'Gvdiffsplit', 'GDelete' },
   },
   {
     'cshuaimin/ssr.nvim',
@@ -84,11 +84,6 @@ return {
     },
   },
   {
-    'phaazon/hop.nvim',
-    config = true,
-    keys = { { 'gs', '<Cmd>HopChar1<CR>', mode = { 'n', 'x' }, desc = 'Hop one character' } },
-  },
-  {
     'iamcco/markdown-preview.nvim',
     build = function() vim.fn['mkdp#util#install']() end,
     ft = 'markdown',
@@ -102,5 +97,10 @@ return {
     'echasnovski/mini.trailspace',
     config = function() require('mini.trailspace').setup() end,
     event = events.enter_buffer,
+  },
+  {
+    'echasnovski/mini.files',
+    config = function() require('mini.files').setup() end,
+    keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Navigate and manipulate file system' } },
   },
 }

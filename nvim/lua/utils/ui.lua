@@ -28,7 +28,6 @@ M.excluded_filetypes = {
   'lazy',
   'lspsagaoutline',
   'mason',
-  'neo-tree',
   'noice',
   'qf',
   'query',

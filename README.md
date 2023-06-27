@@ -1,7 +1,5 @@
 # .dotfiles
 
-**⚠️ Please always assume that I will force-push to this repository!**
-
 ## Screenshots
 
 ![](https://user-images.githubusercontent.com/98312435/221203007-0fa766ce-7ffe-4a82-87a7-c8e2abbdfcb5.png)

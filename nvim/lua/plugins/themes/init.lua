@@ -3,8 +3,5 @@ return {
   { 'folke/tokyonight.nvim',      lazy = true },
   { 'EdenEast/nightfox.nvim',     lazy = true },
   { 'catppuccin/nvim',            lazy = true, name = 'catppuccin' },
-  { 'LunarVim/darkplus.nvim',     lazy = true },
-  { 'Shatur/neovim-ayu',          lazy = true },
   { 'rebelot/kanagawa.nvim',      lazy = true },
-  { 'ribru17/bamboo.nvim',        lazy = true },
 }

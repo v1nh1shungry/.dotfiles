@@ -298,39 +298,6 @@ M.cmp = function()
   cmp.setup.filetype('markdown', { sources = cmp.config.sources { { name = 'emoji' } } })
 end
 
-M.tree = function()
-  require('neo-tree').setup {
-    close_if_last_window = true,
-    filesystem = {
-      filtered_items = {
-        hide_dotfiles = false,
-        hide_hidden = false,
-        hide_by_name = { '.cache', '.git', '.xmake', 'build', 'dist-newstyle', 'node_modules' },
-      },
-      hijack_netrw_behavior = 'disabled',
-    },
-    window = {
-      mappings = {
-        ['h'] = 'close_node',
-        ['l'] = function(state)
-          local node = state.tree:get_node()
-          if node.type == 'directory' and not node:is_expanded() then
-            require('neo-tree.sources.filesystem').toggle_directory(state, node)
-          elseif node.type == 'file' then
-            require('neo-tree.sources.filesystem.commands').open(state)
-          end
-        end,
-      },
-    },
-    event_handlers = {
-      {
-        event = 'file_opened',
-        handler = function(_) require('neo-tree').close_all() end
-      },
-    },
-  }
-end
-
 M.dap = function()
   local dap, dapui = require('dap'), require('dapui')
   local icons = require('utils.ui').icons.dap

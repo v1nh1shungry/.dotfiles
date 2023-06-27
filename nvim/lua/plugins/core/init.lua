@@ -89,17 +89,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'rhysd/clever-f.vim',
-    keys = {
-      { 'f', mode = { 'n', 'x' } },
-      { 'F', mode = { 'n', 'x' } },
-      { 't', mode = { 'n', 'x' } },
-      { 'T', mode = { 'n', 'x' } },
-      { ';', '<Plug>(clever-f-repeat-forward)', mode = { 'n', 'x' } },
-      { ',', '<Plug>(clever-f-repeat-back)',    mode = { 'n', 'x' } },
-    },
-  },
-  {
     'vim-scripts/ReplaceWithRegister',
     keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
   },
@@ -107,5 +96,15 @@ return {
     'axkirillov/hbac.nvim',
     opts = { threshold = 5 },
     event = events.enter_buffer,
+  },
+  {
+    'folke/flash.nvim',
+    config = true,
+    keys = {
+      '/', '?', 'f', 'F', 't', 'T',
+      { 'gs', function() require('flash').jump() end, desc = 'Flash' },
+      { 'gt', function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
+      { 'r', function() require('flash').remote() end, mode = 'o', desc = 'Remote Flash' },
+    },
   },
 }

@@ -31,6 +31,7 @@ M.excluded_filetypes = {
   'noice',
   'qf',
   'query',
+  'spectre_panel',
 }
 
 return M

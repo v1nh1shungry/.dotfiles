@@ -68,7 +68,8 @@ M.quickui = function()
     { '&Exit\tQ',       'qa!' },
   })
   vim.fn['quickui#menu#install']('&Edit', {
-    { '&Find And Replace\t<Leader>rw',              'SearchReplaceSingleBufferCWord' },
+    { '&Local Find And Replace\t<Leader>rw',        'SearchReplaceSingleBufferCWord' },
+    { '&Global Find And Replace',                   'Spectre' },
     { '&Structured Search And Replace\t<Leader>sr', 'lua require("ssr").open()' },
     { '--',                                         '' },
     { '&Format Codes\t=',                           'lua vim.lsp.buf.format { async = true }' },

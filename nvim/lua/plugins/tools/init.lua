@@ -103,4 +103,9 @@ return {
     config = function() require('mini.files').setup() end,
     keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Navigate and manipulate file system' } },
   },
+  {
+    'nvim-pack/nvim-spectre',
+    cmd = 'Spectre',
+    opts = { open_cmd = 'noswapfile vnew' },
+  },
 }

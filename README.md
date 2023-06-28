@@ -2,6 +2,6 @@
 
 ## Screenshots
 
-![](https://user-images.githubusercontent.com/98312435/221203007-0fa766ce-7ffe-4a82-87a7-c8e2abbdfcb5.png)
+![](https://user-images.githubusercontent.com/98312435/249407125-14135a8a-f9af-4387-bb35-32b60ff6882d.png)
 
-![](https://user-images.githubusercontent.com/98312435/221203489-f6e524cf-e288-413b-abf6-7be60715cb20.png)
+![](https://user-images.githubusercontent.com/98312435/249407472-dde4d272-6fe2-4a5f-a1cb-086e9c342c6c.png)

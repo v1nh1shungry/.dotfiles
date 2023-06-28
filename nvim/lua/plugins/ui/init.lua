@@ -80,9 +80,16 @@ return {
     event = 'VeryLazy',
     opts = {
       views = { split = { enter = true } },
-      presets = { long_message_to_split = true },
+      presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
       messages = { view_search = false },
-      lsp = { signature = { enabled = false } },
+      lsp = {
+        signature = { enabled = false },
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true,
+        },
+      },
     },
   },
   {
@@ -107,10 +114,10 @@ return {
       '/',
       '?',
       { '<C-n>', mode = { 'n', 'v' } }, -- integrate with vim-visual-multi
-      { 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { '*', [[*<Cmd>lua require('hlslens').start()<CR>]] },
-      { '#', [[#<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'n',     [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { 'N',     [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { '*',     [[*<Cmd>lua require('hlslens').start()<CR>]] },
+      { '#',     [[#<Cmd>lua require('hlslens').start()<CR>]] },
     },
   },
 }

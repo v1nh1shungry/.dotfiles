@@ -30,7 +30,7 @@ local on_attach = function(client, bufnr)
   vnoremap('=', format)
   nnoremap('gh', vim.lsp.buf.hover, 'Show hover document')
   nnoremap('<Leader>rn', '<Cmd>Lspsaga rename<CR>', 'Rename')
-  nnoremap('<M-Enter>', '<Cmd>Lspsaga code_action<CR>')
+  nnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
   nnoremap('<Leader>o', '<Cmd>Lspsaga outline<CR>')
   nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', 'Next diagnostic')
   nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', 'Previous diagnostic')
@@ -247,8 +247,8 @@ M.cmp = function()
       end
     },
     mapping = cmp.mapping.preset.insert({
-      ['<C-j>'] = cmp.mapping.select_next_item(),
-      ['<C-k>'] = cmp.mapping.select_prev_item(),
+      ['<C-n>'] = cmp.mapping.select_next_item(),
+      ['<C-p>'] = cmp.mapping.select_prev_item(),
       ['<ESC>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping.confirm { select = true },
       ['<Tab>'] = cmp.mapping(function(fallback)

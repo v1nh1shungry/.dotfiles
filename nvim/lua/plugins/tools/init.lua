@@ -8,8 +8,10 @@ return {
     config = config.telescope,
     dependencies = 'nvim-lua/plenary.nvim',
     keys = {
-      { '<Leader>h', '<Cmd>Telescope help_tags<CR>', desc = 'Browse help docs' },
-      { '<C-p>',     '<Cmd>Telescope find_files<CR>' },
+      { '<Leader>h',  '<Cmd>Telescope help_tags<CR>' },
+      { '<C-p>',      '<Cmd>Telescope find_files<CR>' },
+      { '<Leader>rf', '<Cmd>Telescope oldfiles<CR>' },
+      { '<Leader>lg', '<Cmd>Telescope live_grep<CR>' }
     },
   },
   {
@@ -52,28 +54,8 @@ return {
     opts = { snippet_engine = 'luasnip' },
   },
   {
-    'TimUntersberger/neogit',
-    cmd = 'Neogit',
-    dependencies = 'nvim-lua/plenary.nvim',
-    opts = { signs = { section = { '', '' }, item = { '', '' } } },
-  },
-  {
-    'roobert/search-replace.nvim',
-    config = true,
-    keys = {
-      { '<Leader>rw', '<Cmd>SearchReplaceSingleBufferCWord<CR>',           desc = 'Search and replace' },
-      { '<C-r>',      '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', mode = 'v' },
-    },
-  },
-  {
     'tpope/vim-fugitive',
-    cmd = { 'G', 'Git', 'Gvdiffsplit', 'GDelete' },
-  },
-  {
-    'cshuaimin/ssr.nvim',
-    keys = {
-      { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structured search and replace' },
-    },
+    cmd = { 'Git', 'Gvdiffsplit', 'GDelete' },
   },
   {
     'echasnovski/mini.align',
@@ -104,8 +86,13 @@ return {
     keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Navigate and manipulate file system' } },
   },
   {
-    'nvim-pack/nvim-spectre',
-    cmd = 'Spectre',
-    opts = { open_cmd = 'noswapfile vnew' },
+    'nacro90/numb.nvim',
+    config = true,
+    event = 'CmdlineEnter',
+  },
+  {
+    'mbbill/undotree',
+    cmd = 'UndotreeToggle',
+    keys = { { '<Leader>u', '<Cmd>UndotreeToggle<CR>', desc = 'Toggle undotree' } },
   },
 }

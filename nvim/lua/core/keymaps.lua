@@ -17,16 +17,7 @@ inoremap('<C-s>', '<Esc>:w<CR>')
 vnoremap('<C-s>', '<Esc>:w<CR>')
 nnoremap('<C-s>', ':w<CR>')
 
-nnoremap('<C-h>', '<C-w>h')
-nnoremap('<C-j>', '<C-w>j')
-nnoremap('<C-k>', '<C-w>k')
-nnoremap('<C-l>', '<C-w>l')
-tnoremap('<C-h>', '<C-\\><C-n><C-w>h')
-tnoremap('<C-j>', '<C-\\><C-n><C-w>j')
-tnoremap('<C-k>', '<C-\\><C-n><C-w>k')
-tnoremap('<C-l>', '<C-\\><C-n><C-w>l')
 tnoremap('<M-q>', '<C-\\><C-n>')
-tnoremap('<M-p>', '<C-\\><C-n>pa')
 
 vnoremap('<', '<gv')
 vnoremap('>', '>gv')
@@ -50,3 +41,6 @@ nmap('gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = 'V
 
 nnoremap('<Leader>\\', '<Cmd>vsplit<CR>', { desc = 'Vertical split' })
 nnoremap('<Leader>-', '<Cmd>split<CR>', { desc = 'Split screen' })
+
+nnoremap('[<Tab>', '<Cmd>tabprevious<CR>', { desc = 'Previous tab' })
+nnoremap(']<Tab>', '<Cmd>tabnext<CR>', { desc = 'Next tab' })

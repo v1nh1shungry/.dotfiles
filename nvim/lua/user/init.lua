@@ -1,7 +1,10 @@
 local default = {
   g = {},
   lsp = { format_on_save = false },
-  plugins = {},
+  plugins = {
+    disabled = {},
+    extra = {},
+  },
   ui = {
     background = 'dark',
     blend = 10,

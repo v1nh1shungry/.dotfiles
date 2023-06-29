@@ -56,23 +56,15 @@ end
 M.quickui = function()
   vim.fn['quickui#menu#reset']()
   vim.fn['quickui#menu#install']('&File', {
-    { '&Open\t<C-p>',   'Telescope find_files' },
-    { 'Open Settin&gs', 'e ~/.nvimrc' },
-    { '--',             '' },
-    { '&Save\t<C-s>',   'write' },
-    { 'Save &All',      'wall' },
-    { '--',             '' },
-    { '&Delete',        'Delete' },
-    { '&Rename',        'lua vim.ui.input({ prompt = "Rename to: " }, function(input) vim.cmd.Rename(input) end)' },
-    { '--',             '' },
-    { '&Exit\tQ',       'qa!' },
-  })
-  vim.fn['quickui#menu#install']('&Edit', {
-    { '&Local Find And Replace\t<Leader>rw',        'SearchReplaceSingleBufferCWord' },
-    { '&Global Find And Replace',                   'Spectre' },
-    { '&Structured Search And Replace\t<Leader>sr', 'lua require("ssr").open()' },
-    { '--',                                         '' },
-    { '&Format Codes\t=',                           'lua vim.lsp.buf.format { async = true }' },
+    { '&Open\t<C-p>',              'Telescope find_files' },
+    { 'Recent &Files\t<Leader>rf', 'Telescope oldfiles' },
+    { 'Open Settin&gs',            'e ~/.nvimrc' },
+    { '--',                        '' },
+    { '&Save\t<C-s>',              'write' },
+    { 'Save &All',                 'wall' },
+    { '--',                        '' },
+    { '&Delete',                   'Delete' },
+    { '&Rename',                   'lua vim.ui.input({ prompt = "Rename to: " }, function(input) vim.cmd.Rename(input) end)' },
   })
   vim.fn['quickui#menu#install']('&View', {
     { '&Terminal\t<M-=>',          'ToggleTerm' },
@@ -80,20 +72,23 @@ M.quickui = function()
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
     { 'Treesitter &Inspect',       'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
+    { '&Undotree\t<Leader>u',      'UndotreeToggle' },
     { '--',                        '' },
     { 'Markdown Pre&view',         'MarkdownPreview' },
   })
-  vim.fn['quickui#menu#install']('&Navigation', {
-    { 'Live &Grep',                 'Telescope live_grep' },
+  vim.fn['quickui#menu#install']('&Intellisense', {
+    { '&Symbols',                   'Telescope lsp_document_symbols' },
+    { 'Di&agnostics',               'Trouble document_diagnostics' },
     { '--',                         '' },
     { 'Goto &Definitions\tgd',      'Glance definitions' },
     { 'Goto T&ype Definitions\tgy', 'Glance type_definitions' },
     { 'Goto &References\tgR',       'Glance references' },
     { '--',                         '' },
-    { '&Symbols',                   'Telescope lsp_document_symbols' },
-    { 'Di&agnostics',               'Trouble document_diagnostics' },
+    { '&Lspsaga Finder',            'Lspsaga lsp_finder' },
+    { '&Incoming Calls',            'Lspsaga incoming_calls' },
+    { '&Outgoing Calls',            'Lspsaga outgoing_calls' },
     { '--',                         '' },
-    { '&TODO',                      'TodoTrouble' },
+    { 'TO&DO',                      'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&Git', {
     { 'Git Bl&ame',        'Gitsigns toggle_current_line_blame' },
@@ -104,7 +99,7 @@ M.quickui = function()
     { 'Git &Remove',       'GDelete' },
     { 'Git Re&name',       'lua vim.ui.input({ prompt = "Rename to:" }, function(input) vim.cmd.GRename(input) end)' },
     { '--',                '' },
-    { '&Magit',            'Neogit' },
+    { '&Fugitive',         'tab Git' },
   })
   vim.fn['quickui#menu#install']('&Build', {
     { '&Build\t<Leader>fb', 'AsyncTask file-build' },
@@ -125,33 +120,6 @@ M.quickui = function()
     { 'Step &Into\t<F11>',       'DapStepInto' },
     { 'Step &Out\t<F12>',        'DapStepOut' },
   })
-  vim.fn['quickui#menu#install']('&Plugins', {
-    { '&Update',       'Lazy sync' },
-    { '&Clean Unused', 'Lazy clean' },
-    { '--',            '' },
-    { 'H&ome',         'Lazy home' },
-    { '&Profile',      'Lazy profile' },
-    { '--',            '' },
-    { '&Mason',        'Mason' },
-  })
-  vim.fn['quickui#menu#install']('Help (&?)', {
-    { 'Help (&?)\t<Leader>h', 'Telescope help_tags' },
-    { '&Notifications',       'Noice' },
-  })
-  require('utils.keymaps').nnoremap('<M-Space>', function()
-    vim.fn['quickui#context#open']({
-      { 'Di&agnostics',            'Lspsaga show_line_diagnostics' },
-      { '&Preview Definition',     'Lspsaga peek_definition' },
-      { '--',                      '' },
-      { '&Lspsaga Finder',         'Lspsaga lsp_finder' },
-      { '&Incoming Calls',         'Lspsaga incoming_calls' },
-      { '&Outgoing Calls',         'Lspsaga outgoing_calls' },
-      { '--',                      '' },
-      { '&Rename\t<Leader>rn',     'Lspsaga rename' },
-      { '&Code Action\t<M-Enter>', 'Lspsaga code_action' },
-      { '&Generate Document',      'Neogen' },
-    }, vim.empty_dict())
-  end)
 end
 
 M.lualine = function()

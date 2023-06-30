@@ -58,48 +58,43 @@ M.quickui = function()
   vim.fn['quickui#menu#install']('&File', {
     { '&Open\t<C-p>',              'Telescope find_files' },
     { 'Recent &Files\t<Leader>rf', 'Telescope oldfiles' },
-    { 'Open Settin&gs',            'e ~/.nvimrc' },
     { '--',                        '' },
     { '&Save\t<C-s>',              'write' },
     { 'Save &All',                 'wall' },
     { '--',                        '' },
-    { '&Delete',                   'Delete' },
-    { '&Rename',                   'lua vim.ui.input({ prompt = "Rename to: " }, function(input) vim.cmd.Rename(input) end)' },
+    { '&Preference',               'e ~/.nvimrc' },
+    { '--',                        '' },
+    { 'TO&DO',                     'TodoTrouble' },
   })
   vim.fn['quickui#menu#install']('&View', {
     { '&Terminal\t<M-=>',          'ToggleTerm' },
     { 'File &Explorer\t<Leader>e', 'lua MiniFiles.open()' },
     { '&Outline\t<Leader>o',       'Lspsaga outline' },
     { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
-    { 'Treesitter &Inspect',       'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
+    { 'Tree&sitter',               'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
     { '&Undotree\t<Leader>u',      'UndotreeToggle' },
     { '--',                        '' },
     { 'Markdown Pre&view',         'MarkdownPreview' },
   })
   vim.fn['quickui#menu#install']('&Intellisense', {
-    { '&Symbols',                   'Telescope lsp_document_symbols' },
-    { 'Di&agnostics',               'Trouble document_diagnostics' },
-    { '--',                         '' },
-    { 'Goto &Definitions\tgd',      'Glance definitions' },
-    { 'Goto T&ype Definitions\tgy', 'Glance type_definitions' },
-    { 'Goto &References\tgR',       'Glance references' },
-    { '--',                         '' },
-    { '&Lspsaga Finder',            'Lspsaga lsp_finder' },
-    { '&Incoming Calls',            'Lspsaga incoming_calls' },
-    { '&Outgoing Calls',            'Lspsaga outgoing_calls' },
-    { '--',                         '' },
-    { 'TO&DO',                      'TodoTrouble' },
+    { '&Symbols\t<Leader>ss',        'Telescope lsp_document_symbols' },
+    { 'Di&agnostics',                'Trouble document_diagnostics' },
+    { '&Lspsaga Finder\t<Leader>lf', 'Lspsaga lsp_finder' },
+    { '--',                          '' },
+    { 'Goto &Definitions\tgd',       'Glance definitions' },
+    { 'Goto T&ype Definitions\tgy',  'Glance type_definitions' },
+    { 'Goto &References\tgR',        'Glance references' },
+    { '&Incoming Calls',             'Lspsaga incoming_calls' },
+    { '&Outgoing Calls',             'Lspsaga outgoing_calls' },
+    { '--',                          '' },
+    { '&Mason',                      'Mason' },
   })
   vim.fn['quickui#menu#install']('&Git', {
-    { 'Git Bl&ame',        'Gitsigns toggle_current_line_blame' },
-    { 'Git &Diff',         'Gvdiffsplit' },
-    { 'Git &Preview Hunk', 'Gitsigns preview_hunk' },
-    { '--',                '' },
-    { 'Git Re&set Hunk',   'Gitsigns reset_hunk' },
-    { 'Git &Remove',       'GDelete' },
-    { 'Git Re&name',       'lua vim.ui.input({ prompt = "Rename to:" }, function(input) vim.cmd.GRename(input) end)' },
-    { '--',                '' },
-    { '&Fugitive',         'tab Git' },
+    { 'Git Bl&ame',                    'Gitsigns toggle_current_line_blame' },
+    { 'Git &Diff\t<Leader>gd',         'Gvdiffsplit' },
+    { 'Git &Preview Hunk\t<Leader>gp', 'Gitsigns preview_hunk' },
+    { 'Git Re&set Hunk\t<Leader>gr',   'Gitsigns reset_hunk' },
+    { '&Fugitive\t<Leader>gg',         'tab Git' },
   })
   vim.fn['quickui#menu#install']('&Build', {
     { '&Build\t<Leader>fb', 'AsyncTask file-build' },
@@ -172,12 +167,7 @@ M.bufferline = function()
   require('utils.keymaps').nnoremap('gb', '<Cmd>BufferLinePick<CR>')
 end
 
-M.ufo = function()
-  vim.opt.foldcolumn = '1'
-  vim.opt.foldlevel = 99
-  vim.opt.foldlevelstart = 99
-  vim.opt.foldenable = true
-
+M.statuscol = function()
   local builtin = require('statuscol.builtin')
   require('statuscol').setup {
     bt_ignore = { 'terminal' },
@@ -187,38 +177,7 @@ M.ufo = function()
       { sign = { name = { '.*' } },       click = 'v:lua.ScSa' },
       { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
       { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
-      { text = { builtin.foldfunc },      click = 'v:lua.ScFa' },
     },
-  }
-
-  require('ufo').setup {
-    provider_selector = function(_, _, _) return { 'treesitter', 'indent' } end,
-    fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
-      local newVirtText = {}
-      local suffix = ('  %d '):format(endLnum - lnum)
-      local sufWidth = vim.fn.strdisplaywidth(suffix)
-      local targetWidth = width - sufWidth
-      local curWidth = 0
-      for _, chunk in ipairs(virtText) do
-        local chunkText = chunk[1]
-        local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-        if targetWidth > curWidth + chunkWidth then
-          table.insert(newVirtText, chunk)
-        else
-          chunkText = truncate(chunkText, targetWidth - curWidth)
-          local hlGroup = chunk[2]
-          table.insert(newVirtText, { chunkText, hlGroup })
-          chunkWidth = vim.fn.strdisplaywidth(chunkText)
-          if curWidth + chunkWidth < targetWidth then
-            suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
-          end
-          break
-        end
-        curWidth = curWidth + chunkWidth
-      end
-      table.insert(newVirtText, { suffix, 'MoreMsg' })
-      return newVirtText
-    end,
   }
 end
 

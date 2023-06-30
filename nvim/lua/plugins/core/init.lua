@@ -33,25 +33,33 @@ return {
     'Wansmer/treesj',
     config = true,
     keys = {
-      { 'gS', '<Cmd>TSJSplit<CR>', desc = 'Treesj Split' },
-      { 'gJ', '<Cmd>TSJJoin<CR>',  desc = 'Treesj Join' },
+      { 'S', '<Cmd>TSJSplit<CR>', desc = 'Treesj Split' },
+      { 'J', '<Cmd>TSJJoin<CR>',  desc = 'Treesj Join' },
     },
   },
   {
     'RRethy/vim-illuminate',
     config = function() require('illuminate').configure { providers = { 'lsp', 'treesitter' } } end,
     event = events.enter_buffer,
+    keys = {
+      { '[[', function() require('illuminate').goto_prev_reference(false) end, desc = 'Previous reference' },
+      { ']]', function() require('illuminate').goto_next_reference(false) end, desc = 'Next reference' },
+    }
   },
   {
     'lukas-reineke/indent-blankline.nvim',
     event = events.enter_buffer,
-    opts = { show_trailing_blankline_indent = false, show_current_context = true },
+    opts = {
+      show_trailing_blankline_indent = false,
+      show_current_context = true,
+      filetype_exclude = require('utils.ui').excluded_filetypes,
+    },
   },
   {
     'numToStr/Comment.nvim',
     config = true,
     keys = {
-      { 'gc',    mode = { 'n', 'v' },                       desc = 'Toggle comment' },
+      { 'gc',    mode = { 'n', 'v' },                             desc = 'Toggle comment' },
       { '<C-_>', '<ESC><Plug>(comment_toggle_linewise_current)i', mode = 'i' },
     },
   },
@@ -102,9 +110,17 @@ return {
     config = true,
     keys = {
       '/', '?', 'f', 'F', 't', 'T',
-      { 'gs', function() require('flash').jump() end, desc = 'Flash' },
+      { 'gs', function() require('flash').jump() end,       desc = 'Flash' },
       { 'gt', function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
-      { 'r', function() require('flash').remote() end, mode = 'o', desc = 'Remote Flash' },
+      { 'r',  function() require('flash').remote() end,     mode = 'o',               desc = 'Remote Flash' },
+    },
+  },
+  {
+    'm4xshen/hardtime.nvim',
+    event = 'VeryLazy',
+    opts = {
+      disabled_filetypes = require('utils.ui').excluded_filetypes, -- Yep, this is not relevant to `UI` at all, but it just works :)
+      notification = false,
     },
   },
 }

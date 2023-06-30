@@ -60,6 +60,10 @@ return {
     'lewis6991/gitsigns.nvim',
     config = config.gitsigns,
     event = events.enter_buffer,
+    keys = {
+      { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview git hunk' },
+      { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset git hunk' },
+    },
   },
   {
     'akinsho/toggleterm.nvim',

@@ -22,7 +22,7 @@ tnoremap('<M-q>', '<C-\\><C-n>')
 vnoremap('<', '<gv')
 vnoremap('>', '>gv')
 
-nnoremap('<Leader>q', function()
+nnoremap('<Leader>qf', function()
   local nr = vim.fn.winnr('$')
   vim.cmd 'cwindow'
   if nr == vim.fn.winnr('$') then

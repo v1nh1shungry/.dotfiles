@@ -23,7 +23,7 @@ if status is-interactive
     alias l ls
     alias la 'ls -a'
     alias ll 'ls -al --git'
-    alias tree 'exa -T --icons --level 3 --ignore-glob=".git"'
+    alias tree 'exa -T --icons --level 3'
     alias diff 'batdiff --delta'
 
     function proxy

@@ -91,10 +91,8 @@ M.quickui = function()
   })
   vim.fn['quickui#menu#install']('&Git', {
     { 'Git Bl&ame',                    'Gitsigns toggle_current_line_blame' },
-    { 'Git &Diff\t<Leader>gd',         'Gvdiffsplit' },
     { 'Git &Preview Hunk\t<Leader>gp', 'Gitsigns preview_hunk' },
     { 'Git Re&set Hunk\t<Leader>gr',   'Gitsigns reset_hunk' },
-    { '&Fugitive\t<Leader>gg',         'tab Git' },
   })
   vim.fn['quickui#menu#install']('&Build', {
     { '&Build\t<Leader>fb', 'AsyncTask file-build' },
@@ -182,7 +180,7 @@ M.statuscol = function()
 end
 
 M.hlslens = function()
-  require('hlslens').setup { calm_down = true, nearest_only = true }
+  require('hlslens').setup { calm_down = true }
   vim.api.nvim_create_autocmd('User', {
     callback = require('hlslens').start,
     pattern = 'visual_multi_start',

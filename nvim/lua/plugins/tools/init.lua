@@ -10,7 +10,7 @@ return {
       { '<Leader>h',  '<Cmd>Telescope help_tags<CR>' },
       { '<C-p>',      '<Cmd>Telescope find_files<CR>' },
       { '<Leader>rf', '<Cmd>Telescope oldfiles<CR>' },
-      { '<Leader>lg', '<Cmd>Telescope live_grep<CR>' },
+      { '<Leader>/',  '<Cmd>Telescope live_grep<CR>' },
       { '<Leader>m',  '<Cmd>Telescope man_pages<CR>' },
       { '<Leader>:',  '<Cmd>Telescope commands<CR>' },
       { '<Leader>km', '<Cmd>Telescope keymaps<CR>' },
@@ -58,14 +58,6 @@ return {
     opts = { snippet_engine = 'luasnip' },
   },
   {
-    'tpope/vim-fugitive',
-    cmd = { 'Git', 'Gvdiffsplit' },
-    keys = {
-      { '<Leader>gd', '<Cmd>GvdiffsplitCR>', 'Git diff' },
-      { '<Leader>gg', '<Cmd>tab Git<CR>',    'Fugitive' },
-    },
-  },
-  {
     'echasnovski/mini.align',
     config = function() require('mini.align').setup() end,
     keys = {
@@ -82,11 +74,6 @@ return {
     'RRethy/nvim-treesitter-endwise',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_insert,
-  },
-  {
-    'echasnovski/mini.trailspace',
-    config = function() require('mini.trailspace').setup() end,
-    event = events.enter_buffer,
   },
   {
     'echasnovski/mini.files',
@@ -110,5 +97,13 @@ return {
       { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferCWord<CR>',           desc = 'Search and replace' },
       { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', desc = 'Search and replace', mode = 'v' },
     },
+  },
+  {
+    'tversteeg/registers.nvim',
+    config = true,
+    keys = {
+      { '"',     mode = { 'n', 'v' } },
+      { '<C-r>', mode = 'i' },
+    }
   },
 }

@@ -25,15 +25,15 @@ M.excluded_filetypes = {
   'dapui_scopes',
   'dapui_stacks',
   'dapui_watches',
-  'fugitive',
+  'help',
   'lazy',
   'lspsagaoutline',
   'mason',
   'minifiles',
+  'minifiles-help',
   'noice',
   'qf',
   'query',
-  'spectre_panel',
 }
 
 return M

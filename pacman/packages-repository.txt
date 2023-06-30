@@ -22,7 +22,6 @@ gettext
 git
 git-delta
 gnu-netcat
-go
 grep
 groff
 gzip
@@ -54,7 +53,6 @@ progress
 psmisc
 python-pipx
 ripgrep
-ruby
 rustup
 sed
 sloccount

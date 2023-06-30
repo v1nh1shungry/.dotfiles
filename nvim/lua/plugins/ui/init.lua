@@ -90,13 +90,8 @@ return {
     },
   },
   {
-    'kevinhwang91/nvim-ufo',
-    config = config.ufo,
-    dependencies = {
-      'kevinhwang91/promise-async',
-      'nvim-treesitter/nvim-treesitter',
-      'luukvbaal/statuscol.nvim',
-    },
+    'luukvbaal/statuscol.nvim',
+    config = config.statuscol,
     event = events.enter_buffer,
   },
   {

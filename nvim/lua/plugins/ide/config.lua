@@ -37,6 +37,8 @@ local on_attach = function(client, bufnr)
   nnoremap('gd', '<Cmd>Glance definitions<CR>', 'Go to definition')
   nnoremap('gy', '<Cmd>Glance type_definitions<CR>', 'Go to type definition')
   nnoremap('gR', '<Cmd>Glance references<CR>', 'Go to references')
+  nnoremap('<Leader>lf', '<Cmd>Lspsaga lsp_finder<CR>', 'Lspsaga finder')
+  nnoremap('<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', 'Browse LSP symbols')
 
   if client.supports_method('textDocument/formatting') and require('user').lsp.format_on_save then
     vim.api.nvim_create_autocmd('BufWritePre', {
@@ -61,7 +63,6 @@ M.lspconfig = function()
     'jsonls',
     'neocmake',
     'pylsp',
-    'solargraph',
     'taplo',
   }
 
@@ -132,27 +133,6 @@ M.lspconfig = function()
     },
   }
 
-  lspconfig.gopls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-      gopls = {
-        gofumpt = true,
-        usePlaceholders = true,
-        codelenses = { gc_details = true },
-        hints = {
-          rangeVariableTypes = true,
-          parameterNames = true,
-          constantValues = true,
-          assignVariableTypes = true,
-          compositeLiteralFields = true,
-          compositeLiteralTypes = true,
-          functionTypeParameters = true,
-        },
-      },
-    },
-  }
-
   lspconfig.rust_analyzer.setup {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -214,8 +194,6 @@ M.null_ls = function()
       diagnostics.shellcheck,
       formatting.fish_indent,
       formatting.just,
-      formatting.markdown_toc,
-      formatting.shfmt,
     },
     on_attach = on_attach,
   }

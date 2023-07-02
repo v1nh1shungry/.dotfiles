@@ -76,11 +76,6 @@ return {
     event = events.enter_insert,
   },
   {
-    'echasnovski/mini.files',
-    config = function() require('mini.files').setup() end,
-    keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Navigate and manipulate file system' } },
-  },
-  {
     'nacro90/numb.nvim',
     config = true,
     event = 'CmdlineEnter',
@@ -105,5 +100,17 @@ return {
       { '"',     mode = { 'n', 'v' } },
       { '<C-r>', mode = 'i' },
     }
+  },
+  {
+    'tommcdo/vim-exchange',
+    keys = { { 'cx', desc = 'Exchange' }, { 'X', mode = 'v' } },
+  },
+  {
+    'vim-scripts/ReplaceWithRegister',
+    keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
+  },
+  {
+    'cshuaimin/ssr.nvim',
+    keys = { { '<Leader>sR', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structural replace' } },
   },
 }

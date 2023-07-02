@@ -108,4 +108,9 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
     ft = { 'fish', 'just', 'markdown', 'sh' },
   },
+  {
+    'echasnovski/mini.files',
+    config = function() require('mini.files').setup() end,
+    keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Navigate and manipulate file system' } },
+  },
 }

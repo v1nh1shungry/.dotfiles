@@ -89,16 +89,8 @@ return {
     event = 'VeryLazy',
   },
   {
-    'tommcdo/vim-exchange',
-    keys = { { 'cx', desc = 'Exchange' }, { 'X', mode = 'v' } },
-  },
-  {
     'LunarVim/bigfile.nvim',
     event = events.enter_buffer,
-  },
-  {
-    'vim-scripts/ReplaceWithRegister',
-    keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
   },
   {
     'axkirillov/hbac.nvim',
@@ -121,6 +113,15 @@ return {
     opts = {
       disabled_filetypes = require('utils.ui').excluded_filetypes, -- Yep, this is not relevant to `UI` at all, but it just works :)
       notification = false,
+    },
+  },
+  {
+    'chrisgrieser/nvim-spider',
+    keys = {
+      { 'w',  "<Cmd>lua require('spider').motion('w')<CR>",  mode = { 'n', 'o', 'x' } },
+      { 'e',  "<Cmd>lua require('spider').motion('e')<CR>",  mode = { 'n', 'o', 'x' } },
+      { 'b',  "<Cmd>lua require('spider').motion('b')<CR>",  mode = { 'n', 'o', 'x' } },
+      { 'ge', "<Cmd>lua require('spider').motion('ge')<CR>", mode = { 'n', 'o', 'x' } },
     },
   },
 }

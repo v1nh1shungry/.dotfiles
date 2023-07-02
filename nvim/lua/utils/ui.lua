@@ -27,6 +27,7 @@ M.excluded_filetypes = {
   'dapui_watches',
   'help',
   'lazy',
+  'lspsagafinder',
   'lspsagaoutline',
   'mason',
   'minifiles',

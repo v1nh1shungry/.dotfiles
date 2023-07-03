@@ -17,6 +17,7 @@ M.icons = {
 
 M.excluded_filetypes = {
   'ClangdAST',
+  'NeogitStatus',
   'Trouble',
   'alpha',
   'dap-repl',

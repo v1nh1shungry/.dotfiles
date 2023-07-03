@@ -1,7 +1,5 @@
 local M = {}
 
-local excluded_filetypes = require('utils.ui').excluded_filetypes
-
 M.alpha = function()
   local dashboard = require('alpha.themes.dashboard')
   local logo = [[
@@ -41,77 +39,6 @@ M.alpha = function()
       dashboard.section.footer.val = '⚡ Neovim loaded ' .. stats.count .. ' plugins in ' .. ms .. 'ms'
       pcall(vim.cmd.AlphaRedraw)
     end,
-  })
-end
-
-M.codewindow = function()
-  local codewindow = require('codewindow')
-  codewindow.setup {
-    exclude_filetypes = excluded_filetypes,
-    z_index = 50,
-  }
-  codewindow.apply_default_keybinds()
-end
-
-M.quickui = function()
-  vim.fn['quickui#menu#reset']()
-  vim.fn['quickui#menu#install']('&File', {
-    { '&Open\t<C-p>',              'Telescope find_files' },
-    { 'Recent &Files\t<Leader>rf', 'Telescope oldfiles' },
-    { '--',                        '' },
-    { '&Save\t<C-s>',              'write' },
-    { 'Save &All',                 'wall' },
-    { '--',                        '' },
-    { '&Preference',               'e ~/.nvimrc' },
-    { '--',                        '' },
-    { 'TO&DO',                     'TodoTrouble' },
-  })
-  vim.fn['quickui#menu#install']('&View', {
-    { '&Terminal\t<M-=>',          'ToggleTerm' },
-    { 'File &Explorer\t<Leader>e', 'lua MiniFiles.open()' },
-    { '&Outline\t<Leader>o',       'Lspsaga outline' },
-    { '&Minimap\t<Leader>mm',      'lua require("codewindow").toggle_minimap()' },
-    { 'Tree&sitter',               'lua vim.treesitter.inspect_tree({ command = "bo 60vnew" })' },
-    { '&Undotree\t<Leader>u',      'UndotreeToggle' },
-    { '--',                        '' },
-    { 'Markdown Pre&view',         'MarkdownPreview' },
-  })
-  vim.fn['quickui#menu#install']('&Intellisense', {
-    { '&Symbols\t<Leader>ss',        'Telescope lsp_document_symbols' },
-    { 'Di&agnostics',                'Trouble document_diagnostics' },
-    { '&Lspsaga Finder\t<Leader>lf', 'Lspsaga lsp_finder' },
-    { '--',                          '' },
-    { 'Goto &Definitions\tgd',       'Glance definitions' },
-    { 'Goto T&ype Definitions\tgy',  'Glance type_definitions' },
-    { 'Goto &References\tgR',        'Glance references' },
-    { '&Incoming Calls',             'Lspsaga incoming_calls' },
-    { '&Outgoing Calls',             'Lspsaga outgoing_calls' },
-    { '--',                          '' },
-    { '&Mason',                      'Mason' },
-  })
-  vim.fn['quickui#menu#install']('&Git', {
-    { 'Git Bl&ame',                    'Gitsigns toggle_current_line_blame' },
-    { 'Git &Preview Hunk\t<Leader>gp', 'Gitsigns preview_hunk' },
-    { 'Git Re&set Hunk\t<Leader>gr',   'Gitsigns reset_hunk' },
-  })
-  vim.fn['quickui#menu#install']('&Build', {
-    { '&Build\t<Leader>fb', 'AsyncTask file-build' },
-    { '&Run\t<Leader>fr',   'AsyncTask file-run' },
-    { '--',                 '' },
-    { '&Remote Compile',    'CECompile' },
-    { 'L&ive Compile',      'CECompileLive' },
-  })
-  vim.fn['quickui#menu#install']('&Debug', {
-    { '&Continue\t<F5>',         'DapContinue' },
-    { '&Terminate',              'DapTerminate' },
-    { '--',                      '' },
-    { '&Breakpoint\t<F9>',       'DapToggleBreakpoint' },
-    { 'Con&ditional Breakpoint', "lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))" },
-    { 'Lo&g Breakpoint',         "lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))" },
-    { '--',                      '' },
-    { '&Step Over\t<F10>',       'DapStepOver' },
-    { 'Step &Into\t<F11>',       'DapStepInto' },
-    { 'Step &Out\t<F12>',        'DapStepOut' },
   })
 end
 
@@ -188,6 +115,32 @@ M.hlslens = function()
   vim.api.nvim_create_autocmd('User', {
     callback = require('hlslens').stop,
     pattern = 'visual_multi_exit',
+  })
+end
+
+M.indentscope = function()
+  vim.api.nvim_create_autocmd('FileType', {
+    callback = function() vim.b.miniindentscope_disable = true end,
+    pattern = require('utils.ui').excluded_filetypes,
+  })
+end
+
+M.which_key = function()
+  local wk = require('which-key')
+  wk.setup {
+    window = { winblend = require('user').ui.blend },
+    layout = { height = { max = 10 } },
+  }
+  wk.register({
+    ['<Leader><Tab>'] = { name = '+tab' },
+    ['<Leader>c'] = { name = '+code' },
+    ['<Leader>d'] = { name = '+debug' },
+    ['<Leader>f'] = { name = '+file' },
+    ['<Leader>g'] = { name = '+Git' },
+    ['<Leader>s'] = { name = '+search' },
+    ['<Leader>u'] = { name = '+UI' },
+    ['<Leader>w'] = { name = '+window' },
+    ['<Leader>x'] = { name = '+diagnostics/quickfix' },
   })
 end
 

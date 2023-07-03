@@ -7,14 +7,16 @@ return {
     cmd = 'Telescope',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = {
-      { '<Leader>h',  '<Cmd>Telescope help_tags<CR>' },
-      { '<C-p>',      '<Cmd>Telescope find_files<CR>' },
-      { '<Leader>rf', '<Cmd>Telescope oldfiles<CR>' },
-      { '<Leader>/',  '<Cmd>Telescope live_grep<CR>' },
-      { '<Leader>m',  '<Cmd>Telescope man_pages<CR>' },
-      { '<Leader>:',  '<Cmd>Telescope commands<CR>' },
-      { '<Leader>km', '<Cmd>Telescope keymaps<CR>' },
-      { '<Leader>gc', '<Cmd>Telescope git_commits<CR>' },
+      { '<Leader>sh', '<Cmd>Telescope help_tags<CR>',   desc = 'Help pages' },
+      { '<Leader>ff', '<Cmd>Telescope find_files<CR>',  desc = 'Find files' },
+      { '<Leader>fr', '<Cmd>Telescope oldfiles<CR>',    desc = 'Recent files' },
+      { '<Leader>/',  '<Cmd>Telescope live_grep<CR>',   desc = 'Live grep' },
+      { '<Leader>sm', '<Cmd>Telescope man_pages<CR>',   desc = 'Man pages' },
+      { '<Leader>:',  '<Cmd>Telescope commands<CR>',    desc = 'Commands' },
+      { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',     desc = 'Keymaps' },
+      { '<Leader>gc', '<Cmd>Telescope git_commits<CR>', desc = 'Git commits' },
+      { '<Leader>,',  '<Cmd>Telescope buffers<CR>',     desc = 'Switch buffer' },
+      { '<Leader>sl', '<Cmd>Telescope resume<CR>',      desc = 'Last search' },
     },
     opts = {
       defaults = {
@@ -81,25 +83,12 @@ return {
     event = 'CmdlineEnter',
   },
   {
-    'mbbill/undotree',
-    cmd = 'UndotreeToggle',
-    keys = { { '<Leader>u', '<Cmd>UndotreeToggle<CR>', desc = 'Toggle undotree' } },
-  },
-  {
     'roobert/search-replace.nvim',
     config = true,
     keys = {
       { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferCWord<CR>',           desc = 'Search and replace' },
       { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', desc = 'Search and replace', mode = 'v' },
     },
-  },
-  {
-    'tversteeg/registers.nvim',
-    config = true,
-    keys = {
-      { '"',     mode = { 'n', 'v' } },
-      { '<C-r>', mode = 'i' },
-    }
   },
   {
     'tommcdo/vim-exchange',
@@ -112,5 +101,11 @@ return {
   {
     'cshuaimin/ssr.nvim',
     keys = { { '<Leader>sR', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structural replace' } },
+  },
+  {
+    'NeogitOrg/neogit',
+    cmd = 'Neogit',
+    dependencies = 'nvim-lua/plenary.nvim',
+    keys = { { '<Leader>gm', '<Cmd>Neogit<CR>', desc = 'Magit' } },
   },
 }

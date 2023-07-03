@@ -22,6 +22,7 @@ return {
     cmd = 'Mason',
     config = true,
     lazy = true,
+    keys = { { '<Leader>cm', '<Cmd>Mason<CR>', desc = 'Mason' } },
   },
   {
     'hrsh7th/nvim-cmp',
@@ -62,7 +63,8 @@ return {
     event = events.enter_buffer,
     keys = {
       { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview git hunk' },
-      { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset git hunk' },
+      { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>',   desc = 'Reset git hunk' },
+      { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>',     desc = 'Git diff' },
     },
   },
   {
@@ -83,13 +85,13 @@ return {
       'jay-babu/mason-nvim-dap.nvim',
     },
     keys = {
-      { '<F9>', '<Cmd>DapToggleBreakpoint<CR>' },
-      { '<F5>', '<Cmd>DapContinue<CR>' },
+      { '<Leader>db', '<Cmd>DapToggleBreakpoint<CR>', desc = 'Toggle breakpoint' },
+      { '<Leader>dc', '<Cmd>DapContinue<CR>',         desc = 'Continue' },
     },
   },
   {
     'folke/trouble.nvim',
-    cmd = { 'TroubleToggle', 'TroubleRefresh', 'TodoTrouble' },
+    cmd = { 'TroubleToggle', 'TodoTrouble' },
   },
   {
     'DNLHC/glance.nvim',
@@ -111,6 +113,6 @@ return {
   {
     'echasnovski/mini.files',
     config = function() require('mini.files').setup() end,
-    keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Navigate and manipulate file system' } },
+    keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Explorer' } },
   },
 }

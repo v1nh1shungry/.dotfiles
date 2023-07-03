@@ -3,19 +3,14 @@ local events = require('utils.events')
 
 return {
   {
-    'skywind3000/vim-quickui',
-    config = config.quickui,
-    init = function() vim.g.quickui_border_style = 2 end,
-    keys = { { '<Space><Space>', '<Cmd>call quickui#menu#open()<CR>', desc = 'Quickui Menu' } },
-  },
-  {
     'folke/todo-comments.nvim',
     cmd = 'TodoTrouble',
     dependencies = 'nvim-lua/plenary.nvim',
     event = events.enter_buffer,
     keys = {
-      { '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous TODO' },
-      { ']t', function() require('todo-comments').jump_next() end, desc = 'Next TODO' },
+      { '[t',         function() require('todo-comments').jump_prev() end, desc = 'Previous TODO' },
+      { ']t',         function() require('todo-comments').jump_next() end, desc = 'Next TODO' },
+      { '<Leader>xt', '<Cmd>TodoTrouble<CR>',                              desc = 'Todo' },
     },
     opts = { signs = false },
   },
@@ -26,10 +21,10 @@ return {
   },
   {
     'gorbit99/codewindow.nvim',
-    config = config.codewindow,
-    keys = {
-      { '<Leader>mo', desc = 'Open Minimap' },
-      { '<Leader>mm', desc = 'Toggle Minimap' },
+    keys = { { '<Leader>um', function() require('codewindow').toggle_minimap() end, desc = 'Toggle Minimap' } },
+    opts = {
+      exclude_filetypes = require('utils.ui').excluded_filetypes,
+      z_index = 50,
     },
   },
   {
@@ -59,11 +54,8 @@ return {
   },
   {
     'folke/which-key.nvim',
+    config = config.which_key,
     event = 'VeryLazy',
-    opts = {
-      window = { winblend = require('user').ui.blend },
-      layout = { height = { max = 10 } },
-    },
   },
   {
     'folke/noice.nvim',
@@ -111,5 +103,19 @@ return {
       { '*',     [[*<Cmd>lua require('hlslens').start()<CR>]] },
       { '#',     [[#<Cmd>lua require('hlslens').start()<CR>]] },
     },
+  },
+  {
+    'echasnovski/mini.indentscope',
+    event = events.enter_buffer,
+    init = config.indentscope,
+    opts = {
+      symbol = '│',
+      options = { try_as_border = true },
+    },
+  },
+  {
+    'echasnovski/mini.animate',
+    event = 'VeryLazy',
+    opts = {},
   },
 }

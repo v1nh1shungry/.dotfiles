@@ -32,10 +32,7 @@ return {
   {
     'Wansmer/treesj',
     config = true,
-    keys = {
-      { 'S', '<Cmd>TSJSplit<CR>', desc = 'Treesj Split' },
-      { 'J', '<Cmd>TSJJoin<CR>',  desc = 'Treesj Join' },
-    },
+    keys = { { 'S', '<Cmd>TSJSplit<CR>' }, { 'J', '<Cmd>TSJJoin<CR>' } },
   },
   {
     'RRethy/vim-illuminate',
@@ -51,7 +48,6 @@ return {
     event = events.enter_buffer,
     opts = {
       show_trailing_blankline_indent = false,
-      show_current_context = true,
       filetype_exclude = require('utils.ui').excluded_filetypes,
     },
   },
@@ -90,11 +86,6 @@ return {
   },
   {
     'LunarVim/bigfile.nvim',
-    event = events.enter_buffer,
-  },
-  {
-    'axkirillov/hbac.nvim',
-    opts = { threshold = 5 },
     event = events.enter_buffer,
   },
   {

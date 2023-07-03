@@ -22,7 +22,7 @@ tnoremap('<M-q>', '<C-\\><C-n>')
 vnoremap('<', '<gv')
 vnoremap('>', '>gv')
 
-nnoremap('<Leader>qf', function()
+nnoremap('<Leader>xq', function()
   local nr = vim.fn.winnr('$')
   vim.cmd 'cwindow'
   if nr == vim.fn.winnr('$') then
@@ -39,8 +39,12 @@ nmap('k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
 nmap('gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = 'Visually select changed text' })
 
-nnoremap('<Leader>\\', '<Cmd>vsplit<CR>', { desc = 'Vertical split' })
-nnoremap('<Leader>-', '<Cmd>split<CR>', { desc = 'Split screen' })
+nnoremap('<Leader>w\\', '<Cmd>vsplit<CR>', { desc = 'Vertical split' })
+nnoremap('<Leader>w-', '<Cmd>split<CR>', { desc = 'Split screen' })
 
 nnoremap('[<Tab>', '<Cmd>tabprevious<CR>', { desc = 'Previous tab' })
 nnoremap(']<Tab>', '<Cmd>tabnext<CR>', { desc = 'Next tab' })
+
+nnoremap('<Leader><Tab>q', '<Cmd>tabclose<CR>', { desc = 'Close tab' })
+
+nnoremap('<Leader>`', '<Cmd>e #<CR>', { desc = 'Last buffer' })

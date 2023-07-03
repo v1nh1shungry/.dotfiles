@@ -22,23 +22,27 @@ local on_attach = function(client, bufnr)
     if desc ~= nil then opts.desc = desc end
     require('utils.keymaps').nnoremap(from, to, opts)
   end
-  local vnoremap = function(from, to)
-    require('utils.keymaps').vnoremap(from, to, { buffer = bufnr })
+  local vnoremap = function(from, to, desc)
+    local opts = { buffer = bufnr }
+    if desc ~= nil then opts.desc = desc end
+    require('utils.keymaps').vnoremap(from, to, opts)
   end
 
-  nnoremap('=', format)
-  vnoremap('=', format)
+  nnoremap('<Leader>cf', format, 'Format document')
+  vnoremap('<Leader>cf', format, 'Format range')
   nnoremap('gh', vim.lsp.buf.hover, 'Show hover document')
-  nnoremap('<Leader>rn', '<Cmd>Lspsaga rename<CR>', 'Rename')
-  nnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>')
-  nnoremap('<Leader>o', '<Cmd>Lspsaga outline<CR>')
+  nnoremap('<Leader>cr', '<Cmd>Lspsaga rename<CR>', 'Rename')
+  nnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>', 'Code action')
+  nnoremap('<Leader>uo', '<Cmd>Lspsaga outline<CR>', 'Symbol outline')
+  nnoremap('<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', 'Show line diagnostics')
   nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', 'Next diagnostic')
   nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', 'Previous diagnostic')
   nnoremap('gd', '<Cmd>Glance definitions<CR>', 'Go to definition')
   nnoremap('gy', '<Cmd>Glance type_definitions<CR>', 'Go to type definition')
   nnoremap('gR', '<Cmd>Glance references<CR>', 'Go to references')
-  nnoremap('<Leader>lf', '<Cmd>Lspsaga lsp_finder<CR>', 'Lspsaga finder')
+  nnoremap('<Leader>ul', '<Cmd>Lspsaga lsp_finder<CR>', 'Lspsaga finder')
   nnoremap('<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', 'Browse LSP symbols')
+  nnoremap('<Leader>xx', '<Cmd>TroubleToggle<CR>', 'Document diagnostics')
 
   if client.supports_method('textDocument/formatting') and require('user').lsp.format_on_save then
     vim.api.nvim_create_autocmd('BufWritePre', {
@@ -317,9 +321,11 @@ M.dap = function()
   dapui.setup()
 
   local nnoremap = require('utils.keymaps').nnoremap
-  nnoremap('<F10>', '<Cmd>DapStepOver<CR>')
-  nnoremap('<F11>', '<Cmd>DapStepInto<CR>')
-  nnoremap('<F12>', '<Cmd>DapStepOut<CR>')
+  nnoremap('<Leader>dv', '<Cmd>DapStepOver<CR>', { desc = 'Step over' })
+  nnoremap('<Leader>di', '<Cmd>DapStepInto<CR>', { desc = 'Step into' })
+  nnoremap('<Leader>do', '<Cmd>DapStepOut<CR>', { desc = 'Step out' })
+  nnoremap('<Leader>dt', function() dap.terminate() end, { desc = 'Terminate' })
+
 
   require('mason-nvim-dap').setup {
     ensure_installed = { 'codelldb' },

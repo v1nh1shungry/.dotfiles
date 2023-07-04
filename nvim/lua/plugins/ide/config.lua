@@ -17,32 +17,40 @@ local format = function()
 end
 
 local on_attach = function(client, bufnr)
-  local nnoremap = function(from, to, desc)
-    local opts = { buffer = bufnr }
-    if desc ~= nil then opts.desc = desc end
-    require('utils.keymaps').nnoremap(from, to, opts)
+  local nnoremap = function(opts)
+    opts.buffer = bufnr
+    require('utils.keymaps').nnoremap(opts)
   end
-  local vnoremap = function(from, to, desc)
-    local opts = { buffer = bufnr }
-    if desc ~= nil then opts.desc = desc end
-    require('utils.keymaps').vnoremap(from, to, opts)
+  local vnoremap = function(opts)
+    opts.buffer = bufnr
+    require('utils.keymaps').vnoremap(opts)
   end
 
-  nnoremap('<Leader>cf', format, 'Format document')
-  vnoremap('<Leader>cf', format, 'Format range')
-  nnoremap('gh', vim.lsp.buf.hover, 'Show hover document')
-  nnoremap('<Leader>cr', '<Cmd>Lspsaga rename<CR>', 'Rename')
-  nnoremap('<Leader>ca', '<Cmd>Lspsaga code_action<CR>', 'Code action')
-  nnoremap('<Leader>uo', '<Cmd>Lspsaga outline<CR>', 'Symbol outline')
-  nnoremap('<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', 'Show line diagnostics')
-  nnoremap(']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', 'Next diagnostic')
-  nnoremap('[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', 'Previous diagnostic')
-  nnoremap('gd', '<Cmd>Glance definitions<CR>', 'Go to definition')
-  nnoremap('gy', '<Cmd>Glance type_definitions<CR>', 'Go to type definition')
-  nnoremap('gR', '<Cmd>Glance references<CR>', 'Go to references')
-  nnoremap('<Leader>ul', '<Cmd>Lspsaga lsp_finder<CR>', 'Lspsaga finder')
-  nnoremap('<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', 'Browse LSP symbols')
-  nnoremap('<Leader>xx', '<Cmd>TroubleToggle<CR>', 'Document diagnostics')
+  nnoremap { '<Leader>cf', format, desc = 'Format document' }
+  vnoremap { '<Leader>cf', format, desc = 'Format range' }
+  nnoremap { 'gh', vim.lsp.buf.hover, desc = 'Show hover document' }
+  nnoremap { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' }
+  nnoremap { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' }
+  nnoremap { '<Leader>uo', '<Cmd>Lspsaga outline<CR>', desc = 'Symbol outline' }
+  nnoremap { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show line diagnostics' }
+  nnoremap { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' }
+  nnoremap { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' }
+  nnoremap {
+    ']e',
+    function() require('lspsaga.diagnostic').goto_next { severity = vim.diagnostic.severity.ERROR } end,
+    desc = 'Next error',
+  }
+  nnoremap {
+    '[e',
+    function() require('lspsaga.diagnostic').goto_prev { severity = vim.diagnostic.severity.ERROR } end,
+    desc = 'Previous error',
+  }
+  nnoremap { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' }
+  nnoremap { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' }
+  nnoremap { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' }
+  nnoremap { '<Leader>xl', '<Cmd>Lspsaga lsp_finder<CR>', desc = 'Lspsaga finder' }
+  nnoremap { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' }
+  nnoremap { '<Leader>xx', '<Cmd>TroubleToggle<CR>', desc = 'Document diagnostics' }
 
   if client.supports_method('textDocument/formatting') and require('user').lsp.format_on_save then
     vim.api.nvim_create_autocmd('BufWritePre', {
@@ -306,25 +314,25 @@ M.dap = function()
   )
 
   dap.listeners.after.event_initialized['dapui_config'] = function()
-    vim.diagnostic.config { virtual_text = false, signs = false }
+    vim.diagnostic.config { virtual_text = false }
     dapui.open()
   end
   dap.listeners.before.event_terminated['dapui_config'] = function()
-    vim.diagnostic.config { virtual_text = true, signs = true }
+    vim.diagnostic.config { virtual_text = true }
     dapui.close()
   end
   dap.listeners.before.event_exited['dapui_config'] = function()
-    vim.diagnostic.config { virtual_text = true, signs = true }
+    vim.diagnostic.config { virtual_text = true }
     dapui.close()
   end
 
   dapui.setup()
 
   local nnoremap = require('utils.keymaps').nnoremap
-  nnoremap('<Leader>dv', '<Cmd>DapStepOver<CR>', { desc = 'Step over' })
-  nnoremap('<Leader>di', '<Cmd>DapStepInto<CR>', { desc = 'Step into' })
-  nnoremap('<Leader>do', '<Cmd>DapStepOut<CR>', { desc = 'Step out' })
-  nnoremap('<Leader>dt', function() dap.terminate() end, { desc = 'Terminate' })
+  nnoremap { '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' }
+  nnoremap { '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' }
+  nnoremap { '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' }
+  nnoremap { '<Leader>dt', function() dap.terminate() end, desc = 'Terminate' }
 
 
   require('mason-nvim-dap').setup {
@@ -340,16 +348,8 @@ end
 
 M.lspsaga = function()
   require('lspsaga').setup {
-    code_action = {
-      extend_gitsigns = false,
-      show_server_name = true,
-    },
+    code_action = { extend_gitsigns = false, show_server_name = true },
     lightbulb = { sign = false },
-    diagnostic = {
-      on_insert = false,
-      show_code_action = false,
-    },
-    symbol_in_winbar = { separator = ' > ' },
     ui = { winblend = require('user').ui.blend },
     beacon = { enable = false },
   }
@@ -359,8 +359,8 @@ M.gitsigns = function()
   local gitsigns = require('gitsigns')
   local nnoremap = require('utils.keymaps').nnoremap
   gitsigns.setup()
-  nnoremap(']h', gitsigns.next_hunk, { desc = 'Next git hunk' })
-  nnoremap('[h', gitsigns.prev_hunk, { desc = 'Previous git hunk' })
+  nnoremap { ']h', gitsigns.next_hunk, desc = 'Next git hunk' }
+  nnoremap { '[h', gitsigns.prev_hunk, desc = 'Previous git hunk' }
 end
 
 M.inlayhints = function()

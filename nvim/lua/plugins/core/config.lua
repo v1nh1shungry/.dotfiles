@@ -43,19 +43,29 @@ M.treesitter = function()
       },
       swap = {
         enable = true,
-        swap_next = { [']a'] = '@parameter.inner' },
-        swap_previous = { ['[a'] = '@parameter.inner' },
+        swap_next = { ['<M-l>'] = '@parameter.inner' },
+        swap_previous = { ['<M-h>'] = '@parameter.inner' },
       },
       move = {
         enable = true,
         set_jumps = true,
-        goto_next = {
+        goto_next_start = {
+          [']a'] = '@parameter.inner',
           [']f'] = '@function.outer',
           [']c'] = '@class.outer',
         },
-        goto_previous = {
+        goto_next_end = {
+          [']F'] = '@function.outer',
+          [']C'] = '@class.outer',
+        },
+        goto_previous_start = {
+          ['[a'] = '@parameter.inner',
           ['[f'] = '@function.outer',
           ['[c'] = '@class.outer',
+        },
+        goto_previous_end = {
+          ['[F'] = '@function.outer',
+          ['[C'] = '@class.outer',
         },
       },
     },
@@ -87,21 +97,8 @@ M.surround = function()
     search_method = 'cover_or_next',
   }
   vim.keymap.del('x', 'ys')
-  require('utils.keymaps').xmap('S', [[:<C-u>lua MiniSurround.add('visual')<CR>]])
-  require('utils.keymaps').nmap('yss', 'ys_', { remap = true })
-end
-
-M.bracketed = function()
-  local nnoremap = require('utils.keymaps').nnoremap
-  require('mini.bracketed').setup {
-    comment = { suffix = '' },
-    diagnostic = { suffix = '' },
-    file = { suffix = '' },
-  }
-  nnoremap('[<Space>', "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>", { desc = 'Put empty line above' })
-  nnoremap(']<Space>', "<Cmd>call append(line('.'), repeat([''], v:count1))<CR>", { desc = 'Put empty line below' })
-  nnoremap('[e', '<Cmd>m .-2<CR>==', { desc = 'Exchange with previous line' })
-  nnoremap(']e', '<Cmd>m .+1<CR>==', { desc = 'Exchange with next line' })
+  require('utils.keymaps').xmap { 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]] }
+  require('utils.keymaps').nmap { 'yss', 'ys_', remap = true }
 end
 
 return M

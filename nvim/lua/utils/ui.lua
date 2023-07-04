@@ -36,6 +36,7 @@ M.excluded_filetypes = {
   'noice',
   'qf',
   'query',
+  'ssr',
 }
 
 return M

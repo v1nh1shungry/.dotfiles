@@ -7,9 +7,9 @@ return {
     cmd = 'Telescope',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = {
-      { '<Leader>sh', '<Cmd>Telescope help_tags<CR>',   desc = 'Help pages' },
+      { '<Leader>h',  '<Cmd>Telescope help_tags<CR>',   desc = 'Help pages' },
       { '<Leader>ff', '<Cmd>Telescope find_files<CR>',  desc = 'Find files' },
-      { '<Leader>fr', '<Cmd>Telescope oldfiles<CR>',    desc = 'Recent files' },
+      { '<Leader>fo', '<Cmd>Telescope oldfiles<CR>',    desc = 'Recent files' },
       { '<Leader>/',  '<Cmd>Telescope live_grep<CR>',   desc = 'Live grep' },
       { '<Leader>sm', '<Cmd>Telescope man_pages<CR>',   desc = 'Man pages' },
       { '<Leader>:',  '<Cmd>Telescope commands<CR>',    desc = 'Commands' },
@@ -78,11 +78,6 @@ return {
     event = events.enter_insert,
   },
   {
-    'nacro90/numb.nvim',
-    config = true,
-    event = 'CmdlineEnter',
-  },
-  {
     'roobert/search-replace.nvim',
     config = true,
     keys = {
@@ -107,5 +102,6 @@ return {
     cmd = 'Neogit',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = { { '<Leader>gm', '<Cmd>Neogit<CR>', desc = 'Magit' } },
+    opts = { signs = { section = { '', '' }, item = { '', '' } } },
   },
 }

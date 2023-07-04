@@ -5,46 +5,90 @@ local inoremap = require('utils.keymaps').inoremap
 local tnoremap = require('utils.keymaps').tnoremap
 local vnoremap = require('utils.keymaps').vnoremap
 
-map('<Space>', '<Nop>')
+map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
-nnoremap('q', ':q<CR>')
-nnoremap('Q', ':qa!<CR>')
-nnoremap('<C-q>', ':bd<CR>')
+nnoremap { 'q', ':q<CR>' }
+nnoremap { 'Q', ':qa!<CR>' }
+nnoremap { '<C-q>', ':bd<CR>' }
 
-inoremap('<C-s>', '<Esc>:w<CR>')
-vnoremap('<C-s>', '<Esc>:w<CR>')
-nnoremap('<C-s>', ':w<CR>')
+inoremap { '<C-s>', '<Esc>:w<CR>' }
+vnoremap { '<C-s>', '<Esc>:w<CR>' }
+nnoremap { '<C-s>', ':w<CR>' }
 
-tnoremap('<M-q>', '<C-\\><C-n>')
+nnoremap { '<C-h>', '<C-w>h' }
+nnoremap { '<C-j>', '<C-w>j' }
+nnoremap { '<C-k>', '<C-w>k' }
+nnoremap { '<C-l>', '<C-w>l' }
+tnoremap { '<C-h>', '<Cmd>wincmd h<CR>' }
+tnoremap { '<C-j>', '<Cmd>wincmd j<CR>' }
+tnoremap { '<C-k>', '<Cmd>wincmd k<CR>' }
+tnoremap { '<C-l>', '<Cmd>wincmd l<CR>' }
 
-vnoremap('<', '<gv')
-vnoremap('>', '>gv')
+tnoremap { '<Esc>', '<C-\\><C-n>' }
 
-nnoremap('<Leader>xq', function()
+vnoremap { '<', '<gv' }
+vnoremap { '>', '>gv' }
+
+nnoremap { '<Leader>xq', function()
   local nr = vim.fn.winnr('$')
   vim.cmd 'cwindow'
   if nr == vim.fn.winnr('$') then
     vim.cmd 'cclose'
   end
-end, { desc = 'Toggle quickfix' })
+end, desc = 'Toggle quickfix' }
 
-inoremap(',', ',<c-g>u')
-inoremap('.', '.<c-g>u')
-inoremap(';', ';<c-g>u')
+inoremap { ',', ',<c-g>u' }
+inoremap { '.', '.<c-g>u' }
+inoremap { ';', ';<c-g>u' }
 
-nmap('j', "v:count == 0 ? 'gj' : 'j'", { expr = true })
-nmap('k', "v:count == 0 ? 'gk' : 'k'", { expr = true })
+nmap { 'j', "v:count == 0 ? 'gj' : 'j'", expr = true }
+nmap { 'k', "v:count == 0 ? 'gk' : 'k'", expr = true }
 
-nmap('gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', { expr = true, desc = 'Visually select changed text' })
+nmap { 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = 'Visually select changed text' }
 
-nnoremap('<Leader>w\\', '<Cmd>vsplit<CR>', { desc = 'Vertical split' })
-nnoremap('<Leader>w-', '<Cmd>split<CR>', { desc = 'Split screen' })
+nnoremap { '[<Tab>', '<Cmd>tabprevious<CR>', desc = 'Previous tab' }
+nnoremap { ']<Tab>', '<Cmd>tabnext<CR>', desc = 'Next tab' }
 
-nnoremap('[<Tab>', '<Cmd>tabprevious<CR>', { desc = 'Previous tab' })
-nnoremap(']<Tab>', '<Cmd>tabnext<CR>', { desc = 'Next tab' })
+nnoremap { '<Leader><Tab>q', '<Cmd>tabclose<CR>', desc = 'Close tab' }
 
-nnoremap('<Leader><Tab>q', '<Cmd>tabclose<CR>', { desc = 'Close tab' })
+nnoremap { '<Leader>`', '<Cmd>e #<CR>', desc = 'Last buffer' }
 
-nnoremap('<Leader>`', '<Cmd>e #<CR>', { desc = 'Last buffer' })
+local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
+nnoremap {
+  '<Leader>uc',
+  function()
+    if vim.opt_local['conceallevel']:get() == 0 then
+      vim.opt_local['conceallevel'] = conceallevel
+    else
+      vim.opt_local['conceallevel'] = 0
+    end
+  end,
+  desc = 'Toggle conceal',
+}
+nnoremap {
+  '<Leader>uw',
+  function() vim.opt_local['wrap'] = not vim.opt_local['wrap']:get() end,
+  desc = 'Toggle wrap',
+}
+
+nnoremap { '<Leader>fp', '<Cmd>e ~/.nvimrc<CR>', desc = 'Open preferences' }
+
+nnoremap { '<M-j>', '<Cmd>m .+1<CR>==' }
+nnoremap { '<M-k>', '<Cmd>m .-2<CR>==' }
+inoremap { '<M-j>', '<Esc><Cmd>m .+1<CR>==gi' }
+inoremap { '<M-k>', '<Esc><Cmd>m .-2<CR>==gi' }
+vnoremap { '<M-j>', ":m '>+1<CR>gv=gv" }
+vnoremap { '<M-k>', ":m '<-2<CR>gv=gv" }
+
+nnoremap {
+  '[<Space>',
+  "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>",
+  desc = 'Put empty line above',
+}
+nnoremap {
+  ']<Space>',
+  "<Cmd>call append(line('.'), repeat([''], v:count1))<CR>",
+  desc = 'Put empty line below',
+}

@@ -9,8 +9,12 @@ return {
   },
   {
     'echasnovski/mini.bracketed',
-    config = config.bracketed,
     keys = { '[', ']' },
+    opts = {
+      comment = { suffix = '' },
+      diagnostic = { suffix = '' },
+      file = { suffix = '' },
+    },
   },
   {
     'nmac427/guess-indent.nvim',

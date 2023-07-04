@@ -81,7 +81,7 @@ M.bufferline = function()
         },
         {
           filetype = 'query',
-          text = 'Treesitter Inspect Tree',
+          text = 'Treesitter Inspect',
           text_align = 'center',
           separator = true,
         },
@@ -89,7 +89,7 @@ M.bufferline = function()
       separator_style = 'slant',
     },
   }
-  require('utils.keymaps').nnoremap('gb', '<Cmd>BufferLinePick<CR>')
+  require('utils.keymaps').nnoremap { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' }
 end
 
 M.statuscol = function()
@@ -139,7 +139,6 @@ M.which_key = function()
     ['<Leader>g'] = { name = '+Git' },
     ['<Leader>s'] = { name = '+search' },
     ['<Leader>u'] = { name = '+UI' },
-    ['<Leader>w'] = { name = '+window' },
     ['<Leader>x'] = { name = '+diagnostics/quickfix' },
   })
 end

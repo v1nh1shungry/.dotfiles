@@ -54,6 +54,7 @@ return {
         },
       },
       'hrsh7th/cmp-nvim-lsp-signature-help',
+      'hrsh7th/cmp-emoji',
     },
     event = events.enter_insert,
   },
@@ -64,13 +65,15 @@ return {
     keys = {
       { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview git hunk' },
       { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>',   desc = 'Reset git hunk' },
-      { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>',     desc = 'Git diff' },
+      { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>',     desc = 'Git diffthis' },
     },
   },
   {
     'akinsho/toggleterm.nvim',
-    cmd = 'ToggleTerm',
-    keys = '<M-=>',
+    keys = {
+      '<M-=>',
+      { '<Leader>gD', function() require('plugins.ide.toggleterm.git_diff')() end, desc = 'Git diff' },
+    },
     opts = { open_mapping = '<M-=>', size = 10 },
   },
   {

@@ -63,6 +63,13 @@ return {
       'MunifTanjim/nui.nvim',
       {
         'rcarriga/nvim-notify',
+        keys = {
+          {
+            '<Leader>un',
+            function() require('notify').dismiss { silent = true, pending = true } end,
+            desc = 'Dismiss all notifications',
+          },
+        },
         opts = { top_down = false },
       },
     },
@@ -114,8 +121,10 @@ return {
     },
   },
   {
-    'echasnovski/mini.animate',
-    event = 'VeryLazy',
-    opts = {},
+    'cbochs/portal.nvim',
+    keys = {
+      { '<C-o>', '<Cmd>Portal jumplist backward<CR>' },
+      { '<C-i>', '<Cmd>Portal jumplist forward<CR>' },
+    },
   },
 }

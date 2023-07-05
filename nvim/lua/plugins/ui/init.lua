@@ -4,7 +4,6 @@ local events = require('utils.events')
 return {
   {
     'folke/todo-comments.nvim',
-    cmd = 'TodoTrouble',
     dependencies = 'nvim-lua/plenary.nvim',
     event = events.enter_buffer,
     keys = {
@@ -34,8 +33,33 @@ return {
   },
   {
     'akinsho/bufferline.nvim',
-    config = config.bufferline,
     event = events.enter_buffer,
+    keys = { { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' } },
+    opts = {
+      options = {
+        offsets = {
+          {
+            filetype = 'lspsagaoutline',
+            text = 'Outline',
+            text_align = 'center',
+            separator = true,
+          },
+          {
+            filetype = 'ClangdAST',
+            text = 'Clangd AST',
+            text_align = 'center',
+            separator = true,
+          },
+          {
+            filetype = 'query',
+            text = 'Treesitter Inspect',
+            text_align = 'center',
+            separator = true,
+          },
+        },
+        separator_style = 'slant',
+      },
+    },
   },
   {
     'stevearc/dressing.nvim',
@@ -70,10 +94,11 @@ return {
             desc = 'Dismiss all notifications',
           },
         },
-        opts = { top_down = false },
+        opts = { top_down = false, timeout = 3000 },
       },
     },
     event = 'VeryLazy',
+    keys = { { '<Leader>xn', '<Cmd>Noice<CR>', desc = 'Message' } },
     opts = {
       views = { split = { enter = true } },
       presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
@@ -84,6 +109,15 @@ return {
           ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
           ['vim.lsp.util.stylize_markdown'] = true,
           ['cmp.entry.get_documentation'] = true,
+        },
+      },
+      routes = {
+        {
+          filter = {
+            event = 'msg_show',
+            any = { { find = '%d+L, %d+B' }, { find = '; after #%d+' }, { find = '; before #%d+' } },
+          },
+          view = 'mini',
         },
       },
     },

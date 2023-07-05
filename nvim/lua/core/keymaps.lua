@@ -21,10 +21,6 @@ nnoremap { '<C-h>', '<C-w>h' }
 nnoremap { '<C-j>', '<C-w>j' }
 nnoremap { '<C-k>', '<C-w>k' }
 nnoremap { '<C-l>', '<C-w>l' }
-tnoremap { '<C-h>', '<Cmd>wincmd h<CR>' }
-tnoremap { '<C-j>', '<Cmd>wincmd j<CR>' }
-tnoremap { '<C-k>', '<Cmd>wincmd k<CR>' }
-tnoremap { '<C-l>', '<Cmd>wincmd l<CR>' }
 
 tnoremap { '<Esc>', '<C-\\><C-n>' }
 
@@ -92,3 +88,5 @@ nnoremap {
   "<Cmd>call append(line('.'), repeat([''], v:count1))<CR>",
   desc = 'Put empty line below',
 }
+
+nnoremap { '<Leader>l', '<Cmd>Lazy home<CR>', desc = 'Lazy' }

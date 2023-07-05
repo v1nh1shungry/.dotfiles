@@ -1,4 +1,3 @@
--- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -29,7 +28,7 @@ for _, plugin in ipairs(require('user').plugins.disabled) do
   lazy_specs[#lazy_specs + 1] = { plugin, enabled = false }
 end
 
-require('lazy').setup( {
+require('lazy').setup {
   spec = lazy_specs,
   install = { colorscheme = { require('user').ui.colorscheme } },
   performance = {
@@ -47,4 +46,4 @@ require('lazy').setup( {
       },
     },
   },
-})
+}

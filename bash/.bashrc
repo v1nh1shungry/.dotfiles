@@ -59,5 +59,5 @@ alias l=ls
 alias ls='exa --icons'
 alias la='ls -a'
 alias ll='ls -al --git'
-alias tree='exa -T --icons --level 3 --ignore-glob=".git"'
+alias tree='exa -T --icons'
 alias diff=difft

@@ -1,21 +1,5 @@
 local M = {}
 
-local format = function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local ft = vim.bo[bufnr].filetype
-  local have_nls = package.loaded['null-ls']
-      and (#require('null-ls.sources').get_available(ft, 'NULL_LS_FORMATTING') > 0)
-  vim.lsp.buf.format {
-    bufnr = bufnr,
-    filter = function(client)
-      if have_nls then
-        return client.name == 'null-ls'
-      end
-      return client.name ~= 'null-ls'
-    end
-  }
-end
-
 local on_attach = function(client, bufnr)
   local nnoremap = function(opts)
     opts.buffer = bufnr
@@ -25,6 +9,7 @@ local on_attach = function(client, bufnr)
     opts.buffer = bufnr
     require('utils.keymaps').vnoremap(opts)
   end
+  local format = function() vim.lsp.buf.format { buffer = bufnr } end
 
   nnoremap { '<Leader>cf', format, desc = 'Format document' }
   vnoremap { '<Leader>cf', format, desc = 'Format range' }
@@ -37,12 +22,12 @@ local on_attach = function(client, bufnr)
   nnoremap { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' }
   nnoremap {
     ']e',
-    function() require('lspsaga.diagnostic').goto_next { severity = vim.diagnostic.severity.ERROR } end,
+    function() vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR } end,
     desc = 'Next error',
   }
   nnoremap {
     '[e',
-    function() require('lspsaga.diagnostic').goto_prev { severity = vim.diagnostic.severity.ERROR } end,
+    function() vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.ERROR } end,
     desc = 'Previous error',
   }
   nnoremap { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' }
@@ -51,25 +36,10 @@ local on_attach = function(client, bufnr)
   nnoremap { '<Leader>xl', '<Cmd>Lspsaga lsp_finder<CR>', desc = 'Lspsaga finder' }
   nnoremap { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' }
   nnoremap { '<Leader>xx', '<Cmd>TroubleToggle<CR>', desc = 'Document diagnostics' }
-
-  if client.supports_method('textDocument/formatting') and require('user').lsp.format_on_save then
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      buffer = bufnr,
-      callback = format,
-    })
-  end
-
-  if client.supports_method('textDocument/codeLens') then
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
-      buffer = bufnr,
-      command = 'lua vim.lsp.codelens.refresh()',
-    })
-  end
 end
 
 M.lspconfig = function()
   local lspconfig = require('lspconfig')
-  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   local servers = {
     'hls',
     'jsonls',
@@ -80,18 +50,40 @@ M.lspconfig = function()
 
   require('mason-lspconfig').setup { automatic_installation = true }
 
+  vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+      on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
+    end
+  })
+
+  local register_capability = vim.lsp.handlers['client/registerCapability']
+
+  vim.lsp.handlers['client/registerCapability'] = function(err, res, ctx)
+    local ret = register_capability(err, res, ctx)
+    local client_id = ctx.client_id
+    local client = vim.lsp.get_client_by_id(client_id)
+    local buffer = vim.api.nvim_get_current_buf()
+    on_attach(client, buffer)
+    return ret
+  end
+
+  local capabilities = vim.tbl_deep_extend(
+    'force',
+    {},
+    vim.lsp.protocol.make_client_capabilities(),
+    require('cmp_nvim_lsp').default_capabilities()
+  )
+
   for _, server in ipairs(servers) do
     lspconfig[server].setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
+      capabilities = vim.deepcopy(capabilities),
       single_file_support = true,
     }
   end
 
   require('clangd_extensions').setup {
     server = {
-      on_attach = on_attach,
-      capabilities = capabilities,
+      capabilities = vim.deepcopy(capabilities),
       cmd = {
         'clangd',
         '--header-insertion=never',
@@ -126,8 +118,7 @@ M.lspconfig = function()
 
   require('neodev').setup()
   lspconfig.lua_ls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = vim.deepcopy(capabilities),
     settings = {
       Lua = {
         completion = { callSnippet = 'Replace' },
@@ -146,8 +137,7 @@ M.lspconfig = function()
   }
 
   lspconfig.rust_analyzer.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = vim.deepcopy(capabilities),
     settings = {
       ['rust-analyzer'] = {
         diagnostics = { disabled = { 'unresolved-proc-macro' } },
@@ -159,8 +149,7 @@ M.lspconfig = function()
   }
 
   lspconfig.tsserver.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = vim.deepcopy(capabilities),
     settings = {
       javascript = {
         inlayHints = {
@@ -188,8 +177,7 @@ M.lspconfig = function()
   }
 
   lspconfig.yamlls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
+    capabilities = vim.deepcopy(capabilities),
     settings = { yaml = { keyOrdering = false } },
   }
 end
@@ -370,6 +358,35 @@ M.inlayhints = function()
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         require('lsp-inlayhints').on_attach(client, args.buf)
       end
+    end,
+  })
+end
+
+M.files = function()
+  local show_hidden = false
+  local filter_show = function(_) return true end
+  local filter_hide = function(fs_entry)
+    local should_hide = { '.cache', '.git', '.xmake', 'build', 'node_modules' }
+    for _, fn in ipairs(should_hide) do
+      if fs_entry.name == fn then return false end
+    end
+    return true
+  end
+  require('mini.files').setup { content = { filter = filter_hide } }
+  local toggle_hidden = function()
+    show_hidden = not show_hidden
+    local new_filter = show_hidden and filter_show or filter_hide
+    require('mini.files').refresh({ content = { filter = new_filter } })
+  end
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'MiniFilesBufferCreate',
+    callback = function(args)
+      require('utils.keymaps').nnoremap {
+        '.',
+        toggle_hidden,
+        buffer = args.data.buf_id,
+        desc = 'Toggle show hidden files',
+      }
     end,
   })
 end

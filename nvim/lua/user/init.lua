@@ -1,6 +1,5 @@
 local default = {
   g = {},
-  lsp = { format_on_save = false },
   plugins = {
     disabled = {},
     extra = {},

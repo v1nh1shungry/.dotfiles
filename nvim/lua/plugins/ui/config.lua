@@ -18,10 +18,11 @@ M.alpha = function()
     dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
     dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
     dashboard.button('p', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
+    dashboard.button('c', ' ' .. ' Config', '<Cmd>e ~/.nvimrc<CR>'),
     dashboard.button('l', '鈴' .. ' Lazy', '<Cmd>Lazy<CR>'),
     dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
   }
-  dashboard.opts.layout[1].val = 4
+  dashboard.opts.layout[1].val = 2
   require('alpha').setup(dashboard.opts)
 
   if vim.o.filetype == 'lazy' then
@@ -46,7 +47,7 @@ M.lualine = function()
   vim.opt.laststatus = 3
   local theme = require('user').ui.statusline_theme
   local opts = require('plugins.ui.lualine.' .. theme)
-  opts.extensions = { 'man', 'nvim-dap-ui', 'quickfix', 'toggleterm' }
+  opts.extensions = { 'lazy', 'man', 'nvim-dap-ui', 'quickfix', 'toggleterm', 'trouble' }
   require('lualine').setup(opts)
 end
 
@@ -61,35 +62,6 @@ M.dressing = function()
     require('lazy').load({ plugins = { 'dressing.nvim' } })
     return vim.ui.input(...)
   end
-end
-
-M.bufferline = function()
-  require('bufferline').setup {
-    options = {
-      offsets = {
-        {
-          filetype = 'lspsagaoutline',
-          text = 'Outline',
-          text_align = 'center',
-          separator = true,
-        },
-        {
-          filetype = 'ClangdAST',
-          text = 'Clangd AST',
-          text_align = 'center',
-          separator = true,
-        },
-        {
-          filetype = 'query',
-          text = 'Treesitter Inspect',
-          text_align = 'center',
-          separator = true,
-        },
-      },
-      separator_style = 'slant',
-    },
-  }
-  require('utils.keymaps').nnoremap { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' }
 end
 
 M.statuscol = function()

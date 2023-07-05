@@ -32,7 +32,6 @@ return {
   },
   {
     'skywind3000/asynctasks.vim',
-    cmd = { 'AsyncTask', 'AsyncTaskMacro', 'AsyncTaskList', 'AsyncTaskEdit' },
     config = config.asynctasks,
     dependencies = {
       'skywind3000/asyncrun.vim',
@@ -56,8 +55,8 @@ return {
   },
   {
     'danymat/neogen',
-    cmd = 'Neogen',
     opts = { snippet_engine = 'luasnip' },
+    keys = { { '<Leader>cg', '<Cmd>Neogen<CR>', desc = 'Generate document comment' } },
   },
   {
     'echasnovski/mini.align',
@@ -99,7 +98,6 @@ return {
   },
   {
     'NeogitOrg/neogit',
-    cmd = 'Neogit',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = { { '<Leader>gm', '<Cmd>Neogit<CR>', desc = 'Magit' } },
     opts = { signs = { section = { '', '' }, item = { '', '' } } },

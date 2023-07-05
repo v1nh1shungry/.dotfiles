@@ -14,12 +14,11 @@ return {
   },
   {
     'glepnir/lspsaga.nvim',
+    cmd = 'Lspsaga',
     config = config.lspsaga,
-    event = 'LspAttach',
   },
   {
     'williamboman/mason.nvim',
-    cmd = 'Mason',
     config = true,
     lazy = true,
     keys = { { '<Leader>cm', '<Cmd>Mason<CR>', desc = 'Mason' } },
@@ -111,11 +110,11 @@ return {
     'jose-elias-alvarez/null-ls.nvim',
     config = config.null_ls,
     dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
-    ft = { 'fish', 'just', 'markdown', 'sh' },
+    ft = { 'fish', 'just', 'sh' },
   },
   {
     'echasnovski/mini.files',
-    config = function() require('mini.files').setup() end,
+    config = config.files,
     keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Explorer' } },
   },
 }

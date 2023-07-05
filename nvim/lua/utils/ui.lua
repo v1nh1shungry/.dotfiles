@@ -28,6 +28,7 @@ M.excluded_filetypes = {
   'dapui_watches',
   'help',
   'lazy',
+  'lspinfo',
   'lspsagafinder',
   'lspsagaoutline',
   'mason',

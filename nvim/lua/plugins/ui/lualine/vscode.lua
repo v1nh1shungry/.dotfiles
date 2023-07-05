@@ -34,11 +34,11 @@ ins_left (components.basic.diagnostics)
 
 ins_left { 'mode', fmt = function(str) return '-- ' .. str .. ' --' end }
 
-ins_right { 'filename', on_click = function() require('telescope.builtin').find_files() end }
-
-ins_right (components.basic.tab)
+ins_right { function() return '%S' end }
 
 ins_right (components.basic.location)
+
+ins_right (components.basic.tab)
 
 ins_right { 'encoding' }
 

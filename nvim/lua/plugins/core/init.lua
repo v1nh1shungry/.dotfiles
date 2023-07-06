@@ -1,4 +1,3 @@
-local config = require('plugins.core.config')
 local events = require('utils.events')
 
 return {
@@ -23,15 +22,85 @@ return {
   },
   {
     'echasnovski/mini.ai',
-    config = function() require('mini.ai').setup() end,
+    config = true,
     event = events.enter_buffer,
   },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    config = config.treesitter,
     dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     event = events.enter_buffer,
+    opts = {
+      ensure_installed = {
+        'bash',
+        'c',
+        'cmake',
+        'cpp',
+        'fish',
+        'haskell',
+        'javascript',
+        'json',
+        'lua',
+        'make',
+        'markdown',
+        'markdown_inline',
+        'python',
+        'query',
+        'rust',
+        'toml',
+        'typescript',
+        'vimdoc',
+        'yaml',
+      },
+      highlight = { enable = true, additional_vim_regex_highlighting = true },
+      matchup = { enable = true },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['ic'] = '@class.inner',
+            ['ac'] = '@class.outer',
+            ['if'] = '@function.inner',
+            ['af'] = '@function.outer',
+            ['ia'] = '@parameter.inner',
+            ['aa'] = '@parameter.outer',
+            ['as'] = '@statement.outer',
+            ['al'] = '@assignment.lhs',
+            ['ar'] = '@assignment.rhs',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = { ['<M-l>'] = '@parameter.inner' },
+          swap_previous = { ['<M-h>'] = '@parameter.inner' },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            [']a'] = '@parameter.inner',
+            [']f'] = '@function.outer',
+            [']c'] = '@class.outer',
+          },
+          goto_next_end = {
+            [']F'] = '@function.outer',
+            [']C'] = '@class.outer',
+          },
+          goto_previous_start = {
+            ['[a'] = '@parameter.inner',
+            ['[f'] = '@function.outer',
+            ['[c'] = '@class.outer',
+          },
+          goto_previous_end = {
+            ['[F'] = '@function.outer',
+            ['[C'] = '@class.outer',
+          },
+        },
+      },
+      endwise = { enable = true },
+      rainbow = { enable = true },
+    },
   },
   {
     'Wansmer/treesj',
@@ -65,17 +134,39 @@ return {
   },
   {
     'echasnovski/mini.surround',
-    config = config.surround,
+    config = function()
+      require('mini.surround').setup {
+        mappings = {
+          add = 'ys',
+          delete = 'ds',
+          find = '',
+          find_left = '',
+          highlight = '',
+          replace = 'cs',
+          update_n_lines = '',
+          suffix_last = '',
+          suffix_next = '',
+        },
+        search_method = 'cover_or_next',
+      }
+      vim.keymap.del('x', 'ys')
+    end,
     keys = {
-      { 'ys', desc = 'Add surrounding' },
-      { 'ds', desc = 'Delete surrounding' },
-      { 'cs', desc = 'Change surrounding' },
-      { 'S',  mode = 'x' },
+      { 'ys',  desc = 'Add surrounding' },
+      { 'ds',  desc = 'Delete surrounding' },
+      { 'cs',  desc = 'Change surrounding' },
+      { 'S',   [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = 'x' },
+      { 'yss', 'ys_',                                        remap = true },
     },
   },
   {
     'mg979/vim-visual-multi',
-    config = config.visual_multi,
+    config = function()
+      vim.g.VM_silent_exit = true
+      vim.g.VM_set_statusline = 0
+      vim.g.VM_quit_after_leaving_insert_mode = true
+      vim.g.VM_show_warnings = 0
+    end,
     keys = { { '<C-n>', mode = { 'n', 'v' } } },
   },
   {

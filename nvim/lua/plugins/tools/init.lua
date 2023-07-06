@@ -1,4 +1,3 @@
-local config = require('plugins.tools.config')
 local events = require('utils.events')
 
 return {
@@ -32,7 +31,11 @@ return {
   },
   {
     'skywind3000/asynctasks.vim',
-    config = config.asynctasks,
+    config = function()
+      vim.g.asyncrun_open = 10
+      vim.g.asynctasks_term_rows = 10
+      vim.g.asynctasks_term_pos = 'bottom'
+    end,
     dependencies = {
       'skywind3000/asyncrun.vim',
       cmd = 'AsyncRun',

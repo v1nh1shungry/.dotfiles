@@ -239,20 +239,6 @@ return {
     },
   },
   {
-    'echasnovski/mini.indentscope',
-    event = events.enter_buffer,
-    init = function()
-      vim.api.nvim_create_autocmd('FileType', {
-        callback = function() vim.b.miniindentscope_disable = true end,
-        pattern = require('utils.ui').excluded_filetypes,
-      })
-    end,
-    opts = {
-      symbol = '│',
-      options = { try_as_border = true },
-    },
-  },
-  {
     'cbochs/portal.nvim',
     keys = {
       { '<C-o>', '<Cmd>Portal jumplist backward<CR>' },

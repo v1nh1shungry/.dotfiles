@@ -1,5 +1,4 @@
-local default = {
-  g = {},
+local M = {
   plugins = {
     disabled = {},
     extra = {},
@@ -12,9 +11,19 @@ local default = {
   },
 }
 
-local config = dofile(os.getenv('HOME') .. '/.nvimrc')
-if config ~= nil then
-  return vim.tbl_deep_extend('force', default, config)
-else
-  return default
+local setup = function()
+  vim.cmd.colorscheme(M.ui.colorscheme)
 end
+
+M = vim.tbl_extend('keep', M, dofile(os.getenv('HOME') .. '/.nvimrc') or {})
+if M.setup then
+  local user_setup = M.setup
+  M.setup = function()
+    setup()
+    user_setup()
+  end
+else
+  M.setup = setup
+end
+
+return M

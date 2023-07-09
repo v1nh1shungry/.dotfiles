@@ -47,3 +47,5 @@ require('lazy').setup {
     },
   },
 }
+
+require('user').setup()

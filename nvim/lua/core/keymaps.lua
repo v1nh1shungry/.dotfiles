@@ -7,7 +7,6 @@ local vnoremap = require('utils.keymaps').vnoremap
 
 map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
-vim.g.maplocalleader = ','
 
 nnoremap { 'q', ':q<CR>' }
 nnoremap { 'Q', ':qa!<CR>' }
@@ -63,11 +62,7 @@ nnoremap {
   end,
   desc = 'Toggle conceal',
 }
-nnoremap {
-  '<Leader>uw',
-  function() vim.opt_local['wrap'] = not vim.opt_local['wrap']:get() end,
-  desc = 'Toggle wrap',
-}
+nnoremap { '<Leader>uw', '<Cmd>set wrap!<CR>', desc = 'Toggle wrap' }
 
 nnoremap { '<Leader>fp', '<Cmd>e ~/.nvimrc<CR>', desc = 'Open preferences' }
 

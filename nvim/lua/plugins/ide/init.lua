@@ -3,8 +3,139 @@ local events = require('utils.events')
 return {
   {
     'neovim/nvim-lspconfig',
-    config = function()
-      local servers = {
+    config = function(_, lsp_opts)
+      local on_attach = function(client, bufnr)
+        local format = function() vim.lsp.buf.format { buffer = bufnr } end
+        local map = function(opts)
+          local lhs, rhs, mode = opts[1], opts[2], opts.mode
+          opts[1], opts[2], opts.mode = nil, nil, nil
+          vim.tbl_extend('force', { buffer = bufnr, noremap = true, silent = true }, opts)
+          vim.keymap.set(mode or 'n', lhs, rhs, opts)
+        end
+
+        local mappings = {
+          ['textDocument/formatting'] = { { '<Leader>cf', format, desc = 'Format document' } },
+          ['textDocument/rangeFormatting'] = { { '<Leader>cf', format, desc = 'Format range', mode = 'v' } },
+          ['textDocument/hover'] = { { 'gh', vim.lsp.buf.hover, desc = 'Show hover document' } },
+          ['textDocument/rename'] = { { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' } },
+          ['textDocument/codeAction'] = { { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' } },
+          ['textDocument/documentSymbol'] = {
+            { '<Leader>uo', '<Cmd>Lspsaga outline<CR>',                desc = 'Symbol outline' },
+            { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' },
+          },
+          ['textDocument/references'] = { { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' } },
+          ['textDocument/definition'] = { { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' } },
+          ['textDocument/typeDefinition*'] = { { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' } },
+          ['textDocument/publishDiagnostics'] = {
+            { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show line diagnostics' },
+            { ']d',         '<Cmd>Lspsaga diagnostic_jump_next<CR>',  desc = 'Next diagnostic' },
+            { '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',  desc = 'Previous diagnostic' },
+            {
+              ']e',
+              function() require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR } end,
+              desc = 'Next error',
+            },
+            {
+              '[e',
+              function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR } end,
+              desc = 'Previous error',
+            },
+            { '<Leader>xx', '<Cmd>TroubleToggle<CR>', desc = 'Document diagnostics' },
+          },
+          ['textDocument/implementation*'] = { { '<Leader>cI', '<Cmd>Glance implementations<CR>',
+            desc = 'Go to implementation' } },
+          ['callHierarchy/incomingCalls'] = { { '<Leader>ci', '<Cmd>Lspsaga incoming_calls<CR>', desc = 'Incoming calls' } },
+          ['callHierarchy/outgoingCalls'] = { { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' } },
+        }
+        for method, keys in pairs(mappings) do
+          if client.supports_method(method) then
+            for _, key in ipairs(keys) do
+              map(key)
+            end
+          end
+        end
+        if lsp_opts.servers[client.name].keys then
+          for _, key in ipairs(lsp_opts.servers[client.name].keys) do
+            map(key)
+          end
+        end
+
+        if client.server_capabilities.inlayHintProvider then
+          vim.lsp.inlay_hint(bufnr, true)
+        end
+      end
+
+      require('mason-lspconfig').setup { automatic_installation = true }
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(args)
+          on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
+        end
+      })
+
+      local register_capability = vim.lsp.handlers['client/registerCapability']
+
+      vim.lsp.handlers['client/registerCapability'] = function(err, res, ctx)
+        local ret = register_capability(err, res, ctx)
+        local client_id = ctx.client_id
+        local client = vim.lsp.get_client_by_id(client_id)
+        local buffer = vim.api.nvim_get_current_buf()
+        on_attach(client, buffer)
+        return ret
+      end
+
+      local icons = require('utils.ui').icons.diagnostics
+      local signs = {
+        { name = 'DiagnosticSignError', text = icons.error },
+        { name = 'DiagnosticSignWarn',  text = icons.warning },
+        { name = 'DiagnosticSignHint',  text = icons.hint },
+        { name = 'DiagnosticSignInfo',  text = icons.info },
+      }
+      for _, sign in ipairs(signs) do
+        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = '' })
+      end
+
+      vim.diagnostic.config(vim.deepcopy(lsp_opts.diagnostics))
+
+      local capabilities = vim.tbl_deep_extend(
+        'force',
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        require('cmp_nvim_lsp').default_capabilities()
+      )
+
+      for server, opts in pairs(lsp_opts.servers) do
+        opts = vim.tbl_deep_extend('force', {
+          capabilities = vim.deepcopy(capabilities),
+          single_file_support = true,
+        }, opts)
+        if opts.setup then
+          opts.setup(server, opts)
+        else
+          require('lspconfig')[server].setup(opts)
+        end
+      end
+    end,
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      {
+        'folke/neodev.nvim',
+        config = true,
+      },
+      'p00f/clangd_extensions.nvim',
+      'williamboman/mason-lspconfig.nvim',
+    },
+    opts = {
+      diagnostics = {
+        virtual_text = {
+          spacing = 4,
+          source = 'if_many',
+          prefix = '●',
+        },
+        severity_sort = true,
+        signs = false,
+      },
+      servers = {
         hls = {},
         jsonls = {},
         neocmake = {},
@@ -17,6 +148,37 @@ return {
             '--include-cleaner-stdlib',
           },
           filetypes = { 'c', 'cpp' },
+          keys = {
+            { '<Leader>ct', '<Cmd>ClangdAST<CR>',                desc = 'Clangd AST' },
+            { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' },
+          },
+          setup = function(_, opts)
+            require('clangd_extensions').setup {
+              server = opts,
+              extensions = {
+                autoSetHints = false,
+                ast = {
+                  role_icons = {
+                    type = '',
+                    declaration = '',
+                    expression = '',
+                    specifier = '',
+                    statement = '',
+                    ['template argument'] = '',
+                  },
+                  kind_icons = {
+                    Compound = '',
+                    Recovery = '',
+                    TranslationUnit = '',
+                    PackExpansion = '',
+                    TemplateTypeParm = '',
+                    TemplateTemplateParm = '',
+                    TemplateParamObject = '',
+                  },
+                },
+              },
+            }
+          end,
         },
         lua_ls = {
           settings = {
@@ -72,122 +234,7 @@ return {
           },
         },
         yamlls = { settings = { yaml = { keyOrdering = false } } },
-      }
-      local setup = {
-        clangd = function(_, opts)
-          require('clangd_extensions').setup {
-            server = opts,
-            extensions = {
-              autoSetHints = false,
-              ast = {
-                role_icons = {
-                  type = '',
-                  declaration = '',
-                  expression = '',
-                  specifier = '',
-                  statement = '',
-                  ['template argument'] = '',
-                },
-                kind_icons = {
-                  Compound = '',
-                  Recovery = '',
-                  TranslationUnit = '',
-                  PackExpansion = '',
-                  TemplateTypeParm = '',
-                  TemplateTemplateParm = '',
-                  TemplateParamObject = '',
-                },
-              },
-            },
-          }
-        end
-      }
-      local on_attach = function(_, bufnr)
-        local nnoremap = function(opts)
-          opts.buffer = bufnr
-          require('utils.keymaps').nnoremap(opts)
-        end
-        local vnoremap = function(opts)
-          opts.buffer = bufnr
-          require('utils.keymaps').vnoremap(opts)
-        end
-        local format = function() vim.lsp.buf.format { buffer = bufnr } end
-
-        nnoremap { '<Leader>cf', format, desc = 'Format document' }
-        vnoremap { '<Leader>cf', format, desc = 'Format range' }
-        nnoremap { 'gh', vim.lsp.buf.hover, desc = 'Show hover document' }
-        nnoremap { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' }
-        nnoremap { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' }
-        nnoremap { '<Leader>uo', '<Cmd>Lspsaga outline<CR>', desc = 'Symbol outline' }
-        nnoremap { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show line diagnostics' }
-        nnoremap { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' }
-        nnoremap { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' }
-        nnoremap {
-          ']e',
-          function() require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR } end,
-          desc = 'Next error',
-        }
-        nnoremap {
-          '[e',
-          function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR } end,
-          desc = 'Previous error',
-        }
-        nnoremap { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' }
-        nnoremap { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' }
-        nnoremap { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' }
-        nnoremap { '<Leader>xl', '<Cmd>Lspsaga lsp_finder<CR>', desc = 'Lspsaga finder' }
-        nnoremap { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' }
-        nnoremap { '<Leader>xx', '<Cmd>TroubleToggle<CR>', desc = 'Document diagnostics' }
-
-        vim.lsp.inlay_hint(bufnr, true)
-      end
-
-      require('mason-lspconfig').setup { automatic_installation = true }
-
-      vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(args)
-          on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
-        end
-      })
-
-      local register_capability = vim.lsp.handlers['client/registerCapability']
-
-      vim.lsp.handlers['client/registerCapability'] = function(err, res, ctx)
-        local ret = register_capability(err, res, ctx)
-        local client_id = ctx.client_id
-        local client = vim.lsp.get_client_by_id(client_id)
-        local buffer = vim.api.nvim_get_current_buf()
-        on_attach(client, buffer)
-        return ret
-      end
-
-      local capabilities = vim.tbl_deep_extend(
-        'force',
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        require('cmp_nvim_lsp').default_capabilities()
-      )
-
-      for server, opts in pairs(servers) do
-        opts = vim.tbl_deep_extend('force', {
-          capabilities = vim.deepcopy(capabilities),
-          single_file_support = true,
-        }, opts)
-        if setup[server] then
-          setup[server](server, opts)
-        else
-          require('lspconfig')[server].setup(opts)
-        end
-      end
-    end,
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      {
-        'folke/neodev.nvim',
-        config = true,
       },
-      'p00f/clangd_extensions.nvim',
-      'williamboman/mason-lspconfig.nvim',
     },
   },
   {
@@ -234,6 +281,8 @@ return {
         mapping = cmp.mapping.preset.insert({
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<ESC>'] = cmp.mapping.abort(),
           ['<CR>'] = cmp.mapping.confirm { select = true },
           ['<Tab>'] = cmp.mapping(function(fallback)

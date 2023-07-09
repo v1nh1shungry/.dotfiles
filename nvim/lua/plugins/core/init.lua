@@ -28,6 +28,9 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    config = function(_, opts)
+      require('nvim-treesitter.configs').setup(opts)
+    end,
     dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     event = events.enter_buffer,
     opts = {
@@ -122,6 +125,7 @@ return {
     opts = {
       show_trailing_blankline_indent = false,
       filetype_exclude = require('utils.ui').excluded_filetypes,
+      show_current_context = true,
     },
   },
   {
@@ -191,14 +195,6 @@ return {
       { 'gs', function() require('flash').jump() end,       desc = 'Flash' },
       { 'gt', function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
       { 'r',  function() require('flash').remote() end,     mode = 'o',               desc = 'Remote Flash' },
-    },
-  },
-  {
-    'm4xshen/hardtime.nvim',
-    event = 'VeryLazy',
-    opts = {
-      disabled_filetypes = require('utils.ui').excluded_filetypes, -- Yep, this is not relevant to `UI` at all, but it just works :)
-      notification = false,
     },
   },
   {

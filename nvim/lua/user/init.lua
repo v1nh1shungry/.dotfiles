@@ -2,6 +2,7 @@ local M = {
   plugins = {
     disabled = {},
     extra = {},
+    langs = {},
   },
   ui = {
     background = 'dark',

@@ -1,6 +1,6 @@
 local events = require('utils.events')
 
-return {
+local M = {
   {
     'neovim/nvim-lspconfig',
     config = function(_, lsp_opts)
@@ -26,27 +26,30 @@ return {
           ['textDocument/references'] = { { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' } },
           ['textDocument/definition'] = { { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' } },
           ['textDocument/typeDefinition*'] = { { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' } },
-          ['textDocument/publishDiagnostics'] = {
-            { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show line diagnostics' },
-            { ']d',         '<Cmd>Lspsaga diagnostic_jump_next<CR>',  desc = 'Next diagnostic' },
-            { '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',  desc = 'Previous diagnostic' },
-            {
-              ']e',
-              function() require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR } end,
-              desc = 'Next error',
-            },
-            {
-              '[e',
-              function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR } end,
-              desc = 'Previous error',
-            },
-            { '<Leader>xx', '<Cmd>TroubleToggle<CR>', desc = 'Document diagnostics' },
+          ['textDocument/implementation*'] = {
+            { '<Leader>cI', '<Cmd>Glance implementations<CR>', desc = 'Go to implementation' },
           },
-          ['textDocument/implementation*'] = { { '<Leader>cI', '<Cmd>Glance implementations<CR>',
-            desc = 'Go to implementation' } },
           ['callHierarchy/incomingCalls'] = { { '<Leader>ci', '<Cmd>Lspsaga incoming_calls<CR>', desc = 'Incoming calls' } },
           ['callHierarchy/outgoingCalls'] = { { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' } },
         }
+        for _, key in ipairs({
+          { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show line diagnostics' },
+          { ']d',         '<Cmd>Lspsaga diagnostic_jump_next<CR>',  desc = 'Next diagnostic' },
+          { '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',  desc = 'Previous diagnostic' },
+          {
+            ']e',
+            function() require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR } end,
+            desc = 'Next error',
+          },
+          {
+            '[e',
+            function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR } end,
+            desc = 'Previous error',
+          },
+          { '<Leader>xx', '<Cmd>TroubleToggle<CR>', desc = 'Document diagnostics' },
+        }) do
+          map(key)
+        end
         for method, keys in pairs(mappings) do
           if client.supports_method(method) then
             for _, key in ipairs(keys) do
@@ -54,7 +57,7 @@ return {
             end
           end
         end
-        if lsp_opts.servers[client.name].keys then
+        if lsp_opts.servers[client.name] and lsp_opts.servers[client.name].keys then
           for _, key in ipairs(lsp_opts.servers[client.name].keys) do
             map(key)
           end
@@ -127,20 +130,13 @@ return {
     },
     opts = {
       diagnostics = {
-        virtual_text = {
-          spacing = 4,
-          source = 'if_many',
-          prefix = '●',
-        },
+        virtual_text = { spacing = 4, source = 'if_many' },
         severity_sort = true,
         signs = false,
       },
       servers = {
-        hls = {},
         jsonls = {},
         neocmake = {},
-        pylsp = {},
-        taplo = {},
         clangd = {
           cmd = {
             'clangd',
@@ -194,42 +190,6 @@ return {
                 },
               },
               hint = { enable = true },
-            },
-          },
-        },
-        rust_analyzer = {
-          settings = {
-            ['rust-analyzer'] = {
-              diagnostics = { disabled = { 'unresolved-proc-macro' } },
-              cargo = { loadOutDirsFromCheck = true },
-              procMacro = { enable = true },
-              check = { command = 'clippy' },
-            },
-          },
-        },
-        tsserver = {
-          settings = {
-            javascript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-            typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
             },
           },
         },
@@ -520,3 +480,11 @@ return {
     keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Explorer' } },
   },
 }
+
+for _, lang in ipairs(require('user').plugins.langs) do
+  for _, spec in ipairs(require('plugins.ide.lang.' .. lang)) do
+    M[#M + 1] = spec
+  end
+end
+
+return M

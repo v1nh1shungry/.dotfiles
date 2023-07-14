@@ -13,7 +13,7 @@ return {
       { '<Leader>sm', '<Cmd>Telescope man_pages<CR>',   desc = 'Man pages' },
       { '<Leader>:',  '<Cmd>Telescope commands<CR>',    desc = 'Commands' },
       { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',     desc = 'Keymaps' },
-      { '<Leader>gc', '<Cmd>Telescope git_commits<CR>', desc = 'Git commits' },
+      { '<Leader>g/', '<Cmd>Telescope git_commits<CR>', desc = 'Git commits' },
       { '<Leader>,',  '<Cmd>Telescope buffers<CR>',     desc = 'Switch buffer' },
       { '<Leader>sl', '<Cmd>Telescope resume<CR>',      desc = 'Last search' },
     },
@@ -104,5 +104,67 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     keys = { { '<Leader>gm', '<Cmd>Neogit<CR>', desc = 'Magit' } },
     opts = { signs = { section = { '', '' }, item = { '', '' } } },
+  },
+  {
+    'akinsho/git-conflict.nvim',
+    config = function(_, opts)
+      require('git-conflict').setup(opts)
+      vim.api.nvim_create_autocmd('User', {
+        callback = function(args)
+          local nnoremap = function(key)
+            require('utils.keymaps').nnoremap(vim.tbl_extend('keep', key, { buffer = args.buf }))
+          end
+          nnoremap { '<Leader>gco', '<Plug>(git-conflict-ours)', desc = 'Choose ours' }
+          nnoremap { '<Leader>gct', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' }
+          nnoremap { '<Leader>gcb', '<Plug>(git-conflict-both)', desc = 'Choose both' }
+          nnoremap { '<Leader>gc0', '<Plug>(git-conflict-none)', desc = 'Choose none' }
+        end,
+        pattern = 'GitConflictDetected',
+      })
+    end,
+    dependencies = {
+      'folke/which-key.nvim',
+      optional = true,
+      opts = { defaults = { ['<Leader>gc'] = { name = '+conflict' } } },
+    },
+    event = events.enter_buffer,
+    opts = { default_mappings = false },
+  },
+  {
+    'andrewferrier/debugprint.nvim',
+    dependencies = {
+      'folke/which-key.nvim',
+      optional = true,
+      opts = { defaults = { ['<Leader>dp'] = { name = '+print' } } },
+    },
+    keys = {
+      {
+        '<Leader>dpp',
+        function() return require('debugprint').debugprint() end,
+        desc = 'Print below',
+        expr = true,
+      },
+      {
+        '<Leader>dpP',
+        function() return require('debugprint').debugprint({ above = true }) end,
+        desc = 'Print above',
+        expr = true,
+      },
+      {
+        '<Leader>dpv',
+        function() return require('debugprint').debugprint({ variable = true }) end,
+        desc = 'Print variable below',
+        expr = true,
+        mode = { 'n', 'v' },
+      },
+      {
+        '<Leader>dpV',
+        function() return require('debugprint').debugprint({ above = true, variable = true }) end,
+        desc = 'Print variable above',
+        expr = true,
+        mode = { 'n', 'v' },
+      },
+    },
+    opts = { create_keymaps = false, create_commands = false },
   },
 }

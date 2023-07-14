@@ -1,20 +1,3 @@
-If:
-  PathMatch: .*\.c
-CompileFlags:
-  Add: -std=c2x
----
-If:
-  PathMatch: [
-    .*\.cc,
-    .*\.cpp,
-    .*\.cxx,
-    .*\.h,
-    .*\.hpp,
-    .*\.hxx,
-  ]
-CompileFlags:
-  Add: -std=c++2b
----
 Index:
   StandardLibrary: Yes
 CompileFlags:

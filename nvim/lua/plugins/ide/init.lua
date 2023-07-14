@@ -26,9 +26,7 @@ local M = {
           ['textDocument/references'] = { { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' } },
           ['textDocument/definition'] = { { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' } },
           ['textDocument/typeDefinition*'] = { { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' } },
-          ['textDocument/implementation*'] = {
-            { '<Leader>cI', '<Cmd>Glance implementations<CR>', desc = 'Go to implementation' },
-          },
+          ['textDocument/implementation*'] = { { 'gi', '<Cmd>Glance implementations<CR>', desc = 'Go to implementation' } },
           ['callHierarchy/incomingCalls'] = { { '<Leader>ci', '<Cmd>Lspsaga incoming_calls<CR>', desc = 'Incoming calls' } },
           ['callHierarchy/outgoingCalls'] = { { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' } },
         }
@@ -140,6 +138,7 @@ local M = {
         clangd = {
           cmd = {
             'clangd',
+            '--compile-commands-dir=build',
             '--header-insertion=never',
             '--include-cleaner-stdlib',
           },
@@ -411,6 +410,11 @@ local M = {
         config = true,
       },
       'jay-babu/mason-nvim-dap.nvim',
+      {
+        'folke/which-key.nvim',
+        optional = true,
+        opts = { defaults = { ['<Leader>d'] = { name = '+debug' } } },
+      },
     },
     keys = {
       { '<Leader>db', '<Cmd>DapToggleBreakpoint<CR>', desc = 'Toggle breakpoint' },

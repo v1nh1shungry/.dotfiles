@@ -133,24 +133,25 @@ return {
   },
   {
     'folke/which-key.nvim',
-    config = function()
+    config = function(_, opts)
       local wk = require('which-key')
-      wk.setup {
-        window = { winblend = require('user').ui.blend },
-        layout = { height = { max = 10 } },
-      }
-      wk.register({
+      wk.setup(opts)
+      wk.register(opts.defaults)
+    end,
+    event = 'VeryLazy',
+    opts = {
+      window = { winblend = require('user').ui.blend },
+      layout = { height = { max = 10 } },
+      defaults = {
         ['<Leader><Tab>'] = { name = '+tab' },
         ['<Leader>c'] = { name = '+code' },
-        ['<Leader>d'] = { name = '+debug' },
         ['<Leader>f'] = { name = '+file' },
         ['<Leader>g'] = { name = '+Git' },
         ['<Leader>s'] = { name = '+search' },
         ['<Leader>u'] = { name = '+UI' },
         ['<Leader>x'] = { name = '+diagnostics/quickfix' },
-      })
-    end,
-    event = 'VeryLazy',
+      },
+    },
   },
   {
     'folke/noice.nvim',

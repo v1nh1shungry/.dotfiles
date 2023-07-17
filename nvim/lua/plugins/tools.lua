@@ -103,7 +103,10 @@ return {
     'NeogitOrg/neogit',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = { { '<Leader>gm', '<Cmd>Neogit<CR>', desc = 'Magit' } },
-    opts = { signs = { section = { '', '' }, item = { '', '' } } },
+    opts = {
+      disable_commit_confirmation = true, -- compatible with `noice.nvim`
+      signs = { section = { '', '' }, item = { '', '' } },
+    },
   },
   {
     'akinsho/git-conflict.nvim',

@@ -16,7 +16,6 @@ local M = {
         local mappings = {
           ['textDocument/formatting'] = { { '<Leader>cf', format, desc = 'Format document' } },
           ['textDocument/rangeFormatting'] = { { '<Leader>cf', format, desc = 'Format range', mode = 'v' } },
-          ['textDocument/hover'] = { { 'gh', vim.lsp.buf.hover, desc = 'Show hover document' } },
           ['textDocument/rename'] = { { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' } },
           ['textDocument/codeAction'] = { { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' } },
           ['textDocument/documentSymbol'] = {
@@ -138,13 +137,12 @@ local M = {
         clangd = {
           cmd = {
             'clangd',
-            '--compile-commands-dir=build',
             '--header-insertion=never',
             '--include-cleaner-stdlib',
           },
           filetypes = { 'c', 'cpp' },
           keys = {
-            { '<Leader>ct', '<Cmd>ClangdAST<CR>',                desc = 'Clangd AST' },
+            { '<Leader>ct', '<Cmd>ClangAST<CR>',                 desc = 'Clangd AST' },
             { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' },
           },
           setup = function(_, opts)
@@ -428,28 +426,6 @@ local M = {
   {
     'DNLHC/glance.nvim',
     cmd = 'Glance',
-  },
-  {
-    'jose-elias-alvarez/null-ls.nvim',
-    config = function()
-      local actions = require('null-ls').builtins.code_actions
-      local diagnostics = require('null-ls').builtins.diagnostics
-      local formatting = require('null-ls').builtins.formatting
-
-      require('null-ls').setup {
-        sources = {
-          actions.shellcheck,
-          diagnostics.fish,
-          diagnostics.shellcheck,
-          formatting.fish_indent,
-          formatting.just,
-        },
-      }
-
-      require('mason-null-ls').setup { automatic_installation = true }
-    end,
-    dependencies = { 'nvim-lua/plenary.nvim', 'jay-babu/mason-null-ls.nvim' },
-    ft = { 'fish', 'just', 'sh' },
   },
   {
     'echasnovski/mini.files',

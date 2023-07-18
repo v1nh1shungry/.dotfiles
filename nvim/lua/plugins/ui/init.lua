@@ -29,11 +29,11 @@ return {
   ]]
       dashboard.section.header.val = vim.split(logo, '\n')
       dashboard.section.buttons.val = {
-        dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
-        dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
+        dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
+        dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
         dashboard.button('p', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
         dashboard.button('c', ' ' .. ' Config', '<Cmd>e ~/.nvimrc<CR>'),
-        dashboard.button('l', '鈴' .. ' Lazy', '<Cmd>Lazy<CR>'),
+        dashboard.button('l', '󰒲 ' .. ' Lazy', '<Cmd>Lazy<CR>'),
         dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
       }
       dashboard.opts.layout[1].val = 2
@@ -74,7 +74,11 @@ return {
   {
     'akinsho/bufferline.nvim',
     event = events.enter_buffer,
-    keys = { { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' } },
+    keys = {
+      { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' },
+      { ']b', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next buffer' },
+      { '[b', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Previous buffer' },
+    },
     opts = {
       options = {
         offsets = {

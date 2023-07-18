@@ -7,23 +7,28 @@ return {
     event = events.enter_buffer,
   },
   {
-    'echasnovski/mini.bracketed',
-    keys = { '[', ']' },
-    opts = {
-      comment = { suffix = '' },
-      diagnostic = { suffix = '' },
-      file = { suffix = '' },
-    },
-  },
-  {
     'nmac427/guess-indent.nvim',
     config = true,
     event = events.enter_buffer,
   },
   {
     'echasnovski/mini.ai',
-    config = true,
+    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     event = events.enter_buffer,
+    opts = function()
+      local ai = require('mini.ai')
+      return {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter({
+            a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+            i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+          }, {}),
+          f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, {}),
+          c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
+        },
+      }
+    end,
   },
   {
     'nvim-treesitter/nvim-treesitter',
@@ -31,7 +36,6 @@ return {
     config = function(_, opts)
       require('nvim-treesitter.configs').setup(opts)
     end,
-    dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
     event = events.enter_buffer,
     opts = {
       ensure_installed = {
@@ -52,21 +56,6 @@ return {
       highlight = { enable = true, additional_vim_regex_highlighting = true },
       matchup = { enable = true },
       textobjects = {
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ['ic'] = '@class.inner',
-            ['ac'] = '@class.outer',
-            ['if'] = '@function.inner',
-            ['af'] = '@function.outer',
-            ['ia'] = '@parameter.inner',
-            ['aa'] = '@parameter.outer',
-            ['as'] = '@statement.outer',
-            ['al'] = '@assignment.lhs',
-            ['ar'] = '@assignment.rhs',
-          },
-        },
         swap = {
           enable = true,
           swap_next = { ['<M-l>'] = '@parameter.inner' },

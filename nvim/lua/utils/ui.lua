@@ -4,11 +4,11 @@ M.icons = {
   diagnostics = {
     error = '',
     warning = '',
-    hint = '',
-    info = '',
+    hint = '',
+    info = '',
   },
   dap = {
-    breakpoint = '',
+    breakpoint = '󰝥',
     breakpoint_condition = 'ﳁ',
     breakpoint_rejected = '',
     log_point = '',

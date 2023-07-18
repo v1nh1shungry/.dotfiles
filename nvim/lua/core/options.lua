@@ -19,6 +19,7 @@ vim.opt.laststatus = 0
 vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = { extends = '…', nbsp = '␣', precedes = '…', tab = '»·' }
+vim.opt.mousemoveevent = true
 vim.opt.number = true
 vim.opt.pumblend = require('user').ui.blend
 vim.opt.pumheight = 10

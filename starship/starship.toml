@@ -1,9 +1,9 @@
 [custom.cpp]
-command = "gcc -dumpversion"
+command = "gcc -dumpfullversion"
 symbol = ""
 detect_extensions = ["cpp", "cc", "hpp", "cxx"]
 style = "bold cyan"
-format = "via [$symbol v$output]($style) "
+format = "via [$symbol v$output-gcc]($style) "
 
 [cmake]
 detect_extensions = ["cmake"]

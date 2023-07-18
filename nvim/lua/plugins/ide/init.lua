@@ -137,6 +137,7 @@ local M = {
         clangd = {
           cmd = {
             'clangd',
+            '--compile-commands-dir=build',
             '--header-insertion=never',
             '--include-cleaner-stdlib',
           },
@@ -202,6 +203,7 @@ local M = {
       lightbulb = { sign = false },
       ui = { winblend = require('user').ui.blend },
       beacon = { enable = false },
+      symbol_in_winbar = { enable = false },
     },
   },
   {
@@ -270,7 +272,7 @@ local M = {
         }, {
           { name = 'buffer' },
           { name = 'path' },
-          { name = 'rg',    keyword_length = 5 },
+          { name = 'rg',    keyword_length = 3 },
         }, {
           { name = 'nvim_lsp_signature_help' },
         }),
@@ -298,22 +300,6 @@ local M = {
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
-      {
-        'abecodes/tabout.nvim',
-        dependencies = 'nvim-treesitter/nvim-treesitter',
-        opts = {
-          tabouts = {
-            { open = "'", close = "'" },
-            { open = '"', close = '"' },
-            { open = '`', close = '`' },
-            { open = '(', close = ')' },
-            { open = '[', close = ']' },
-            { open = '{', close = '}' },
-            { open = '<', close = '>' },
-            { open = '#', close = ']' },
-          },
-        },
-      },
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-emoji',
     },
@@ -458,6 +444,11 @@ local M = {
       })
     end,
     keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Explorer' } },
+  },
+  {
+    'Bekaboo/dropbar.nvim',
+    event = events.enter_buffer,
+    keys = { { 'gw', function() require('dropbar.api').pick() end, desc = 'Pick winbar symbol' } },
   },
 }
 

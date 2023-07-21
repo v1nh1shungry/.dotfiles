@@ -54,6 +54,15 @@ return {
         'yaml',
       },
       highlight = { enable = true, additional_vim_regex_highlighting = true },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<C-Space>',
+          node_incremental = '<C-Space>',
+          scope_incremental = false,
+          node_decremental = '<bs>',
+        },
+      },
       matchup = { enable = true },
       textobjects = {
         swap = {
@@ -67,20 +76,16 @@ return {
           goto_next_start = {
             [']a'] = '@parameter.inner',
             [']f'] = '@function.outer',
-            [']c'] = '@class.outer',
           },
           goto_next_end = {
             [']F'] = '@function.outer',
-            [']C'] = '@class.outer',
           },
           goto_previous_start = {
             ['[a'] = '@parameter.inner',
             ['[f'] = '@function.outer',
-            ['[c'] = '@class.outer',
           },
           goto_previous_end = {
             ['[F'] = '@function.outer',
-            ['[C'] = '@class.outer',
           },
         },
       },
@@ -175,9 +180,10 @@ return {
     config = true,
     keys = {
       '/', '?', 'f', 'F', 't', 'T',
-      { 'gs', function() require('flash').jump() end,       desc = 'Flash' },
-      { 'gt', function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
-      { 'r',  function() require('flash').remote() end,     mode = 'o',               desc = 'Remote Flash' },
+      { 'gs', function() require('flash').jump() end,              desc = 'Flash' },
+      { 'gS', function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
+      { 'r',  function() require('flash').remote() end,            mode = 'o',               desc = 'Remote Flash' },
+      { 'R',  function() require('flash').treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter search' },
     },
   },
   {

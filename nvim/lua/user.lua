@@ -16,7 +16,26 @@ local setup = function()
   vim.cmd.colorscheme(M.ui.colorscheme)
 end
 
-M = vim.tbl_extend('keep', M, dofile(os.getenv('HOME') .. '/.nvimrc') or {})
+local filename = os.getenv('HOME') .. '/.nvimrc'
+local function tbl_extend(lhs, rhs)
+  if not rhs then
+    return lhs
+  end
+  for k, _ in pairs(lhs) do
+    if type(lhs[k]) == 'table' then
+      lhs[k] = tbl_extend(lhs[k], rhs[k])
+    else
+      if rhs[k] then
+        lhs[k] = rhs[k]
+      end
+    end
+  end
+  return lhs
+end
+if vim.fn.filereadable(filename) then
+  tbl_extend(M, dofile(filename))
+end
+
 if M.setup then
   local user_setup = M.setup
   M.setup = function()

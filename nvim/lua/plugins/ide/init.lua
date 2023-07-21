@@ -319,10 +319,7 @@ local M = {
   },
   {
     'akinsho/toggleterm.nvim',
-    keys = {
-      '<M-=>',
-      { '<Leader>gD', function() require('plugins.ide.toggleterm.git_diff')() end, desc = 'Git diff' },
-    },
+    keys = '<M-=>',
     opts = { open_mapping = '<M-=>', size = 10 },
   },
   {
@@ -381,7 +378,15 @@ local M = {
         ensure_installed = { 'codelldb' },
         handlers = {
           codelldb = function(config)
-            config.configurations = require('plugins.ide.dap.standalone')
+            config.configurations = {
+              {
+                name = 'standalone',
+                type = 'codelldb',
+                request = 'launch',
+                program = '${fileBasenameNoExtension}',
+                cwd = '${workspaceFolder}',
+              },
+            }
             require('mason-nvim-dap').default_setup(config)
           end
         }

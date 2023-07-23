@@ -31,7 +31,7 @@ return {
       dashboard.section.buttons.val = {
         dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
         dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
-        dashboard.button('p', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
+        dashboard.button('/', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
         dashboard.button('c', ' ' .. ' Config', '<Cmd>e ~/.nvimrc<CR>'),
         dashboard.button('l', '󰒲 ' .. ' Lazy', '<Cmd>Lazy<CR>'),
         dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
@@ -83,7 +83,7 @@ return {
       options = {
         offsets = {
           {
-            filetype = 'lspsagaoutline',
+            filetype = 'sagaoutline',
             text = 'Outline',
             text_align = 'center',
             separator = true,

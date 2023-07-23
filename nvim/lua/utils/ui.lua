@@ -28,14 +28,14 @@ M.excluded_filetypes = {
   'help',
   'lazy',
   'lspinfo',
-  'lspsagafinder',
-  'lspsagaoutline',
   'mason',
   'minifiles',
   'minifiles-help',
   'noice',
   'qf',
   'query',
+  'sagafinder',
+  'sagaoutline',
   'ssr',
 }
 

@@ -106,6 +106,7 @@ return {
     opts = {
       disable_commit_confirmation = true, -- compatible with `noice.nvim`
       signs = { section = { '', '' }, item = { '', '' } },
+      integrations = { telescope = true, diffview = true },
     },
   },
   {
@@ -115,7 +116,8 @@ return {
       vim.api.nvim_create_autocmd('User', {
         callback = function(args)
           local nnoremap = function(key)
-            require('utils.keymaps').nnoremap(vim.tbl_extend('keep', key, { buffer = args.buf }))
+            key.buffer = args.buf
+            require('utils.keymaps').nnoremap(key)
           end
           nnoremap { '<Leader>gco', '<Plug>(git-conflict-ours)', desc = 'Choose ours' }
           nnoremap { '<Leader>gct', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' }
@@ -169,5 +171,9 @@ return {
       },
     },
     opts = { create_keymaps = false, create_commands = false },
+  },
+  {
+    'sindrets/diffview.nvim',
+    keys = { { '<Leader>gD', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
   },
 }

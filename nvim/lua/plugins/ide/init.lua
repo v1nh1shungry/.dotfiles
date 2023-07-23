@@ -9,7 +9,7 @@ local M = {
         local map = function(opts)
           local lhs, rhs, mode = opts[1], opts[2], opts.mode
           opts[1], opts[2], opts.mode = nil, nil, nil
-          vim.tbl_extend('force', { buffer = bufnr, noremap = true, silent = true }, opts)
+          opts.buffer, opts.noremap, opts.silent = bufnr, true, true
           vim.keymap.set(mode or 'n', lhs, rhs, opts)
         end
 
@@ -43,7 +43,8 @@ local M = {
             function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR } end,
             desc = 'Previous error',
           },
-          { '<Leader>xx', '<Cmd>TroubleToggle<CR>', desc = 'Document diagnostics' },
+          { '<Leader>xx', '<Cmd>TroubleToggle<CR>',  desc = 'Document diagnostics' },
+          { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
         }) do
           map(key)
         end
@@ -178,7 +179,6 @@ local M = {
           settings = {
             Lua = {
               completion = { callSnippet = 'Replace' },
-              diagnostics = { globals = require('plugins.ide.cmp.xmake.items') },
               telemetry = { enable = false },
               workspace = { checkThirdParty = false },
               format = {
@@ -217,8 +217,6 @@ local M = {
     config = function()
       local cmp = require('cmp')
       local luasnip = require('luasnip')
-
-      require('plugins.ide.cmp')
 
       cmp.setup {
         snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
@@ -268,13 +266,12 @@ local M = {
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
-          { name = 'xmake' },
+          { name = 'nvim_lsp_signature_help' },
         }, {
           { name = 'buffer' },
           { name = 'path' },
-          { name = 'rg',    keyword_length = 3 },
         }, {
-          { name = 'nvim_lsp_signature_help' },
+          { name = 'rg', keyword_length = 3 },
         }),
       }
 
@@ -444,6 +441,16 @@ local M = {
             toggle_hidden,
             buffer = args.data.buf_id,
             desc = 'Toggle show hidden files',
+          }
+          require('utils.keymaps').nnoremap {
+            'c',
+            function()
+              local cur_entry_path = MiniFiles.get_fs_entry().path
+              local cur_directory = vim.fs.dirname(cur_entry_path)
+              vim.fn.chdir(cur_directory)
+            end,
+            buffer = args.data.buf_id,
+            desc = 'Set current working directory',
           }
         end,
       })

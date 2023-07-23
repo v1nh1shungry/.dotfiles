@@ -30,10 +30,6 @@ local config = {
   options = {
     component_separators = '',
     section_separators = '',
-    -- theme = {
-    --   normal = { c = { fg = colors.fg, bg = colors.bg } },
-    --   inactive = { c = { fg = colors.fg, bg = colors.bg } },
-    -- },
   },
   sections = {
     lualine_a = {},
@@ -139,7 +135,7 @@ ins_left {
     return msg
   end,
   icon = ' LSP:',
-  color = { fg = '#ffffff', gui = 'bold' },
+  color = { gui = 'bold' },
 }
 
 ins_right {

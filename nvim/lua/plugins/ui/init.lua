@@ -250,4 +250,8 @@ return {
       { '<C-i>', '<Cmd>Portal jumplist forward<CR>' },
     },
   },
+  {
+    'Bekaboo/deadcolumn.nvim',
+    event = events.enter_buffer,
+  }
 }

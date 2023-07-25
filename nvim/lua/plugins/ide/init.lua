@@ -15,7 +15,16 @@ local M = {
 
         local mappings = {
           ['textDocument/formatting'] = { { '<Leader>cf', format, desc = 'Format document' } },
-          ['textDocument/rangeFormatting'] = { { '<Leader>cf', format, desc = 'Format range', mode = 'v' } },
+          ['textDocument/rangeFormatting'] = {
+            { '<Leader>cf', format, desc = 'Format range', mode = 'v' },
+            {
+              '<Leader>gf',
+              function()
+                require('lsp-format-modifications').format_modifications(client, bufnr)
+              end,
+              desc = 'Format only modifications',
+            },
+          },
           ['textDocument/rename'] = { { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' } },
           ['textDocument/codeAction'] = { { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' } },
           ['textDocument/documentSymbol'] = {
@@ -30,7 +39,7 @@ local M = {
           ['callHierarchy/outgoingCalls'] = { { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' } },
         }
         for _, key in ipairs({
-          { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show line diagnostics' },
+          { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
           { ']d',         '<Cmd>Lspsaga diagnostic_jump_next<CR>',  desc = 'Next diagnostic' },
           { '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',  desc = 'Previous diagnostic' },
           {
@@ -125,6 +134,7 @@ local M = {
       },
       'p00f/clangd_extensions.nvim',
       'williamboman/mason-lspconfig.nvim',
+      'joechrisellis/lsp-format-modifications.nvim',
     },
     opts = {
       diagnostics = {
@@ -191,7 +201,6 @@ local M = {
             },
           },
         },
-        yamlls = { settings = { yaml = { keyOrdering = false } } },
       },
     },
   },
@@ -307,11 +316,21 @@ local M = {
     config = true,
     event = events.enter_buffer,
     keys = {
-      { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>',               desc = 'Preview git hunk' },
-      { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>',                 desc = 'Reset git hunk' },
-      { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>',                   desc = 'Git diffthis' },
-      { ']h',         function() require('gitsigns').next_hunk() end, desc = 'Next git hunk' },
-      { '[h',         function() require('gitsigns').prev_hunk() end, desc = 'Previous git hunk' },
+      { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>',              desc = 'Preview git hunk' },
+      { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>',                desc = 'Reset git hunk' },
+      { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>',                  desc = 'Diff this' },
+      { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>',                desc = 'Blame this line' },
+      { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' },
+      {
+        ']h',
+        function() require('gitsigns').next_hunk { navigation_message = false } end,
+        desc = 'Next git hunk',
+      },
+      {
+        '[h',
+        function() require('gitsigns').prev_hunk { navigation_message = false } end,
+        desc = 'Previous git hunk',
+      },
     },
   },
   {
@@ -322,7 +341,7 @@ local M = {
   {
     'mfussenegger/nvim-dap',
     config = function()
-      local dap, dapui = require('dap'), require('dapui')
+      local dap = require('dap')
       local icons = require('utils.ui').icons.dap
 
       vim.fn.sign_define(
@@ -346,56 +365,47 @@ local M = {
         { text = icons.stopped, texthl = 'DapStopped', linehl = '', numhl = '' }
       )
 
-      dap.listeners.after.event_initialized['dapui_config'] = function()
-        vim.diagnostic.config { virtual_text = false }
-        vim.lsp.inlay_hint(0, false)
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated['dapui_config'] = function()
-        vim.diagnostic.config { virtual_text = true }
-        vim.lsp.inlay_hint(0, true)
-        dapui.close()
-      end
-      dap.listeners.before.event_exited['dapui_config'] = function()
-        vim.diagnostic.config { virtual_text = true }
-        vim.lsp.inlay_hint(0, true)
-        dapui.close()
-      end
-
-      dapui.setup()
-
       local nnoremap = require('utils.keymaps').nnoremap
       nnoremap { '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' }
       nnoremap { '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' }
       nnoremap { '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' }
       nnoremap { '<Leader>dt', function() dap.terminate() end, desc = 'Terminate' }
-
-
-      require('mason-nvim-dap').setup {
-        ensure_installed = { 'codelldb' },
-        handlers = {
-          codelldb = function(config)
-            config.configurations = {
-              {
-                name = 'standalone',
-                type = 'codelldb',
-                request = 'launch',
-                program = '${fileBasenameNoExtension}',
-                cwd = '${workspaceFolder}',
-              },
-            }
-            require('mason-nvim-dap').default_setup(config)
-          end
-        }
-      }
     end,
     dependencies = {
-      'rcarriga/nvim-dap-ui',
+      {
+        'rcarriga/nvim-dap-ui',
+        config = function()
+          local dap, dapui = require('dap'), require('dapui')
+          dapui.setup()
+          dap.listeners.after.event_initialized['dapui_config'] = function()
+            vim.diagnostic.config { virtual_text = false }
+            vim.lsp.inlay_hint(0, false)
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated['dapui_config'] = function()
+            vim.diagnostic.config { virtual_text = true }
+            vim.lsp.inlay_hint(0, true)
+            dapui.close()
+          end
+          dap.listeners.before.event_exited['dapui_config'] = function()
+            vim.diagnostic.config { virtual_text = true }
+            vim.lsp.inlay_hint(0, true)
+            dapui.close()
+          end
+        end,
+        keys = {
+          { '<Leader>de', function() require('dapui').eval() end, desc = 'Eval', mode = { 'n', 'v' } },
+        },
+      },
       {
         'theHamsta/nvim-dap-virtual-text',
         config = true,
       },
-      'jay-babu/mason-nvim-dap.nvim',
+      {
+        'jay-babu/mason-nvim-dap.nvim',
+        dependencies = 'mason.nvim',
+        opts = { ensure_installed = { 'codelldb' }, handlers = {} },
+      },
       {
         'folke/which-key.nvim',
         optional = true,

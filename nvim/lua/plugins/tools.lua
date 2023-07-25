@@ -30,22 +30,6 @@ return {
     dependencies = 'stevearc/dressing.nvim',
   },
   {
-    'skywind3000/asynctasks.vim',
-    config = function()
-      vim.g.asyncrun_open = 10
-      vim.g.asynctasks_term_rows = 10
-      vim.g.asynctasks_term_pos = 'bottom'
-    end,
-    dependencies = {
-      'skywind3000/asyncrun.vim',
-      cmd = 'AsyncRun',
-    },
-    keys = {
-      { '<Leader>fb', '<Cmd>AsyncTask file-build<CR>', desc = 'Build' },
-      { '<Leader>fr', '<Cmd>AsyncTask file-run<CR>',   desc = 'Run' },
-    },
-  },
-  {
     'sQVe/sort.nvim',
     cmd = 'Sort',
   },
@@ -175,5 +159,14 @@ return {
   {
     'sindrets/diffview.nvim',
     keys = { { '<Leader>gD', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
+  },
+  {
+    'Civitasv/cmake-tools.nvim',
+    cmd = { 'CMakeGenerate', 'CMakeBuild', 'CMakeRun' },
+    opts = {
+      cmake_generate_options = { '-G', 'Ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=On' },
+      cmake_build_directory = 'build',
+      cmake_soft_link_compile_commands = false,
+    },
   },
 }

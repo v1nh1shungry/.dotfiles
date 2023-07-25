@@ -1,6 +1,7 @@
 vim.opt.background = require('user').ui.background
 vim.opt.breakindent = true
 vim.opt.clipboard = 'unnamedplus'
+vim.opt.colorcolumn = '100'
 vim.opt.completeopt = { 'menuone', 'noinsert', 'noselect' }
 vim.opt.confirm = true
 vim.opt.cursorline = true

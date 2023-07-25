@@ -2,9 +2,14 @@ local events = require('utils.events')
 
 return {
   {
-    'andymass/vim-matchup',
-    config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
+    'utilyre/sentiment.nvim',
+    config = true,
+    dependencies = {
+      'andymass/vim-matchup',
+      config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
+    },
     event = events.enter_buffer,
+    init = function() vim.g.loaded_matchparen = 1 end,
   },
   {
     'nmac427/guess-indent.nvim',
@@ -51,7 +56,6 @@ return {
         'markdown_inline',
         'query',
         'vimdoc',
-        'yaml',
       },
       highlight = { enable = true, additional_vim_regex_highlighting = true },
       incremental_selection = {
@@ -199,5 +203,9 @@ return {
     'max397574/better-escape.nvim',
     config = true,
     keys = { { 'jj', mode = 'i' }, { 'jk', mode = 'i' } },
+  },
+  {
+    'willothy/flatten.nvim',
+    opts = { window = { open = 'alternate' } },
   },
 }

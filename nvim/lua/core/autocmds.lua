@@ -11,7 +11,7 @@ autocmd('InsertEnter', { callback = function() if vim.wo.number then vim.cmd.set
 autocmd('InsertLeave', { callback = function() if vim.wo.number then vim.cmd.setlocal 'relativenumber' end end })
 
 autocmd('FileType', {
-  command = 'setlocal nonumber norelativenumber nobuflisted nofoldenable',
+  command = 'setlocal nonumber norelativenumber nobuflisted nofoldenable cc=',
   pattern = require('utils.ui').excluded_filetypes,
 })
 

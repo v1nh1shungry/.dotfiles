@@ -1,8 +1,9 @@
 if status is-interactive
-    fish_add_path ~/.cargo/bin
-    fish_add_path ~/.local/bin
+    set -gx PATH ~/.local/bin $PATH
 
     set fish_greeting
+
+    set -gx PATH ~/.cargo/bin $PATH
 
     starship init fish | source
 
@@ -25,6 +26,7 @@ if status is-interactive
     alias ll 'ls -al --git'
     alias tree 'exa -T --icons'
     alias diff 'batdiff --delta'
+    alias tldr 'tldr --pager'
 
     function proxy
         if test "$argv" = unset

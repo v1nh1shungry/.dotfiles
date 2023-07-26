@@ -11,10 +11,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local modules = { 'core', 'ide', 'ui', 'tools', 'themes' }
 local lazy_specs = {}
 
-for _, module in ipairs(modules) do
+for _, module in ipairs { 'core', 'ide', 'ui', 'tools', 'themes' } do
   local module_specs = require('plugins.' .. module)
   for _, spec in ipairs(module_specs) do
     lazy_specs[#lazy_specs + 1] = spec

@@ -4,6 +4,7 @@ local nnoremap = require('utils.keymaps').nnoremap
 local inoremap = require('utils.keymaps').inoremap
 local tnoremap = require('utils.keymaps').tnoremap
 local vnoremap = require('utils.keymaps').vnoremap
+local xnoremap = require('utils.keymaps').xnoremap
 
 map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
@@ -85,3 +86,7 @@ nnoremap {
 }
 
 nnoremap { '<Leader>l', '<Cmd>Lazy home<CR>', desc = 'Lazy' }
+
+nnoremap { '<Leader>fu', '<Cmd>earlier 1f<CR>', desc = 'Give up modifications' }
+
+xnoremap { '$', 'g_' }

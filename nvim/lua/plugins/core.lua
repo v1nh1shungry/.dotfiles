@@ -200,11 +200,6 @@ return {
     },
   },
   {
-    'max397574/better-escape.nvim',
-    config = true,
-    keys = { { 'jj', mode = 'i' }, { 'jk', mode = 'i' } },
-  },
-  {
     'willothy/flatten.nvim',
     opts = { window = { open = 'alternate' } },
   },

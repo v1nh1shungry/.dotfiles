@@ -1,26 +1,12 @@
 local M = {}
 
-M.icons = {
-  diagnostics = {
-    error = '',
-    warning = '',
-    hint = '',
-    info = '',
-  },
-  dap = {
-    breakpoint = '󰝥',
-    breakpoint_condition = 'ﳁ',
-    breakpoint_rejected = '',
-    log_point = '',
-  },
-}
-
 M.excluded_filetypes = {
   'ClangdAST',
   'NeogitPopup',
   'NeogitStatus',
   'Trouble',
   'alpha',
+  'cmake_tools_terminal',
   'dap-repl',
   'dapui_breakpoints',
   'dapui_console',

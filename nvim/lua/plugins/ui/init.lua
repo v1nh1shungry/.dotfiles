@@ -75,7 +75,7 @@ return {
     'akinsho/bufferline.nvim',
     event = events.enter_buffer,
     keys = {
-      { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' },
+      { 'gb', '<Cmd>BufferLinePick<CR>',      desc = 'Pick buffer' },
       { ']b', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next buffer' },
       { '[b', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Previous buffer' },
     },
@@ -207,7 +207,8 @@ return {
         ft_ignore = require('utils.ui').excluded_filetypes,
         relculright = true,
         segments = {
-          { sign = { name = { '.*' } },       click = 'v:lua.ScSa' },
+          { sign = { name = { 'Marks' } },    click = 'v:lua.ScSa' },
+          { sign = { name = { 'Dap' } },      click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
           { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
         },
@@ -253,5 +254,13 @@ return {
   {
     'Bekaboo/deadcolumn.nvim',
     event = events.enter_buffer,
-  }
+  },
+  {
+    'chentoast/marks.nvim',
+    event = events.enter_buffer,
+    opts = {
+      force_write_shada = true,
+      excluded_filetypes = require('utils.ui').excluded_filetypes,
+    },
+  },
 }

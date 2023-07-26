@@ -10,12 +10,13 @@ return {
       { '<Leader>ff', '<Cmd>Telescope find_files<CR>',  desc = 'Find files' },
       { '<Leader>fo', '<Cmd>Telescope oldfiles<CR>',    desc = 'Recent files' },
       { '<Leader>/',  '<Cmd>Telescope live_grep<CR>',   desc = 'Live grep' },
-      { '<Leader>sm', '<Cmd>Telescope man_pages<CR>',   desc = 'Man pages' },
+      { '<Leader>sa', '<Cmd>Telescope man_pages<CR>',   desc = 'Man pages' },
       { '<Leader>:',  '<Cmd>Telescope commands<CR>',    desc = 'Commands' },
       { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',     desc = 'Keymaps' },
       { '<Leader>g/', '<Cmd>Telescope git_commits<CR>', desc = 'Git commits' },
       { '<Leader>,',  '<Cmd>Telescope buffers<CR>',     desc = 'Switch buffer' },
       { '<Leader>sl', '<Cmd>Telescope resume<CR>',      desc = 'Last search' },
+      { '<Leader>sm', '<Cmd>Telescope marks<CR>',       desc = 'Marks' },
     },
     opts = {
       defaults = {
@@ -162,7 +163,17 @@ return {
   },
   {
     'Civitasv/cmake-tools.nvim',
-    cmd = { 'CMakeGenerate', 'CMakeBuild', 'CMakeRun' },
+    dependencies = {
+      'folke/which-key.nvim',
+      optional = true,
+      opts = { defaults = { ['<Leader>m'] = { name = '+cmake' } } },
+    },
+    keys = {
+      { '<Leader>mg', '<Cmd>CMakeGenerate<CR>', desc = 'CMake configure' },
+      { '<Leader>mb', '<Cmd>CMakeBuild<CR>',    desc = 'CMake build' },
+      { '<Leader>mr', '<Cmd>CMakeRun<CR>',      desc = 'CMake run executable' },
+      { '<Leader>md', '<Cmd>CMakeDebug<CR>',    desc = 'CMake debug' },
+    },
     opts = {
       cmake_generate_options = { '-G', 'Ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=On' },
       cmake_build_directory = 'build',

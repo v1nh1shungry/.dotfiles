@@ -32,7 +32,10 @@ local M = {
             { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' },
           },
           ['textDocument/references'] = { { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' } },
-          ['textDocument/definition'] = { { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' } },
+          ['textDocument/definition'] = {
+            { 'gd',         '<Cmd>Glance definitions<CR>',      desc = 'Go to definition' },
+            { '<Leader>cp', '<Cmd>Lspsaga peek_definition<CR>', desc = 'Preview definition' },
+          },
           ['textDocument/typeDefinition*'] = { { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' } },
           ['textDocument/implementation*'] = { { 'gi', '<Cmd>Glance implementations<CR>', desc = 'Go to implementation' } },
           ['callHierarchy/incomingCalls'] = { { '<Leader>ci', '<Cmd>Lspsaga incoming_calls<CR>', desc = 'Incoming calls' } },
@@ -94,15 +97,13 @@ local M = {
         return ret
       end
 
-      local icons = require('utils.ui').icons.diagnostics
-      local signs = {
-        { name = 'DiagnosticSignError', text = icons.error },
-        { name = 'DiagnosticSignWarn',  text = icons.warning },
-        { name = 'DiagnosticSignHint',  text = icons.hint },
-        { name = 'DiagnosticSignInfo',  text = icons.info },
-      }
-      for _, sign in ipairs(signs) do
-        vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = '' })
+      for name, icon in pairs {
+        DiagnosticSignError = '',
+        DiagnosticSignWarn = '',
+        DiagnosticSignHint = '',
+        DiagnosticSignInfo = '',
+      } do
+        vim.fn.sign_define(name, { texthl = name, text = icon, numhl = '' })
       end
 
       vim.diagnostic.config(vim.deepcopy(lsp_opts.diagnostics))
@@ -212,7 +213,6 @@ local M = {
       lightbulb = { sign = false },
       ui = { winblend = require('user').ui.blend },
       beacon = { enable = false },
-      symbol_in_winbar = { enable = false },
     },
   },
   {
@@ -259,14 +259,14 @@ local M = {
                 cmp.confirm()
               end
             elseif luasnip.expand_or_jumpable() then
-              vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+              luasnip.expand_or_jump()
             else
               fallback()
             end
-          end, { 'i', 's', 'c' }),
+          end, { 'i', 's' }),
           ['<S-Tab>'] = cmp.mapping(function(fallback)
             if luasnip.jumpable(-1) then
-              vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+              luasnip.jump(-1)
             else
               fallback()
             end
@@ -279,8 +279,7 @@ local M = {
         }, {
           { name = 'buffer' },
           { name = 'path' },
-        }, {
-          { name = 'rg', keyword_length = 3 },
+          { name = 'rg',    keyword_length = 3 },
         }),
       }
 
@@ -342,27 +341,26 @@ local M = {
     'mfussenegger/nvim-dap',
     config = function()
       local dap = require('dap')
-      local icons = require('utils.ui').icons.dap
 
       vim.fn.sign_define(
         'DapBreakpoint',
-        { text = icons.breakpoint, texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
+        { text = '󰝥', texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
       )
       vim.fn.sign_define(
         'DapBreakpointCondition',
-        { text = icons.breakpoint_condition, texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
+        { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
       )
       vim.fn.sign_define(
         'DapBreakpointRejected',
-        { text = icons.breakpoint_rejected, texthl = 'DapBreakpoint', linehl = '', numhl = '' }
+        { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' }
       )
       vim.fn.sign_define(
         'DapLogPoint',
-        { text = icons.log_point, texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
+        { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
       )
       vim.fn.sign_define(
         'DapStopped',
-        { text = icons.stopped, texthl = 'DapStopped', linehl = '', numhl = '' }
+        { text = '󰁕', texthl = 'DapStopped', linehl = '', numhl = '' }
       )
 
       local nnoremap = require('utils.keymaps').nnoremap
@@ -466,11 +464,6 @@ local M = {
       })
     end,
     keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Explorer' } },
-  },
-  {
-    'Bekaboo/dropbar.nvim',
-    event = events.enter_buffer,
-    keys = { { 'gw', function() require('dropbar.api').pick() end, desc = 'Pick winbar symbol' } },
   },
 }
 

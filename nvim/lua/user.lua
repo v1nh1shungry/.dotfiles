@@ -17,23 +17,8 @@ local setup = function()
 end
 
 local filename = os.getenv('HOME') .. '/.nvimrc'
-local function tbl_extend(lhs, rhs)
-  if not rhs then
-    return lhs
-  end
-  for k, _ in pairs(lhs) do
-    if type(lhs[k]) == 'table' then
-      lhs[k] = tbl_extend(lhs[k], rhs[k])
-    else
-      if rhs[k] then
-        lhs[k] = rhs[k]
-      end
-    end
-  end
-  return lhs
-end
 if vim.fn.filereadable(filename) then
-  tbl_extend(M, dofile(filename))
+  M = vim.tbl_deep_extend('force', M, dofile(filename))
 end
 
 if M.setup then

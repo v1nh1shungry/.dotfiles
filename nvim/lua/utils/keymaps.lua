@@ -6,88 +6,40 @@ local extract = function(opts)
   return from, to
 end
 
-M.nmap = function(opts)
+local map = function(opts, mode, noremap)
   local from, to = extract(opts)
-  opts.silent = true
-  vim.keymap.set('n', from, to, opts)
+  vim.keymap.set(mode, from, to, vim.tbl_extend('keep', opts, {
+    silent = true,
+    noremap = noremap,
+  }))
 end
 
-M.vmap = function(opts)
-  local from, to = extract(opts)
-  opts.silent = true
-  vim.keymap.set('v', from, to, opts)
-end
+M.nmap = function(opts) map(opts, 'n') end
 
-M.imap = function(opts)
-  local from, to = extract(opts)
-  opts.silent = true
-  vim.keymap.set('i', from, to, opts)
-end
+M.vmap = function(opts) map(opts, 'v') end
 
-M.cmap = function(opts)
-  local from, to = extract(opts)
-  opts.silent = true
-  vim.keymap.set('i', from, to, opts)
-end
+M.imap = function(opts) map(opts, 'i') end
 
-M.tmap = function(opts)
-  local from, to = extract(opts)
-  opts.silent = true
-  vim.keymap.set('t', from, to, opts)
-end
+M.cmap = function(opts) map(opts, 'i') end
 
-M.xmap = function(opts)
-  local from, to = extract(opts)
-  opts.silent = true
-  vim.keymap.set('x', from, to, opts)
-end
+M.tmap = function(opts) map(opts, 't') end
 
-M.map = function(opts)
-  local from, to = extract(opts)
-  opts.silent = true
-  vim.keymap.set('', from, to, opts)
-end
+M.xmap = function(opts) map(opts, 'x') end
 
-M.nnoremap = function(opts)
-  local from, to = extract(opts)
-  opts.silent, opts.noremap = true, true
-  vim.keymap.set('n', from, to, opts)
-end
+M.map = function(opts) map(opts, '') end
 
-M.vnoremap = function(opts)
-  local from, to = extract(opts)
-  opts.silent, opts.noremap = true, true
-  vim.keymap.set('v', from, to, opts)
-end
+M.nnoremap = function(opts) map(opts, 'n', true) end
 
-M.inoremap = function(opts)
-  local from, to = extract(opts)
-  opts.silent, opts.noremap = true, true
-  vim.keymap.set('i', from, to, opts)
-end
+M.vnoremap = function(opts) map(opts, 'v', true) end
 
-M.cnoremap = function(opts)
-  local from, to = extract(opts)
-  opts.silent, opts.noremap = true, true
-  vim.keymap.set('c', from, to, opts)
-end
+M.inoremap = function(opts) map(opts, 'i', true) end
 
-M.tnoremap = function(opts)
-  local from, to = extract(opts)
-  opts.silent, opts.noremap = true, true
-  vim.keymap.set('t', from, to, opts)
-end
+M.cnoremap = function(opts) map(opts, 'c', true) end
 
-M.xnoremap = function(opts)
-  local from, to = extract(opts)
-  opts.silent, opts.noremap = true, true
-  vim.keymap.set('x', from, to, opts)
-end
+M.tnoremap = function(opts) map(opts, 't', true) end
 
-M.noremap = function(opts)
-  local from, to = extract(opts)
-  opts.silent, opts.noremap = true, true
-  vim.keymap.set('', from, to, opts)
-end
+M.xnoremap = function(opts) map(opts, 'x', true) end
+
+M.noremap = function(opts) map(opts, '', true) end
 
 return M

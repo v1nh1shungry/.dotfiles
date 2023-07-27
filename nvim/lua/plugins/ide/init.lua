@@ -9,8 +9,11 @@ local M = {
         local map = function(opts)
           local lhs, rhs, mode = opts[1], opts[2], opts.mode
           opts[1], opts[2], opts.mode = nil, nil, nil
-          opts.buffer, opts.noremap, opts.silent = bufnr, true, true
-          vim.keymap.set(mode or 'n', lhs, rhs, opts)
+          vim.keymap.set(mode or 'n', lhs, rhs, vim.tbl_extend('keep', opts, {
+            buffer = bufnr,
+            silent = true,
+            noremap = true,
+          }))
         end
 
         local mappings = {

@@ -6,6 +6,7 @@ M.excluded_filetypes = {
   'NeogitStatus',
   'Trouble',
   'alpha',
+  'checkhealth',
   'cmake_tools_terminal',
   'dap-repl',
   'dapui_breakpoints',

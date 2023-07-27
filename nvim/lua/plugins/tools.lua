@@ -55,11 +55,6 @@ return {
     },
   },
   {
-    'iamcco/markdown-preview.nvim',
-    build = function() vim.fn['mkdp#util#install']() end,
-    ft = 'markdown',
-  },
-  {
     'RRethy/nvim-treesitter-endwise',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_insert,

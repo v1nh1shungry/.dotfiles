@@ -35,6 +35,14 @@ nnoremap { '<Leader>xq', function()
   end
 end, desc = 'Toggle quickfix' }
 
+nnoremap { '<Leader>xl', function()
+  local nr = vim.fn.winnr('$')
+  vim.cmd 'lwindow'
+  if nr == vim.fn.winnr('$') then
+    vim.cmd 'lclose'
+  end
+end, desc = 'Toggle location list' }
+
 inoremap { ',', ',<c-g>u' }
 inoremap { '.', '.<c-g>u' }
 inoremap { ';', ';<c-g>u' }

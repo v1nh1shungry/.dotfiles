@@ -181,7 +181,6 @@ return {
   },
   {
     'folke/flash.nvim',
-    config = true,
     keys = {
       '/', '?', 'f', 'F', 't', 'T',
       { 'gs', function() require('flash').jump() end,              desc = 'Flash' },
@@ -189,6 +188,7 @@ return {
       { 'r',  function() require('flash').remote() end,            mode = 'o',               desc = 'Remote Flash' },
       { 'R',  function() require('flash').treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter search' },
     },
+    opts = { modes = { search = { enabled = false } } },
   },
   {
     'chrisgrieser/nvim-spider',

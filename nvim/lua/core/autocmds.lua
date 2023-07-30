@@ -1,7 +1,7 @@
 local autocmd = vim.api.nvim_create_autocmd
 
 autocmd('FileType', {
-  callback = function() vim.cmd.setlocal 'wrap' end,
+  command = 'setlocal wrap',
   pattern = { 'gitcommit', 'markdown' },
 })
 

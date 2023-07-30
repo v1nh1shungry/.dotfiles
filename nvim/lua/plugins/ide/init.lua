@@ -296,7 +296,14 @@ local M = {
         sources = cmp.config.sources { { name = 'buffer' } },
       })
 
-      cmp.setup.filetype('markdown', { sources = cmp.config.sources { { name = 'emoji' } } })
+      cmp.setup.filetype('markdown', {
+        sources = cmp.config.sources {
+          { name = 'buffer' },
+          { name = 'path' },
+          { name = 'rg',    keyword_length = 3 },
+          { name = 'emoji' },
+        },
+      })
     end,
     dependencies = {
       'hrsh7th/cmp-buffer',

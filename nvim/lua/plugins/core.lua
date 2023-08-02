@@ -121,12 +121,9 @@ return {
     },
   },
   {
-    'numToStr/Comment.nvim',
+    'echasnovski/mini.comment',
     config = true,
-    keys = {
-      { 'gc',    mode = { 'n', 'v' },                             desc = 'Toggle comment' },
-      { '<C-_>', '<ESC><Plug>(comment_toggle_linewise_current)i', mode = 'i' },
-    },
+    keys = { { 'gc', mode = { 'n', 'v' }, desc = 'Toggle comment' } },
   },
   {
     'echasnovski/mini.surround',

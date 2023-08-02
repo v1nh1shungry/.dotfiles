@@ -460,16 +460,6 @@ local M = {
             buffer = args.data.buf_id,
             desc = 'Toggle show hidden files',
           }
-          require('utils.keymaps').nnoremap {
-            'c',
-            function()
-              local cur_entry_path = MiniFiles.get_fs_entry().path
-              local cur_directory = vim.fs.dirname(cur_entry_path)
-              vim.fn.chdir(cur_directory)
-            end,
-            buffer = args.data.buf_id,
-            desc = 'Set current working directory',
-          }
         end,
       })
     end,

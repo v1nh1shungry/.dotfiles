@@ -17,6 +17,7 @@ M.excluded_filetypes = {
   'help',
   'lazy',
   'lspinfo',
+  'man',
   'mason',
   'minifiles',
   'minifiles-help',

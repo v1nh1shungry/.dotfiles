@@ -76,8 +76,16 @@ return {
     event = events.enter_buffer,
     keys = {
       { 'gb', '<Cmd>BufferLinePick<CR>',      desc = 'Pick buffer' },
-      { ']b', '<Cmd>BufferLineCycleNext<CR>', desc = 'Next buffer' },
-      { '[b', '<Cmd>BufferLineCyclePrev<CR>', desc = 'Previous buffer' },
+      {
+        ']b',
+        function() for _ = 1, vim.v.count1 do vim.cmd 'BufferLineCycleNext' end end,
+        desc = 'Next buffer',
+      },
+      {
+        '[b',
+        function() for _ = 1, vim.v.count1 do vim.cmd 'BufferLineCyclePrev' end end,
+        desc = 'Previous buffer',
+      },
     },
     opts = {
       options = {
@@ -170,7 +178,7 @@ return {
             desc = 'Dismiss all notifications',
           },
         },
-        opts = { top_down = false, timeout = 3000 },
+        opts = { timeout = 3000 },
       },
     },
     event = 'VeryLazy',
@@ -238,8 +246,8 @@ return {
       '/',
       '?',
       { '<C-n>', mode = { 'n', 'v' } }, -- integrate with vim-visual-multi
-      { 'n',     [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { 'N',     [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { 'n',     [[<Cmd>execute('normal! ' . v:count1 . 'Nn'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { 'N',     [[<Cmd>execute('normal! ' . v:count1 . 'nN'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]] },
       { '*',     [[*<Cmd>lua require('hlslens').start()<CR>]] },
       { '#',     [[#<Cmd>lua require('hlslens').start()<CR>]] },
     },

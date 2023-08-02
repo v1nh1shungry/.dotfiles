@@ -16,7 +16,7 @@ local setup = function()
   vim.cmd.colorscheme(M.ui.colorscheme)
 end
 
-local filename = os.getenv('HOME') .. '/.nvimrc'
+local filename = vim.fs.joinpath(os.getenv('HOME'), '.nvimrc')
 if vim.fn.filereadable(filename) then
   M = vim.tbl_deep_extend('force', M, dofile(filename))
 end

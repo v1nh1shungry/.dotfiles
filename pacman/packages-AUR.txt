@@ -1,2 +1,1 @@
-fnm-bin
-tmpwatch
+bob-bin

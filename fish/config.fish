@@ -16,9 +16,8 @@ if status is-interactive
         set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
     end
 
-    if test -e ~/.ghcup
-        set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
-        set -gx PATH $HOME/.cabal/bin /home/vinh/.ghcup/bin $PATH
+    if command -q bob
+        set -gx PATH ~/.local/share/bob/nvim-bin $PATH
     end
 
     set -gx LESS_TERMCAP_mb (set_color -o red)
@@ -64,5 +63,7 @@ if status is-interactive
                 false
             end
         end
+
+        alias neovide 'neovide.exe --wsl --frame none --maximized --multigrid'
     end
 end

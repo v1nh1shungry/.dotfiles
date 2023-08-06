@@ -1,45 +1,73 @@
 local M = {}
 
-local extract = function(opts)
-  local from, to = opts[1], opts[2]
-  opts[1], opts[2] = nil, nil
-  return from, to
+local map = function(opts)
+  opts = vim.deepcopy(opts)
+  local lhs, rhs, mode = opts[1], opts[2], opts.mode
+  opts[1], opts[2], opts.mode = nil, nil, nil
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-local map = function(opts, mode, noremap)
-  local from, to = extract(opts)
-  vim.keymap.set(mode, from, to, vim.tbl_extend('keep', opts, {
+M.map = function(opts)
+  map(vim.tbl_extend('keep', opts, {
+    mode = '',
     silent = true,
-    noremap = noremap,
   }))
 end
 
-M.nmap = function(opts) map(opts, 'n') end
+M.nmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'n' }))
+end
 
-M.vmap = function(opts) map(opts, 'v') end
+M.vmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'v' }))
+end
 
-M.imap = function(opts) map(opts, 'i') end
+M.imap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'i' }))
+end
 
-M.cmap = function(opts) map(opts, 'i') end
+M.cmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'c' }))
+end
 
-M.tmap = function(opts) map(opts, 't') end
+M.tmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 't' }))
+end
 
-M.xmap = function(opts) map(opts, 'x') end
+M.xmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'x' }))
+end
 
-M.map = function(opts) map(opts, '') end
+M.noremap = function(opts)
+  map(vim.tbl_extend('keep', opts, {
+    mode = '',
+    noremap = true,
+    silent = true,
+  }))
+end
 
-M.nnoremap = function(opts) map(opts, 'n', true) end
+M.nnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'n' }))
+end
 
-M.vnoremap = function(opts) map(opts, 'v', true) end
+M.vnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'v' }))
+end
 
-M.inoremap = function(opts) map(opts, 'i', true) end
+M.inoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'i' }))
+end
 
-M.cnoremap = function(opts) map(opts, 'c', true) end
+M.cnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'c' }))
+end
 
-M.tnoremap = function(opts) map(opts, 't', true) end
+M.tnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 't' }))
+end
 
-M.xnoremap = function(opts) map(opts, 'x', true) end
-
-M.noremap = function(opts) map(opts, '', true) end
+M.xnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'x' }))
+end
 
 return M

@@ -52,13 +52,10 @@ nmap { 'k', "v:count == 0 ? 'gk' : 'k'", expr = true }
 
 nmap { 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = 'Visually select changed text' }
 
-nnoremap { '[<Tab>', '<Cmd>execute(v:count1 .. "tabprevious")<CR>', desc = 'Previous tab' }
-nnoremap { ']<Tab>', '<Cmd>execute(v:count1 .. "tabnext")<CR>', desc = 'Next tab' }
-
 nnoremap { '<Leader><Tab>q', '<Cmd>tabclose<CR>', desc = 'Close tab' }
 nnoremap { '<Leader><Tab><Tab>', '<Cmd>tabnew<CR>', desc = 'New tab' }
 
-nnoremap { '<Leader>`', '<Cmd>e #<CR>', desc = 'Last buffer' }
+nnoremap { '<Leader>,', '<Cmd>e #<CR>', desc = 'Last buffer' }
 
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 nnoremap {
@@ -74,7 +71,7 @@ nnoremap {
 }
 nnoremap { '<Leader>uw', '<Cmd>set wrap!<CR>', desc = 'Toggle wrap' }
 
-nnoremap { '<Leader>fp', '<Cmd>e ~/.nvimrc<CR>', desc = 'Open preferences' }
+nnoremap { '<Leader>fc', '<Cmd>e ~/.nvimrc<CR>', desc = 'Open preferences' }
 
 nnoremap { '<M-j>', '<Cmd>m .+1<CR>==' }
 nnoremap { '<M-k>', '<Cmd>m .-2<CR>==' }
@@ -101,3 +98,5 @@ nnoremap { '<Leader>fu', '<Cmd>earlier 1f<CR>', desc = 'Give up modifications' }
 xnoremap { '$', 'g_' }
 
 nnoremap { '<Leader>ui', vim.show_pos, desc = 'Inspect pos' }
+
+nnoremap { '<Leader>ct', vim.cmd.InspectTree, desc = 'Treesitter Tree' }

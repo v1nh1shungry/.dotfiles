@@ -9,12 +9,11 @@ return {
       config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
     },
     event = events.enter_buffer,
-    init = function() vim.g.loaded_matchparen = 1 end,
   },
   {
     'nmac427/guess-indent.nvim',
     config = true,
-    event = events.enter_buffer,
+    event = 'VeryLazy',
   },
   {
     'echasnovski/mini.ai',
@@ -50,11 +49,13 @@ return {
         'cpp',
         'fish',
         'json',
+        'jsonc',
         'lua',
         'make',
         'markdown',
         'markdown_inline',
         'query',
+        'regex',
         'vimdoc',
       },
       highlight = { enable = true, additional_vim_regex_highlighting = true },
@@ -121,9 +122,15 @@ return {
     },
   },
   {
-    'echasnovski/mini.comment',
-    config = true,
-    keys = { { 'gc', mode = { 'n', 'v' }, desc = 'Toggle comment' } },
+    'numToStr/Comment.nvim',
+    keys = {
+      { 'gc', mode = { 'n', 'v' }, desc = 'Toggle comment' },
+      { '<C-_>', '<ESC><Plug>(comment_toggle_linewise_current)i', mode = 'i' },
+    },
+    opts = {
+      toggler = { block = '<Nop>' },
+      opleader = { block = '<Nop>' },
+    },
   },
   {
     'echasnovski/mini.surround',
@@ -177,17 +184,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'folke/flash.nvim',
-    keys = {
-      '/', '?', 'f', 'F', 't', 'T',
-      { 'gs', function() require('flash').jump() end,              desc = 'Flash' },
-      { 'gS', function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
-      { 'r',  function() require('flash').remote() end,            mode = 'o',               desc = 'Remote Flash' },
-      { 'R',  function() require('flash').treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter search' },
-    },
-    opts = { modes = { search = { enabled = false } } },
-  },
-  {
     'chrisgrieser/nvim-spider',
     keys = {
       { 'w',  "<Cmd>lua require('spider').motion('w')<CR>",  mode = { 'n', 'o', 'x' } },
@@ -199,5 +195,18 @@ return {
   {
     'willothy/flatten.nvim',
     opts = { window = { open = 'alternate' } },
+  },
+  {
+    'max397574/better-escape.nvim',
+    keys = {
+      { 'jk', mode = 'i' },
+      { 'jj', mode = 'i' },
+    },
+    opts = { clear_empty_lines = true },
+  },
+  {
+    'axkirillov/hbac.nvim',
+    event = events.enter_buffer,
+    opts = { threshold = 6 },
   },
 }

@@ -6,17 +6,17 @@ return {
     cmd = 'Telescope',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = {
-      { '<Leader>h',  '<Cmd>Telescope help_tags<CR>',    desc = 'Help pages' },
-      { '<Leader>ff', '<Cmd>Telescope find_files<CR>',   desc = 'Find files' },
-      { '<Leader>fo', '<Cmd>Telescope oldfiles<CR>',     desc = 'Recent files' },
-      { '<Leader>/',  '<Cmd>Telescope live_grep<CR>',    desc = 'Live grep' },
-      { '<Leader>sa', '<Cmd>Telescope autocommands<CR>', desc = 'Autocommands' },
-      { '<Leader>:',  '<Cmd>Telescope commands<CR>',     desc = 'Commands' },
-      { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',      desc = 'Keymaps' },
-      { '<Leader>g/', '<Cmd>Telescope git_commits<CR>',  desc = 'Git commits' },
-      { '<Leader>,',  '<Cmd>Telescope buffers<CR>',      desc = 'Switch buffer' },
-      { '<Leader>sl', '<Cmd>Telescope resume<CR>',       desc = 'Last search' },
-      { '<Leader>sm', '<Cmd>Telescope marks<CR>',        desc = 'Marks' },
+      { '<Leader>h',  '<Cmd>Telescope help_tags<CR>',              desc = 'Help pages' },
+      { '<Leader>ff', '<Cmd>Telescope find_files<CR>',             desc = 'Find files' },
+      { '<Leader>fr', '<Cmd>Telescope oldfiles cwd_only=true<CR>', desc = 'Recent files' },
+      { '<Leader>/',  '<Cmd>Telescope live_grep<CR>',              desc = 'Live grep' },
+      { '<Leader>sa', '<Cmd>Telescope autocommands<CR>',           desc = 'Autocommands' },
+      { '<Leader>:',  '<Cmd>Telescope commands<CR>',               desc = 'Commands' },
+      { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',                desc = 'Keymaps' },
+      { '<Leader>g/', '<Cmd>Telescope git_commits<CR>',            desc = 'Git commits' },
+      { '<Leader>sb', '<Cmd>Telescope buffers<CR>',                desc = 'Switch buffer' },
+      { '<Leader>sl', '<Cmd>Telescope resume<CR>',                 desc = 'Last search' },
+      { '<Leader>sm', '<Cmd>Telescope marks<CR>',                  desc = 'Marks' },
     },
     opts = {
       defaults = {
@@ -174,5 +174,59 @@ return {
       cmake_build_directory = 'build',
       cmake_soft_link_compile_commands = false,
     },
+  },
+  {
+    'johmsalas/text-case.nvim',
+    dependencies = 'nvim-telescope/telescope.nvim',
+    keys = { { '<Leader>cc', '<Cmd>TextCaseOpenTelescope<CR>', desc = 'Change case' } },
+  },
+  {
+    'folke/flash.nvim',
+    keys = {
+      '/', '?', 'f', 'F', 't', 'T',
+      { 'gs', function() require('flash').jump() end,              desc = 'Flash' },
+      { 'gS', function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
+      { 'r',  function() require('flash').remote() end,            mode = 'o',               desc = 'Remote Flash' },
+      { 'R',  function() require('flash').treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter search' },
+      {
+        'gl',
+        function()
+          require('flash').jump({
+            search = { mode = 'search', max_length = 0 },
+            label = { after = { 0, 0 } },
+            pattern = '^'
+          })
+        end,
+        desc = 'Flash line',
+      },
+    },
+    opts = { modes = { search = { enabled = false } } },
+  },
+  {
+    'nvim-telescope/telescope.nvim',
+    optional = true,
+    opts = function(_, opts)
+      local function flash(prompt_bufnr)
+        require('flash').jump({
+          pattern = '^',
+          label = { after = { 0, 0 } },
+          search = {
+            mode = 'search',
+            exclude = {
+              function(win)
+                return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= 'TelescopeResults'
+              end,
+            },
+          },
+          action = function(match)
+            local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
+            picker:set_selection(match.pos[1] - 1)
+          end,
+        })
+      end
+      opts.defaults = vim.tbl_deep_extend('force', opts.defaults or {}, {
+        mappings = { n = { s = flash }, i = { ['<c-s>'] = flash } },
+      })
+    end,
   },
 }

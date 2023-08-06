@@ -7,17 +7,16 @@ local M = {
       local on_attach = function(client, bufnr)
         local format = function() vim.lsp.buf.format { buffer = bufnr } end
         local map = function(opts)
-          local lhs, rhs, mode = opts[1], opts[2], opts.mode
-          opts[1], opts[2], opts.mode = nil, nil, nil
-          vim.keymap.set(mode or 'n', lhs, rhs, vim.tbl_extend('keep', opts, {
+          require('utils.keymaps').noremap(vim.tbl_extend('keep', opts, {
             buffer = bufnr,
-            silent = true,
-            noremap = true,
+            mode = 'n',
           }))
         end
 
         local mappings = {
-          ['textDocument/formatting'] = { { '<Leader>cf', format, desc = 'Format document' } },
+          ['textDocument/formatting'] = {
+            { '<Leader>cf', format, desc = 'Format document' },
+          },
           ['textDocument/rangeFormatting'] = {
             { '<Leader>cf', format, desc = 'Format range', mode = 'v' },
             {
@@ -28,21 +27,35 @@ local M = {
               desc = 'Format only modifications',
             },
           },
-          ['textDocument/rename'] = { { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' } },
-          ['textDocument/codeAction'] = { { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' } },
+          ['textDocument/rename'] = {
+            { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' },
+          },
+          ['textDocument/codeAction'] = {
+            { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' },
+          },
           ['textDocument/documentSymbol'] = {
             { '<Leader>uo', '<Cmd>Lspsaga outline<CR>',                desc = 'Symbol outline' },
             { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' },
           },
-          ['textDocument/references'] = { { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' } },
+          ['textDocument/references'] = {
+            { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' },
+          },
           ['textDocument/definition'] = {
             { 'gd',         '<Cmd>Glance definitions<CR>',      desc = 'Go to definition' },
             { '<Leader>cp', '<Cmd>Lspsaga peek_definition<CR>', desc = 'Preview definition' },
           },
-          ['textDocument/typeDefinition*'] = { { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' } },
-          ['textDocument/implementation*'] = { { 'gi', '<Cmd>Glance implementations<CR>', desc = 'Go to implementation' } },
-          ['callHierarchy/incomingCalls'] = { { '<Leader>ci', '<Cmd>Lspsaga incoming_calls<CR>', desc = 'Incoming calls' } },
-          ['callHierarchy/outgoingCalls'] = { { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' } },
+          ['textDocument/typeDefinition*'] = {
+            { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' },
+          },
+          ['textDocument/implementation*'] = {
+            { 'gi', '<Cmd>Glance implementations<CR>', desc = 'Go to implementation' },
+          },
+          ['callHierarchy/incomingCalls'] = {
+            { '<Leader>ci', '<Cmd>Lspsaga incoming_calls<CR>', desc = 'Incoming calls' },
+          },
+          ['callHierarchy/outgoingCalls'] = {
+            { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' },
+          },
         }
         for _, key in ipairs({
           { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
@@ -50,16 +63,21 @@ local M = {
           { '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',  desc = 'Previous diagnostic' },
           {
             ']e',
-            function() require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR } end,
+            function()
+              require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR }
+            end,
             desc = 'Next error',
           },
           {
             '[e',
-            function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR } end,
+            function()
+              require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR }
+            end,
             desc = 'Previous error',
           },
-          { '<Leader>xx', '<Cmd>TroubleToggle<CR>',  desc = 'Document diagnostics' },
-          { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
+          { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>',  desc = 'Document diagnostics' },
+          { '<Leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', desc = 'Workspace Diagnostics' },
+          { '<Leader>cn', '<Cmd>Lspsaga finder<CR>',                      desc = 'LSP nagivation pane' },
         }) do
           map(key)
         end
@@ -139,6 +157,10 @@ local M = {
       'p00f/clangd_extensions.nvim',
       'williamboman/mason-lspconfig.nvim',
       'joechrisellis/lsp-format-modifications.nvim',
+      {
+        'folke/neoconf.nvim',
+        config = true,
+      },
     },
     opts = {
       diagnostics = {
@@ -197,11 +219,11 @@ local M = {
               workspace = { checkThirdParty = false },
               format = {
                 defaultConfig = {
+                  call_arg_parentheses = 'remove_table_only',
                   trailing_table_separator = 'smart',
                   align_call_args = true,
                 },
               },
-              hint = { enable = true },
             },
           },
         },
@@ -288,7 +310,10 @@ local M = {
 
       cmp.setup.cmdline(':', {
         mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources { { name = 'cmdline' }, { name = 'path' } },
+        sources = cmp.config.sources {
+          { name = 'cmdline' },
+          { name = 'path' },
+        },
       })
 
       cmp.setup.cmdline({ '/', '?' }, {
@@ -322,24 +347,24 @@ local M = {
   },
   {
     'lewis6991/gitsigns.nvim',
-    config = true,
     event = events.enter_buffer,
-    keys = {
-      { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>',              desc = 'Preview git hunk' },
-      { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>',                desc = 'Reset git hunk' },
-      { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>',                  desc = 'Diff this' },
-      { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>',                desc = 'Blame this line' },
-      { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' },
-      {
-        ']h',
-        function() require('gitsigns').next_hunk { navigation_message = false } end,
-        desc = 'Next git hunk',
-      },
-      {
-        '[h',
-        function() require('gitsigns').prev_hunk { navigation_message = false } end,
-        desc = 'Previous git hunk',
-      },
+    opts = {
+      on_attach = function(buffer)
+        local gs = package.loaded.gitsigns
+        local map = function(opts)
+          require('utils.keymaps').noremap(vim.tbl_extend('keep', opts, {
+            buffer = buffer,
+            mode = 'n',
+          }))
+        end
+        map { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview git hunk' }
+        map { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset git hunk' }
+        map { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>', desc = 'Diff this' }
+        map { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' }
+        map { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' }
+        map { ']h', function() gs.next_hunk { navigation_message = false } end, desc = 'Next git hunk' }
+        map { '[h', function() gs.prev_hunk { navigation_message = false } end, desc = 'Previous git hunk' }
+      end,
     },
   },
   {
@@ -427,43 +452,41 @@ local M = {
   },
   {
     'folke/trouble.nvim',
-    cmd = { 'TroubleToggle', 'TodoTrouble' },
+    cmd = 'TroubleToggle',
+    keys = {
+      {
+        '[q',
+        function()
+          if require('trouble').is_open() then
+            require('trouble').previous({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cprev)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = 'Previous trouble/quickfix item',
+      },
+      {
+        ']q',
+        function()
+          if require('trouble').is_open() then
+            require('trouble').next({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = "Next trouble/quickfix item",
+      },
+    }
   },
   {
     'DNLHC/glance.nvim',
     cmd = 'Glance',
-  },
-  {
-    'echasnovski/mini.files',
-    config = function()
-      local show_hidden = false
-      local filter_show = function(_) return true end
-      local filter_hide = function(fs_entry)
-        local should_hide = { '.cache', '.git', '.xmake', 'build', 'node_modules' }
-        for _, fn in ipairs(should_hide) do
-          if fs_entry.name == fn then return false end
-        end
-        return true
-      end
-      require('mini.files').setup { content = { filter = filter_hide } }
-      local toggle_hidden = function()
-        show_hidden = not show_hidden
-        local new_filter = show_hidden and filter_show or filter_hide
-        require('mini.files').refresh({ content = { filter = new_filter } })
-      end
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'MiniFilesBufferCreate',
-        callback = function(args)
-          require('utils.keymaps').nnoremap {
-            '.',
-            toggle_hidden,
-            buffer = args.data.buf_id,
-            desc = 'Toggle show hidden files',
-          }
-        end,
-      })
-    end,
-    keys = { { '<Leader>e', function() MiniFiles.open() end, desc = 'Explorer' } },
   },
 }
 

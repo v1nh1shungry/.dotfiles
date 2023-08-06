@@ -9,6 +9,9 @@ return {
       { '[t',         function() require('todo-comments').jump_prev() end, desc = 'Previous TODO' },
       { ']t',         function() require('todo-comments').jump_next() end, desc = 'Next TODO' },
       { '<Leader>xt', '<Cmd>TodoTrouble<CR>',                              desc = 'Todo' },
+      { '<Leader>xT', '<Cmd>TodoTrouble keywords=TODO,FIX,FIXME<CR>',      desc = 'Todo/Fix/Fixme' },
+      { '<Leader>st', '<Cmd>TodoTelescope<CR>',                            desc = 'Todo' },
+      { '<Leader>sT', '<Cmd>TodoTelescope keywords=TODO,FIX,FIXME<CR>',    desc = 'Todo/Fix/Fixme' },
     },
     opts = { signs = false },
   },
@@ -36,7 +39,7 @@ return {
         dashboard.button('l', '󰒲 ' .. ' Lazy', '<Cmd>Lazy<CR>'),
         dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
       }
-      dashboard.opts.layout[1].val = 2
+      dashboard.opts.layout[1].val = 1
       require('alpha').setup(dashboard.opts)
 
       if vim.o.filetype == 'lazy' then
@@ -60,7 +63,13 @@ return {
   },
   {
     'gorbit99/codewindow.nvim',
-    keys = { { '<Leader>um', function() require('codewindow').toggle_minimap() end, desc = 'Toggle Minimap' } },
+    keys = {
+      {
+        '<Leader>um',
+        function() require('codewindow').toggle_minimap() end,
+        desc = 'Toggle Minimap',
+      },
+    },
     opts = {
       exclude_filetypes = require('utils.ui').excluded_filetypes,
       z_index = 50,
@@ -73,9 +82,9 @@ return {
   },
   {
     'akinsho/bufferline.nvim',
-    event = events.enter_buffer,
+    event = 'VeryLazy',
     keys = {
-      { 'gb', '<Cmd>BufferLinePick<CR>',      desc = 'Pick buffer' },
+      { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' },
       {
         ']b',
         function() for _ = 1, vim.v.count1 do vim.cmd 'BufferLineCycleNext' end end,
@@ -87,31 +96,7 @@ return {
         desc = 'Previous buffer',
       },
     },
-    opts = {
-      options = {
-        offsets = {
-          {
-            filetype = 'sagaoutline',
-            text = 'Outline',
-            text_align = 'center',
-            separator = true,
-          },
-          {
-            filetype = 'ClangdAST',
-            text = 'Clangd AST',
-            text_align = 'center',
-            separator = true,
-          },
-          {
-            filetype = 'query',
-            text = 'Treesitter Inspect',
-            text_align = 'center',
-            separator = true,
-          },
-        },
-        separator_style = 'slant',
-      },
-    },
+    opts = { options = { separator_style = 'slant' } },
   },
   {
     'stevearc/dressing.nvim',
@@ -133,10 +118,18 @@ return {
       vim.opt.laststatus = 3
       local theme = require('user').ui.statusline_theme
       local opts = require('plugins.ui.lualine.' .. theme)
-      opts.extensions = { 'lazy', 'man', 'nvim-dap-ui', 'quickfix', 'toggleterm', 'trouble' }
+      opts.extensions = {
+        'lazy',
+        'man',
+        'neo-tree',
+        'nvim-dap-ui',
+        'quickfix',
+        'toggleterm',
+        'trouble',
+      }
       require('lualine').setup(opts)
     end,
-    event = events.enter_buffer,
+    event = 'VeryLazy',
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
@@ -215,7 +208,6 @@ return {
         ft_ignore = require('utils.ui').excluded_filetypes,
         relculright = true,
         segments = {
-          { sign = { name = { 'Marks' } },    click = 'v:lua.ScSa' },
           { sign = { name = { 'Dap' } },      click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
           { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
@@ -264,11 +256,174 @@ return {
     event = events.enter_buffer,
   },
   {
-    'chentoast/marks.nvim',
-    event = events.enter_buffer,
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    cmd = 'Neotree',
+    keys = { { '<Leader>e', '<Cmd>Neotree reveal toggle<CR>', desc = 'Explorer' } },
+    init = function()
+      if vim.fn.argc() == 1 then
+        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        if stat and stat.type == 'directory' then
+          require('neo-tree')
+        end
+      end
+    end,
     opts = {
-      force_write_shada = true,
-      excluded_filetypes = require('utils.ui').excluded_filetypes,
+      sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
+      open_files_do_not_replace_types = require('utils.ui').excluded_filetypes,
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
+          hide_hidden = false,
+          hide_by_name = { '.cache', '.git', '.xmake', 'build', 'node_modules' },
+        },
+        bind_to_cwd = false,
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
+      },
+      window = {
+        mappings = {
+          ['h'] = function(state)
+            local node = state.tree:get_node()
+            if node.type == 'directory' and node:is_expanded() then
+              require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+            else
+              require 'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+            end
+          end,
+          ['l'] = function(state)
+            local node = state.tree:get_node()
+            if node.type == 'directory' then
+              if not node:is_expanded() then
+                require('neo-tree.sources.filesystem').toggle_directory(state, node)
+              elseif node:has_children() then
+                require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
+              end
+            elseif node.type == 'file' then
+              require('neo-tree.sources.filesystem.commands').open(state)
+            end
+          end,
+        },
+      },
+      default_component_configs = {
+        indent = {
+          with_expanders = true,
+          expander_collapsed = '',
+          expander_expanded = '',
+          expander_highlight = 'NeoTreeExpander',
+        },
+      },
+      event_handlers = {
+        {
+          event = 'file_opened',
+          handler = function(_) vim.cmd 'Neotree close' end
+        },
+      },
     },
+  },
+  {
+    'folke/edgy.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'akinsho/bufferline.nvim',
+      optional = true,
+      opts = function()
+        local Offset = require('bufferline.offset')
+        if not Offset.edgy then
+          local get = Offset.get
+          Offset.get = function()
+            if package.loaded.edgy then
+              local layout = require('edgy.config').layout
+              local ret = { left = '', left_size = 0, right = '', right_size = 0 }
+              for _, pos in ipairs({ 'left', 'right' }) do
+                local sb = layout[pos]
+                if sb and #sb.wins > 0 then
+                  local blank = (sb.bounds.width - 7) / 2
+                  local title = string.rep(' ', blank) .. 'Sidebar' .. string.rep(' ', blank)
+                  ret[pos] = '%#EdgyTitle#' .. title .. '%*' .. '%#WinSeparator#│%*'
+                  ret[pos .. '_size'] = sb.bounds.width
+                end
+              end
+              ret.total_size = ret.left_size + ret.right_size
+              if ret.total_size > 0 then
+                return ret
+              end
+            end
+            return get()
+          end
+          Offset.edgy = true
+        end
+      end,
+    },
+    opts = {
+      bottom = {
+        {
+          ft = 'toggleterm',
+          size = { height = 0.4 },
+          filter = function(_, win)
+            return vim.api.nvim_win_get_config(win).relative == ''
+          end,
+        },
+        {
+          ft = 'noice',
+          size = { height = 0.4 },
+          filter = function(_, win)
+            return vim.api.nvim_win_get_config(win).relative == ''
+          end,
+        },
+        'Trouble',
+        { ft = 'qf', title = 'QuickFix' },
+        {
+          ft = 'help',
+          size = { height = 0.4 },
+          filter = function(buf)
+            return vim.bo[buf].buftype == 'help'
+          end,
+        },
+      },
+      left = {
+        {
+          title = 'Explorer',
+          ft = 'neo-tree',
+          filter = function(buf)
+            return vim.b[buf].neo_tree_source == 'filesystem'
+          end,
+          pinned = true,
+          open = function()
+            vim.api.nvim_input('<esc><space>e')
+          end,
+          size = { height = 0.6 },
+        },
+        'neo-tree',
+      },
+      right = {
+        { title = 'Outline', ft = 'sagaoutline' },
+        {
+          title = 'Clang AST',
+          ft = 'ClangdAST',
+          size = { width = 0.4 },
+        },
+        {
+          title = 'Treesitter',
+          ft = 'query',
+          size = { width = 0.4 },
+        },
+      },
+    },
+    exit_when_last = true,
+  },
+  {
+    'echasnovski/mini.trailspace',
+    config = function()
+      require('mini.trailspace').setup()
+      vim.cmd 'highlight MiniTrailspace ctermbg=LightGreen guibg=LightGreen'
+    end,
+    event = events.enter_buffer,
+    init = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function() vim.b.minitrailspace_disable = true end,
+        pattern = require('utils.ui').excluded_filetypes,
+      })
+    end,
   },
 }

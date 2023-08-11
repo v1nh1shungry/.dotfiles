@@ -16,7 +16,9 @@ return {
       { '<Leader>g/', '<Cmd>Telescope git_commits<CR>',            desc = 'Git commits' },
       { '<Leader>sb', '<Cmd>Telescope buffers<CR>',                desc = 'Switch buffer' },
       { '<Leader>sl', '<Cmd>Telescope resume<CR>',                 desc = 'Last search' },
-      { '<Leader>sm', '<Cmd>Telescope marks<CR>',                  desc = 'Marks' },
+      { "<Leader>s'", '<Cmd>Telescope marks<CR>',                  desc = 'Marks' },
+      { '<Leader>s"', '<Cmd>Telescope registers<CR>',              desc = 'Registers' },
+      { '<Leader>sh', '<Cmd>Telescope highlights<CR>',             desc = 'Highlight groups' },
     },
     opts = {
       defaults = {

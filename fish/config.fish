@@ -46,13 +46,13 @@ if status is-interactive
         alias diff 'batdiff --delta'
     end
 
-    if string match '*WSL*' $(uname -a) > /dev/null
+    if string match '*WSL*' (uname -a) > /dev/null
         function proxy
             if test "$argv" = unset
                 set --erase http_proxy
                 set --erase https_proxy
             else if test "$argv" = host
-                set winip $(grep nameserver /etc/resolv.conf | awk '{print $2}')
+                set winip (grep nameserver /etc/resolv.conf | awk '{print $2}')
                 set -gx http_proxy "http://$winip:7890"
                 set -gx https_proxy "http://$winip:7890"
             else if test "$argv" = github

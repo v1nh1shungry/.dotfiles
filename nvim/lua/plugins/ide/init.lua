@@ -56,11 +56,28 @@ local M = {
           ['callHierarchy/outgoingCalls'] = {
             { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' },
           },
+          ['textDocument/inlayHint'] = {
+            { '<Leader>ui', function() vim.lsp.inlay_hint(bufnr) end, desc = 'Toggle inlay hint' },
+          },
         }
         for _, key in ipairs({
           { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
           { ']d',         '<Cmd>Lspsaga diagnostic_jump_next<CR>',  desc = 'Next diagnostic' },
           { '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',  desc = 'Previous diagnostic' },
+          {
+            ']w',
+            function()
+              require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.WARN }
+            end,
+            desc = 'Next warning',
+          },
+          {
+            '[w',
+            function()
+              require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.WARN }
+            end,
+            desc = 'Previous warning',
+          },
           {
             ']e',
             function()
@@ -141,11 +158,7 @@ local M = {
           capabilities = vim.deepcopy(capabilities),
           single_file_support = true,
         }, opts)
-        if opts.setup then
-          opts.setup(server, opts)
-        else
-          require('lspconfig')[server].setup(opts)
-        end
+        require('lspconfig')[server].setup(opts)
       end
     end,
     dependencies = {
@@ -154,7 +167,30 @@ local M = {
         'folke/neodev.nvim',
         config = true,
       },
-      'p00f/clangd_extensions.nvim',
+      {
+        'p00f/clangd_extensions.nvim',
+        opts = {
+          ast = {
+            role_icons = {
+              type = '',
+              declaration = '',
+              expression = '',
+              specifier = '',
+              statement = '',
+              ['template argument'] = '',
+            },
+            kind_icons = {
+              Compound = '',
+              Recovery = '',
+              TranslationUnit = '',
+              PackExpansion = '',
+              TemplateTypeParm = '',
+              TemplateTemplateParm = '',
+              TemplateParamObject = '',
+            },
+          },
+        },
+      },
       'williamboman/mason-lspconfig.nvim',
       'joechrisellis/lsp-format-modifications.nvim',
       {
@@ -180,36 +216,18 @@ local M = {
           },
           filetypes = { 'c', 'cpp' },
           keys = {
-            { '<Leader>ct', '<Cmd>ClangAST<CR>',                 desc = 'Clangd AST' },
-            { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' },
+            {
+              '<Leader>ct',
+              '<Cmd>ClangdAST<CR>',
+              desc = 'Clangd AST',
+              mode = { 'n', 'v' },
+            },
+            {
+              '<Leader>cs',
+              '<Cmd>ClangdSwitchSourceHeader<CR>',
+              desc = 'Switch between source and header',
+            },
           },
-          setup = function(_, opts)
-            require('clangd_extensions').setup {
-              server = opts,
-              extensions = {
-                autoSetHints = false,
-                ast = {
-                  role_icons = {
-                    type = '',
-                    declaration = '',
-                    expression = '',
-                    specifier = '',
-                    statement = '',
-                    ['template argument'] = '',
-                  },
-                  kind_icons = {
-                    Compound = '',
-                    Recovery = '',
-                    TranslationUnit = '',
-                    PackExpansion = '',
-                    TemplateTypeParm = '',
-                    TemplateTemplateParm = '',
-                    TemplateParamObject = '',
-                  },
-                },
-              },
-            }
-          end,
         },
         lua_ls = {
           settings = {
@@ -300,7 +318,6 @@ local M = {
         sources = cmp.config.sources({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
-          { name = 'nvim_lsp_signature_help' },
         }, {
           { name = 'buffer' },
           { name = 'path' },
@@ -340,7 +357,6 @@ local M = {
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
       'hrsh7th/cmp-emoji',
     },
     event = events.enter_insert,
@@ -357,19 +373,22 @@ local M = {
             mode = 'n',
           }))
         end
-        map { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview git hunk' }
-        map { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset git hunk' }
+        map { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' }
+        map { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' }
         map { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>', desc = 'Diff this' }
         map { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' }
         map { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' }
         map { ']h', function() gs.next_hunk { navigation_message = false } end, desc = 'Next git hunk' }
         map { '[h', function() gs.prev_hunk { navigation_message = false } end, desc = 'Previous git hunk' }
+        map { '<Leader>gs', '<Cmd>Gitsigns stage_hunk<CR>', desc = 'Stage hunk' }
+        map { '<Leader>gu', '<Cmd>Gitsigns undo_stage_hunk<R>', desc = 'Undo staged hunk' }
+        map { 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' }
       end,
     },
   },
   {
     'akinsho/toggleterm.nvim',
-    keys = '<M-=>',
+    keys = { { '<M-=>', desc = 'Toggle terminal' } },
     opts = { open_mapping = '<M-=>', size = 10 },
   },
   {

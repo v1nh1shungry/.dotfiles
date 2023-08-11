@@ -148,6 +148,9 @@ return {
       window = { winblend = require('user').ui.blend },
       layout = { height = { max = 10 } },
       defaults = {
+        ['g'] = { name = '+goto' },
+        [']'] = { name = '+next' },
+        ['['] = { name = '+prev' },
         ['<Leader><Tab>'] = { name = '+tab' },
         ['<Leader>c'] = { name = '+code' },
         ['<Leader>f'] = { name = '+file' },
@@ -181,7 +184,6 @@ return {
       presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
       messages = { view_search = false },
       lsp = {
-        signature = { enabled = false },
         override = {
           ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
           ['vim.lsp.util.stylize_markdown'] = true,
@@ -235,20 +237,28 @@ return {
       })
     end,
     keys = {
-      '/',
-      '?',
-      { '<C-n>', mode = { 'n', 'v' } }, -- integrate with vim-visual-multi
-      { 'n',     [[<Cmd>execute('normal! ' . v:count1 . 'Nn'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { 'N',     [[<Cmd>execute('normal! ' . v:count1 . 'nN'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]] },
-      { '*',     [[*<Cmd>lua require('hlslens').start()<CR>]] },
-      { '#',     [[#<Cmd>lua require('hlslens').start()<CR>]] },
+      { '/',     desc = 'Forward search' },
+      { '?',     desc = 'Backward search' },
+      { '<C-n>', mode = { 'n', 'v' },     desc = 'Multi cursors' }, -- integrate with vim-visual-multi
+      {
+        'n',
+        [[<Cmd>execute('normal! ' . v:count1 . 'Nn'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]],
+        desc = 'Next search result',
+      },
+      {
+        'N',
+        [[<Cmd>execute('normal! ' . v:count1 . 'nN'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]],
+        desc = 'Previous search result',
+      },
+      { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], desc = 'Forward search current word' },
+      { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], desc = 'Backward search current word' },
     },
   },
   {
     'cbochs/portal.nvim',
     keys = {
-      { '<C-o>', '<Cmd>Portal jumplist backward<CR>' },
-      { '<C-i>', '<Cmd>Portal jumplist forward<CR>' },
+      { '<C-o>', '<Cmd>Portal jumplist backward<CR>', desc = 'Jump backward' },
+      { '<C-i>', '<Cmd>Portal jumplist forward<CR>',  desc = 'Jump forward' },
     },
   },
   {
@@ -372,7 +382,7 @@ return {
           end,
         },
         'Trouble',
-        { ft = 'qf', title = 'QuickFix' },
+        { ft = 'qf',                   title = 'QuickFix' },
         {
           ft = 'help',
           size = { height = 0.4 },
@@ -380,6 +390,7 @@ return {
             return vim.bo[buf].buftype == 'help'
           end,
         },
+        { ft = 'cmake_tools_terminal', title = 'CMake Tools' },
       },
       left = {
         {
@@ -421,7 +432,7 @@ return {
     event = events.enter_buffer,
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
-        callback = function() vim.b.minitrailspace_disable = true end,
+        callback = function(args) vim.b[args.buf].minitrailspace_disable = true end,
         pattern = require('utils.ui').excluded_filetypes,
       })
     end,

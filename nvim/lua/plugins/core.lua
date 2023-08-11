@@ -101,7 +101,10 @@ return {
   {
     'Wansmer/treesj',
     config = true,
-    keys = { { 'S', '<Cmd>TSJSplit<CR>' }, { 'J', '<Cmd>TSJJoin<CR>' } },
+    keys = {
+      { 'S', '<Cmd>TSJSplit<CR>', desc = 'Split line' },
+      { 'J', '<Cmd>TSJJoin<CR>',  desc = 'Join line' },
+    },
   },
   {
     'RRethy/vim-illuminate',
@@ -124,7 +127,7 @@ return {
   {
     'numToStr/Comment.nvim',
     keys = {
-      { 'gc', mode = { 'n', 'v' }, desc = 'Toggle comment' },
+      { 'gc',    mode = { 'n', 'v' },                             desc = 'Toggle comment' },
       { '<C-_>', '<ESC><Plug>(comment_toggle_linewise_current)i', mode = 'i' },
     },
     opts = {
@@ -167,7 +170,7 @@ return {
       vim.g.VM_quit_after_leaving_insert_mode = true
       vim.g.VM_show_warnings = 0
     end,
-    keys = { { '<C-n>', mode = { 'n', 'v' } } },
+    keys = { { '<C-n>', mode = { 'n', 'v' }, desc = 'Multi cursors' } },
   },
   {
     'altermo/ultimate-autopair.nvim',

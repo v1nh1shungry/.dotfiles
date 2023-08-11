@@ -9,18 +9,18 @@ local xnoremap = require('utils.keymaps').xnoremap
 map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
 
-nnoremap { 'q', ':q<CR>' }
-nnoremap { 'Q', ':qa!<CR>' }
-nnoremap { '<C-q>', ':bd<CR>' }
+nnoremap { 'q', ':q<CR>', desc = 'Quit' }
+nnoremap { 'Q', ':qa!<CR>', desc = 'Force quit all' }
+nnoremap { '<C-q>', ':bd<CR>', desc = 'Close buffer' }
 
-inoremap { '<C-s>', '<Esc>:w<CR>' }
-vnoremap { '<C-s>', '<Esc>:w<CR>' }
-nnoremap { '<C-s>', ':w<CR>' }
+inoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
+vnoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
+nnoremap { '<C-s>', ':w<CR>', desc = 'Save' }
 
-nnoremap { '<C-h>', '<C-w>h' }
-nnoremap { '<C-j>', '<C-w>j' }
-nnoremap { '<C-k>', '<C-w>k' }
-nnoremap { '<C-l>', '<C-w>l' }
+nnoremap { '<C-h>', '<C-w>h', desc = 'Go to left window' }
+nnoremap { '<C-j>', '<C-w>j', desc = 'Go to lower window' }
+nnoremap { '<C-k>', '<C-w>k', desc = 'Go to upper window' }
+nnoremap { '<C-l>', '<C-w>l', desc = 'Go to right window' }
 
 tnoremap { '<Esc>', '<C-\\><C-n>' }
 
@@ -61,10 +61,10 @@ local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 nnoremap {
   '<Leader>uc',
   function()
-    if vim.opt.conceallevel == 0 then
-      vim.opt.conceallevel = conceallevel
+    if vim.o.conceallevel == 0 then
+      vim.o.conceallevel = conceallevel
     else
-      vim.opt.conceallevel = 0
+      vim.o.conceallevel = 0
     end
   end,
   desc = 'Toggle conceal',
@@ -73,12 +73,12 @@ nnoremap { '<Leader>uw', '<Cmd>set wrap!<CR>', desc = 'Toggle wrap' }
 
 nnoremap { '<Leader>fc', '<Cmd>e ~/.nvimrc<CR>', desc = 'Open preferences' }
 
-nnoremap { '<M-j>', '<Cmd>m .+1<CR>==' }
-nnoremap { '<M-k>', '<Cmd>m .-2<CR>==' }
-inoremap { '<M-j>', '<Esc><Cmd>m .+1<CR>==gi' }
-inoremap { '<M-k>', '<Esc><Cmd>m .-2<CR>==gi' }
-vnoremap { '<M-j>', ":m '>+1<CR>gv=gv" }
-vnoremap { '<M-k>', ":m '<-2<CR>gv=gv" }
+nnoremap { '<M-j>', '<Cmd>m .+1<CR>==', desc = 'Move down' }
+nnoremap { '<M-k>', '<Cmd>m .-2<CR>==', desc = 'Move up' }
+inoremap { '<M-j>', '<Esc><Cmd>m .+1<CR>==gi', desc = 'Move down' }
+inoremap { '<M-k>', '<Esc><Cmd>m .-2<CR>==gi', desc = 'Move up' }
+vnoremap { '<M-j>', ":m '>+1<CR>gv=gv", desc = 'Move down' }
+vnoremap { '<M-k>', ":m '<-2<CR>gv=gv", desc = 'Move up' }
 
 nnoremap {
   '[<Space>',

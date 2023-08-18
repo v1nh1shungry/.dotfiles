@@ -353,7 +353,15 @@ local M = {
       'hrsh7th/cmp-path',
       {
         'saadparwaiz1/cmp_luasnip',
-        dependencies = 'L3MON4D3/LuaSnip',
+        dependencies = {
+          'L3MON4D3/LuaSnip',
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
+        },
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',

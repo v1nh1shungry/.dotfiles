@@ -3,10 +3,6 @@ if status is-interactive
 
     set fish_greeting
 
-    if test -e ~/.cargo/bin
-        set -gx PATH ~/.cargo/bin $PATH
-    end
-
     if command -q starship
         starship init fish | source
     end
@@ -19,11 +15,6 @@ if status is-interactive
     if command -q bob
         set -gx PATH ~/.local/share/bob/nvim-bin $PATH
     end
-
-    set -gx LESS_TERMCAP_mb (set_color -o red)
-    set -gx LESS_TERMCAP_md (set_color -o 5fafd7)
-    set -gx LESS_TERMCAP_so (set_color 949494)
-    set -gx LESS_TERMCAP_us (set_color -u afafd7)
 
     if command -q nvim
         alias vi nvim
@@ -44,6 +35,10 @@ if status is-interactive
     end
     if type -q batdiff
         alias diff 'batdiff --delta'
+    end
+
+    if command -q fdfind
+        alias fd fdfind
     end
 
     if string match '*WSL*' (uname -a) > /dev/null

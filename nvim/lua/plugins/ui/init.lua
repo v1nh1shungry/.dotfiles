@@ -219,11 +219,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'HiPhish/nvim-ts-rainbow2',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    event = events.enter_buffer,
-  },
-  {
     'kevinhwang91/nvim-hlslens',
     config = function()
       require('hlslens').setup { calm_down = true }

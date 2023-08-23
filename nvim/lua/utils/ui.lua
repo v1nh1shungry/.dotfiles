@@ -13,8 +13,8 @@ M.excluded_filetypes = {
   'dapui_scopes',
   'dapui_stacks',
   'dapui_watches',
-  'help',
   'edgy',
+  'help',
   'lazy',
   'lspinfo',
   'man',
@@ -25,6 +25,7 @@ M.excluded_filetypes = {
   'query',
   'sagafinder',
   'sagaoutline',
+  'spectre_panel',
   'ssr',
 }
 

@@ -33,10 +33,6 @@ return {
     dependencies = 'stevearc/dressing.nvim',
   },
   {
-    'sQVe/sort.nvim',
-    cmd = 'Sort',
-  },
-  {
     'monaqa/dial.nvim',
     keys = {
       { '<C-a>', '<Plug>(dial-increment)', mode = { 'n', 'v' } },
@@ -68,14 +64,6 @@ return {
       { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferCWord<CR>',           desc = 'Search and replace' },
       { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', desc = 'Search and replace', mode = 'v' },
     },
-  },
-  {
-    'tommcdo/vim-exchange',
-    keys = { { 'cx', desc = 'Exchange' }, { 'X', mode = 'v' } },
-  },
-  {
-    'vim-scripts/ReplaceWithRegister',
-    keys = { { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' } },
   },
   {
     'cshuaimin/ssr.nvim',
@@ -175,6 +163,12 @@ return {
       cmake_generate_options = { '-G', 'Ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=On' },
       cmake_build_directory = 'build',
       cmake_soft_link_compile_commands = false,
+      cmake_terminal = {
+        opts = {
+          start_insert_in_launch_task = true,
+          focus_on_launch_terminal = true,
+        },
+      },
     },
   },
   {
@@ -187,7 +181,7 @@ return {
     keys = {
       '/', '?', 'f', 'F', 't', 'T',
       { 'gs', function() require('flash').jump() end,              desc = 'Flash' },
-      { 'gS', function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
+      { 'gt', function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
       { 'r',  function() require('flash').remote() end,            mode = 'o',               desc = 'Remote Flash' },
       { 'R',  function() require('flash').treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter search' },
       {
@@ -230,5 +224,10 @@ return {
         mappings = { n = { s = flash }, i = { ['<c-s>'] = flash } },
       })
     end,
+  },
+  {
+    'nvim-pack/nvim-spectre',
+    dependencies = 'nvim-lua/plenary.nvim',
+    keys = { { '<Leader>sd', '<Cmd>Spectre<CR>', desc = 'Spectre' } },
   },
 }

@@ -211,4 +211,18 @@ return {
     event = events.enter_buffer,
     opts = { threshold = 6 },
   },
+  {
+    'echasnovski/mini.operators',
+    keys = {
+      { 'g=', mode = { 'n', 'v' }, desc = 'Evaluate' },
+      { 'cx', mode = { 'n', 'v' }, desc = 'Exchange' },
+      { 'gm', mode = { 'n', 'v' }, desc = 'Dumplicate' },
+      { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' },
+      { 'gS', mode = { 'n', 'v' }, desc = 'Sort' },
+    },
+    opts = {
+      sort = { prefix = 'gS' },
+      exchange = { prefix = 'cx' },
+    },
+  },
 }

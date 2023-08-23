@@ -7,8 +7,21 @@ autocmd('FileType', {
 
 autocmd('TextYankPost', { callback = function() vim.highlight.on_yank { timeout = 500 } end })
 
-autocmd('InsertEnter', { callback = function() if vim.wo.number then vim.cmd.setlocal 'norelativenumber' end end })
-autocmd('InsertLeave', { callback = function() if vim.wo.number then vim.cmd.setlocal 'relativenumber' end end })
+autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'CmdlineLeave', 'WinEnter' }, {
+  callback = function()
+    if vim.wo.number and vim.api.nvim_get_mode() ~= 'i' then
+      vim.wo.relativenumber = true
+    end
+  end,
+})
+autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEnter', 'WinLeave' }, {
+  callback = function()
+    if vim.wo.number then
+      vim.wo.relativenumber = false
+      vim.cmd 'redraw'
+    end
+  end,
+})
 
 autocmd('FileType', {
   command = 'setlocal nonumber norelativenumber nobuflisted nofoldenable cc=',

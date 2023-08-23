@@ -213,6 +213,7 @@ return {
           { sign = { name = { 'Dap' } },      click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
           { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
+          { text = { builtin.foldfunc },      click = 'v:lua.ScFa' },
         },
       }
     end,
@@ -385,7 +386,7 @@ return {
             return vim.bo[buf].buftype == 'help'
           end,
         },
-        { ft = 'cmake_tools_terminal', title = 'CMake Tools' },
+        { ft = 'cmake_tools_terminal', title = 'CMakeTools Terminal' },
       },
       left = {
         {
@@ -414,6 +415,11 @@ return {
           ft = 'query',
           size = { width = 0.4 },
         },
+        {
+          title = 'Spectre',
+          ft = 'spectre_panel',
+          size = { width = 0.5 },
+        },
       },
     },
     exit_when_last = true,
@@ -431,5 +437,51 @@ return {
         pattern = require('utils.ui').excluded_filetypes,
       })
     end,
+  },
+  {
+    'tzachar/highlight-undo.nvim',
+    init = function() vim.cmd 'highlight link HighlightUndo IncSearch' end,
+    keys = { 'u', '<C-r>' },
+    opts = { duration = 500 },
+  },
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = 'kevinhwang91/promise-async',
+    event = events.enter_buffer,
+    init = function()
+      vim.o.foldcolumn = '1'
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+      vim.cmd 'highlight link UfoFoldedBg IncSearch'
+    end,
+    opts = {
+      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = (' 󰁂 %d '):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, { suffix, 'MoreMsg' })
+        return newVirtText
+      end,
+    },
   },
 }

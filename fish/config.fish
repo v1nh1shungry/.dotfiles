@@ -58,7 +58,5 @@ if status is-interactive
                 false
             end
         end
-
-        alias neovide 'neovide.exe --wsl --frame none --maximized --multigrid'
     end
 end

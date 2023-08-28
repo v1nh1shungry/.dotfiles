@@ -41,9 +41,12 @@ require('lazy').setup {
       disabled_plugins = {
         'editorconfig',
         'gzip',
+        'man',
         'matchit',
         'matchparen',
         'netrwPlugin',
+        'nvim',
+        'rplugin',
         'shada',
         'spellfile',
         'tarPlugin',

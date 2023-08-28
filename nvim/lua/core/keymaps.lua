@@ -1,5 +1,6 @@
 local map = require('utils.keymaps').map
 local nmap = require('utils.keymaps').nmap
+local cnoremap = require('utils.keymaps').cnoremap
 local nnoremap = require('utils.keymaps').nnoremap
 local inoremap = require('utils.keymaps').inoremap
 local tnoremap = require('utils.keymaps').tnoremap
@@ -97,6 +98,9 @@ nnoremap { '<Leader>fu', '<Cmd>earlier 1f<CR>', desc = 'Give up modifications' }
 
 xnoremap { '$', 'g_' }
 
-nnoremap { '<Leader>ui', vim.show_pos, desc = 'Inspect pos' }
+nnoremap { '<Leader>up', vim.show_pos, desc = 'Inspect pos' }
 
-nnoremap { '<Leader>ct', vim.cmd.InspectTree, desc = 'Treesitter Tree' }
+nnoremap { '<Leader>ct', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' }
+
+cnoremap { '<C-n>', '<Down>', desc = 'Next command ih history' }
+cnoremap { '<C-p>', '<Up>', desc = 'Previous command ih history' }

@@ -27,7 +27,7 @@ M.imap = function(opts)
 end
 
 M.cmap = function(opts)
-  M.map(vim.tbl_extend('keep', opts, { mode = 'c' }))
+  M.map(vim.tbl_extend('keep', opts, { mode = 'c', silent = false }))
 end
 
 M.tmap = function(opts)
@@ -59,7 +59,7 @@ M.inoremap = function(opts)
 end
 
 M.cnoremap = function(opts)
-  M.noremap(vim.tbl_extend('keep', opts, { mode = 'c' }))
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'c', silent = false }))
 end
 
 M.tnoremap = function(opts)

@@ -58,16 +58,8 @@ return {
     event = events.enter_insert,
   },
   {
-    'roobert/search-replace.nvim',
-    config = true,
-    keys = {
-      { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferCWord<CR>',           desc = 'Search and replace' },
-      { '<Leader>sr', '<Cmd>SearchReplaceSingleBufferVisualSelection<CR>', desc = 'Search and replace', mode = 'v' },
-    },
-  },
-  {
     'cshuaimin/ssr.nvim',
-    keys = { { '<Leader>sR', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structural replace' } },
+    keys = { { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structural replace' } },
   },
   {
     'NeogitOrg/neogit',

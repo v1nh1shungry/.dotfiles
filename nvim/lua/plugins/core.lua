@@ -2,12 +2,8 @@ local events = require('utils.events')
 
 return {
   {
-    'utilyre/sentiment.nvim',
-    config = true,
-    dependencies = {
-      'andymass/vim-matchup',
-      config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
-    },
+    'andymass/vim-matchup',
+    config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
     event = events.enter_buffer,
   },
   {
@@ -188,10 +184,10 @@ return {
   {
     'chrisgrieser/nvim-spider',
     keys = {
-      { 'w',  "<Cmd>lua require('spider').motion('w')<CR>",  mode = { 'n', 'o', 'x' } },
-      { 'e',  "<Cmd>lua require('spider').motion('e')<CR>",  mode = { 'n', 'o', 'x' } },
-      { 'b',  "<Cmd>lua require('spider').motion('b')<CR>",  mode = { 'n', 'o', 'x' } },
-      { 'ge', "<Cmd>lua require('spider').motion('ge')<CR>", mode = { 'n', 'o', 'x' } },
+      { 'w',  "<Cmd>lua require('spider').motion('w')<CR>",  mode = { 'n', 'o', 'x' }, desc = 'Next word' },
+      { 'e',  "<Cmd>lua require('spider').motion('e')<CR>",  mode = { 'n', 'o', 'x' }, desc = 'Next end of word' },
+      { 'b',  "<Cmd>lua require('spider').motion('b')<CR>",  mode = { 'n', 'o', 'x' }, desc = 'Previous word' },
+      { 'ge', "<Cmd>lua require('spider').motion('ge')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Previous end of word' },
     },
   },
   {
@@ -224,5 +220,10 @@ return {
       sort = { prefix = 'gS' },
       exchange = { prefix = 'cx' },
     },
+  },
+  {
+    'echasnovski/mini.bufremove',
+    config = true,
+    keys = { { '<C-q>', function() require('mini.bufremove').delete(0, false) end, desc = 'Close buffer' } },
   },
 }

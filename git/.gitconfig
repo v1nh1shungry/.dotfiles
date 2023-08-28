@@ -6,7 +6,7 @@
   defaultBranch = main
 
 [core]
-  pager = delta
+  pager = delta -s
   editor = nvim
 
 [interactive]
@@ -18,9 +18,20 @@
 [delta]
   navigate = true
   light = false
-  side-by-side = true
   line-numbers = true
-  syntax-theme = Dracula
+  syntax-theme = OneHalfDark
+  # tokyonight
+  minus-style                   = syntax "#3f2d3d"
+  minus-non-emph-style          = syntax "#3f2d3d"
+  minus-emph-style              = syntax "#763842"
+  minus-empty-line-marker-style = syntax "#3f2d3d"
+  line-numbers-minus-style      = "#b2555b"
+  plus-style                    = syntax "#283b4d"
+  plus-non-emph-style           = syntax "#283b4d"
+  plus-emph-style               = syntax "#316172"
+  plus-empty-line-marker-style  = syntax "#283b4d"
+  line-numbers-plus-style       = "#266d6a"
+  line-numbers-zero-style       = "#3b4261"
 
 [merge]
   conflictstyle = diff3

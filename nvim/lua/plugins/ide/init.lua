@@ -155,7 +155,7 @@ local M = {
           textDocument = {
             foldingRange = {
               dynamicRegistration = false,
-              lineFoldingOnly = true,
+              lineFoldingOnly = false,
             },
           },
         }
@@ -200,7 +200,6 @@ local M = {
         },
       },
       'williamboman/mason-lspconfig.nvim',
-      'joechrisellis/lsp-format-modifications.nvim',
       {
         'folke/neoconf.nvim',
         config = true,
@@ -243,13 +242,6 @@ local M = {
               completion = { callSnippet = 'Replace' },
               telemetry = { enable = false },
               workspace = { checkThirdParty = false },
-              format = {
-                defaultConfig = {
-                  call_arg_parentheses = 'remove_table_only',
-                  trailing_table_separator = 'smart',
-                  align_call_args = true,
-                },
-              },
             },
           },
         },
@@ -333,8 +325,13 @@ local M = {
         }),
       }
 
+      local cmdline_mapping = cmp.mapping.preset.cmdline {
+        ['<C-n>'] = cmp.config.disable,
+        ['<C-p>'] = cmp.config.disable,
+      }
+
       cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
+        mapping = cmdline_mapping,
         sources = cmp.config.sources {
           { name = 'cmdline' },
           { name = 'path' },
@@ -342,7 +339,7 @@ local M = {
       })
 
       cmp.setup.cmdline({ '/', '?' }, {
-        mapping = cmp.mapping.preset.cmdline(),
+        mapping = cmdline_mapping,
         sources = cmp.config.sources { { name = 'buffer' } },
       })
 
@@ -361,15 +358,7 @@ local M = {
       'hrsh7th/cmp-path',
       {
         'saadparwaiz1/cmp_luasnip',
-        dependencies = {
-          'L3MON4D3/LuaSnip',
-          {
-            'rafamadriz/friendly-snippets',
-            config = function()
-              require('luasnip.loaders.from_vscode').lazy_load()
-            end,
-          },
-        },
+        dependencies = 'L3MON4D3/LuaSnip',
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
@@ -522,6 +511,10 @@ local M = {
   {
     'DNLHC/glance.nvim',
     cmd = 'Glance',
+  },
+  {
+    'joechrisellis/lsp-format-modifications.nvim',
+    lazy = true,
   },
 }
 

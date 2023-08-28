@@ -2,7 +2,25 @@ return {
   { 'wuelnerdotexe/vim-enfocado', lazy = true },
   { 'folke/tokyonight.nvim',      lazy = true },
   { 'EdenEast/nightfox.nvim',     lazy = true },
-  { 'catppuccin/nvim',            lazy = true, name = 'catppuccin' },
-  { 'rebelot/kanagawa.nvim',      lazy = true },
-  { 'ellisonleao/gruvbox.nvim',   lazy = true },
+  {
+    'catppuccin/nvim',
+    lazy = true,
+    name = 'catppuccin',
+    opts = {
+      integrations = {
+        lsp_saga = true,
+        mason = true,
+        mini = true,
+        neotree = true,
+        noice = true,
+        notify = true,
+        treesitter_context = true,
+        lsp_trouble = true,
+        illuminate = true,
+        which_key = true,
+      },
+    },
+  },
+  { 'rebelot/kanagawa.nvim',    lazy = true },
+  { 'ellisonleao/gruvbox.nvim', lazy = true },
 }

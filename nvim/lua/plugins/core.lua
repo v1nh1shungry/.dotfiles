@@ -195,14 +195,6 @@ return {
     opts = { window = { open = 'alternate' } },
   },
   {
-    'max397574/better-escape.nvim',
-    keys = {
-      { 'jk', mode = 'i' },
-      { 'jj', mode = 'i' },
-    },
-    opts = { clear_empty_lines = true },
-  },
-  {
     'axkirillov/hbac.nvim',
     event = events.enter_buffer,
     opts = { threshold = 6 },

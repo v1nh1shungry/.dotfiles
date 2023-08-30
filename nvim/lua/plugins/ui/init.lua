@@ -1,4 +1,5 @@
 local events = require('utils.events')
+local excluded_filetypes = require('utils.ui').excluded_filetypes
 
 return {
   {
@@ -70,15 +71,12 @@ return {
         desc = 'Toggle Minimap',
       },
     },
-    opts = {
-      exclude_filetypes = require('utils.ui').excluded_filetypes,
-      z_index = 50,
-    },
+    opts = { exclude_filetypes = excluded_filetypes, z_index = 50 },
   },
   {
     'lewis6991/satellite.nvim',
     event = events.enter_buffer,
-    opts = { excluded_filetypes = require('utils.ui').excluded_filetypes },
+    opts = { excluded_filetypes = excluded_filetypes },
   },
   {
     'akinsho/bufferline.nvim',
@@ -96,7 +94,7 @@ return {
         desc = 'Previous buffer',
       },
     },
-    opts = { options = { separator_style = 'slant' } },
+    opts = { options = { themable = true } },
   },
   {
     'stevearc/dressing.nvim',
@@ -206,8 +204,8 @@ return {
     config = function()
       local builtin = require('statuscol.builtin')
       require('statuscol').setup {
-        bt_ignore = { 'terminal' },
-        ft_ignore = require('utils.ui').excluded_filetypes,
+        bt_ignore = { 'nofile', 'terminal' },
+        ft_ignore = excluded_filetypes,
         relculright = true,
         segments = {
           { sign = { name = { 'Dap' } },      click = 'v:lua.ScSa' },
@@ -276,7 +274,7 @@ return {
     end,
     opts = {
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
-      open_files_do_not_replace_types = require('utils.ui').excluded_filetypes,
+      open_files_do_not_replace_types = excluded_filetypes,
       filesystem = {
         filtered_items = {
           hide_dotfiles = false,
@@ -387,6 +385,8 @@ return {
           end,
         },
         { ft = 'cmake_tools_terminal', title = 'CMakeTools Terminal' },
+        { ft = 'dap-repl',             title = 'REPL' },
+        { ft = 'dapui_console',        title = 'Console' },
       },
       left = {
         {
@@ -395,13 +395,38 @@ return {
           filter = function(buf)
             return vim.b[buf].neo_tree_source == 'filesystem'
           end,
-          pinned = true,
           open = function()
             vim.api.nvim_input('<esc><space>e')
           end,
           size = { height = 0.6 },
         },
         'neo-tree',
+        {
+          ft = 'dapui_scopes',
+          title = 'Scopes',
+          size = { height = 0.25 },
+        },
+        {
+          ft = 'dapui_breakpoints',
+          title = 'Breakpoints',
+          size = { height = 0.25 },
+        },
+        {
+          ft = 'dapui_stacks',
+          title = 'Stacks',
+          size = { height = 0.25 },
+        },
+        {
+          ft = 'dapui_watches',
+          title = 'Watches',
+          size = { height = 0.25 },
+        },
+        {
+          ft = 'undotree',
+          title = 'Undotree',
+          size = { height = 0.6 },
+        },
+        { ft = 'diff', size = { height = 0.4 } },
       },
       right = {
         { title = 'Outline', ft = 'sagaoutline' },
@@ -434,7 +459,7 @@ return {
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args) vim.b[args.buf].minitrailspace_disable = true end,
-        pattern = require('utils.ui').excluded_filetypes,
+        pattern = excluded_filetypes,
       })
     end,
   },
@@ -466,6 +491,34 @@ return {
     'utilyre/sentiment.nvim',
     dependencies = 'andymass/vim-matchup',
     event = events.enter_buffer,
-    opts = { excluded_filetypes = require('utils.ui').excluded_filetypes },
+    opts = { excluded_filetypes = excluded_filetypes },
+  },
+  {
+    'b0o/incline.nvim',
+    event = events.enter_buffer,
+    opts = {
+      render = function(props)
+        local label = {}
+        if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
+          local icons = {
+            Error = '',
+            Warn = '',
+            Info = '',
+            Hint = '',
+          }
+          for severity, icon in pairs(icons) do
+            local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
+            if n > 0 then
+              table.insert(label, { icon .. ' ' .. n .. ' ', group = 'DiagnosticSign' .. severity })
+            end
+          end
+          if #label == 0 then
+            table.insert(label, { '✔', guifg = 'green' })
+          end
+        end
+        return label
+      end,
+      ignore = { filetypes = excluded_filetypes },
+    },
   },
 }

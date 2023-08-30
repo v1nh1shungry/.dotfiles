@@ -35,8 +35,10 @@ return {
   {
     'monaqa/dial.nvim',
     keys = {
-      { '<C-a>', '<Plug>(dial-increment)', mode = { 'n', 'v' } },
-      { '<C-x>', '<Plug>(dial-decrement)', mode = { 'n', 'v' } },
+      { '<C-a>',  '<Plug>(dial-increment)',  mode = { 'n', 'v' }, desc = 'Increment' },
+      { '<C-x>',  '<Plug>(dial-decrement)',  mode = { 'n', 'v' }, desc = 'Decrement' },
+      { 'g<C-a>', 'g<Plug>(dial-increment)', mode = { 'n', 'v' }, desc = 'Increment' },
+      { 'g<C-x>', 'g<Plug>(dial-decrement)', mode = { 'n', 'v' }, desc = 'Decrement' },
     },
   },
   {
@@ -221,5 +223,15 @@ return {
     'nvim-pack/nvim-spectre',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = { { '<Leader>sd', '<Cmd>Spectre<CR>', desc = 'Spectre' } },
+  },
+  {
+    'echasnovski/mini.files',
+    keys = { { '<Leader>fe', '<Cmd>lua MiniFiles.open()<CR>', desc = 'Filesystem buffer' } },
+    opts = { options = { use_as_default_explorer = false } },
+  },
+  {
+    'mbbill/undotree',
+    config = function() vim.g.undotree_SetFocusWhenToggle = true end,
+    keys = { { '<Leader>ut', '<Cmd>UndotreeToggle<CR>', desc = 'Undotree' } },
   },
 }

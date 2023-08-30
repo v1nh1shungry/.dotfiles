@@ -26,16 +26,10 @@ local ins_right = function(component)
   table.insert(config.sections.lualine_x, component)
 end
 
-ins_left { 'branch', on_click = function() require('telescope.builtin').git_branches() end }
-
 ins_left {
-  'diagnostics',
-  symbols = { error = ' ', warn = ' ', info = ' ' },
-  sections = { 'error', 'warn' },
-  colored = false,
-  update_in_insert = true,
-  always_visible = true,
-  on_click = function() vim.cmd['TroubleToggle'] 'document_diagnostics' end,
+  'branch',
+  icon = '',
+  on_click = function() require('telescope.builtin').git_branches() end,
 }
 
 ins_left { 'mode', fmt = function(str) return '-- ' .. str .. ' --' end }
@@ -58,7 +52,7 @@ ins_right {
   end,
 }
 
-ins_right { 'encoding' }
+ins_right { 'encoding', fmt = function(str) return string.upper(str) end }
 
 ins_right {
   'fileformat',
@@ -78,6 +72,6 @@ ins_right {
   end,
 }
 
-ins_right { 'filetype' }
+ins_right { 'filetype', icons_enabled = false }
 
 return config

@@ -249,7 +249,7 @@ local M = {
     },
   },
   {
-    'glepnir/lspsaga.nvim',
+    'nvimdev/lspsaga.nvim',
     event = 'LspAttach',
     opts = {
       code_action = { extend_gitsigns = false, show_server_name = true },

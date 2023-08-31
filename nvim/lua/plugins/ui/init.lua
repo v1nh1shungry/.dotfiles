@@ -421,12 +421,6 @@ return {
           title = 'Watches',
           size = { height = 0.25 },
         },
-        {
-          ft = 'undotree',
-          title = 'Undotree',
-          size = { height = 0.6 },
-        },
-        { ft = 'diff', size = { height = 0.4 } },
       },
       right = {
         { title = 'Outline', ft = 'sagaoutline' },

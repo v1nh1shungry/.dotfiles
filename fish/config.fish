@@ -3,6 +3,10 @@ if status is-interactive
 
     set fish_greeting
 
+    if test -d ~/.cargo
+        set -gx PATH ~/.cargo/bin $PATH
+    end
+
     if command -q starship
         starship init fish | source
     end

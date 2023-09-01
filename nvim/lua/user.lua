@@ -17,7 +17,7 @@ local setup = function()
 end
 
 local filename = vim.fs.joinpath(os.getenv('HOME'), '.nvimrc')
-if vim.fn.filereadable(filename) then
+if vim.fn.filereadable(filename) ~= 0 then
   M = vim.tbl_deep_extend('force', M, dofile(filename))
 end
 

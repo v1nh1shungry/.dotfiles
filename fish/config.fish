@@ -1,10 +1,14 @@
 if status is-interactive
-    set -gx PATH ~/.local/bin $PATH
+    fish_add_path ~/.local/bin
 
     set fish_greeting
 
     if test -d ~/.cargo
-        set -gx PATH ~/.cargo/bin $PATH
+        fish_add_path ~/.cargo/bin
+    end
+
+    if test -d ~/.spicetify
+        fish_add_path ~/.spicetify
     end
 
     if command -q starship
@@ -17,7 +21,7 @@ if status is-interactive
     end
 
     if command -q bob
-        set -gx PATH ~/.local/share/bob/nvim-bin $PATH
+        fish_add_path ~/.local/share/bob/nvim-bin
     end
 
     if command -q nvim

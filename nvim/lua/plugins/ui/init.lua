@@ -278,8 +278,8 @@ return {
       filesystem = {
         filtered_items = {
           hide_dotfiles = false,
+          hide_gitignored = false,
           hide_hidden = false,
-          hide_by_name = { '.cache', '.git', '.xmake', 'build', 'node_modules' },
         },
         bind_to_cwd = false,
         follow_current_file = { enabled = true },
@@ -474,6 +474,12 @@ return {
     end,
     dependencies = 'kevinhwang91/promise-async',
     event = events.enter_buffer,
+    init = function(arg)
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = excluded_filetypes,
+        callback = function() require('ufo').detach(arg.buf) end,
+      })
+    end,
     keys = {
       { 'zR', function() require('ufo').openAllFolds() end,               desc = 'Open all folds' },
       { 'zM', function() require('ufo').closeAllFolds() end,              desc = 'Close all folds' },

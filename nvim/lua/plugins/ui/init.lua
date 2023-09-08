@@ -40,7 +40,7 @@ return {
         dashboard.button('l', '󰒲 ' .. ' Lazy', '<Cmd>Lazy<CR>'),
         dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
       }
-      dashboard.opts.layout[1].val = 1
+      dashboard.opts.layout[1].val = 8
       require('alpha').setup(dashboard.opts)
 
       if vim.o.filetype == 'lazy' then
@@ -211,7 +211,6 @@ return {
           { sign = { name = { 'Dap' } },      click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
           { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
-          { text = { builtin.foldfunc },      click = 'v:lua.ScFa' },
         },
       }
     end,
@@ -441,7 +440,6 @@ return {
         },
       },
     },
-    exit_when_last = true,
   },
   {
     'echasnovski/mini.trailspace',
@@ -462,36 +460,6 @@ return {
     init = function() vim.cmd 'highlight link HighlightUndo IncSearch' end,
     keys = { 'u', '<C-r>' },
     opts = { duration = 500 },
-  },
-  {
-    'kevinhwang91/nvim-ufo',
-    config = function(_, opts)
-      vim.o.foldcolumn = '1'
-      vim.o.foldlevel = 99
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
-      require('ufo').setup(opts)
-    end,
-    dependencies = 'kevinhwang91/promise-async',
-    event = events.enter_buffer,
-    init = function(arg)
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = excluded_filetypes,
-        callback = function() require('ufo').detach(arg.buf) end,
-      })
-    end,
-    keys = {
-      { 'zR', function() require('ufo').openAllFolds() end,               desc = 'Open all folds' },
-      { 'zM', function() require('ufo').closeAllFolds() end,              desc = 'Close all folds' },
-      { 'zp', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' },
-    },
-    opts = { open_fold_hl_timeout = 0 },
-  },
-  {
-    'utilyre/sentiment.nvim',
-    dependencies = 'andymass/vim-matchup',
-    event = events.enter_buffer,
-    opts = { excluded_filetypes = excluded_filetypes },
   },
   {
     'b0o/incline.nvim',

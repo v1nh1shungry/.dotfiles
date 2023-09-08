@@ -55,11 +55,6 @@ return {
     },
   },
   {
-    'RRethy/nvim-treesitter-endwise',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    event = events.enter_insert,
-  },
-  {
     'cshuaimin/ssr.nvim',
     keys = { { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structural replace' } },
   },

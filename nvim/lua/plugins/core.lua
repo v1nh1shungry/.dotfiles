@@ -89,8 +89,6 @@ return {
           },
         },
       },
-      endwise = { enable = true },
-      rainbow = { enable = true },
     },
   },
   {

@@ -59,6 +59,9 @@ local M = {
           ['textDocument/inlayHint'] = {
             { '<Leader>ui', function() vim.lsp.inlay_hint(bufnr) end, desc = 'Toggle inlay hint' },
           },
+          ['textDocument/signatureHelp'] = {
+            { '<C-k>', vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help' },
+          },
         }
         for _, key in ipairs({
           { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
@@ -503,6 +506,17 @@ local M = {
   {
     'DNLHC/glance.nvim',
     cmd = 'Glance',
+    opts = {
+      hooks = {
+        before_open = function(results, open, jump, _)
+          if #results == 1 then
+            jump(results[1])
+          else
+            open(results)
+          end
+        end,
+      },
+    },
   },
   {
     'joechrisellis/lsp-format-modifications.nvim',

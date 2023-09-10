@@ -176,7 +176,25 @@ return {
       },
     },
     event = 'VeryLazy',
-    keys = { { '<Leader>xn', '<Cmd>Noice<CR>', desc = 'Message' } },
+    keys = {
+      { '<Leader>xn', '<Cmd>Noice<CR>', desc = 'Message' },
+      {
+        '<C-f>',
+        function() if not require('noice.lsp').scroll(4) then return '<C-f>' end end,
+        silent = true,
+        expr = true,
+        desc = 'Scroll forward',
+        mode = { 'i', 'n', 's' },
+      },
+      {
+        '<C-b>',
+        function() if not require('noice.lsp').scroll(-4) then return '<C-b>' end end,
+        silent = true,
+        expr = true,
+        desc = 'Scroll backward',
+        mode = { 'i', 'n', 's' },
+      },
+    },
     opts = {
       views = { split = { enter = true } },
       presets = { long_message_to_split = true, bottom_search = true, command_palette = true },

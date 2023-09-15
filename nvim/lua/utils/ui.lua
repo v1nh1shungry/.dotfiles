@@ -1,5 +1,14 @@
 local M = {}
 
+M.icons = {
+  diagnostic = {
+    error = '',
+    warn = '',
+    hint = '',
+    info = '',
+  },
+}
+
 M.excluded_filetypes = {
   'ClangdAST',
   'NeogitPopup',

@@ -138,11 +138,12 @@ local M = {
         return ret
       end
 
+      local icons = require('utils.ui').icons.diagnostic
       for name, icon in pairs {
-        DiagnosticSignError = '',
-        DiagnosticSignWarn = '',
-        DiagnosticSignHint = '',
-        DiagnosticSignInfo = '',
+        DiagnosticSignError = icons.error,
+        DiagnosticSignWarn = icons.warn,
+        DiagnosticSignHint = icons.hint,
+        DiagnosticSignInfo = icons.info,
       } do
         vim.fn.sign_define(name, { texthl = name, text = icon, numhl = '' })
       end

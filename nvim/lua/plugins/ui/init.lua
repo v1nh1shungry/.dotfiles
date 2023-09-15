@@ -486,11 +486,12 @@ return {
       render = function(props)
         local label = {}
         if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
+          local diagnostic_signs = require('utils.ui').icons.diagnostic
           local icons = {
-            Error = '',
-            Warn = '',
-            Info = '',
-            Hint = '',
+            Error = diagnostic_signs.error,
+            Warn = diagnostic_signs.warn,
+            Hint = diagnostic_signs.hint,
+            Info = diagnostic_signs.info,
           }
           for severity, icon in pairs(icons) do
             local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })

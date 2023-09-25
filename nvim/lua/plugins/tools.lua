@@ -165,7 +165,8 @@ return {
   {
     'johmsalas/text-case.nvim',
     dependencies = 'nvim-telescope/telescope.nvim',
-    keys = { { '<Leader>cc', '<Cmd>TextCaseOpenTelescope<CR>', desc = 'Change case' } },
+    keys = '<Leader>cc',
+    opts = { prefix = '<Leader>cc' },
   },
   {
     'folke/flash.nvim',

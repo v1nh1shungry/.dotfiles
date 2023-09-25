@@ -27,12 +27,6 @@ for _, plugin in ipairs(require('user').plugins.disabled) do
   lazy_specs[#lazy_specs + 1] = { plugin, enabled = false }
 end
 
-if vim.env.TERM == 'xterm-kitty' then
-  for _, spec in ipairs(require('plugins.kitty')) do
-    lazy_specs[#lazy_specs + 1] = spec
-  end
-end
-
 require('lazy').setup {
   spec = lazy_specs,
   install = { colorscheme = { require('user').ui.colorscheme } },

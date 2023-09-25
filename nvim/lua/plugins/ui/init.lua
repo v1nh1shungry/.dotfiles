@@ -508,4 +508,10 @@ return {
       ignore = { filetypes = excluded_filetypes },
     },
   },
+  {
+    'winston0410/range-highlight.nvim',
+    dependencies = 'winston0410/cmd-parser.nvim',
+    event = 'CmdlineEnter',
+    opts = { highlight = 'IncSearch' },
+  },
 }

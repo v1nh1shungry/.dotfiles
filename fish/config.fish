@@ -67,4 +67,8 @@ if status is-interactive
             end
         end
     end
+
+    if test -e ~/.localrc
+        source ~/.localrc
+    end
 end

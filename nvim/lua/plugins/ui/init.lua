@@ -474,12 +474,6 @@ return {
     end,
   },
   {
-    'tzachar/highlight-undo.nvim',
-    init = function() vim.cmd 'highlight link HighlightUndo IncSearch' end,
-    keys = { 'u', '<C-r>' },
-    opts = { duration = 500 },
-  },
-  {
     'b0o/incline.nvim',
     event = events.enter_buffer,
     opts = {
@@ -507,11 +501,5 @@ return {
       end,
       ignore = { filetypes = excluded_filetypes },
     },
-  },
-  {
-    'winston0410/range-highlight.nvim',
-    dependencies = 'winston0410/cmd-parser.nvim',
-    event = 'CmdlineEnter',
-    opts = { highlight = 'IncSearch' },
   },
 }

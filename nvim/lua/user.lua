@@ -10,6 +10,11 @@ local M = {
     colorscheme = 'tokyonight',
     statusline_theme = 'vscode',
   },
+  task = {
+    save = true,
+    compile = {},
+    execute = {},
+  },
 }
 
 local setup = function()

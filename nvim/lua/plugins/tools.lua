@@ -232,4 +232,8 @@ return {
     config = function() vim.g.undotree_SetFocusWhenToggle = true end,
     keys = { { '<Leader>ut', '<Cmd>UndotreeToggle<CR>', desc = 'Undotree' } },
   },
+  {
+    'rhysd/committia.vim',
+    event = 'BufReadPre COMMIT_EDITMSG',
+  },
 }

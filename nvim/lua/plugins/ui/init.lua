@@ -30,7 +30,7 @@ return {
 | ▓▓ \▓▓▓▓  \▓▓ ▓▓  _| ▓▓_| ▓▓ \▓▓▓| ▓▓    | ▓▓  | ▓▓ ▓▓_____| ▓▓  | ▓▓ ▓▓__/ ▓▓
 | ▓▓  \▓▓▓   \▓▓▓  |   ▓▓ \ ▓▓  \▓ | ▓▓    | ▓▓  | ▓▓ ▓▓     \ ▓▓  | ▓▓\▓▓    ▓▓
  \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓
-  ]]
+]]
       dashboard.section.header.val = vim.split(logo, '\n')
       dashboard.section.buttons.val = {
         dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
@@ -500,6 +500,20 @@ return {
         return label
       end,
       ignore = { filetypes = excluded_filetypes },
+    },
+  },
+  {
+    'echasnovski/mini.indentscope',
+    event = events.enter_buffer,
+    init = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function() vim.b.miniindentscope_disable = true end,
+        pattern = excluded_filetypes,
+      })
+    end,
+    opts = {
+      symbol = '│',
+      options = { try_as_border = true },
     },
   },
 }

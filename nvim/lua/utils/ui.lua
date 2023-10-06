@@ -10,7 +10,6 @@ M.icons = {
 }
 
 M.excluded_filetypes = {
-  '',
   'ClangdAST',
   'NeogitPopup',
   'NeogitStatus',

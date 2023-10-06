@@ -85,10 +85,7 @@ return {
         },
       }
     },
-    keys = {
-      { 'a', mode = { 'x', 'o' } },
-      { 'i', mode = { 'x', 'o' } },
-    },
+    event = events.enter_buffer,
     opts = function()
       local ai = require('mini.ai')
       return {

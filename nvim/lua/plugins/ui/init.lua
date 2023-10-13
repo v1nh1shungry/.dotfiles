@@ -228,7 +228,7 @@ return {
         segments = {
           { sign = { name = { 'Dap' } },      click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
-          { sign = { name = { 'GitSigns' } }, click = 'v:lua.ScSa' },
+          { sign = { namespace = { 'gitsigns' } }, click = 'v:lua.ScSa' },
         },
       }
     end,

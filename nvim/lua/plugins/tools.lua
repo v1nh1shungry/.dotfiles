@@ -177,7 +177,12 @@ return {
       { 'r',  function() require('flash').remote() end,            mode = 'o',               desc = 'Remote Flash' },
       { 'R',  function() require('flash').treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter search' },
     },
-    opts = { modes = { search = { enabled = false } } },
+    opts = {
+      modes = {
+        search = { enabled = false },
+        char = { highlight = { backdrop = false } },
+      },
+    },
   },
   {
     'nvim-pack/nvim-spectre',

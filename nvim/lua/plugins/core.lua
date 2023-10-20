@@ -55,8 +55,28 @@ return {
     end,
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      config = function(_, opts)
+        local move = require('nvim-treesitter.textobjects.move')
+        local configs = require('nvim-treesitter.configs')
+        for name, fn in pairs(move) do
+          if name:find('goto') == 1 then
+            move[name] = function(q, ...)
+              if vim.wo.diff then
+                local config = configs.get_module('textobjects.move')[name]
+                for key, query in pairs(config or {}) do
+                  if q == query and key:find('[%]%[][cC]') then
+                    vim.cmd('normal! ' .. key)
+                    return
+                  end
+                end
+              end
+              return fn(q, ...)
+            end
+          end
+        end
+        configs.setup(opts)
+      end,
       dependencies = 'nvim-treesitter/nvim-treesitter',
-      main = 'nvim-treesitter.configs',
       opts = {
         textobjects = {
           swap = {
@@ -141,7 +161,6 @@ return {
   {
     'Wansmer/treesj',
     config = true,
-    dependencies = 'nvim-treesitter/nvim-treesitter',
     keys = {
       { 'S', '<Cmd>TSJSplit<CR>', desc = 'Split line' },
       { 'J', '<Cmd>TSJJoin<CR>',  desc = 'Join line' },

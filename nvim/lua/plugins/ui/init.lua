@@ -33,8 +33,9 @@ return {
 ]]
       dashboard.section.header.val = vim.split(logo, '\n')
       dashboard.section.buttons.val = {
-        dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
         dashboard.button('f', ' ' .. ' Find file', '<Cmd>Telescope find_files<CR>'),
+        dashboard.button('e', ' ' .. ' New file', '<Cmd>ene | startinsert<CR>'),
+        dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
         dashboard.button('/', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
         dashboard.button('c', ' ' .. ' Config', '<Cmd>e ~/.nvimrc<CR>'),
         dashboard.button('l', '󰒲 ' .. ' Lazy', '<Cmd>Lazy<CR>'),
@@ -46,11 +47,13 @@ return {
       if vim.o.filetype == 'lazy' then
         vim.cmd.close()
         vim.api.nvim_create_autocmd('User', {
+          once = true,
           pattern = 'AlphaReady',
           callback = function() require('lazy').show() end,
         })
       end
       vim.api.nvim_create_autocmd('User', {
+        once = true,
         pattern = 'LazyVimStarted',
         callback = function()
           local stats = require('lazy').stats()
@@ -60,7 +63,6 @@ return {
         end,
       })
     end,
-    dependencies = 'nvim-tree/nvim-web-devicons',
   },
   {
     'gorbit99/codewindow.nvim',
@@ -226,8 +228,8 @@ return {
         ft_ignore = excluded_filetypes,
         relculright = true,
         segments = {
-          { sign = { name = { 'Dap' } },      click = 'v:lua.ScSa' },
-          { text = { builtin.lnumfunc },      click = 'v:lua.ScLa', },
+          { sign = { name = { 'Dap' } },           click = 'v:lua.ScSa' },
+          { text = { builtin.lnumfunc },           click = 'v:lua.ScLa', },
           { sign = { namespace = { 'gitsigns' } }, click = 'v:lua.ScSa' },
         },
       }
@@ -516,4 +518,5 @@ return {
       options = { try_as_border = true },
     },
   },
+  { 'nvim-tree/nvim-web-devicons', lazy = true },
 }

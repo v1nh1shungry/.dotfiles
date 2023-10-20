@@ -5,7 +5,6 @@ local M = {
     'neovim/nvim-lspconfig',
     config = function(_, lsp_opts)
       local on_attach = function(client, bufnr)
-        local format = function() vim.lsp.buf.format { buffer = bufnr } end
         local map = function(opts)
           require('utils.keymaps').noremap(vim.tbl_extend('keep', opts, {
             buffer = bufnr,
@@ -15,16 +14,11 @@ local M = {
 
         local mappings = {
           ['textDocument/formatting'] = {
-            { '<Leader>cf', format, desc = 'Format document' },
-          },
-          ['textDocument/rangeFormatting'] = {
-            { '<Leader>cf', format, desc = 'Format range', mode = 'v' },
             {
-              '<Leader>gf',
-              function()
-                require('lsp-format-modifications').format_modifications(client, bufnr)
-              end,
-              desc = 'Format only modifications',
+              '<Leader>cf',
+              function() require('conform').format { bufnr = bufnr, lsp_fallback = true } end,
+              desc = 'Format document',
+              mode = { 'n', 'v' },
             },
           },
           ['textDocument/rename'] = {
@@ -375,7 +369,14 @@ local M = {
         end
         map { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' }
         map { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' }
-        map { '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>', desc = 'Diff this' }
+        map {
+          '<Leader>gd',
+          function()
+            gs.diffthis()
+            vim.cmd.wincmd 'p'
+          end,
+          desc = 'Diff this',
+        }
         map { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' }
         map { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' }
         map { ']h', function() gs.next_hunk { navigation_message = false } end, desc = 'Next git hunk' }
@@ -519,8 +520,13 @@ local M = {
     },
   },
   {
-    'joechrisellis/lsp-format-modifications.nvim',
+    'stevearc/conform.nvim',
     lazy = true,
+    opts = {
+      formatters_by_ft = {
+        fish = { 'fish_indent' },
+      },
+    },
   },
 }
 

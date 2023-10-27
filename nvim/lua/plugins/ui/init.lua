@@ -504,19 +504,5 @@ return {
       ignore = { filetypes = excluded_filetypes },
     },
   },
-  {
-    'echasnovski/mini.indentscope',
-    event = events.enter_buffer,
-    init = function()
-      vim.api.nvim_create_autocmd('FileType', {
-        callback = function() vim.b.miniindentscope_disable = true end,
-        pattern = excluded_filetypes,
-      })
-    end,
-    opts = {
-      symbol = '│',
-      options = { try_as_border = true },
-    },
-  },
   { 'nvim-tree/nvim-web-devicons', lazy = true },
 }

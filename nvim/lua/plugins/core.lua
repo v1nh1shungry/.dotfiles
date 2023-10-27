@@ -183,7 +183,11 @@ return {
     main = 'ibl',
     opts = {
       indent = { char = '│', highlight = 'IndentBlanklineChar' },
-      scope = { enabled = false },
+      scope = {
+        show_start = false,
+        show_end = false,
+        include = { node_type = { lua = { "table_constructor" } } },
+      },
       exclude = { filetypes = require('utils.ui').excluded_filetypes },
     },
   },

@@ -59,16 +59,6 @@ return {
     keys = { { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structural replace' } },
   },
   {
-    'NeogitOrg/neogit',
-    dependencies = 'nvim-lua/plenary.nvim',
-    keys = { { '<Leader>gm', '<Cmd>Neogit<CR>', desc = 'Magit' } },
-    opts = {
-      disable_commit_confirmation = true, -- compatible with `noice.nvim`
-      signs = { section = { '', '' }, item = { '', '' } },
-      integrations = { telescope = true, diffview = true },
-    },
-  },
-  {
     'akinsho/git-conflict.nvim',
     config = function(_, opts)
       require('git-conflict').setup(opts)
@@ -195,9 +185,10 @@ return {
     opts = { options = { use_as_default_explorer = false } },
   },
   {
-    'mbbill/undotree',
-    config = function() vim.g.undotree_SetFocusWhenToggle = true end,
-    keys = { { '<Leader>ut', '<Cmd>UndotreeToggle<CR>', desc = 'Undotree' } },
+    'debugloop/telescope-undo.nvim',
+    config = function() require('telescope').load_extension('undo') end,
+    dependencies = 'nvim-telescope/telescope.nvim',
+    keys = { { '<Leader>ut', '<Cmd>Telescope undo<CR>', desc = 'Undotree' } },
   },
   {
     'rhysd/committia.vim',

@@ -221,6 +221,7 @@ return {
   },
   {
     'luukvbaal/statuscol.nvim',
+    branch = '0.10',
     config = function()
       local builtin = require('statuscol.builtin')
       require('statuscol').setup {
@@ -229,7 +230,7 @@ return {
         relculright = true,
         segments = {
           { sign = { name = { 'Dap' } },           click = 'v:lua.ScSa' },
-          { text = { builtin.lnumfunc },           click = 'v:lua.ScLa', },
+          { text = { builtin.lnumfunc },           click = 'v:lua.ScLa' },
           { sign = { namespace = { 'gitsigns' } }, click = 'v:lua.ScSa' },
         },
       }

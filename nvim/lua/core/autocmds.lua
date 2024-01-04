@@ -1,5 +1,9 @@
 local autocmd = vim.api.nvim_create_autocmd
 
+autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+  command = 'checktime',
+})
+
 autocmd('FileType', {
   command = 'setlocal wrap',
   pattern = { 'gitcommit', 'markdown' },
@@ -29,9 +33,15 @@ autocmd('FileType', {
 })
 
 autocmd('BufReadPost', {
-  callback = function()
-    local mark = vim.api.nvim_buf_get_mark(0, '"')
-    local lcount = vim.api.nvim_buf_line_count(0)
+  callback = function(event)
+    local exclude = { 'gitcommit' }
+    local buf = event.buf
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+      return
+    end
+    vim.b[buf].lazyvim_last_loc = true
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
@@ -61,5 +71,13 @@ autocmd({ 'InsertEnter', 'WinLeave' }, {
       vim.api.nvim_win_set_var(0, 'auto-cursorline', cl)
       vim.wo.cursorline = false
     end
+  end,
+})
+
+autocmd({ 'VimResized' }, {
+  callback = function()
+    local current_tab = vim.fn.tabpagenr()
+    vim.cmd('tabdo wincmd =')
+    vim.cmd('tabnext ' .. current_tab)
   end,
 })

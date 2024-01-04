@@ -51,7 +51,11 @@ local M = {
             { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' },
           },
           ['textDocument/inlayHint'] = {
-            { '<Leader>ui', function() vim.lsp.inlay_hint(bufnr) end, desc = 'Toggle inlay hint' },
+            {
+              '<Leader>ui',
+              function() vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr)) end,
+              desc = 'Toggle inlay hint',
+            },
           },
           ['textDocument/signatureHelp'] = {
             { '<C-k>', vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help' },
@@ -109,7 +113,7 @@ local M = {
         end
 
         if client.server_capabilities.inlayHintProvider then
-          vim.lsp.inlay_hint(bufnr, true)
+          vim.lsp.inlay_hint.enable(bufnr, true)
         end
       end
 
@@ -382,7 +386,7 @@ local M = {
         map { ']h', function() gs.next_hunk { navigation_message = false } end, desc = 'Next git hunk' }
         map { '[h', function() gs.prev_hunk { navigation_message = false } end, desc = 'Previous git hunk' }
         map { '<Leader>gs', '<Cmd>Gitsigns stage_hunk<CR>', desc = 'Stage hunk' }
-        map { '<Leader>gu', '<Cmd>Gitsigns undo_stage_hunk<R>', desc = 'Undo staged hunk' }
+        map { '<Leader>gu', '<Cmd>Gitsigns undo_stage_hunk<CR>', desc = 'Undo staged hunk' }
         map { 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' }
       end,
     },

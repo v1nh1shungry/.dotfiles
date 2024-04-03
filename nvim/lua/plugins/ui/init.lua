@@ -506,4 +506,11 @@ return {
     },
   },
   { 'nvim-tree/nvim-web-devicons', lazy = true },
+  {
+    'MeanderingProgrammer/markdown.nvim',
+    main = 'render-markdown',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    ft = 'markdown',
+    opts = { conceal = { rendered = 0 } },
+  },
 }

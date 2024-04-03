@@ -264,6 +264,8 @@ local M = {
       local cmp = require('cmp')
       local luasnip = require('luasnip')
 
+      require('luasnip.loaders.from_vscode').lazy_load { paths = vim.fn.stdpath('config') .. '/snippets' }
+
       cmp.setup {
         snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
         window = { completion = { side_padding = 0 } },
@@ -450,6 +452,7 @@ local M = {
             dapui.close()
           end
         end,
+        dependencies = 'nvim-neotest/nvim-nio',
         keys = {
           { '<Leader>de', function() require('dapui').eval() end, desc = 'Eval', mode = { 'n', 'v' } },
         },

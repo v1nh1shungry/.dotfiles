@@ -10,13 +10,11 @@ return {
       integrations = {
         lsp_saga = true,
         mason = true,
-        mini = true,
         neotree = true,
         noice = true,
         notify = true,
         treesitter_context = true,
         lsp_trouble = true,
-        illuminate = true,
         which_key = true,
       },
     },

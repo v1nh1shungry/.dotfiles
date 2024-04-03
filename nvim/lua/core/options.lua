@@ -1,4 +1,6 @@
 vim.opt.background = require('user').ui.background
+vim.opt.autowrite = true
+vim.opt.spelllang = { 'en' }
 vim.opt.breakindent = true
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.colorcolumn = '80'

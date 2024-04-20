@@ -188,8 +188,8 @@ return {
       map { 'g<C-x>', function() return dial(false, true) end, expr = true, mode = { 'n', 'v' } }
     end,
     keys = {
-      { '<C-a>', desc = 'Increment' },
-      { '<C-x>', desc = 'Decrement' },
+      { '<C-a>',  desc = 'Increment' },
+      { '<C-x>',  desc = 'Decrement' },
       { 'g<C-a>', desc = 'Increment' },
       { 'g<C-x>', desc = 'Decrement' },
     },
@@ -239,40 +239,14 @@ return {
   },
   {
     'andrewferrier/debugprint.nvim',
-    dependencies = {
-      'folke/which-key.nvim',
-      optional = true,
-      opts = { defaults = { ['<Leader>dp'] = { name = '+print' } } },
-    },
-    keys = {
-      {
-        '<Leader>dpp',
-        function() return require('debugprint').debugprint() end,
-        desc = 'Print below',
-        expr = true,
-      },
-      {
-        '<Leader>dpP',
-        function() return require('debugprint').debugprint({ above = true }) end,
-        desc = 'Print above',
-        expr = true,
-      },
-      {
-        '<Leader>dpv',
-        function() return require('debugprint').debugprint({ variable = true }) end,
-        desc = 'Print variable below',
-        expr = true,
-        mode = { 'n', 'v' },
-      },
-      {
-        '<Leader>dpV',
-        function() return require('debugprint').debugprint({ above = true, variable = true }) end,
-        desc = 'Print variable above',
-        expr = true,
-        mode = { 'n', 'v' },
+    opts = {
+      keymaps = {
+        normal = {
+          toggle_comment_debug_prints = 'g?t',
+          delete_debug_prints = 'g?d',
+        },
       },
     },
-    opts = { create_keymaps = false, create_commands = false },
   },
   {
     'sindrets/diffview.nvim',

@@ -115,6 +115,10 @@ local M = {
         if client.server_capabilities.inlayHintProvider then
           vim.lsp.inlay_hint.enable(bufnr, true)
         end
+
+        if client.supports_method 'textDocument/codeLens' then
+          vim.lsp.codelens.refresh { bufnr = bufnr }
+        end
       end
 
       require('mason-lspconfig').setup { automatic_installation = true }
@@ -264,6 +268,7 @@ local M = {
       local cmp = require('cmp')
       local luasnip = require('luasnip')
 
+      luasnip.setup { enable_autosnippets = true }
       require('luasnip.loaders.from_vscode').lazy_load { paths = vim.fn.stdpath('config') .. '/snippets' }
 
       cmp.setup {
@@ -395,6 +400,7 @@ local M = {
   },
   {
     'akinsho/toggleterm.nvim',
+    cmd = 'TermExec',
     keys = { { '<M-=>', desc = 'Toggle terminal' } },
     opts = { open_mapping = '<M-=>', size = 10 },
   },

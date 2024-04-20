@@ -192,17 +192,6 @@ return {
     },
   },
   {
-    'numToStr/Comment.nvim',
-    keys = {
-      { 'gc',    mode = { 'n', 'v' },                             desc = 'Toggle comment' },
-      { '<C-_>', '<ESC><Plug>(comment_toggle_linewise_current)i', mode = 'i' },
-    },
-    opts = {
-      toggler = { block = '<Nop>' },
-      opleader = { block = '<Nop>' },
-    },
-  },
-  {
     'echasnovski/mini.surround',
     config = function()
       require('mini.surround').setup {

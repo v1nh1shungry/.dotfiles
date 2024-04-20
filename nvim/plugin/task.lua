@@ -29,6 +29,9 @@ local compile_opts = {
 local execute_opts = {
   c = { '${filenameNoExtesion}' },
   cpp = { '${filenameNoExtesion}' },
+  python = { 'python', '${filename}' },
+  lua = { 'nvim', '-l', '${filename}' },
+  javascript = { 'node', '${filename}' },
 }
 
 compile_opts = vim.tbl_deep_extend('force', compile_opts, opts.compile)
@@ -74,6 +77,20 @@ for lang, cmd in pairs(compile_opts) do
         end,
         buffer = args.buf,
         desc = 'Compile',
+      }
+    end,
+    pattern = lang,
+  })
+end
+
+for lang, cmd in pairs(execute_opts) do
+  vim.api.nvim_create_autocmd('FileType', {
+    callback = function(args)
+      nnoremap {
+        '<Leader>fx',
+        '<Cmd>TermExec cmd="' .. table.concat(cook(cmd), ' ') .. '"<CR>',
+        buffer = args.buf,
+        desc = 'Execute',
       }
     end,
     pattern = lang,

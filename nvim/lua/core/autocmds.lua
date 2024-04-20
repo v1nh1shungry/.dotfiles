@@ -81,3 +81,8 @@ autocmd({ 'VimResized' }, {
     vim.cmd('tabnext ' .. current_tab)
   end,
 })
+
+autocmd('FileType', {
+  callback = function() vim.bo.commentstring = '// %s' end,
+  pattern = { 'c', 'cpp' },
+})

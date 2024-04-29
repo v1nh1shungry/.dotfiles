@@ -53,7 +53,7 @@ local M = {
           ['textDocument/inlayHint'] = {
             {
               '<Leader>ui',
-              function() vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled(bufnr)) end,
+              function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(bufnr)) end,
               desc = 'Toggle inlay hint',
             },
           },
@@ -113,7 +113,7 @@ local M = {
         end
 
         if client.server_capabilities.inlayHintProvider then
-          vim.lsp.inlay_hint.enable(bufnr, true)
+          vim.lsp.inlay_hint.enable(true)
         end
 
         if client.supports_method 'textDocument/codeLens' then
@@ -444,17 +444,17 @@ local M = {
           dapui.setup()
           dap.listeners.after.event_initialized['dapui_config'] = function()
             vim.diagnostic.config { virtual_text = false }
-            vim.lsp.inlay_hint(0, false)
+            vim.lsp.inlay_hint.enable(false)
             dapui.open()
           end
           dap.listeners.before.event_terminated['dapui_config'] = function()
             vim.diagnostic.config { virtual_text = true }
-            vim.lsp.inlay_hint(0, true)
+            vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
           dap.listeners.before.event_exited['dapui_config'] = function()
             vim.diagnostic.config { virtual_text = true }
-            vim.lsp.inlay_hint(0, true)
+            vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
         end,

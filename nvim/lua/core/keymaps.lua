@@ -10,8 +10,6 @@ local xnoremap = require('utils.keymaps').xnoremap
 map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
 
-nnoremap { 'q', ':q<CR>', desc = 'Quit' }
-nnoremap { 'Q', ':qa!<CR>', desc = 'Force quit all' }
 nnoremap { '<C-q>', ':bd<CR>', desc = 'Close buffer' }
 
 inoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
@@ -104,3 +102,26 @@ nnoremap { '<Leader>ct', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' }
 
 cnoremap { '<C-n>', '<Down>', desc = 'Next command ih history' }
 cnoremap { '<C-p>', '<Up>', desc = 'Previous command ih history' }
+
+nnoremap {
+  '<Leader>mp',
+  function()
+    if vim.fn.mkdir('cmake', 'p') == 0 then
+      vim.notify("CPM.cmake: can't create 'cmake' directory", vim.log.levels.ERROR)
+      return
+    end
+    vim.system({
+      'wget',
+      '-O',
+      'cmake/CPM.cmake',
+      'https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake',
+    }, {}, function(out)
+      if (out.code == 0) then
+        vim.notify("CPM.cmake: downloaded cmake/CPM.cmake successfully")
+      else
+        vim.notify("CPM.cmake: failed to download CPM.cmake", vim.log.levels.ERROR)
+      end
+    end)
+  end,
+  desc = 'Get CPM.cmake',
+}

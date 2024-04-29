@@ -1,24 +1,22 @@
-local autocmd = vim.api.nvim_create_autocmd
-
-autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   command = 'checktime',
 })
 
-autocmd('FileType', {
+vim.api.nvim_create_autocmd('FileType', {
   command = 'setlocal wrap',
   pattern = { 'gitcommit', 'markdown' },
 })
 
-autocmd('TextYankPost', { callback = function() vim.highlight.on_yank { timeout = 500 } end })
+vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.highlight.on_yank { timeout = 500 } end })
 
-autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'CmdlineLeave', 'WinEnter' }, {
+vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'CmdlineLeave', 'WinEnter' }, {
   callback = function()
     if vim.wo.number and vim.api.nvim_get_mode() ~= 'i' then
       vim.wo.relativenumber = true
     end
   end,
 })
-autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEnter', 'WinLeave' }, {
+vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEnter', 'WinLeave' }, {
   callback = function()
     if vim.wo.number then
       vim.wo.relativenumber = false
@@ -27,12 +25,12 @@ autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEnter', 'WinLeave' }, 
   end,
 })
 
-autocmd('FileType', {
+vim.api.nvim_create_autocmd('FileType', {
   command = 'setlocal nonumber norelativenumber nobuflisted nofoldenable cc=',
   pattern = require('utils.ui').excluded_filetypes,
 })
 
-autocmd('BufReadPost', {
+vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function(event)
     local exclude = { 'gitcommit' }
     local buf = event.buf
@@ -48,14 +46,14 @@ autocmd('BufReadPost', {
   end,
 })
 
-autocmd({ 'BufWritePre' }, {
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   callback = function(event)
     local file = vim.loop.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
   end,
 })
 
-autocmd({ 'InsertLeave', 'WinEnter' }, {
+vim.api.nvim_create_autocmd({ 'InsertLeave', 'WinEnter' }, {
   callback = function()
     local ok, cl = pcall(vim.api.nvim_win_get_var, 0, 'auto-cursorline')
     if ok and cl then
@@ -64,7 +62,7 @@ autocmd({ 'InsertLeave', 'WinEnter' }, {
     end
   end,
 })
-autocmd({ 'InsertEnter', 'WinLeave' }, {
+vim.api.nvim_create_autocmd({ 'InsertEnter', 'WinLeave' }, {
   callback = function()
     local cl = vim.wo.cursorline
     if cl then
@@ -74,7 +72,7 @@ autocmd({ 'InsertEnter', 'WinLeave' }, {
   end,
 })
 
-autocmd({ 'VimResized' }, {
+vim.api.nvim_create_autocmd({ 'VimResized' }, {
   callback = function()
     local current_tab = vim.fn.tabpagenr()
     vim.cmd('tabdo wincmd =')
@@ -82,7 +80,7 @@ autocmd({ 'VimResized' }, {
   end,
 })
 
-autocmd('FileType', {
+vim.api.nvim_create_autocmd('FileType', {
   callback = function() vim.bo.commentstring = '// %s' end,
   pattern = { 'c', 'cpp' },
 })

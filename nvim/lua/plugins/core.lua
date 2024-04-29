@@ -286,4 +286,9 @@ return {
     main = 'nvim-treesitter.configs',
     opts = { endwise = { enable = true } },
   },
+  {
+    'chrisgrieser/nvim-recorder',
+    event = 'VeryLazy',
+    opts = {},
+  },
 }

@@ -26,8 +26,14 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEn
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  command = 'setlocal nonumber norelativenumber nobuflisted nofoldenable cc=',
   pattern = require('utils.ui').excluded_filetypes,
+  callback = function()
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+    vim.bo.buflisted = false
+    vim.wo.foldenable = false
+    vim.wo.cc = ''
+  end,
 })
 
 vim.api.nvim_create_autocmd('BufReadPost', {

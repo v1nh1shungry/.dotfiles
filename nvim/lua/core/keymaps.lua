@@ -10,7 +10,7 @@ local xnoremap = require('utils.keymaps').xnoremap
 map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
 
-nnoremap { '<C-q>', ':bd<CR>', desc = 'Close buffer' }
+nnoremap { '<Leader>q', '<Cmd>qa<CR>', desc = 'Quit' }
 
 inoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
 vnoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }

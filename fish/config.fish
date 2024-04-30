@@ -49,6 +49,10 @@ if status is-interactive
         alias fd fdfind
     end
 
+    if command -q ncdu
+        alias ncdu 'ncdu --color dark'
+    end
+
     if string match '*WSL*' (uname -a) > /dev/null
         function proxy
             if test "$argv" = unset

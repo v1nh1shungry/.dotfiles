@@ -14,10 +14,7 @@ return {
       { '<Leader>:',  '<Cmd>Telescope commands<CR>',               desc = 'Commands' },
       { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',                desc = 'Keymaps' },
       { '<Leader>g/', '<Cmd>Telescope git_commits<CR>',            desc = 'Commits' },
-      { '<Leader>sb', '<Cmd>Telescope buffers<CR>',                desc = 'Switch buffer' },
       { '<Leader>sl', '<Cmd>Telescope resume<CR>',                 desc = 'Last search' },
-      { "<Leader>s'", '<Cmd>Telescope marks<CR>',                  desc = 'Marks' },
-      { '<Leader>s"', '<Cmd>Telescope registers<CR>',              desc = 'Registers' },
       { '<Leader>sh', '<Cmd>Telescope highlights<CR>',             desc = 'Highlight groups' },
     },
     opts = {
@@ -239,6 +236,21 @@ return {
   },
   {
     'andrewferrier/debugprint.nvim',
+    dependencies = {
+      'folke/which-key.nvim',
+      optional = true,
+      opts = { defaults = { ['g?'] = { name = '+debugprint' } } },
+    },
+    keys = {
+      'g?p',
+      'g?P',
+      { 'g?v', mode = { 'n', 'x' } },
+      { 'g?V', mode = { 'n', 'x' } },
+      'g?o',
+      'g?O',
+      'g?t',
+      'g?d',
+    },
     opts = {
       keymaps = {
         normal = {
@@ -318,6 +330,7 @@ return {
         search = { enabled = false },
         char = { highlight = { backdrop = false } },
       },
+      prompt = { enabled = false },
     },
   },
   {
@@ -342,7 +355,6 @@ return {
   },
   {
     'HakonHarnes/img-clip.nvim',
-    event = 'VeryLazy',
     keys = { { '<Leader>fi', '<Cmd>PasteImage<CR>', desc = 'Paste image from clipboard' } },
   },
   {

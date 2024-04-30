@@ -142,6 +142,7 @@ return {
         'markdown_inline',
         'query',
         'regex',
+        'vim',
         'vimdoc',
       },
       highlight = { enable = true, additional_vim_regex_highlighting = true },
@@ -160,11 +161,11 @@ return {
   },
   {
     'Wansmer/treesj',
-    config = true,
     keys = {
       { 'S', '<Cmd>TSJSplit<CR>', desc = 'Split line' },
       { 'J', '<Cmd>TSJJoin<CR>',  desc = 'Join line' },
     },
+    opts = { use_default_keymaps = false },
   },
   {
     'RRethy/vim-illuminate',
@@ -288,7 +289,31 @@ return {
   },
   {
     'chrisgrieser/nvim-recorder',
-    event = 'VeryLazy',
-    opts = {},
+    opts = { mapping = { switchSlot = '<M-q>' } },
+    keys = {
+      'q',
+      'Q',
+      '<M-q>',
+      { 'cq', desc = 'Edit macro' },
+      { 'dq', desc = 'Delete all macros' },
+      { 'yq', desc = 'Yank macro' },
+    },
+  },
+  {
+    'fnune/recall.nvim',
+    config = function()
+      require('recall').setup()
+      vim.api.nvim_create_autocmd('VimLeavePre', {
+        callback = function() require('recall').clear() end,
+      })
+    end,
+    dependencies = 'nvim-telescope/telescope.nvim',
+    keys = {
+      { "<Leader>s'", '<Cmd>Telescope recall theme=ivy<CR>',        desc = 'Marks' },
+      { "<Leader>f'", function() require('recall').toggle() end,    desc = 'Toggle mark here' },
+      { "]'",         function() require('recall').goto_next() end, desc = 'Next mark' },
+      { "['",         function() require('recall').goto_prev() end, desc = 'Previous mark' },
+      { "d'",         function() require('recall').clear() end,     desc = 'Delete all marks' },
+    },
   },
 }

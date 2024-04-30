@@ -1,4 +1,5 @@
 local events = require('utils.events')
+local diagnostic_signs = require('utils.ui').icons.diagnostic
 local excluded_filetypes = require('utils.ui').excluded_filetypes
 
 return {
@@ -116,18 +117,76 @@ return {
     'nvim-lualine/lualine.nvim',
     config = function()
       vim.opt.laststatus = 3
-      local theme = require('user').ui.statusline_theme
-      local opts = require('plugins.ui.lualine.' .. theme)
-      opts.extensions = {
-        'lazy',
-        'man',
-        'neo-tree',
-        'nvim-dap-ui',
-        'quickfix',
-        'toggleterm',
-        'trouble',
+      require('lualine').setup {
+        options = { component_separators = '', section_separators = '' },
+        sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_y = {},
+          lualine_z = {},
+          lualine_c = {
+            {
+              'branch',
+              icon = '',
+              on_click = function() require('telescope.builtin').git_branches() end,
+            },
+            { 'mode', fmt = function(str) return '-- ' .. str .. ' --' end },
+          },
+          lualine_x = {
+            { function() return '%S' end },
+            {
+              function()
+                local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+                return string.format('Ln %s,Col %s', row, col + 1)
+              end
+            },
+            {
+              function() return 'Spaces: ' .. vim.bo.shiftwidth end,
+              on_click = function()
+                vim.ui.input({ prompt = 'Tab Size: ' }, function(input)
+                  vim.bo.shiftwidth = tonumber(input)
+                end)
+              end,
+            },
+            { 'encoding',                fmt = function(str) return string.upper(str) end },
+            {
+              'fileformat',
+              icons_enabled = true,
+              symbols = { unix = 'LF', dos = 'CRLF', mac = 'CR' },
+              on_click = function()
+                local table = { LF = 'unix', CRLF = 'dos', CR = 'mac' }
+                vim.ui.select(
+                  { 'LF', 'CRLF', 'CR' },
+                  { prompt = 'Line Ending:' },
+                  function(choice)
+                    if choice ~= nil then
+                      vim.bo.fileformat = table[choice]
+                    end
+                  end
+                )
+              end,
+            },
+            { 'filetype', icons_enabled = false },
+          },
+        },
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_y = {},
+          lualine_z = {},
+          lualine_c = {},
+          lualine_x = {},
+        },
+        extensions = {
+          'lazy',
+          'man',
+          'neo-tree',
+          'nvim-dap-ui',
+          'quickfix',
+          'toggleterm',
+          'trouble',
+        },
       }
-      require('lualine').setup(opts)
     end,
     event = 'VeryLazy',
   },
@@ -229,6 +288,7 @@ return {
         ft_ignore = excluded_filetypes,
         relculright = true,
         segments = {
+          { sign = { name = { 'RecallSign' } },    click = 'v:lua.ScSa' },
           { sign = { name = { 'Dap' } },           click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },           click = 'v:lua.ScLa' },
           { sign = { namespace = { 'gitsigns' } }, click = 'v:lua.ScSa' },
@@ -335,6 +395,14 @@ return {
           expander_collapsed = '',
           expander_expanded = '',
           expander_highlight = 'NeoTreeExpander',
+        },
+        diagnostics = {
+          symbols = {
+            hint = diagnostic_signs.hint,
+            info = diagnostic_signs.info,
+            warn = diagnostic_signs.warn,
+            error = diagnostic_signs.error,
+          },
         },
       },
       event_handlers = {
@@ -483,7 +551,6 @@ return {
       render = function(props)
         local label = {}
         if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
-          local diagnostic_signs = require('utils.ui').icons.diagnostic
           local icons = {
             Error = diagnostic_signs.error,
             Warn = diagnostic_signs.warn,
@@ -512,5 +579,10 @@ return {
     dependencies = 'nvim-treesitter/nvim-treesitter',
     ft = 'markdown',
     opts = { conceal = { rendered = 0 } },
+  },
+  {
+    'mcauley-penney/visual-whitespace.nvim',
+    event = events.enter_buffer,
+    opts = {},
   },
 }

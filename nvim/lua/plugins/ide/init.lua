@@ -140,16 +140,6 @@ local M = {
         return ret
       end
 
-      local icons = require('utils.ui').icons.diagnostic
-      for name, icon in pairs {
-        DiagnosticSignError = icons.error,
-        DiagnosticSignWarn = icons.warn,
-        DiagnosticSignHint = icons.hint,
-        DiagnosticSignInfo = icons.info,
-      } do
-        vim.fn.sign_define(name, { texthl = name, text = icon, numhl = '' })
-      end
-
       vim.diagnostic.config(vim.deepcopy(lsp_opts.diagnostics))
 
       local capabilities = vim.tbl_deep_extend(

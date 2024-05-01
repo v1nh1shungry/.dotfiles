@@ -7,6 +7,13 @@ M.icons = {
     hint = '',
     info = '',
   },
+  dap = {
+    breakpoint = '󰝥',
+    breakpoint_condition = '',
+    breakpoint_rejected = '',
+    log_point = '',
+    stopped = '󰁕',
+  }
 }
 
 M.excluded_filetypes = {
@@ -34,6 +41,16 @@ M.excluded_filetypes = {
   'sagaoutline',
   'spectre_panel',
   'ssr',
+}
+
+M.rainbow_highlight = {
+  'RainbowDelimiterRed',
+  'RainbowDelimiterYellow',
+  'RainbowDelimiterBlue',
+  'RainbowDelimiterOrange',
+  'RainbowDelimiterGreen',
+  'RainbowDelimiterViolet',
+  'RainbowDelimiterCyan',
 }
 
 return M

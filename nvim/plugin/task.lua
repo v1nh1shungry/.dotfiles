@@ -88,7 +88,12 @@ for lang, cmd in pairs(execute_opts) do
     callback = function(args)
       nnoremap {
         '<Leader>fx',
-        '<Cmd>TermExec cmd="' .. table.concat(cook(cmd), ' ') .. '"<CR>',
+        function()
+          if opts.save then
+            vim.cmd.w()
+          end
+          vim.cmd('TermExec cmd="' .. table.concat(cook(cmd), ' ') .. '"')
+        end,
         buffer = args.buf,
         desc = 'Execute',
       }

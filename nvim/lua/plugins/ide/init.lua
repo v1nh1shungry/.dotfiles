@@ -148,6 +148,10 @@ local M = {
         vim.lsp.protocol.make_client_capabilities(),
         require('cmp_nvim_lsp').default_capabilities()
       )
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true
+      }
 
       for server, opts in pairs(lsp_opts.servers) do
         opts = vim.tbl_deep_extend('force', {
@@ -244,6 +248,7 @@ local M = {
       lightbulb = { sign = false },
       ui = { winblend = require('user').ui.blend },
       beacon = { enable = false },
+      symbol_in_winbar = { enable = false },
     },
   },
   {
@@ -398,27 +403,38 @@ local M = {
     'mfussenegger/nvim-dap',
     config = function()
       local dap = require('dap')
+      local icons = require('utils.ui').icons.dap
 
-      vim.fn.sign_define(
-        'DapBreakpoint',
-        { text = '󰝥', texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
-      )
-      vim.fn.sign_define(
-        'DapBreakpointCondition',
-        { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
-      )
-      vim.fn.sign_define(
-        'DapBreakpointRejected',
-        { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = '' }
-      )
-      vim.fn.sign_define(
-        'DapLogPoint',
-        { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' }
-      )
-      vim.fn.sign_define(
-        'DapStopped',
-        { text = '󰁕', texthl = 'DapStopped', linehl = '', numhl = '' }
-      )
+      vim.fn.sign_define('DapBreakpoint', {
+        text = icons.breakpoint,
+        texthl = 'DiagnosticSignError',
+        linehl = '',
+        numhl = '',
+      })
+      vim.fn.sign_define('DapBreakpointCondition', {
+        text = icons.breakpoint_condition,
+        texthl = 'DiagnosticSignError',
+        linehl = '',
+        numhl = '',
+      })
+      vim.fn.sign_define('DapBreakpointRejected', {
+        text = icons.breakpoint_rejected,
+        texthl = 'DapBreakpoint',
+        linehl = '',
+        numhl = '',
+      })
+      vim.fn.sign_define('DapLogPoint', {
+        text = icons.log_point,
+        texthl = 'DiagnosticSignError',
+        linehl = '',
+        numhl = '',
+      })
+      vim.fn.sign_define('DapStopped', {
+        text = icons.stopped,
+        texthl = 'DapStopped',
+        linehl = '',
+        numhl = '',
+      })
 
       local nnoremap = require('utils.keymaps').nnoremap
       nnoremap { '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' }
@@ -530,6 +546,16 @@ local M = {
         fish = { 'fish_indent' },
       },
     },
+  },
+  {
+    'Bekaboo/dropbar.nvim',
+    config = function()
+      require('utils.keymaps').nnoremap {
+        '<Leader>ud',
+        function() require('dropbar.api').pick() end,
+        desc = 'Dropbar',
+      }
+    end,
   },
 }
 

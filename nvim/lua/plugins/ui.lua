@@ -292,6 +292,7 @@ return {
           { sign = { name = { 'Dap' } },           click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },           click = 'v:lua.ScLa' },
           { sign = { namespace = { 'gitsigns' } }, click = 'v:lua.ScSa' },
+          { text = { builtin.foldfunc },           click = 'v:lua.ScSa' },
         },
       }
     end,
@@ -584,5 +585,65 @@ return {
     'mcauley-penney/visual-whitespace.nvim',
     event = events.enter_buffer,
     opts = {},
+  },
+  {
+    'hiphish/rainbow-delimiters.nvim',
+    main = 'rainbow-delimiters.setup',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    event = events.enter_buffer,
+    opts = { highlight = require('utils.ui').rainbow_highlight },
+  },
+  {
+    'kevinhwang91/nvim-ufo',
+    init = function()
+      vim.o.foldcolumn = '1'
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    dependencies = 'kevinhwang91/promise-async',
+    event = 'VeryLazy',
+    opts = {
+      preview = {
+        win_config = {
+          border = { '', '─', '', '', '', '─', '', '' },
+          winhighlight = 'Normal:UfoPreviewNormal,FloatBorder:UfoPreviewBorder,CursorLine:UfoPreviewCursorLine',
+          winblend = require('user').ui.blend,
+        },
+        mappings = {
+          scrollU = '<C-u>',
+          scrollD = '<C-d>',
+          jumpTop = '[',
+          jumpBot = ']',
+        },
+      },
+      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = (' 󰁂 %d '):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, { suffix, 'MoreMsg' })
+        return newVirtText
+      end,
+    },
+    keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },
   },
 }

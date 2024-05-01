@@ -10,6 +10,14 @@ return {
         lsp_saga = true,
         lsp_trouble = true,
         mason = true,
+        native_lsp = {
+          underlines = {
+            errors = { 'undercurl' },
+            hints = { 'undercurl' },
+            warnings = { 'undercurl' },
+            information = { 'undercurl' },
+          }
+        },
         neotree = true,
         noice = true,
         notify = true,

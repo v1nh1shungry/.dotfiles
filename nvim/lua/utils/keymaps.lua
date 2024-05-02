@@ -11,6 +11,7 @@ M.map = function(opts)
   map(vim.tbl_extend('keep', opts, {
     mode = '',
     silent = true,
+    unique = true,
   }))
 end
 

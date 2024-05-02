@@ -13,7 +13,6 @@ return {
       { '<Leader>sa', '<Cmd>Telescope autocommands<CR>',           desc = 'Autocommands' },
       { '<Leader>:',  '<Cmd>Telescope commands<CR>',               desc = 'Commands' },
       { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',                desc = 'Keymaps' },
-      { '<Leader>g/', '<Cmd>Telescope git_commits<CR>',            desc = 'Commits' },
       { '<Leader>sl', '<Cmd>Telescope resume<CR>',                 desc = 'Last search' },
       { '<Leader>sh', '<Cmd>Telescope highlights<CR>',             desc = 'Highlight groups' },
     },
@@ -344,12 +343,6 @@ return {
     opts = { options = { use_as_default_explorer = false } },
   },
   {
-    'debugloop/telescope-undo.nvim',
-    config = function() require('telescope').load_extension('undo') end,
-    dependencies = 'nvim-telescope/telescope.nvim',
-    keys = { { '<Leader>ut', '<Cmd>Telescope undo<CR>', desc = 'Undotree' } },
-  },
-  {
     'rhysd/committia.vim',
     event = 'BufReadPre COMMIT_EDITMSG',
   },
@@ -358,18 +351,45 @@ return {
     keys = { { '<Leader>fi', '<Cmd>PasteImage<CR>', desc = 'Paste image from clipboard' } },
   },
   {
-    'chrisgrieser/nvim-scissors',
+    'abecodes/tabout.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'L3MON4D3/LuaSnip',
+      'hrsh7th/nvim-cmp',
+    },
+    event = events.enter_insert,
+    opts = {},
+  },
+  {
+    'kawre/leetcode.nvim',
+    build = ':TSUpdate html',
     dependencies = {
       'nvim-telescope/telescope.nvim',
-      {
-        'folke/which-key.nvim',
-        optional = true,
-        opts = { defaults = { ['<Leader>cs'] = { name = '+snippet' } } },
-      },
+      'MunifTanjim/nui.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'rcarriga/nvim-notify',
+      'nvim-tree/nvim-web-devicons',
+    },
+    lazy = vim.fn.argv()[1] ~= 'leetcode.nvim',
+    opts = {
+      cn = { enabled = true },
+      injector = { cpp = { before = { '#include <bits/stdc++.h>', 'using namespace std;' } } }
+    },
+  },
+  {
+    'chrisgrieser/nvim-tinygit',
+    ft = { 'git_rebase', 'gitcommit' },
+    dependencies = {
+      'stevearc/dressing.nvim',
+      'nvim-telescope/telescope.nvim',
+      'rcarriga/nvim-notify',
     },
     keys = {
-      { '<Leader>cse', function() require('scissors').editSnippet() end,   desc = 'Edit existing snippet' },
-      { '<Leader>csa', function() require('scissors').addNewSnippet() end, mode = { 'n', 'x' },           desc = 'Add new snippet' },
+      { '<Leader>gc', function() require('tinygit').smartCommit() end,       desc = 'Commit' },
+      { '<Leader>gP', function() require('tinygit').push() end,              desc = 'Push' },
+      { '<Leader>ga', function() require('tinygit').amendNoEdit() end,       desc = 'Amend' },
+      { '<Leader>gU', function() require('tinygit').undoLastCommit() end,    desc = 'Undo last commit' },
     },
+    opts = {},
   },
 }

@@ -30,6 +30,7 @@ M.excluded_filetypes = {
   'edgy',
   'help',
   'lazy',
+  'leetcode.nvim',
   'lspinfo',
   'man',
   'mason',

@@ -79,11 +79,7 @@ return {
       dependencies = 'nvim-treesitter/nvim-treesitter',
       opts = {
         textobjects = {
-          swap = {
-            enable = true,
-            swap_next = { ['<M-l>'] = '@parameter.inner' },
-            swap_previous = { ['<M-h>'] = '@parameter.inner' },
-          },
+          swap = { enable = false },
           move = {
             enable = true,
             set_jumps = true,
@@ -133,7 +129,11 @@ return {
         'c',
         'cmake',
         'cpp',
+        'doxygen',
         'fish',
+        'git_rebase',
+        'gitcommit',
+        'html',
         'json',
         'jsonc',
         'lua',
@@ -323,11 +323,33 @@ return {
     end,
     dependencies = 'nvim-telescope/telescope.nvim',
     keys = {
-      { "<Leader>s'", '<Cmd>Telescope recall theme=ivy<CR>',        desc = 'Marks' },
-      { "<Leader>f'", function() require('recall').toggle() end,    desc = 'Toggle mark here' },
-      { "]'",         function() require('recall').goto_next() end, desc = 'Next mark' },
-      { "['",         function() require('recall').goto_prev() end, desc = 'Previous mark' },
-      { "d'",         function() require('recall').clear() end,     desc = 'Delete all marks' },
+      { '<Leader>sm', '<Cmd>Telescope recall theme=ivy<CR>',        desc = 'Marks' },
+      { '<Leader>fm', function() require('recall').toggle() end,    desc = 'Toggle mark here' },
+      { ']m',         function() require('recall').goto_next() end, desc = 'Next mark' },
+      { '[m',         function() require('recall').goto_prev() end, desc = 'Previous mark' },
+      { 'dm',         function() require('recall').clear() end,     desc = 'Delete all marks' },
+    },
+  },
+  {
+    'Wansmer/sibling-swap.nvim',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    opts = {
+      keymaps = {
+        ['<M-l>'] = 'swap_with_right',
+        ['<M-h>'] = 'swap_with_left',
+      },
+    },
+    keys = {
+      { '<M-l>', desc = 'Swap with right' },
+      { '<M-h>', desc = 'Swap with left' },
+    },
+  },
+  {
+    'tzachar/highlight-undo.nvim',
+    keys = { 'u', '<C-r>' },
+    opts = {
+      undo = { hlgroup = 'IncSearch' },
+      redo = { hlgroup = 'IncSearch' },
     },
   },
 }

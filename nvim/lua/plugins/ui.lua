@@ -595,11 +595,18 @@ return {
   },
   {
     'kevinhwang91/nvim-ufo',
-    init = function()
+    config = function(_, opts)
       vim.o.foldcolumn = '1'
       vim.o.foldlevel = 99
       vim.o.foldlevelstart = 99
       vim.o.foldenable = true
+
+      require('ufo').setup(opts)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        command = 'UfoDetach',
+        pattern = excluded_filetypes,
+      })
     end,
     dependencies = 'kevinhwang91/promise-async',
     event = 'VeryLazy',

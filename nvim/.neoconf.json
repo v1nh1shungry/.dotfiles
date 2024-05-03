@@ -14,8 +14,7 @@
   },
   "lspconfig": {
     "lua_ls": {
-      "Lua.diagnostics.disable": ["missing-fields"],
-      "Lua.completion.autoRequire": false
+      "Lua.diagnostics.disable": ["missing-fields"]
     }
   }
 }

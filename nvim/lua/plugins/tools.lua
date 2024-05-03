@@ -20,6 +20,14 @@ return {
       defaults = {
         prompt_prefix = '🔎 ',
         selection_caret = '➤ ',
+        layout_strategy = 'bottom_pane',
+        layout_config = {
+          bottom_pane = {
+            height = 0.4,
+            preview_cutoff = 100,
+            prompt_position = 'bottom',
+          },
+        },
       },
     },
   },
@@ -385,11 +393,28 @@ return {
       'rcarriga/nvim-notify',
     },
     keys = {
-      { '<Leader>gc', function() require('tinygit').smartCommit() end,       desc = 'Commit' },
-      { '<Leader>gP', function() require('tinygit').push() end,              desc = 'Push' },
-      { '<Leader>ga', function() require('tinygit').amendNoEdit() end,       desc = 'Amend' },
-      { '<Leader>gU', function() require('tinygit').undoLastCommit() end,    desc = 'Undo last commit' },
+      { '<Leader>gc', function() require('tinygit').smartCommit() end,    desc = 'Commit' },
+      { '<Leader>gP', function() require('tinygit').push() end,           desc = 'Push' },
+      { '<Leader>ga', function() require('tinygit').amendNoEdit() end,    desc = 'Amend' },
+      { '<Leader>gU', function() require('tinygit').undoLastCommit() end, desc = 'Undo last commit' },
     },
     opts = {},
+  },
+  {
+    'gabrielpoca/replacer.nvim',
+    init = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          require('utils.keymaps').nnoremap {
+            '<Leader>qr',
+            function() require('replacer').run() end,
+            desc = 'Quickfix replacer',
+            buffer = args.buf,
+          }
+        end,
+        pattern = 'qf',
+      })
+    end,
+    ft = 'qf',
   },
 }

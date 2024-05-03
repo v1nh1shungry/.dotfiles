@@ -561,11 +561,11 @@ return {
           for severity, icon in pairs(icons) do
             local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
             if n > 0 then
-              table.insert(label, { icon .. ' ' .. n .. ' ', group = 'DiagnosticSign' .. severity })
+              if #label ~= 0 then
+                table.insert(label, { ' ', group = 'Normal' })
+              end
+              table.insert(label, { icon .. ' ' .. n, group = 'DiagnosticSign' .. severity })
             end
-          end
-          if #label == 0 then
-            table.insert(label, { '✔', guifg = 'green' })
           end
         end
         return label
@@ -612,43 +612,39 @@ return {
     event = 'VeryLazy',
     opts = {
       preview = {
-        win_config = {
-          border = { '', '─', '', '', '', '─', '', '' },
-          winhighlight = 'Normal:UfoPreviewNormal,FloatBorder:UfoPreviewBorder,CursorLine:UfoPreviewCursorLine',
-          winblend = require('user').ui.blend,
-        },
+        win_config = { winblend = require('user').ui.blend },
         mappings = {
           scrollU = '<C-u>',
           scrollD = '<C-d>',
+          scrollB = '<C-b>',
+          scroolF = '<C-f>',
           jumpTop = '[',
           jumpBot = ']',
         },
       },
-      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
-        local newVirtText = {}
-        local suffix = (' 󰁂 %d '):format(endLnum - lnum)
-        local sufWidth = vim.fn.strdisplaywidth(suffix)
-        local targetWidth = width - sufWidth
-        local curWidth = 0
-        for _, chunk in ipairs(virtText) do
-          local chunkText = chunk[1]
-          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-          if targetWidth > curWidth + chunkWidth then
-            table.insert(newVirtText, chunk)
+      provider_selector = function(_, filetype, buftype)
+        local function handleFallbackException(bufnr, err, providerName)
+          if type(err) == 'string' and err:match 'UfoFallbackException' then
+            return require('ufo').getFolds(bufnr, providerName)
           else
-            chunkText = truncate(chunkText, targetWidth - curWidth)
-            local hlGroup = chunk[2]
-            table.insert(newVirtText, { chunkText, hlGroup })
-            chunkWidth = vim.fn.strdisplaywidth(chunkText)
-            if curWidth + chunkWidth < targetWidth then
-              suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
-            end
-            break
+            return require('promise').reject(err)
           end
-          curWidth = curWidth + chunkWidth
         end
-        table.insert(newVirtText, { suffix, 'MoreMsg' })
-        return newVirtText
+        return (filetype == '' or buftype == 'nofile') and 'indent'
+            or function(bufnr)
+              return require('ufo')
+                  .getFolds(bufnr, 'lsp')
+                  :catch(
+                    function(err)
+                      return handleFallbackException(bufnr, err, 'treesitter')
+                    end
+                  )
+                  :catch(
+                    function(err)
+                      return handleFallbackException(bufnr, err, 'indent')
+                    end
+                  )
+            end
       end,
     },
     keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },

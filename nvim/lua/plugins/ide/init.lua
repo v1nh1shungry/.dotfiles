@@ -60,6 +60,9 @@ local M = {
           ['textDocument/signatureHelp'] = {
             { '<C-k>', vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help' },
           },
+          ['textDocument/codeLens'] = {
+            { '<Leader>cl', vim.lsp.codelens.run, mode = { 'n', 'v' }, desc = 'Run codelens' },
+          },
         }
         for _, key in ipairs({
           { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
@@ -117,7 +120,11 @@ local M = {
         end
 
         if client.supports_method 'textDocument/codeLens' then
-          vim.lsp.codelens.refresh { bufnr = bufnr }
+          vim.lsp.codelens.refresh()
+          vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+            buffer = bufnr,
+            callback = vim.lsp.codelens.refresh,
+          })
         end
       end
 
@@ -191,7 +198,10 @@ local M = {
           },
         },
       },
-      'williamboman/mason-lspconfig.nvim',
+      {
+        'williamboman/mason-lspconfig.nvim',
+        dependencies = 'williamboman/mason.nvim',
+      },
       {
         'folke/neoconf.nvim',
         config = true,
@@ -231,9 +241,10 @@ local M = {
         lua_ls = {
           settings = {
             Lua = {
-              completion = { callSnippet = 'Replace' },
+              completion = { callSnippet = 'Replace', autoRequire = false },
               telemetry = { enable = false },
               workspace = { checkThirdParty = false },
+              codelens = { enable = true },
             },
           },
         },
@@ -253,9 +264,9 @@ local M = {
   },
   {
     'williamboman/mason.nvim',
-    config = true,
     lazy = true,
     keys = { { '<Leader>cm', '<Cmd>Mason<CR>', desc = 'Mason' } },
+    opts = {},
   },
   {
     'hrsh7th/nvim-cmp',
@@ -474,12 +485,12 @@ local M = {
       },
       {
         'theHamsta/nvim-dap-virtual-text',
-        config = true,
+        opts = {},
       },
       {
         'jay-babu/mason-nvim-dap.nvim',
-        dependencies = 'mason.nvim',
-        opts = { ensure_installed = { 'codelldb' }, handlers = {} },
+        dependencies = 'williamboman/mason.nvim',
+        opts = { automatic_installation = true, handlers = {} },
       },
       {
         'folke/which-key.nvim',
@@ -559,6 +570,67 @@ local M = {
         desc = 'Dropbar',
       }
     end,
+  },
+  {
+    'mfussenegger/nvim-lint',
+    config = function(_, opts)
+      local M = {}
+
+      local lint = require('lint')
+      for name, linter in pairs(opts.linters) do
+        if type(linter) == 'table' and type(lint.linters[name]) == 'table' then
+          lint.linters[name] = vim.tbl_deep_extend('force', lint.linters[name], linter)
+        else
+          lint.linters[name] = linter
+        end
+      end
+      lint.linters_by_ft = opts.linters_by_ft
+
+      require('mason-nvim-lint').setup { automatic_installation = true }
+
+      function M.debounce(ms, fn)
+        local timer = vim.uv.new_timer()
+        return function(...)
+          local argv = { ... }
+          timer:start(ms, 0, function()
+            timer:stop()
+            vim.schedule_wrap(fn)(unpack(argv))
+          end)
+        end
+      end
+
+      function M.lint()
+        local names = lint._resolve_linter_by_ft(vim.bo.filetype)
+        names = vim.list_extend({}, names)
+        if #names == 0 then
+          vim.list_extend(names, lint.linters_by_ft['_'] or {})
+        end
+        vim.list_extend(names, lint.linters_by_ft['*'] or {})
+        local ctx = { filename = vim.api.nvim_buf_get_name(0) }
+        ctx.dirname = vim.fn.fnamemodify(ctx.filename, ':h')
+        names = vim.tbl_filter(function(name)
+          local linter = lint.linters[name]
+          if not linter then
+            vim.notify('Linter not found: ' .. name, vim.log.levels.WARN { title = 'nvim-lint' })
+          end
+          return linter and not (type(linter) == 'table' and linter.condition and not linter.condition(ctx))
+        end, names)
+        if #names > 0 then
+          lint.try_lint(names)
+        end
+      end
+
+      vim.api.nvim_create_autocmd(opts.events, { callback = M.debounce(100, M.lint) })
+    end,
+    dependencies = {
+      'rshkarin/mason-nvim-lint',
+      dependencies = 'williamboman/mason.nvim',
+    },
+    opts = {
+      events = { 'TextChanged', 'BufReadPost', 'InsertLeave' },
+      linters_by_ft = { fish = { 'fish' } },
+      linters = {},
+    },
   },
 }
 

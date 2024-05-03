@@ -10,7 +10,7 @@ local xnoremap = require('utils.keymaps').xnoremap
 map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
 
-nnoremap { '<Leader>q', '<Cmd>qa<CR>', desc = 'Quit' }
+nnoremap { '<Leader>qq', '<Cmd>qa<CR>', desc = 'Quit' }
 
 inoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
 vnoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
@@ -21,7 +21,7 @@ nnoremap { '<C-j>', '<C-w>j', desc = 'Go to lower window' }
 nnoremap { '<C-k>', '<C-w>k', desc = 'Go to upper window' }
 nnoremap { '<C-l>', '<C-w>l', desc = 'Go to right window' }
 
-tnoremap { '<Esc>', '<C-\\><C-n>' }
+tnoremap { '<Esc><Esc>', '<C-\\><C-n>' }
 
 vnoremap { '<', '<gv' }
 vnoremap { '>', '>gv' }
@@ -53,6 +53,8 @@ nmap { 'gV', '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = 'V
 
 nnoremap { '<Leader><Tab>q', '<Cmd>tabclose<CR>', desc = 'Close tab' }
 nnoremap { '<Leader><Tab><Tab>', '<Cmd>tabnew<CR>', desc = 'New tab' }
+nnoremap { ']<Tab>', '<Cmd>tabnext<CR>', desc = 'Next tab' }
+nnoremap { '[<Tab>', '<Cmd>tabprev<CR>', desc = 'Previous tab' }
 
 nnoremap { '<Leader>,', '<Cmd>e #<CR>', desc = 'Last buffer' }
 

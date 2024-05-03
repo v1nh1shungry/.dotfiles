@@ -39,6 +39,7 @@ return {
         dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
         dashboard.button('/', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
         dashboard.button('c', ' ' .. ' Config', '<Cmd>e ~/.nvimrc<CR>'),
+        dashboard.button('s', ' ' .. ' Restore session', function() require('persistence').load() end),
         dashboard.button('l', '󰒲 ' .. ' Lazy', '<Cmd>Lazy<CR>'),
         dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
       }
@@ -192,8 +193,8 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
-    config = true,
     event = events.enter_buffer,
+    opts = { max_lines = 4, multiline_threshold = 1 },
   },
   {
     'folke/which-key.nvim',
@@ -217,6 +218,7 @@ return {
         ['<Leader>s'] = { name = '+search' },
         ['<Leader>u'] = { name = '+UI' },
         ['<Leader>x'] = { name = '+diagnostics/quickfix' },
+        ['<Leader>q'] = { name = '+quit/sessions' },
       },
     },
   },
@@ -446,6 +448,13 @@ return {
           end
           Offset.edgy = true
         end
+
+        return {
+          options = {
+            diagnostics = 'nvim_lsp',
+            diagnostics_update_in_insert = true,
+          },
+        }
       end,
     },
     opts = {
@@ -571,6 +580,12 @@ return {
         return label
       end,
       ignore = { filetypes = excluded_filetypes },
+      window = {
+        margin = {
+          vertical = { top = 3, bottom = 0 },
+          horizontal = { left = 1, right = 3 },
+        },
+      },
     },
   },
   { 'nvim-tree/nvim-web-devicons', lazy = true },
@@ -648,5 +663,12 @@ return {
       end,
     },
     keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },
+  },
+  {
+    'andersevenrud/nvim_context_vt',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    event = events.enter_buffer,
+    opts = { disable_ft = excluded_filetypes },
+    keys = { { '<Leader>uv', '<Cmd>NvimContextVtToggle<CR>', desc = 'Toggle context virtual text' } },
   },
 }

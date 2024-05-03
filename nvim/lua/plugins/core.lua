@@ -3,7 +3,10 @@ local events = require('utils.events')
 return {
   {
     'andymass/vim-matchup',
-    config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
+    config = function()
+      vim.g.matchup_matchparen_offscreen = { method = '' }
+      vim.g.matchup_matchparen_enabled = false
+    end,
     event = events.enter_buffer,
   },
   {
@@ -355,5 +358,43 @@ return {
   {
     'lambdalisue/suda.vim',
     cmd = { 'SudaRead', 'SudaWrite' },
+  },
+  {
+    'folke/persistence.nvim',
+    event = events.enter_buffer,
+    opts = { options = vim.opt.sessionoptions:get() },
+    keys = {
+      { '<Leader>qs', function() require('persistence').load() end, desc = 'Restore Session' },
+      { '<Leader>ql', function() require('persistence').load({ last = true }) end, desc = 'Restore Last Session' },
+      {
+        '<Leader>qd',
+        function()
+          require('persistence').stop()
+          vim.cmd.qall()
+        end,
+        desc = "Don't Save Current Session",
+      },
+      {
+        '<Leader>qc',
+        function() os.remove(require('persistence').get_current()) end,
+        desc = 'Delete current session',
+      },
+      {
+        '<Leader>qC',
+        function()
+          for _, s in ipairs(require('persistence').list()) do
+            os.remove(s)
+          end
+        end,
+        desc = 'Delete all sessions',
+      },
+      {
+        '<Leader>qL',
+        function()
+          vim.notify('Sessions: ' .. vim.inspect(require('persistence').list()), vim.log.levels.INFO, { title = 'Persistence' })
+        end,
+        desc = 'List all sessions',
+      },
+    },
   },
 }

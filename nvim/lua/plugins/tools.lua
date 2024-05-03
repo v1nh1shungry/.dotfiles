@@ -417,4 +417,17 @@ return {
     end,
     ft = 'qf',
   },
+  {
+    'ThePrimeagen/refactoring.nvim',
+    cmd = 'Refactor',
+    keys = {
+      {
+        '<Leader>sR',
+        function() require('refactoring').select_refactor() end,
+        desc = 'Refactoring',
+        mode = { 'n', 'x' },
+      },
+    },
+    opts = {},
+  },
 }

@@ -120,10 +120,10 @@ local M = {
         end
 
         if client.supports_method 'textDocument/codeLens' then
-          vim.lsp.codelens.refresh()
+          vim.lsp.codelens.refresh { bufnr = bufnr }
           vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
             buffer = bufnr,
-            callback = vim.lsp.codelens.refresh,
+            callback = function() vim.lsp.codelens.refresh { bufnr = bufnr } end,
           })
         end
       end
@@ -274,11 +274,9 @@ local M = {
       local cmp = require('cmp')
       local luasnip = require('luasnip')
 
-      luasnip.setup { enable_autosnippets = true }
-      require('luasnip.loaders.from_vscode').lazy_load { paths = vim.fn.stdpath('config') .. '/snippets' }
+      require('luasnip.loaders.from_vscode').lazy_load()
 
       cmp.setup {
-        snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
         window = { completion = { side_padding = 0 } },
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
@@ -289,6 +287,7 @@ local M = {
               preset = 'codicons',
             })(entry, vim_item)
             local strings = vim.split(kind.kind, '%s', { trimempty = true })
+            kind.abbr = vim.trim(kind.abbr)
             kind.kind = ' ' .. strings[1] .. ' '
             kind.menu = '    ' .. strings[2]
             return kind
@@ -322,8 +321,8 @@ local M = {
           end, { 'i', 's' }),
         }),
         sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
           { name = 'luasnip' },
+          { name = 'nvim_lsp' },
         }, {
           { name = 'buffer' },
           { name = 'path' },
@@ -367,6 +366,8 @@ local M = {
         dependencies = {
           'L3MON4D3/LuaSnip',
           build = 'make install_jsregexp',
+          dependencies = { 'rafamadriz/friendly-snippets' },
+          opts = { enable_autosnippets = true },
         },
       },
       'onsails/lspkind.nvim',
@@ -586,8 +587,6 @@ local M = {
       end
       lint.linters_by_ft = opts.linters_by_ft
 
-      require('mason-nvim-lint').setup { automatic_installation = true }
-
       function M.debounce(ms, fn)
         local timer = vim.uv.new_timer()
         return function(...)
@@ -622,10 +621,7 @@ local M = {
 
       vim.api.nvim_create_autocmd(opts.events, { callback = M.debounce(100, M.lint) })
     end,
-    dependencies = {
-      'rshkarin/mason-nvim-lint',
-      dependencies = 'williamboman/mason.nvim',
-    },
+    event = events.enter_buffer,
     opts = {
       events = { 'TextChanged', 'BufReadPost', 'InsertLeave' },
       linters_by_ft = { fish = { 'fish' } },

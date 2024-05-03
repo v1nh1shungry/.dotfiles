@@ -18,6 +18,7 @@ M.icons = {
 
 M.excluded_filetypes = {
   'ClangdAST',
+  'DressingInput',
   'Trouble',
   'checkhealth',
   'cmake_tools_terminal',

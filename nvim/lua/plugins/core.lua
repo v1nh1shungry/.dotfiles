@@ -323,7 +323,7 @@ return {
     end,
     dependencies = 'nvim-telescope/telescope.nvim',
     keys = {
-      { '<Leader>sm', '<Cmd>Telescope recall theme=ivy<CR>',        desc = 'Marks' },
+      { '<Leader>sm', '<Cmd>Telescope recall<CR>',                  desc = 'Marks' },
       { '<Leader>fm', function() require('recall').toggle() end,    desc = 'Toggle mark here' },
       { ']m',         function() require('recall').goto_next() end, desc = 'Next mark' },
       { '[m',         function() require('recall').goto_prev() end, desc = 'Previous mark' },
@@ -351,5 +351,9 @@ return {
       undo = { hlgroup = 'IncSearch' },
       redo = { hlgroup = 'IncSearch' },
     },
+  },
+  {
+    'lambdalisue/suda.vim',
+    cmd = { 'SudaRead', 'SudaWrite' },
   },
 }

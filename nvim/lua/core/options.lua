@@ -32,7 +32,7 @@ vim.opt.scrolloff = 5
 vim.opt.shell = '/bin/fish'
 vim.opt.shiftround = true
 vim.opt.shiftwidth = 2
-vim.opt.shortmess:append({ C = true, I = true, W = true, c = true })
+vim.opt.shortmess:append { C = true, I = true, W = true, c = true }
 vim.opt.showcmdloc = 'statusline'
 vim.opt.showmode = false
 vim.opt.sidescrolloff = 8

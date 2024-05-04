@@ -1,5 +1,5 @@
 return {
-  { 'folke/tokyonight.nvim',  lazy = true },
+  { 'folke/tokyonight.nvim', lazy = true },
   { 'EdenEast/nightfox.nvim', lazy = true },
   {
     'catppuccin/nvim',
@@ -16,7 +16,7 @@ return {
             hints = { 'undercurl' },
             warnings = { 'undercurl' },
             information = { 'undercurl' },
-          }
+          },
         },
         neotree = true,
         noice = true,

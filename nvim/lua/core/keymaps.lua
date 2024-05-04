@@ -26,21 +26,29 @@ tnoremap { '<Esc><Esc>', '<C-\\><C-n>' }
 vnoremap { '<', '<gv' }
 vnoremap { '>', '>gv' }
 
-nnoremap { '<Leader>xq', function()
-  local nr = vim.fn.winnr('$')
-  vim.cmd 'cwindow'
-  if nr == vim.fn.winnr('$') then
-    vim.cmd 'cclose'
-  end
-end, desc = 'Toggle quickfix' }
+nnoremap {
+  '<Leader>xq',
+  function()
+    local nr = vim.fn.winnr('$')
+    vim.cmd('cwindow')
+    if nr == vim.fn.winnr('$') then
+      vim.cmd('cclose')
+    end
+  end,
+  desc = 'Toggle quickfix',
+}
 
-nnoremap { '<Leader>xl', function()
-  local nr = vim.fn.winnr('$')
-  vim.cmd 'lwindow'
-  if nr == vim.fn.winnr('$') then
-    vim.cmd 'lclose'
-  end
-end, desc = 'Toggle location list' }
+nnoremap {
+  '<Leader>xl',
+  function()
+    local nr = vim.fn.winnr('$')
+    vim.cmd('lwindow')
+    if nr == vim.fn.winnr('$') then
+      vim.cmd('lclose')
+    end
+  end,
+  desc = 'Toggle location list',
+}
 
 inoremap { ',', ',<c-g>u' }
 inoremap { '.', '.<c-g>u' }
@@ -118,10 +126,10 @@ nnoremap {
       'cmake/CPM.cmake',
       'https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake',
     }, {}, function(out)
-      if (out.code == 0) then
-        vim.notify("CPM.cmake: downloaded cmake/CPM.cmake successfully")
+      if out.code == 0 then
+        vim.notify('CPM.cmake: downloaded cmake/CPM.cmake successfully')
       else
-        vim.notify("CPM.cmake: failed to download CPM.cmake", vim.log.levels.ERROR)
+        vim.notify('CPM.cmake: failed to download CPM.cmake', vim.log.levels.ERROR)
       end
     end)
   end,

@@ -34,7 +34,7 @@ return {
         c = 'Class',
         f = 'Function',
         o = 'Block, conditional, loop',
-        q = "Quote `, \", '",
+        q = 'Quote `, ", \'',
         t = 'Tag',
       }
       local a = vim.deepcopy(i)
@@ -43,7 +43,7 @@ return {
       end
       local ic = vim.deepcopy(i)
       local ac = vim.deepcopy(a)
-      for key, name in pairs({ n = 'Next', l = 'Last' }) do
+      for key, name in pairs { n = 'Next', l = 'Last' } do
         i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
         a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
       end
@@ -99,7 +99,7 @@ return {
             },
           },
         },
-      }
+      },
     },
     event = events.enter_buffer,
     opts = function()
@@ -163,7 +163,7 @@ return {
     'Wansmer/treesj',
     keys = {
       { 'S', '<Cmd>TSJSplit<CR>', desc = 'Split line' },
-      { 'J', '<Cmd>TSJJoin<CR>',  desc = 'Join line' },
+      { 'J', '<Cmd>TSJJoin<CR>', desc = 'Join line' },
     },
     opts = { use_default_keymaps = false },
   },
@@ -175,7 +175,7 @@ return {
     keys = {
       { '[[', function() require('illuminate').goto_prev_reference(false) end, desc = 'Previous reference' },
       { ']]', function() require('illuminate').goto_next_reference(false) end, desc = 'Next reference' },
-    }
+    },
   },
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -226,11 +226,11 @@ return {
       vim.keymap.del('x', 'ys')
     end,
     keys = {
-      { 'ys',  desc = 'Add surrounding' },
-      { 'ds',  desc = 'Delete surrounding' },
-      { 'cs',  desc = 'Change surrounding' },
-      { 'S',   [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = 'x' },
-      { 'yss', 'ys_',                                        remap = true },
+      { 'ys', desc = 'Add surrounding' },
+      { 'ds', desc = 'Delete surrounding' },
+      { 'cs', desc = 'Change surrounding' },
+      { 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = 'x' },
+      { 'yss', 'ys_', remap = true },
     },
   },
   {
@@ -260,9 +260,9 @@ return {
   {
     'chrisgrieser/nvim-spider',
     keys = {
-      { 'w',  "<Cmd>lua require('spider').motion('w')<CR>",  mode = { 'n', 'o', 'x' }, desc = 'Next word' },
-      { 'e',  "<Cmd>lua require('spider').motion('e')<CR>",  mode = { 'n', 'o', 'x' }, desc = 'Next end of word' },
-      { 'b',  "<Cmd>lua require('spider').motion('b')<CR>",  mode = { 'n', 'o', 'x' }, desc = 'Previous word' },
+      { 'w', "<Cmd>lua require('spider').motion('w')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Next word' },
+      { 'e', "<Cmd>lua require('spider').motion('e')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Next end of word' },
+      { 'b', "<Cmd>lua require('spider').motion('b')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Previous word' },
       { 'ge', "<Cmd>lua require('spider').motion('ge')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Previous end of word' },
     },
   },
@@ -323,11 +323,11 @@ return {
     end,
     dependencies = 'nvim-telescope/telescope.nvim',
     keys = {
-      { '<Leader>sm', '<Cmd>Telescope recall<CR>',                  desc = 'Marks' },
-      { '<Leader>fm', function() require('recall').toggle() end,    desc = 'Toggle mark here' },
-      { ']m',         function() require('recall').goto_next() end, desc = 'Next mark' },
-      { '[m',         function() require('recall').goto_prev() end, desc = 'Previous mark' },
-      { 'dm',         function() require('recall').clear() end,     desc = 'Delete all marks' },
+      { '<Leader>sm', '<Cmd>Telescope recall<CR>', desc = 'Marks' },
+      { '<Leader>fm', function() require('recall').toggle() end, desc = 'Toggle mark here' },
+      { ']m', function() require('recall').goto_next() end, desc = 'Next mark' },
+      { '[m', function() require('recall').goto_prev() end, desc = 'Previous mark' },
+      { 'dm', function() require('recall').clear() end, desc = 'Delete all marks' },
     },
   },
   {
@@ -362,7 +362,7 @@ return {
     opts = { options = vim.opt.sessionoptions:get() },
     keys = {
       { '<Leader>qs', function() require('persistence').load() end, desc = 'Restore Session' },
-      { '<Leader>ql', function() require('persistence').load({ last = true }) end, desc = 'Restore Last Session' },
+      { '<Leader>ql', function() require('persistence').load { last = true } end, desc = 'Restore Last Session' },
       {
         '<Leader>qd',
         function()
@@ -388,7 +388,11 @@ return {
       {
         '<Leader>qL',
         function()
-          vim.notify('Sessions: ' .. vim.inspect(require('persistence').list()), vim.log.levels.INFO, { title = 'Persistence' })
+          vim.notify(
+            'Sessions: ' .. vim.inspect(require('persistence').list()),
+            vim.log.levels.INFO,
+            { title = 'Persistence' }
+          )
         end,
         desc = 'List all sessions',
       },

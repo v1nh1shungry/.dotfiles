@@ -20,14 +20,14 @@ local M = {
             { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' },
           },
           ['textDocument/documentSymbol'] = {
-            { '<Leader>uo', '<Cmd>Lspsaga outline<CR>',                desc = 'Symbol outline' },
+            { '<Leader>uo', '<Cmd>Lspsaga outline<CR>', desc = 'Symbol outline' },
             { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' },
           },
           ['textDocument/references'] = {
             { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' },
           },
           ['textDocument/definition'] = {
-            { 'gd',         '<Cmd>Glance definitions<CR>',      desc = 'Go to definition' },
+            { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' },
             { '<Leader>cp', '<Cmd>Lspsaga peek_definition<CR>', desc = 'Preview definition' },
           },
           ['textDocument/typeDefinition*'] = {
@@ -56,42 +56,34 @@ local M = {
             { '<Leader>cl', vim.lsp.codelens.run, mode = { 'n', 'v' }, desc = 'Run codelens' },
           },
         }
-        for _, key in ipairs({
+        for _, key in ipairs {
           { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
-          { ']d',         '<Cmd>Lspsaga diagnostic_jump_next<CR>',  desc = 'Next diagnostic' },
-          { '[d',         '<Cmd>Lspsaga diagnostic_jump_prev<CR>',  desc = 'Previous diagnostic' },
+          { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' },
+          { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' },
           {
             ']w',
-            function()
-              require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.WARN }
-            end,
+            function() require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.WARN } end,
             desc = 'Next warning',
           },
           {
             '[w',
-            function()
-              require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.WARN }
-            end,
+            function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.WARN } end,
             desc = 'Previous warning',
           },
           {
             ']e',
-            function()
-              require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR }
-            end,
+            function() require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR } end,
             desc = 'Next error',
           },
           {
             '[e',
-            function()
-              require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR }
-            end,
+            function() require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR } end,
             desc = 'Previous error',
           },
-          { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>',  desc = 'Document diagnostics' },
+          { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>', desc = 'Document diagnostics' },
           { '<Leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', desc = 'Workspace Diagnostics' },
-          { '<Leader>cn', '<Cmd>Lspsaga finder<CR>',                      desc = 'LSP nagivation pane' },
-        }) do
+          { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
+        } do
           map(key)
         end
         for method, keys in pairs(mappings) do
@@ -111,7 +103,7 @@ local M = {
           vim.lsp.inlay_hint.enable(true)
         end
 
-        if client.supports_method 'textDocument/codeLens' then
+        if client.supports_method('textDocument/codeLens') then
           vim.lsp.codelens.refresh { bufnr = bufnr }
           vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
             buffer = bufnr,
@@ -123,9 +115,7 @@ local M = {
       require('mason-lspconfig').setup { automatic_installation = true }
 
       vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(args)
-          on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
-        end
+        callback = function(args) on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf) end,
       })
 
       local register_capability = vim.lsp.handlers['client/registerCapability']
@@ -149,7 +139,7 @@ local M = {
       )
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
-        lineFoldingOnly = true
+        lineFoldingOnly = true,
       }
 
       for server, opts in pairs(lsp_opts.servers) do
@@ -273,19 +263,19 @@ local M = {
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
           format = function(entry, vim_item)
-            local kind = require('lspkind').cmp_format({
+            local kind = require('lspkind').cmp_format {
               mode = 'symbol_text',
               maxwidth = 50,
               preset = 'codicons',
-            })(entry, vim_item)
+            }(entry, vim_item)
             local strings = vim.split(kind.kind, '%s', { trimempty = true })
             kind.abbr = vim.trim(kind.abbr)
             kind.kind = ' ' .. strings[1] .. ' '
             kind.menu = '    ' .. strings[2]
             return kind
-          end
+          end,
         },
-        mapping = cmp.mapping.preset.insert({
+        mapping = cmp.mapping.preset.insert {
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -294,7 +284,7 @@ local M = {
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               if not cmp.get_selected_entry() then
-                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
               else
                 cmp.confirm()
               end
@@ -311,14 +301,14 @@ local M = {
               fallback()
             end
           end, { 'i', 's' }),
-        }),
+        },
         sources = cmp.config.sources({
           { name = 'luasnip' },
           { name = 'nvim_lsp' },
         }, {
           { name = 'buffer' },
           { name = 'path' },
-          { name = 'rg',    keyword_length = 3 },
+          { name = 'rg', keyword_length = 3 },
         }),
       }
 
@@ -344,7 +334,7 @@ local M = {
         sources = cmp.config.sources {
           { name = 'buffer' },
           { name = 'path' },
-          { name = 'rg',    keyword_length = 3 },
+          { name = 'rg', keyword_length = 3 },
           { name = 'emoji' },
         },
       })
@@ -386,7 +376,7 @@ local M = {
           '<Leader>gd',
           function()
             gs.diffthis()
-            vim.cmd.wincmd 'p'
+            vim.cmd.wincmd('p')
           end,
           desc = 'Diff this',
         }
@@ -493,7 +483,7 @@ local M = {
     },
     keys = {
       { '<Leader>db', '<Cmd>DapToggleBreakpoint<CR>', desc = 'Toggle breakpoint' },
-      { '<Leader>dc', '<Cmd>DapContinue<CR>',         desc = 'Continue' },
+      { '<Leader>dc', '<Cmd>DapContinue<CR>', desc = 'Continue' },
     },
   },
   {
@@ -504,7 +494,7 @@ local M = {
         '[q',
         function()
           if require('trouble').is_open() then
-            require('trouble').previous({ skip_groups = true, jump = true })
+            require('trouble').previous { skip_groups = true, jump = true }
           else
             local ok, err = pcall(vim.cmd.cprev)
             if not ok then
@@ -518,7 +508,7 @@ local M = {
         ']q',
         function()
           if require('trouble').is_open() then
-            require('trouble').next({ skip_groups = true, jump = true })
+            require('trouble').next { skip_groups = true, jump = true }
           else
             local ok, err = pcall(vim.cmd.cnext)
             if not ok then
@@ -526,9 +516,9 @@ local M = {
             end
           end
         end,
-        desc = "Next trouble/quickfix item",
+        desc = 'Next trouble/quickfix item',
       },
-    }
+    },
   },
   {
     'DNLHC/glance.nvim',

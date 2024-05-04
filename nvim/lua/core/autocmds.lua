@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEn
   callback = function()
     if vim.wo.number then
       vim.wo.relativenumber = false
-      vim.cmd 'redraw'
+      vim.cmd('redraw')
     end
   end,
 })

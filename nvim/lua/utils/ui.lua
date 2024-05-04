@@ -13,7 +13,7 @@ M.icons = {
     breakpoint_rejected = '',
     log_point = '',
     stopped = '󰁕',
-  }
+  },
 }
 
 M.excluded_filetypes = {

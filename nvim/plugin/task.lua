@@ -60,20 +60,24 @@ for lang, cmd in pairs(compile_opts) do
           if opts.save then
             vim.cmd.w()
           end
-          vim.system(cmd, {
-            stderr = vim.schedule_wrap(function(error, data)
-              if error == nil and data == nil then
-                return
+          vim.system(
+            cmd,
+            {
+              stderr = vim.schedule_wrap(function(error, data)
+                if error == nil and data == nil then
+                  return
+                end
+                vim.fn.setqflist({}, 'a', { lines = vim.split(error and error or data, '\n', { trimempty = true }) })
+                vim.cmd.copen()
+                vim.cmd.wincmd('p')
+              end),
+            },
+            vim.schedule_wrap(function(res)
+              if res.code == 0 then
+                vim.notify('Sucessfully compile the program!', vim.log.levels.INFO, { title = 'Task' })
               end
-              vim.fn.setqflist({}, 'a', { lines = vim.split(error and error or data, '\n', { trimempty = true }) })
-              vim.cmd.copen()
-              vim.cmd.wincmd 'p'
-            end),
-          }, vim.schedule_wrap(function(res)
-            if res.code == 0 then
-              vim.notify('Sucessfully compile the program!', vim.log.levels.INFO, { title = 'Task' })
-            end
-          end))
+            end)
+          )
         end,
         buffer = args.buf,
         desc = 'Compile',

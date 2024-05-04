@@ -8,12 +8,12 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     event = events.enter_buffer,
     keys = {
-      { '[t',         function() require('todo-comments').jump_prev() end, desc = 'Previous TODO' },
-      { ']t',         function() require('todo-comments').jump_next() end, desc = 'Next TODO' },
-      { '<Leader>xt', '<Cmd>TodoTrouble<CR>',                              desc = 'Todo' },
-      { '<Leader>xT', '<Cmd>TodoTrouble keywords=TODO,FIX,FIXME<CR>',      desc = 'Todo/Fix/Fixme' },
-      { '<Leader>st', '<Cmd>TodoTelescope<CR>',                            desc = 'Todo' },
-      { '<Leader>sT', '<Cmd>TodoTelescope keywords=TODO,FIX,FIXME<CR>',    desc = 'Todo/Fix/Fixme' },
+      { '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous TODO' },
+      { ']t', function() require('todo-comments').jump_next() end, desc = 'Next TODO' },
+      { '<Leader>xt', '<Cmd>TodoTrouble<CR>', desc = 'Todo' },
+      { '<Leader>xT', '<Cmd>TodoTrouble keywords=TODO,FIX,FIXME<CR>', desc = 'Todo/Fix/Fixme' },
+      { '<Leader>st', '<Cmd>TodoTelescope<CR>', desc = 'Todo' },
+      { '<Leader>sT', '<Cmd>TodoTelescope keywords=TODO,FIX,FIXME<CR>', desc = 'Todo/Fix/Fixme' },
     },
     opts = { signs = false },
   },
@@ -89,12 +89,20 @@ return {
       { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' },
       {
         ']b',
-        function() for _ = 1, vim.v.count1 do vim.cmd 'BufferLineCycleNext' end end,
+        function()
+          for _ = 1, vim.v.count1 do
+            vim.cmd('BufferLineCycleNext')
+          end
+        end,
         desc = 'Next buffer',
       },
       {
         '[b',
-        function() for _ = 1, vim.v.count1 do vim.cmd 'BufferLineCyclePrev' end end,
+        function()
+          for _ = 1, vim.v.count1 do
+            vim.cmd('BufferLineCyclePrev')
+          end
+        end,
         desc = 'Previous buffer',
       },
     },
@@ -104,11 +112,11 @@ return {
     'stevearc/dressing.nvim',
     init = function()
       vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        require('lazy').load { plugins = { 'dressing.nvim' } }
         return vim.ui.select(...)
       end
       vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        require('lazy').load { plugins = { 'dressing.nvim' } }
         return vim.ui.input(...)
       end
     end,
@@ -139,32 +147,26 @@ return {
               function()
                 local row, col = unpack(vim.api.nvim_win_get_cursor(0))
                 return string.format('Ln %s,Col %s', row, col + 1)
-              end
+              end,
             },
             {
               function() return 'Spaces: ' .. vim.bo.shiftwidth end,
               on_click = function()
-                vim.ui.input({ prompt = 'Tab Size: ' }, function(input)
-                  vim.bo.shiftwidth = tonumber(input)
-                end)
+                vim.ui.input({ prompt = 'Tab Size: ' }, function(input) vim.bo.shiftwidth = tonumber(input) end)
               end,
             },
-            { 'encoding',                fmt = function(str) return string.upper(str) end },
+            { 'encoding', fmt = function(str) return string.upper(str) end },
             {
               'fileformat',
               icons_enabled = true,
               symbols = { unix = 'LF', dos = 'CRLF', mac = 'CR' },
               on_click = function()
                 local table = { LF = 'unix', CRLF = 'dos', CR = 'mac' }
-                vim.ui.select(
-                  { 'LF', 'CRLF', 'CR' },
-                  { prompt = 'Line Ending:' },
-                  function(choice)
-                    if choice ~= nil then
-                      vim.bo.fileformat = table[choice]
-                    end
+                vim.ui.select({ 'LF', 'CRLF', 'CR' }, { prompt = 'Line Ending:' }, function(choice)
+                  if choice ~= nil then
+                    vim.bo.fileformat = table[choice]
                   end
-                )
+                end)
               end,
             },
             { 'filetype', icons_enabled = false },
@@ -244,7 +246,11 @@ return {
       { '<Leader>xn', '<Cmd>Noice<CR>', desc = 'Message' },
       {
         '<C-f>',
-        function() if not require('noice.lsp').scroll(4) then return '<C-f>' end end,
+        function()
+          if not require('noice.lsp').scroll(4) then
+            return '<C-f>'
+          end
+        end,
         silent = true,
         expr = true,
         desc = 'Scroll forward',
@@ -252,7 +258,11 @@ return {
       },
       {
         '<C-b>',
-        function() if not require('noice.lsp').scroll(-4) then return '<C-b>' end end,
+        function()
+          if not require('noice.lsp').scroll(-4) then
+            return '<C-b>'
+          end
+        end,
         silent = true,
         expr = true,
         desc = 'Scroll backward',
@@ -291,11 +301,11 @@ return {
         ft_ignore = excluded_filetypes,
         relculright = true,
         segments = {
-          { sign = { name = { 'RecallSign' } },    click = 'v:lua.ScSa' },
-          { sign = { name = { 'Dap' } },           click = 'v:lua.ScSa' },
-          { text = { builtin.lnumfunc },           click = 'v:lua.ScLa' },
+          { sign = { name = { 'RecallSign' } }, click = 'v:lua.ScSa' },
+          { sign = { name = { 'Dap' } }, click = 'v:lua.ScSa' },
+          { text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },
           { sign = { namespace = { 'gitsigns' } }, click = 'v:lua.ScSa' },
-          { text = { builtin.foldfunc },           click = 'v:lua.ScSa' },
+          { text = { builtin.foldfunc }, click = 'v:lua.ScSa' },
         },
       }
     end,
@@ -315,9 +325,9 @@ return {
       })
     end,
     keys = {
-      { '/',     desc = 'Forward search' },
-      { '?',     desc = 'Backward search' },
-      { '<C-n>', mode = { 'n', 'v' },     desc = 'Multi cursors' }, -- integrate with vim-visual-multi
+      { '/', desc = 'Forward search' },
+      { '?', desc = 'Backward search' },
+      { '<C-n>', mode = { 'n', 'v' }, desc = 'Multi cursors' }, -- integrate with vim-visual-multi
       {
         'n',
         [[<Cmd>execute('normal! ' . v:count1 . 'Nn'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]],
@@ -336,7 +346,7 @@ return {
     'cbochs/portal.nvim',
     keys = {
       { '<C-o>', '<Cmd>Portal jumplist backward<CR>', desc = 'Jump backward' },
-      { '<C-i>', '<Cmd>Portal jumplist forward<CR>',  desc = 'Jump forward' },
+      { '<C-i>', '<Cmd>Portal jumplist forward<CR>', desc = 'Jump forward' },
     },
   },
   {
@@ -374,9 +384,9 @@ return {
           ['h'] = function(state)
             local node = state.tree:get_node()
             if node.type == 'directory' and node:is_expanded() then
-              require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+              require('neo-tree.sources.filesystem').toggle_directory(state, node)
             else
-              require 'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+              require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
             end
           end,
           ['l'] = function(state)
@@ -412,7 +422,7 @@ return {
       event_handlers = {
         {
           event = 'file_opened',
-          handler = function(_) vim.cmd 'Neotree close' end
+          handler = function(_) vim.cmd('Neotree close') end,
         },
       },
     },
@@ -431,7 +441,7 @@ return {
             if package.loaded.edgy then
               local layout = require('edgy.config').layout
               local ret = { left = '', left_size = 0, right = '', right_size = 0 }
-              for _, pos in ipairs({ 'left', 'right' }) do
+              for _, pos in ipairs { 'left', 'right' } do
                 local sb = layout[pos]
                 if sb and #sb.wins > 0 then
                   local blank = (sb.bounds.width - 7) / 2
@@ -463,40 +473,30 @@ return {
         {
           ft = 'toggleterm',
           size = { height = 0.4 },
-          filter = function(_, win)
-            return vim.api.nvim_win_get_config(win).relative == ''
-          end,
+          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
         },
         {
           ft = 'noice',
           size = { height = 0.4 },
-          filter = function(_, win)
-            return vim.api.nvim_win_get_config(win).relative == ''
-          end,
+          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
         },
         'Trouble',
-        { ft = 'qf',                   title = 'QuickFix' },
+        { ft = 'qf', title = 'QuickFix' },
         {
           ft = 'help',
           size = { height = 0.4 },
-          filter = function(buf)
-            return vim.bo[buf].buftype == 'help'
-          end,
+          filter = function(buf) return vim.bo[buf].buftype == 'help' end,
         },
         { ft = 'cmake_tools_terminal', title = 'CMakeTools Terminal' },
-        { ft = 'dap-repl',             title = 'REPL' },
-        { ft = 'dapui_console',        title = 'Console' },
+        { ft = 'dap-repl', title = 'REPL' },
+        { ft = 'dapui_console', title = 'Console' },
       },
       left = {
         {
           title = 'Explorer',
           ft = 'neo-tree',
-          filter = function(buf)
-            return vim.b[buf].neo_tree_source == 'filesystem'
-          end,
-          open = function()
-            vim.api.nvim_input('<esc><space>e')
-          end,
+          filter = function(buf) return vim.b[buf].neo_tree_source == 'filesystem' end,
+          open = function() vim.api.nvim_input('<esc><space>e') end,
           size = { height = 0.6 },
         },
         'neo-tree',
@@ -545,7 +545,7 @@ return {
     'echasnovski/mini.trailspace',
     config = function()
       require('mini.trailspace').setup()
-      vim.cmd 'highlight MiniTrailspace ctermbg=LightGreen guibg=LightGreen'
+      vim.cmd('highlight MiniTrailspace ctermbg=LightGreen guibg=LightGreen')
     end,
     event = events.enter_buffer,
     init = function()
@@ -561,7 +561,7 @@ return {
     opts = {
       render = function(props)
         local label = {}
-        if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
+        if #vim.lsp.get_clients { bufnr = props.buf } > 0 then
           local icons = {
             Error = diagnostic_signs.error,
             Warn = diagnostic_signs.warn,
@@ -640,27 +640,19 @@ return {
       },
       provider_selector = function(_, filetype, buftype)
         local function handleFallbackException(bufnr, err, providerName)
-          if type(err) == 'string' and err:match 'UfoFallbackException' then
+          if type(err) == 'string' and err:match('UfoFallbackException') then
             return require('ufo').getFolds(bufnr, providerName)
           else
             return require('promise').reject(err)
           end
         end
         return (filetype == '' or buftype == 'nofile') and 'indent'
-            or function(bufnr)
-              return require('ufo')
-                  .getFolds(bufnr, 'lsp')
-                  :catch(
-                    function(err)
-                      return handleFallbackException(bufnr, err, 'treesitter')
-                    end
-                  )
-                  :catch(
-                    function(err)
-                      return handleFallbackException(bufnr, err, 'indent')
-                    end
-                  )
-            end
+          or function(bufnr)
+            return require('ufo')
+              .getFolds(bufnr, 'lsp')
+              :catch(function(err) return handleFallbackException(bufnr, err, 'treesitter') end)
+              :catch(function(err) return handleFallbackException(bufnr, err, 'indent') end)
+          end
       end,
     },
     keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },
@@ -669,7 +661,7 @@ return {
     'andersevenrud/nvim_context_vt',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
-    opts = { disable_ft = excluded_filetypes,  highlight = 'LspInlayHint' },
+    opts = { disable_ft = excluded_filetypes, highlight = 'LspInlayHint' },
     keys = { { '<Leader>uv', '<Cmd>NvimContextVtToggle<CR>', desc = 'Toggle context virtual text' } },
   },
 }

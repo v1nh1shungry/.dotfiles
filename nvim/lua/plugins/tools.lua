@@ -6,15 +6,15 @@ return {
     cmd = 'Telescope',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = {
-      { '<Leader>h',  '<Cmd>Telescope help_tags<CR>',              desc = 'Help pages' },
-      { '<Leader>ff', '<Cmd>Telescope find_files<CR>',             desc = 'Find files' },
+      { '<Leader>h', '<Cmd>Telescope help_tags<CR>', desc = 'Help pages' },
+      { '<Leader>ff', '<Cmd>Telescope find_files<CR>', desc = 'Find files' },
       { '<Leader>fr', '<Cmd>Telescope oldfiles cwd_only=true<CR>', desc = 'Recent files' },
-      { '<Leader>/',  '<Cmd>Telescope live_grep<CR>',              desc = 'Live grep' },
-      { '<Leader>sa', '<Cmd>Telescope autocommands<CR>',           desc = 'Autocommands' },
-      { '<Leader>:',  '<Cmd>Telescope commands<CR>',               desc = 'Commands' },
-      { '<Leader>sk', '<Cmd>Telescope keymaps<CR>',                desc = 'Keymaps' },
-      { '<Leader>sl', '<Cmd>Telescope resume<CR>',                 desc = 'Last search' },
-      { '<Leader>sh', '<Cmd>Telescope highlights<CR>',             desc = 'Highlight groups' },
+      { '<Leader>/', '<Cmd>Telescope live_grep<CR>', desc = 'Live grep' },
+      { '<Leader>sa', '<Cmd>Telescope autocommands<CR>', desc = 'Autocommands' },
+      { '<Leader>:', '<Cmd>Telescope commands<CR>', desc = 'Commands' },
+      { '<Leader>sk', '<Cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
+      { '<Leader>sl', '<Cmd>Telescope resume<CR>', desc = 'Last search' },
+      { '<Leader>sh', '<Cmd>Telescope highlights<CR>', desc = 'Highlight groups' },
     },
     opts = {
       defaults = {
@@ -138,19 +138,19 @@ return {
           augend.integer.alias.decimal,
           augend.constant.alias.bool,
           logical_alias,
-          augend.constant.new({ elements = { 'let', 'const' } }),
+          augend.constant.new { elements = { 'let', 'const' } },
           ordinal_numbers,
           weekdays,
           months,
         },
         css = {
           augend.integer.alias.decimal,
-          augend.hexcolor.new({
+          augend.hexcolor.new {
             case = 'lower',
-          }),
-          augend.hexcolor.new({
+          },
+          augend.hexcolor.new {
             case = 'upper',
-          }),
+          },
         },
         markdown = {
           augend.misc.alias.markdown_header,
@@ -165,11 +165,11 @@ return {
         lua = {
           augend.integer.alias.decimal,
           augend.constant.alias.bool,
-          augend.constant.new({
+          augend.constant.new {
             elements = { 'and', 'or' },
             word = true,
             cyclic = true,
-          }),
+          },
           ordinal_numbers,
           weekdays,
           months,
@@ -192,8 +192,8 @@ return {
       map { 'g<C-x>', function() return dial(false, true) end, expr = true, mode = { 'n', 'v' } }
     end,
     keys = {
-      { '<C-a>',  desc = 'Increment' },
-      { '<C-x>',  desc = 'Decrement' },
+      { '<C-a>', desc = 'Increment' },
+      { '<C-x>', desc = 'Decrement' },
       { 'g<C-a>', desc = 'Increment' },
       { 'g<C-x>', desc = 'Decrement' },
     },
@@ -283,7 +283,7 @@ return {
       local function check()
         local cwd = vim.uv.cwd()
         if vim.fn.filereadable(cwd .. '/CMakeLists.txt') == 1 then
-          require('lazy').load({ plugins = { 'cmake-tools.nvim' } })
+          require('lazy').load { plugins = { 'cmake-tools.nvim' } }
           loaded = true
         end
       end
@@ -297,11 +297,11 @@ return {
       })
     end,
     keys = {
-      { '<Leader>mg', '<Cmd>CMakeGenerate<CR>',       desc = 'Configure' },
-      { '<Leader>mb', '<Cmd>CMakeBuild<CR>',          desc = 'Build' },
-      { '<Leader>mr', '<Cmd>CMakeRun<CR>',            desc = 'Run executable' },
-      { '<Leader>md', '<Cmd>CMakeDebug<CR>',          desc = 'Debug' },
-      { '<Leader>ma', ':CMakeLaunchArgs ',            desc = 'Set launch arguments' },
+      { '<Leader>mg', '<Cmd>CMakeGenerate<CR>', desc = 'Configure' },
+      { '<Leader>mb', '<Cmd>CMakeBuild<CR>', desc = 'Build' },
+      { '<Leader>mr', '<Cmd>CMakeRun<CR>', desc = 'Run executable' },
+      { '<Leader>md', '<Cmd>CMakeDebug<CR>', desc = 'Debug' },
+      { '<Leader>ma', ':CMakeLaunchArgs ', desc = 'Set launch arguments' },
       { '<Leader>ms', '<Cmd>CMakeTargetSettings<CR>', desc = 'Summary' },
     },
     lazy = true,
@@ -326,11 +326,23 @@ return {
   {
     'folke/flash.nvim',
     keys = {
-      '/', '?', 'f', 'F', 't', 'T', ',', ';',
-      { 'gs', function() require('flash').jump() end,              desc = 'Flash' },
-      { 'gt', function() require('flash').treesitter() end,        desc = 'Flash Treesitter' },
-      { 'r',  function() require('flash').remote() end,            mode = 'o',               desc = 'Remote Flash' },
-      { 'R',  function() require('flash').treesitter_search() end, mode = { 'o', 'x' },      desc = 'Treesitter search' },
+      '/',
+      '?',
+      'f',
+      'F',
+      't',
+      'T',
+      ',',
+      ';',
+      { 'gs', function() require('flash').jump() end, desc = 'Flash' },
+      { 'gt', function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
+      { 'r', function() require('flash').remote() end, mode = 'o', desc = 'Remote Flash' },
+      {
+        'R',
+        function() require('flash').treesitter_search() end,
+        mode = { 'o', 'x' },
+        desc = 'Treesitter search',
+      },
     },
     opts = {
       modes = {
@@ -381,7 +393,7 @@ return {
     lazy = vim.fn.argv()[1] ~= 'leetcode.nvim',
     opts = {
       cn = { enabled = true },
-      injector = { cpp = { before = { '#include <bits/stdc++.h>', 'using namespace std;' } } }
+      injector = { cpp = { before = { '#include <bits/stdc++.h>', 'using namespace std;' } } },
     },
   },
   {
@@ -393,9 +405,9 @@ return {
       'rcarriga/nvim-notify',
     },
     keys = {
-      { '<Leader>gc', function() require('tinygit').smartCommit() end,    desc = 'Commit' },
-      { '<Leader>gP', function() require('tinygit').push() end,           desc = 'Push' },
-      { '<Leader>ga', function() require('tinygit').amendNoEdit() end,    desc = 'Amend' },
+      { '<Leader>gc', function() require('tinygit').smartCommit() end, desc = 'Commit' },
+      { '<Leader>gP', function() require('tinygit').push() end, desc = 'Push' },
+      { '<Leader>ga', function() require('tinygit').amendNoEdit() end, desc = 'Amend' },
       { '<Leader>gU', function() require('tinygit').undoLastCommit() end, desc = 'Undo last commit' },
     },
     opts = {},

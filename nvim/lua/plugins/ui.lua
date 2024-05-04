@@ -661,7 +661,11 @@ return {
     'andersevenrud/nvim_context_vt',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
-    opts = { disable_ft = excluded_filetypes, highlight = 'LspInlayHint' },
+    opts = {
+      enabled = false,
+      disable_ft = excluded_filetypes,
+      highlight = 'LspInlayHint',
+    },
     keys = { { '<Leader>uv', '<Cmd>NvimContextVtToggle<CR>', desc = 'Toggle context virtual text' } },
   },
 }

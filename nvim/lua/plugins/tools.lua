@@ -11,7 +11,6 @@ return {
       { '<Leader>fr', '<Cmd>Telescope oldfiles cwd_only=true<CR>', desc = 'Recent files' },
       { '<Leader>/', '<Cmd>Telescope live_grep<CR>', desc = 'Live grep' },
       { '<Leader>sa', '<Cmd>Telescope autocommands<CR>', desc = 'Autocommands' },
-      { '<Leader>:', '<Cmd>Telescope commands<CR>', desc = 'Commands' },
       { '<Leader>sk', '<Cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
       { '<Leader>sl', '<Cmd>Telescope resume<CR>', desc = 'Last search' },
       { '<Leader>sh', '<Cmd>Telescope highlights<CR>', desc = 'Highlight groups' },
@@ -405,7 +404,7 @@ return {
       'rcarriga/nvim-notify',
     },
     keys = {
-      { '<Leader>gc', function() require('tinygit').smartCommit() end, desc = 'Commit' },
+      { '<Leader>gC', function() require('tinygit').smartCommit() end, desc = 'Commit' },
       { '<Leader>gP', function() require('tinygit').push() end, desc = 'Push' },
       { '<Leader>ga', function() require('tinygit').amendNoEdit() end, desc = 'Amend' },
       { '<Leader>gU', function() require('tinygit').undoLastCommit() end, desc = 'Undo last commit' },

@@ -388,11 +388,11 @@ return {
       {
         '<Leader>qL',
         function()
-          vim.notify(
-            'Sessions: ' .. vim.inspect(require('persistence').list()),
-            vim.log.levels.INFO,
-            { title = 'Persistence' }
-          )
+          local sessions = {}
+          for _, p in ipairs(require('persistence').list()) do
+            sessions[#sessions + 1] = vim.fs.basename(p)
+          end
+          vim.notify('Sessions: ' .. vim.inspect(sessions), vim.log.levels.INFO, { title = 'Persistence' })
         end,
         desc = 'List all sessions',
       },

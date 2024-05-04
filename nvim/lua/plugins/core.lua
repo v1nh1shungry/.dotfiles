@@ -3,10 +3,7 @@ local events = require('utils.events')
 return {
   {
     'andymass/vim-matchup',
-    config = function()
-      vim.g.matchup_matchparen_offscreen = { method = '' }
-      vim.g.matchup_matchparen_enabled = false
-    end,
+    config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
     event = events.enter_buffer,
   },
   {

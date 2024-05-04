@@ -193,6 +193,7 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter-context',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
     opts = { max_lines = 4, multiline_threshold = 1 },
   },
@@ -583,7 +584,7 @@ return {
       window = {
         margin = {
           vertical = { top = 3, bottom = 0 },
-          horizontal = { left = 1, right = 3 },
+          horizontal = { left = 1, right = 5 },
         },
       },
     },
@@ -668,7 +669,7 @@ return {
     'andersevenrud/nvim_context_vt',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
-    opts = { disable_ft = excluded_filetypes },
+    opts = { disable_ft = excluded_filetypes,  highlight = 'LspInlayHint' },
     keys = { { '<Leader>uv', '<Cmd>NvimContextVtToggle<CR>', desc = 'Toggle context virtual text' } },
   },
 }

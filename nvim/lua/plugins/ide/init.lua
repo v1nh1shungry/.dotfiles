@@ -13,14 +13,6 @@ local M = {
         end
 
         local mappings = {
-          ['textDocument/formatting'] = {
-            {
-              '<Leader>cf',
-              function() require('conform').format { bufnr = bufnr, lsp_fallback = true } end,
-              desc = 'Format document',
-              mode = { 'n', 'v' },
-            },
-          },
           ['textDocument/rename'] = {
             { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' },
           },
@@ -266,7 +258,7 @@ local M = {
     'williamboman/mason.nvim',
     lazy = true,
     keys = { { '<Leader>cm', '<Cmd>Mason<CR>', desc = 'Mason' } },
-    opts = {},
+    opts = { ensure_installed = { 'stylua' } },
   },
   {
     'hrsh7th/nvim-cmp',
@@ -556,9 +548,18 @@ local M = {
   {
     'stevearc/conform.nvim',
     lazy = true,
+    keys = {
+      {
+        '<Leader>cf',
+        function() require('conform').format { lsp_fallback = true } end,
+        desc = 'Format document',
+        mode = { 'n', 'v' },
+      },
+    },
     opts = {
       formatters_by_ft = {
         fish = { 'fish_indent' },
+        lua = { 'stylua' },
       },
     },
   },

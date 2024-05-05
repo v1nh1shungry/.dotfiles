@@ -194,6 +194,7 @@ local M = {
         virtual_text = { spacing = 4, source = 'if_many' },
         severity_sort = true,
         signs = false,
+        update_in_insert = true,
       },
       servers = {
         jsonls = {},
@@ -248,7 +249,7 @@ local M = {
     'williamboman/mason.nvim',
     lazy = true,
     keys = { { '<Leader>cm', '<Cmd>Mason<CR>', desc = 'Mason' } },
-    opts = { ensure_installed = { 'stylua' } },
+    opts = { ensure_installed = { 'stylua', 'gersemi' } },
   },
   {
     'hrsh7th/nvim-cmp',
@@ -446,17 +447,17 @@ local M = {
           local dap, dapui = require('dap'), require('dapui')
           dapui.setup()
           dap.listeners.after.event_initialized['dapui_config'] = function()
-            vim.diagnostic.config { virtual_text = false }
+            vim.diagnostic.hide()
             vim.lsp.inlay_hint.enable(false)
             dapui.open()
           end
           dap.listeners.before.event_terminated['dapui_config'] = function()
-            vim.diagnostic.config { virtual_text = true }
+            vim.diagnostic.show()
             vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
           dap.listeners.before.event_exited['dapui_config'] = function()
-            vim.diagnostic.config { virtual_text = true }
+            vim.diagnostic.show()
             vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
@@ -552,6 +553,7 @@ local M = {
     opts = {
       formatters_by_ft = {
         fish = { 'fish_indent' },
+        cmake = { 'gersemi' },
         lua = { 'stylua' },
       },
     },

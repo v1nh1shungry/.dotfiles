@@ -42,17 +42,14 @@ return {
       local map = require('utils.keymaps').noremap
 
       local dials_by_ft = {
-        css = 'css',
+        cmake = 'cmake',
         javascript = 'typescript',
         javascriptreact = 'typescript',
         json = 'json',
         lua = 'lua',
         markdown = 'markdown',
         python = 'python',
-        sass = 'css',
-        scss = 'css',
         typescript = 'typescript',
-        typescriptreact = 'typescript',
       }
 
       local dial = function(increment, g)
@@ -142,15 +139,6 @@ return {
           weekdays,
           months,
         },
-        css = {
-          augend.integer.alias.decimal,
-          augend.hexcolor.new {
-            case = 'lower',
-          },
-          augend.hexcolor.new {
-            case = 'upper',
-          },
-        },
         markdown = {
           augend.misc.alias.markdown_header,
           ordinal_numbers,
@@ -180,6 +168,20 @@ return {
           ordinal_numbers,
           weekdays,
           months,
+        },
+        cmake = {
+          augend.integer.alias.decimal,
+          augend.semver.alias.semver,
+          augend.constant.new {
+            elements = { 'on', 'off' },
+            word = true,
+            cyclic = true,
+          },
+          augend.constant.new {
+            elements = { 'ON', 'OFF' },
+            word = true,
+            cyclic = true,
+          },
         },
       }
 
@@ -268,6 +270,13 @@ return {
   },
   {
     'sindrets/diffview.nvim',
+    cmd = {
+      'DiffviewFileHistory',
+      'DiffviewOpen',
+      'DiffviewToggleFiles',
+      'DiffviewFocusFiles',
+      'DiffviewRefresh',
+    },
     keys = { { '<Leader>gD', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
   },
   {
@@ -417,7 +426,7 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
           require('utils.keymaps').nnoremap {
-            '<Leader>qr',
+            '<Leader>xr',
             function() require('replacer').run() end,
             desc = 'Quickfix replacer',
             buffer = args.buf,
@@ -440,5 +449,34 @@ return {
       },
     },
     opts = {},
+  },
+  {
+    'm4xshen/hardtime.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
+    event = 'VeryLazy',
+    opts = {},
+  },
+  {
+    'Myzel394/jsonfly.nvim',
+    config = function()
+      require('telescope').load_extension('jsonfly')
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          require('utils.keymaps').nnoremap {
+            '<Leader>sj',
+            '<Cmd>Telescope jsonfly<CR>',
+            desc = 'Fly me to JSON',
+            buffer = args.buf,
+          }
+        end,
+        pattern = { 'json', 'jsonc' },
+      })
+    end,
+    ft = { 'json', 'jsonc' },
+  },
+  {
+    'dhruvasagar/vim-table-mode',
+    config = function() vim.g.table_mode_corner = '|' end,
+    keys = { { '<Leader>cT', '<Cmd>TableModeToggle<CR>', desc = 'Table mode' } },
   },
 }

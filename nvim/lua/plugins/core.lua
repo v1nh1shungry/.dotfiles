@@ -390,7 +390,8 @@ return {
         function()
           local sessions = {}
           for _, p in ipairs(require('persistence').list()) do
-            sessions[#sessions + 1] = vim.fs.basename(p)
+            local s = vim.fs.basename(p):gsub('%%', '/')
+            sessions[#sessions+1] = string.sub(s, 1, string.len(s) - 4)
           end
           vim.notify('Sessions: ' .. vim.inspect(sessions), vim.log.levels.INFO, { title = 'Persistence' })
         end,

@@ -80,7 +80,7 @@ return {
   {
     'lewis6991/satellite.nvim',
     event = events.enter_buffer,
-    opts = { excluded_filetypes = excluded_filetypes },
+    opts = {},
   },
   {
     'akinsho/bufferline.nvim',
@@ -658,14 +658,18 @@ return {
     keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },
   },
   {
-    'andersevenrud/nvim_context_vt',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    event = events.enter_buffer,
-    opts = {
-      enabled = false,
-      disable_ft = excluded_filetypes,
-      highlight = 'LspInlayHint',
+    'SuperBo/fugit2.nvim',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'nvim-lua/plenary.nvim',
+      'chrisgrieser/nvim-tinygit',
     },
-    keys = { { '<Leader>uv', '<Cmd>NvimContextVtToggle<CR>', desc = 'Toggle context virtual text' } },
+    cmd = { 'Fugit2', 'Fugit2Graph' },
+    keys = {
+      { '<Leader>gS', '<Cmd>Fugit2<CR>', desc = 'Status' },
+      { '<Leader>gg', '<Cmd>Fugit2Graph<CR>', desc = 'Graph' },
+    },
+    opts = {},
   },
 }

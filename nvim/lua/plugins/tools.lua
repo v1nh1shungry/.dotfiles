@@ -454,7 +454,7 @@ return {
     'm4xshen/hardtime.nvim',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
     event = 'VeryLazy',
-    opts = {},
+    opts = { disabled_filetypes = require('utils.ui').excluded_filetypes },
   },
   {
     'Myzel394/jsonfly.nvim',
@@ -472,6 +472,7 @@ return {
         pattern = { 'json', 'jsonc' },
       })
     end,
+    dependencies = 'nvim-telescope/telescope.nvim',
     ft = { 'json', 'jsonc' },
   },
   {

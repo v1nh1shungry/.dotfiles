@@ -399,16 +399,6 @@ return {
     keys = { { '<Leader>fi', '<Cmd>PasteImage<CR>', desc = 'Paste image from clipboard' } },
   },
   {
-    'abecodes/tabout.nvim',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'L3MON4D3/LuaSnip',
-      'hrsh7th/nvim-cmp',
-    },
-    event = events.enter_insert,
-    opts = {},
-  },
-  {
     'kawre/leetcode.nvim',
     build = ':TSUpdate html',
     dependencies = {
@@ -473,7 +463,6 @@ return {
   {
     'm4xshen/hardtime.nvim',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-    event = 'VeryLazy',
     opts = {
       disabled_filetypes = vim.list_extend({
         '',

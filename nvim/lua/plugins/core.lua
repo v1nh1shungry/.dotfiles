@@ -261,12 +261,21 @@ return {
   {
     'altermo/ultimate-autopair.nvim',
     event = events.enter_insert,
-    opts = { cr = { addsemi = {} } },
+    opts = {
+      tabout = {
+        enable = true,
+        map = '<Tab>',
+        cmap = '<Tab>',
+        hopout = true,
+      },
+      space2 = { enable = true },
+      fastwrap = { faster = true },
+    },
   },
   {
     'tiagovla/scope.nvim',
-    config = true,
     event = 'VeryLazy',
+    opts = {},
   },
   {
     'LunarVim/bigfile.nvim',
@@ -401,7 +410,7 @@ return {
         desc = 'Delete all sessions',
       },
       {
-        '<Leader>qL',
+        '<Leader>sq',
         function()
           local sessions = {}
           local persistence = require('persistence')
@@ -418,7 +427,7 @@ return {
             persistence.load()
           end)
         end,
-        desc = 'List all sessions',
+        desc = 'Sessions',
       },
     },
   },

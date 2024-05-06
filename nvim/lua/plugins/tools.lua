@@ -480,4 +480,9 @@ return {
     config = function() vim.g.table_mode_corner = '|' end,
     keys = { { '<Leader>cT', '<Cmd>TableModeToggle<CR>', desc = 'Table mode' } },
   },
+  {
+    'v1nh1shungry/cppman.nvim',
+    keys = { { '<Leader>sc', function() require('cppman').search() end, desc = 'Cppman' } },
+    opts = {},
+  },
 }

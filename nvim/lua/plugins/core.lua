@@ -32,10 +32,14 @@ return {
         a = 'Argument',
         b = 'Balanced ), ], }',
         c = 'Class',
+        d = 'Digit(s)',
         f = 'Function',
+        g = 'Entire file',
         o = 'Block, conditional, loop',
         q = 'Quote `, ", \'',
         t = 'Tag',
+        u = 'Use/call function & method',
+        U = 'Use/call without dot in name',
       }
       local a = vim.deepcopy(i)
       for k, v in pairs(a) do
@@ -114,6 +118,17 @@ return {
           f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, {}),
           c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
           t = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' },
+          d = { '%f[%d]%d+' },
+          g = function()
+            local from = { line = 1, col = 1 }
+            local to = {
+              line = vim.fn.line('$'),
+              col = math.max(vim.fn.getline('$'):len(), 1),
+            }
+            return { from = from, to = to }
+          end,
+          u = ai.gen_spec.function_call(),
+          U = ai.gen_spec.function_call { name_pattern = '[%w_]' },
         },
       }
     end,
@@ -395,6 +410,9 @@ return {
             sessions[#sessions + 1] = string.sub(s, 1, string.len(s) - 4)
           end
           vim.ui.select(sessions, { prompt = 'Session' }, function(choice)
+            if choice == nil then
+              return
+            end
             vim.cmd.cd(choice)
             persistence.current = persistence.get_current()
             persistence.load()

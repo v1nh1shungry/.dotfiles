@@ -361,14 +361,6 @@ local M = {
         dependencies = {
           'L3MON4D3/LuaSnip',
           build = 'make install_jsregexp',
-          dependencies = {
-            'v1nh1shungry/luasnip-snippets',
-            dependencies = 'nvim-treesitter/nvim-treesitter',
-            opts = {
-              snippet = { lua = { vim_snippet = true } },
-              disable_langs = { 'rust' },
-            },
-          },
           opts = { enable_autosnippets = true },
         },
       },

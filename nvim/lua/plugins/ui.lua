@@ -626,7 +626,6 @@ return {
       })
     end,
     dependencies = 'kevinhwang91/promise-async',
-    event = 'VeryLazy',
     opts = {
       preview = {
         win_config = { winblend = require('user').ui.blend },

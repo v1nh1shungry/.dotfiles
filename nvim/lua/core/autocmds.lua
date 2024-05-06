@@ -43,6 +43,7 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.bo.buflisted = false
     vim.wo.foldenable = false
     vim.wo.cc = ''
+    vim.wo.stc = ''
   end,
   group = augroup('no_fancy_ui'),
   pattern = require('utils.ui').excluded_filetypes,

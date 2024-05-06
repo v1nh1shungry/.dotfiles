@@ -35,6 +35,7 @@ M.excluded_filetypes = {
   'lspinfo',
   'man',
   'mason',
+  'minifiles',
   'neo-tree',
   'noice',
   'qf',

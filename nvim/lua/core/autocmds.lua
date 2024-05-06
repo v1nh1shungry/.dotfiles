@@ -1,13 +1,24 @@
+local augroup = function(name) return vim.api.nvim_create_augroup('dotfiles_' .. name, { clear = true }) end
+
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
-  command = 'checktime',
+  callback = function()
+    if vim.o.buftype ~= 'nofile' then
+      vim.cmd('checktime')
+    end
+  end,
+  group = augroup('checktime'),
 })
 
 vim.api.nvim_create_autocmd('FileType', {
   command = 'setlocal wrap',
+  group = augroup('set_wrap'),
   pattern = { 'gitcommit', 'markdown' },
 })
 
-vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.highlight.on_yank { timeout = 500 } end })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function() vim.highlight.on_yank { timeout = 500 } end,
+  group = augroup('highlight_yank'),
+})
 
 vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'CmdlineLeave', 'WinEnter' }, {
   callback = function()
@@ -26,7 +37,6 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEn
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = require('utils.ui').excluded_filetypes,
   callback = function()
     vim.wo.number = false
     vim.wo.relativenumber = false
@@ -34,29 +44,36 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.wo.foldenable = false
     vim.wo.cc = ''
   end,
+  group = augroup('no_fancy_ui'),
+  pattern = require('utils.ui').excluded_filetypes,
 })
 
 vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function(event)
     local exclude = { 'gitcommit' }
     local buf = event.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].dotfiles_last_loc then
       return
     end
-    vim.b[buf].lazyvim_last_loc = true
+    vim.b[buf].dotfiles_last_loc = true
     local mark = vim.api.nvim_buf_get_mark(buf, '"')
     local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
   end,
+  group = augroup('last_loc')
 })
 
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   callback = function(event)
-    local file = vim.loop.fs_realpath(event.match) or event.match
+    if event.match:match('^%w%w+:[\\/][\\/]') then
+      return
+    end
+    local file = vim.uv.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
   end,
+  group = augroup('auto_create_dir'),
 })
 
 vim.api.nvim_create_autocmd({ 'InsertLeave', 'WinEnter' }, {
@@ -84,9 +101,11 @@ vim.api.nvim_create_autocmd({ 'VimResized' }, {
     vim.cmd('tabdo wincmd =')
     vim.cmd('tabnext ' .. current_tab)
   end,
+  group = augroup('resize_splits'),
 })
 
 vim.api.nvim_create_autocmd('FileType', {
   callback = function() vim.bo.commentstring = '// %s' end,
+  group = augroup('cpp_commentstring'),
   pattern = { 'c', 'cpp' },
 })

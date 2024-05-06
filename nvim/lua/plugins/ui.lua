@@ -491,6 +491,7 @@ return {
         { ft = 'cmake_tools_terminal', title = 'CMakeTools Terminal' },
         { ft = 'dap-repl', title = 'REPL' },
         { ft = 'dapui_console', title = 'Console' },
+        { ft = 'man', size = { height = 0.4 } },
       },
       left = {
         {
@@ -607,7 +608,6 @@ return {
     'hiphish/rainbow-delimiters.nvim',
     main = 'rainbow-delimiters.setup',
     dependencies = 'nvim-treesitter/nvim-treesitter',
-    event = events.enter_buffer,
     opts = { highlight = require('utils.ui').rainbow_highlight },
   },
   {

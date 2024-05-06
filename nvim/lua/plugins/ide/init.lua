@@ -281,7 +281,17 @@ local M = {
           ['<C-p>'] = cmp.mapping.select_prev_item(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<CR>'] = cmp.mapping.confirm { select = true },
+          ['<CR>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              if luasnip.expandable() then
+                luasnip.expand()
+              else
+                cmp.confirm { select = true }
+              end
+            else
+              fallback()
+            end
+          end),
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               if not cmp.get_selected_entry() then
@@ -289,14 +299,16 @@ local M = {
               else
                 cmp.confirm()
               end
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
+            elseif luasnip.locally_jumpable(1) then
+              luasnip.jump(1)
             else
               fallback()
             end
           end, { 'i', 's' }),
           ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if luasnip.jumpable(-1) then
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.locally_jumpable(-1) then
               luasnip.jump(-1)
             else
               fallback()
@@ -349,7 +361,14 @@ local M = {
         dependencies = {
           'L3MON4D3/LuaSnip',
           build = 'make install_jsregexp',
-          dependencies = { 'rafamadriz/friendly-snippets' },
+          dependencies = {
+            'v1nh1shungry/luasnip-snippets',
+            dependencies = 'nvim-treesitter/nvim-treesitter',
+            opts = {
+              snippet = { lua = { vim_snippet = true } },
+              disable_langs = { 'rust' },
+            },
+          },
           opts = { enable_autosnippets = true },
         },
       },

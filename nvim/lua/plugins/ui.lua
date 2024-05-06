@@ -183,6 +183,7 @@ return {
         extensions = {
           'lazy',
           'man',
+          'mason',
           'neo-tree',
           'nvim-dap-ui',
           'quickfix',
@@ -595,7 +596,7 @@ return {
     main = 'render-markdown',
     dependencies = 'nvim-treesitter/nvim-treesitter',
     ft = 'markdown',
-    opts = { conceal = { rendered = 0 } },
+    opts = {},
   },
   {
     'mcauley-penney/visual-whitespace.nvim',

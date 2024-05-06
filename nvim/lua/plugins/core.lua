@@ -389,11 +389,16 @@ return {
         '<Leader>qL',
         function()
           local sessions = {}
-          for _, p in ipairs(require('persistence').list()) do
+          local persistence = require('persistence')
+          for _, p in ipairs(persistence.list()) do
             local s = vim.fs.basename(p):gsub('%%', '/')
-            sessions[#sessions+1] = string.sub(s, 1, string.len(s) - 4)
+            sessions[#sessions + 1] = string.sub(s, 1, string.len(s) - 4)
           end
-          vim.notify('Sessions: ' .. vim.inspect(sessions), vim.log.levels.INFO, { title = 'Persistence' })
+          vim.ui.select(sessions, { prompt = 'Session' }, function(choice)
+            vim.cmd.cd(choice)
+            persistence.current = persistence.get_current()
+            persistence.load()
+          end)
         end,
         desc = 'List all sessions',
       },

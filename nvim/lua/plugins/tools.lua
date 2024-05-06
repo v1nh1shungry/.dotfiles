@@ -372,6 +372,26 @@ return {
   },
   {
     'rhysd/committia.vim',
+    config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local nnoremap = require('utils.keymaps').nnoremap
+          nnoremap {
+            '<M-d>',
+            '<Plug>(committia-scroll-diff-down-half)',
+            desc = 'Scroll down the diff window',
+            buffer = args.buf,
+          }
+          nnoremap {
+            '<M-u>',
+            '<Plug>(committia-scroll-diff-up-half)',
+            desc = 'Scroll up the diff window',
+            buffer = args.buf,
+          }
+        end,
+        pattern = 'gitcommit',
+      })
+    end,
     event = 'BufReadPre COMMIT_EDITMSG',
   },
   {
@@ -454,7 +474,14 @@ return {
     'm4xshen/hardtime.nvim',
     dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
     event = 'VeryLazy',
-    opts = { disabled_filetypes = require('utils.ui').excluded_filetypes },
+    opts = {
+      disabled_filetypes = vim.list_extend({
+        '',
+        'alpha',
+        'markdown',
+        'text',
+      }, require('utils.ui').excluded_filetypes),
+    },
   },
   {
     'Myzel394/jsonfly.nvim',

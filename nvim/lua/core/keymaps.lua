@@ -135,3 +135,23 @@ nnoremap {
   end,
   desc = 'Get CPM.cmake',
 }
+
+local selected_hl_ns = vim.api.nvim_create_namespace('dotfiles_selected_highlight')
+xnoremap {
+  '<Leader>ch',
+  function()
+    vim.cmd [[execute "normal! \<ESC>"]]
+    vim.highlight.range(0, selected_hl_ns, 'IncSearch', "'<", "'>", {
+      inclusive = true,
+      regtype = vim.fn.visualmode(),
+    })
+  end,
+  desc = 'Highlight selected text',
+}
+nnoremap {
+  '<Leader>ch',
+  function()
+      vim.api.nvim_buf_clear_namespace(0, selected_hl_ns, 1, -1)
+  end,
+  desc = 'Clear all text highlight',
+}

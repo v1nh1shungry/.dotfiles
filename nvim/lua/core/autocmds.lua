@@ -38,8 +38,6 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEn
 
 vim.api.nvim_create_autocmd('FileType', {
   callback = function()
-    vim.wo.number = false
-    vim.wo.relativenumber = false
     vim.bo.buflisted = false
     vim.wo.foldenable = false
     vim.wo.cc = ''

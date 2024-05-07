@@ -530,11 +530,6 @@ return {
           size = { width = 0.4 },
         },
         {
-          title = 'Treesitter',
-          ft = 'query',
-          size = { width = 0.4 },
-        },
-        {
           title = 'Spectre',
           ft = 'spectre_panel',
           size = { width = 0.5 },
@@ -625,6 +620,7 @@ return {
       })
     end,
     dependencies = 'kevinhwang91/promise-async',
+    lazy = false,
     opts = {
       preview = {
         win_config = { winblend = require('user').ui.blend },

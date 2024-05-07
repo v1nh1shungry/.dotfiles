@@ -431,4 +431,9 @@ return {
       },
     },
   },
+  {
+    'keaising/im-select.nvim',
+    event = events.enter_insert,
+    opts = {},
+  },
 }

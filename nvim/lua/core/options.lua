@@ -1,6 +1,5 @@
-vim.opt.background = require('user').ui.background
 vim.opt.autowrite = true
-vim.opt.spelllang = { 'en' }
+vim.opt.background = require('user').ui.background
 vim.opt.breakindent = true
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.colorcolumn = '120'
@@ -40,6 +39,7 @@ vim.opt.signcolumn = 'yes'
 vim.opt.smartcase = true
 vim.opt.smartindent = true
 vim.opt.softtabstop = 2
+vim.opt.spelllang = { 'en' }
 vim.opt.splitbelow = true
 vim.opt.splitkeep = 'screen'
 vim.opt.splitright = true

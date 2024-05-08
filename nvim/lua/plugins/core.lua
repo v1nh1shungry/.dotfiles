@@ -381,59 +381,66 @@ return {
     cmd = { 'SudaRead', 'SudaWrite' },
   },
   {
-    'folke/persistence.nvim',
-    event = events.enter_buffer,
-    opts = { options = vim.opt.sessionoptions:get() },
-    keys = {
-      { '<Leader>qs', function() require('persistence').load() end, desc = 'Restore Session' },
-      { '<Leader>ql', function() require('persistence').load { last = true } end, desc = 'Restore Last Session' },
-      {
-        '<Leader>qd',
-        function()
-          require('persistence').stop()
-          vim.cmd.qall()
-        end,
-        desc = "Don't Save Current Session",
-      },
-      {
-        '<Leader>qc',
-        function() os.remove(require('persistence').get_current()) end,
-        desc = 'Delete current session',
-      },
-      {
-        '<Leader>qC',
-        function()
-          for _, s in ipairs(require('persistence').list()) do
-            os.remove(s)
-          end
-        end,
-        desc = 'Delete all sessions',
-      },
-      {
-        '<Leader>sq',
-        function()
-          local sessions = {}
-          local persistence = require('persistence')
-          for _, p in ipairs(persistence.list()) do
-            local s = vim.fs.basename(p):gsub('%%', '/')
-            sessions[#sessions + 1] = string.sub(s, 1, string.len(s) - 4)
-          end
-          vim.ui.select(sessions, { prompt = 'Session' }, function(choice)
-            if choice == nil then
-              return
-            end
-            vim.cmd.cd(choice)
-            persistence.current = persistence.get_current()
-            persistence.load()
-          end)
-        end,
-        desc = 'Sessions',
-      },
-    },
-  },
-  {
     'keaising/im-select.nvim',
     event = events.enter_insert,
     opts = {},
+  },
+  {
+    'olimorris/persisted.nvim',
+    cmd = { 'SessionLoad' },
+    config = function()
+      require('persisted').setup {
+        use_git_branch = true,
+        should_autosave = function()
+          local bufs = vim.tbl_filter(function(b)
+            if vim.bo[b].buftype ~= '' then
+              return false
+            end
+            if vim.bo[b].buflisted == false then
+              return false
+            end
+            if vim.tbl_contains({ 'gitcommit', 'gitrebase' }, vim.bo[b].buftype) then
+              return false
+            end
+            return vim.api.nvim_buf_get_name(b) ~= ''
+          end, vim.api.nvim_list_bufs())
+          return #bufs ~= 0
+        end,
+      }
+
+      require('telescope').load_extension('persisted')
+
+      vim.api.nvim_create_autocmd('User', {
+        command = 'ScopeLoadState',
+        pattern = 'PersistedLoadPost',
+      })
+      vim.api.nvim_create_autocmd('User', {
+        command = 'ScopeSaveState',
+        pattern = 'PersistedSavePre',
+      })
+      vim.api.nvim_create_autocmd({ 'User' }, {
+        pattern = 'PersistedTelescopeLoadPre',
+        callback = function(_)
+          require('persisted').save { session = vim.g.persisted_loaded_session }
+          vim.api.nvim_input('<ESC>:%bd!<CR>')
+        end,
+      })
+    end,
+    dependencies = 'nvim-telescope/telescope.nvim',
+    event = events.enter_buffer,
+    keys = {
+      { '<Leader>qs', '<Cmd>SessionLoad<CR>', desc = 'Restore current session' },
+      { '<Leader>ql', '<Cmd>SessionLoadLast<CR>', desc = 'Restore last session' },
+      { '<Leader>sq', '<Cmd>Telescope persisted<CR>', desc = 'Session' },
+      {
+        '<Leader>qd',
+        function()
+          vim.cmd('SessionStop')
+          vim.cmd('qa!')
+        end,
+        desc = 'Quit without saving session',
+      },
+      { '<Leader>qc', '<Cmd>SessionDelete<CR>', desc = 'Delete current session' },
+    },
   },
 }

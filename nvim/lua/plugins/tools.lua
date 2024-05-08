@@ -501,4 +501,9 @@ return {
     keys = { { '<Leader>sc', function() require('cppman').search() end, desc = 'Cppman' } },
     opts = {},
   },
+  {
+    'NStefan002/screenkey.nvim',
+    keys = { { '<Leader>uk', '<Cmd>Screenkey<CR>', desc = 'Screencast keys' } },
+    opts = { win_opts = { border = 'rounded' } },
+  },
 }

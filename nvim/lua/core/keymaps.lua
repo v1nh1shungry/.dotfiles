@@ -10,7 +10,7 @@ local xnoremap = require('utils.keymaps').xnoremap
 map { '<Space>', '<Nop>' }
 vim.g.mapleader = ' '
 
-nnoremap { '<Leader>qq', '<Cmd>qa<CR>', desc = 'Quit' }
+nnoremap { '<Leader>qq', '<Cmd>qa!<CR>', desc = 'Quit' }
 
 inoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
 vnoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
@@ -105,8 +105,6 @@ nnoremap { '<Leader>l', '<Cmd>Lazy home<CR>', desc = 'Lazy' }
 nnoremap { '<Leader>fu', '<Cmd>earlier 1f<CR>', desc = 'Give up modifications' }
 
 xnoremap { '$', 'g_' }
-
-nnoremap { '<Leader>up', vim.show_pos, desc = 'Inspect pos' }
 
 nnoremap { '<Leader>ct', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' }
 

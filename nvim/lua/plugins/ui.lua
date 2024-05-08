@@ -38,7 +38,7 @@ return {
         dashboard.button('r', ' ' .. ' Recent files', '<Cmd>Telescope oldfiles cwd_only=true<CR>'),
         dashboard.button('/', ' ' .. ' Find text', '<Cmd>Telescope live_grep<CR>'),
         dashboard.button('c', ' ' .. ' Config', '<Cmd>e ~/.nvimrc<CR>'),
-        dashboard.button('s', ' ' .. ' Restore session', function() require('persistence').load() end),
+        dashboard.button('s', ' ' .. ' Restore session', '<Cmd>SessionLoad<CR>'),
         dashboard.button('l', '󰒲 ' .. ' Lazy', '<Cmd>Lazy<CR>'),
         dashboard.button('q', ' ' .. ' Quit', '<Cmd>qa<CR>'),
       }
@@ -619,7 +619,7 @@ return {
         pattern = excluded_filetypes,
       })
     end,
-    dependencies = 'kevinhwang91/promise-async',
+    dependencies = { 'kevinhwang91/promise-async', 'luukvbaal/statuscol.nvim' },
     lazy = false,
     opts = {
       preview = {

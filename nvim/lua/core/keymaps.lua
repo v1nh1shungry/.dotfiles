@@ -153,3 +153,5 @@ nnoremap {
   end,
   desc = 'Clear all text highlight',
 }
+
+nnoremap { '<Leader>cq', '<Cmd>EditQuery<CR>', desc = 'Edit treesitter query' }

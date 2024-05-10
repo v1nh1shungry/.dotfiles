@@ -20,24 +20,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = augroup('highlight_yank'),
 })
 
-vim.api.nvim_create_autocmd({ 'BufEnter', 'FocusGained', 'InsertLeave', 'CmdlineLeave', 'WinEnter' }, {
-  callback = function()
-    if vim.wo.number and vim.api.nvim_get_mode() ~= 'i' then
-      vim.wo.relativenumber = true
-    end
-  end,
-})
-vim.api.nvim_create_autocmd({ 'BufLeave', 'FocusLost', 'InsertEnter', 'CmdlineEnter', 'WinLeave' }, {
-  callback = function()
-    if vim.wo.number then
-      vim.wo.relativenumber = false
-      vim.cmd('redraw')
-    end
-  end,
-})
-
 vim.api.nvim_create_autocmd('FileType', {
   callback = function()
+    vim.wo.number = false
+    vim.wo.relativenumber = false
     vim.bo.buflisted = false
     vim.wo.foldenable = false
     vim.wo.cc = ''

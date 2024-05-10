@@ -298,7 +298,6 @@ return {
       local builtin = require('statuscol.builtin')
       require('statuscol').setup {
         bt_ignore = { 'nofile', 'terminal' },
-        ft_ignore = excluded_filetypes,
         relculright = true,
         segments = {
           { sign = { name = { 'RecallSign' } }, click = 'v:lua.ScSa' },
@@ -479,9 +478,18 @@ return {
           ft = 'noice',
           size = { height = 0.4 },
           filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
+          wo = {
+            number = false,
+            relativenumber = false,
+            colorcolumn = '',
+          },
         },
         'Trouble',
-        { ft = 'qf', title = 'QuickFix' },
+        {
+          ft = 'qf',
+          title = 'QuickFix',
+          wo = { number = true, relativenumber = true },
+        },
         {
           ft = 'help',
           size = { height = 0.4 },
@@ -534,7 +542,13 @@ return {
           ft = 'spectre_panel',
           size = { width = 0.5 },
         },
+        {
+          title = 'Treesitter',
+          ft = 'query',
+          size = { width = 0.4 },
+        },
       },
+      exit_when_last = true,
     },
   },
   {

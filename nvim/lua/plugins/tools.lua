@@ -375,14 +375,14 @@ return {
     config = function()
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
-          local nnoremap = require('utils.keymaps').nnoremap
-          nnoremap {
+          local inoremap = require('utils.keymaps').inoremap
+          inoremap {
             '<M-d>',
             '<Plug>(committia-scroll-diff-down-half)',
             desc = 'Scroll down the diff window',
             buffer = args.buf,
           }
-          nnoremap {
+          inoremap {
             '<M-u>',
             '<Plug>(committia-scroll-diff-up-half)',
             desc = 'Scroll up the diff window',

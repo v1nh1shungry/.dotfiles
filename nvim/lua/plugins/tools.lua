@@ -506,4 +506,27 @@ return {
     keys = { { '<Leader>uk', '<Cmd>Screenkey<CR>', desc = 'Screencast keys' } },
     opts = { win_opts = { border = 'rounded' } },
   },
+  {
+    'v1nh1shungry/biquge.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+      {
+        'folke/which-key.nvim',
+        optional = true,
+        opts = { defaults = { ['<Leader>b'] = { name = '+biquge' } } },
+      },
+    },
+    keys = {
+      { '<Leader>b/', function() require('biquge').search() end, desc = 'Search' },
+      { '<Leader>bb', function() require('biquge').toggle() end, desc = 'Toggle' },
+      { '<Leader>bt', function() require('biquge').toc() end, desc = 'TOC' },
+      { '<Leader>bn', function() require('biquge').next_chap() end, desc = 'Next chapter' },
+      { '<Leader>bp', function() require('biquge').prev_chap() end, desc = 'Previous chapter' },
+      { '<Leader>bs', function() require('biquge').star() end, desc = 'Star current book' },
+      { '<Leader>bl', function() require('biquge').bookshelf() end, desc = 'Bookshelf' },
+      { '<M-d>', function() require('biquge').scroll(1) end, desc = 'Scroll down' },
+      { '<M-u>', function() require('biquge').scroll(-1) end, desc = 'Scroll up' },
+    },
+    opts = { height = 5 },
+  },
 }

@@ -293,10 +293,6 @@ return {
     },
   },
   {
-    'willothy/flatten.nvim',
-    opts = { window = { open = 'alternate' } },
-  },
-  {
     'axkirillov/hbac.nvim',
     event = events.enter_buffer,
     opts = { threshold = 6 },

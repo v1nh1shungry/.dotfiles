@@ -20,12 +20,6 @@ Set-PSReadLineKeyHandler -Chord '"',"'" `
     }
 }
 
-Import-Module posh-git
-
 Import-Module scoop-completion
 
-Remove-Item alias:ls
-Remove-Item alias:rm
-Remove-Item alias:mv
-function la ($arg) { ls -a $arg }
-function ll ($arg) { ls -al $arg }
+Invoke-Expression (& { (zoxide init powershell | Out-String) })

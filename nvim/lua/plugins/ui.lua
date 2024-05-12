@@ -634,7 +634,7 @@ return {
       })
     end,
     dependencies = { 'kevinhwang91/promise-async', 'luukvbaal/statuscol.nvim' },
-    lazy = false,
+    event = events.enter_buffer,
     opts = {
       preview = {
         win_config = { winblend = require('user').ui.blend },
@@ -665,20 +665,5 @@ return {
       end,
     },
     keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },
-  },
-  {
-    'SuperBo/fugit2.nvim',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons',
-      'nvim-lua/plenary.nvim',
-      'chrisgrieser/nvim-tinygit',
-    },
-    cmd = { 'Fugit2', 'Fugit2Graph' },
-    keys = {
-      { '<Leader>gS', '<Cmd>Fugit2<CR>', desc = 'Status' },
-      { '<Leader>gg', '<Cmd>Fugit2Graph<CR>', desc = 'Graph' },
-    },
-    opts = {},
   },
 }

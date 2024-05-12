@@ -53,6 +53,11 @@ if status is-interactive
         alias ncdu 'ncdu --color dark'
     end
 
+    if command -q zoxide
+        zoxide init fish | source
+        alias cd z
+    end
+
     if string match '*WSL*' (uname -a) > /dev/null
         function proxy
             if test "$argv" = unset
@@ -70,9 +75,5 @@ if status is-interactive
                 false
             end
         end
-    end
-
-    if test -e ~/.localrc
-        source ~/.localrc
     end
 end

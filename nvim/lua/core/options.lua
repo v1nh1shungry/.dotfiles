@@ -28,7 +28,6 @@ vim.opt.pumheight = 10
 vim.opt.relativenumber = true
 vim.opt.ruler = false
 vim.opt.scrolloff = 5
-vim.opt.sessionoptions:append('globals')
 vim.opt.shell = '/bin/fish'
 vim.opt.shiftround = true
 vim.opt.shiftwidth = 2

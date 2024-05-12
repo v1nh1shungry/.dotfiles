@@ -12,7 +12,7 @@ return {
       { '<Leader>/', '<Cmd>Telescope live_grep<CR>', desc = 'Live grep' },
       { '<Leader>sa', '<Cmd>Telescope autocommands<CR>', desc = 'Autocommands' },
       { '<Leader>sk', '<Cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
-      { '<Leader>sl', '<Cmd>Telescope resume<CR>', desc = 'Last search' },
+      { '<Leader>s@', '<Cmd>Telescope resume<CR>', desc = 'Last search' },
       { '<Leader>sh', '<Cmd>Telescope highlights<CR>', desc = 'Highlight groups' },
     },
     opts = {
@@ -312,7 +312,6 @@ return {
       { '<Leader>ma', ':CMakeLaunchArgs ', desc = 'Set launch arguments' },
       { '<Leader>ms', '<Cmd>CMakeTargetSettings<CR>', desc = 'Summary' },
     },
-    lazy = true,
     opts = {
       cmake_generate_options = { '-G', 'Ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=On' },
       cmake_build_directory = 'build',

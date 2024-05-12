@@ -2,7 +2,7 @@ local M = {}
 
 M.enter_buffer = {
   'BufNewFile',
-  'BufReadPre',
+  'BufReadPost',
 }
 
 M.enter_insert = {

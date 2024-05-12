@@ -341,13 +341,13 @@ return {
     dependencies = 'nvim-treesitter/nvim-treesitter',
     opts = {
       keymaps = {
-        ['<M-l>'] = 'swap_with_right',
-        ['<M-h>'] = 'swap_with_left',
+        ['<C-l>'] = 'swap_with_right',
+        ['<C-h>'] = 'swap_with_left',
       },
     },
     keys = {
-      { '<M-l>', desc = 'Swap with right' },
-      { '<M-h>', desc = 'Swap with left' },
+      { '<C-l>', desc = 'Swap with right' },
+      { '<C-h>', desc = 'Swap with left' },
     },
   },
   {
@@ -442,6 +442,16 @@ return {
       { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put before and indent left' },
       { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put after applying a filter' },
       { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
+    },
+    opts = {},
+  },
+  {
+    'numToStr/Navigator.nvim',
+    keys = {
+      { '<M-h>', '<Cmd>NavigatorLeft<CR>', desc = 'Go to left window', mode = { 'n', 't' } },
+      { '<M-l>', '<Cmd>NavigatorRight<CR>', desc = 'Go to right window', mode = { 'n', 't' } },
+      { '<M-j>', '<Cmd>NavigatorDown<CR>', desc = 'Go to lower window', mode = { 'n', 't' } },
+      { '<M-k>', '<Cmd>NavigatorUp<CR>', desc = 'Go to upper window', mode = { 'n', 't' } },
     },
     opts = {},
   },

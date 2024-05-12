@@ -21,7 +21,8 @@ local M = {
           },
           ['textDocument/documentSymbol'] = {
             { '<Leader>uo', '<Cmd>Lspsaga outline<CR>', desc = 'Symbol outline' },
-            { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols' },
+            { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols (Document)' },
+            { '<Leader>sS', '<Cmd>Telescope lsp_workspace_symbols<CR>', desc = 'Browse LSP symbols (Workspace)' },
           },
           ['textDocument/references'] = {
             { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' },

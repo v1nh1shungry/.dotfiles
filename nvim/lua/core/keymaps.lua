@@ -13,13 +13,7 @@ vim.g.mapleader = ' '
 nnoremap { '<Leader>qq', '<Cmd>qa!<CR>', desc = 'Quit' }
 
 inoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
-vnoremap { '<C-s>', '<Esc>:w<CR>', desc = 'Save' }
 nnoremap { '<C-s>', ':w<CR>', desc = 'Save' }
-
-nnoremap { '<C-h>', '<C-w>h', desc = 'Go to left window' }
-nnoremap { '<C-j>', '<C-w>j', desc = 'Go to lower window' }
-nnoremap { '<C-k>', '<C-w>k', desc = 'Go to upper window' }
-nnoremap { '<C-l>', '<C-w>l', desc = 'Go to right window' }
 
 tnoremap { '<Esc><Esc>', '<C-\\><C-n>' }
 
@@ -82,12 +76,10 @@ nnoremap { '<Leader>uw', '<Cmd>set wrap!<CR>', desc = 'Toggle wrap' }
 
 nnoremap { '<Leader>fc', '<Cmd>e ~/.nvimrc<CR>', desc = 'Open preferences' }
 
-nnoremap { '<M-j>', '<Cmd>m .+1<CR>==', desc = 'Move down' }
-nnoremap { '<M-k>', '<Cmd>m .-2<CR>==', desc = 'Move up' }
-inoremap { '<M-j>', '<Esc><Cmd>m .+1<CR>==gi', desc = 'Move down' }
-inoremap { '<M-k>', '<Esc><Cmd>m .-2<CR>==gi', desc = 'Move up' }
-vnoremap { '<M-j>', ":m '>+1<CR>gv=gv", desc = 'Move down' }
-vnoremap { '<M-k>', ":m '<-2<CR>gv=gv", desc = 'Move up' }
+nnoremap { '<C-j>', '<Cmd>m .+1<CR>==', desc = 'Move down' }
+nnoremap { '<C-k>', '<Cmd>m .-2<CR>==', desc = 'Move up' }
+vnoremap { '<C-j>', ":m '>+1<CR>gv=gv", desc = 'Move down' }
+vnoremap { '<C-k>', ":m '<-2<CR>gv=gv", desc = 'Move up' }
 
 nnoremap {
   '[<Space>',
@@ -136,7 +128,7 @@ nnoremap {
 
 local selected_hl_ns = vim.api.nvim_create_namespace('dotfiles_selected_highlight')
 xnoremap {
-  '<Leader>ch',
+  '<Leader>uh',
   function()
     vim.cmd [[execute "normal! \<ESC>"]]
     vim.highlight.range(0, selected_hl_ns, 'IncSearch', "'<", "'>", {
@@ -147,11 +139,9 @@ xnoremap {
   desc = 'Highlight selected text',
 }
 nnoremap {
-  '<Leader>ch',
+  '<Leader>uh',
   function()
       vim.api.nvim_buf_clear_namespace(0, selected_hl_ns, 1, -1)
   end,
   desc = 'Clear all text highlight',
 }
-
-nnoremap { '<Leader>cq', '<Cmd>EditQuery<CR>', desc = 'Edit treesitter query' }

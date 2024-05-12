@@ -226,10 +226,10 @@ return {
             key.buffer = args.buf
             require('utils.keymaps').nnoremap(key)
           end
-          nnoremap { '<Leader>gco', '<Plug>(git-conflict-ours)', desc = 'Choose ours' }
-          nnoremap { '<Leader>gct', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' }
-          nnoremap { '<Leader>gcb', '<Plug>(git-conflict-both)', desc = 'Choose both' }
-          nnoremap { '<Leader>gc0', '<Plug>(git-conflict-none)', desc = 'Choose none' }
+          nnoremap { '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' }
+          nnoremap { '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' }
+          nnoremap { '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' }
+          nnoremap { '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' }
         end,
         pattern = 'GitConflictDetected',
       })
@@ -237,7 +237,7 @@ return {
     dependencies = {
       'folke/which-key.nvim',
       optional = true,
-      opts = { defaults = { ['<Leader>gc'] = { name = '+conflict' } } },
+      opts = { defaults = { ['<Leader>gx'] = { name = '+conflict' } } },
     },
     event = events.enter_buffer,
     opts = { default_mappings = false },
@@ -270,13 +270,7 @@ return {
   },
   {
     'sindrets/diffview.nvim',
-    cmd = {
-      'DiffviewFileHistory',
-      'DiffviewOpen',
-      'DiffviewToggleFiles',
-      'DiffviewFocusFiles',
-      'DiffviewRefresh',
-    },
+    cmd = { 'DiffviewFileHistory', 'DiffviewOpen' },
     keys = { { '<Leader>gD', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
   },
   {
@@ -422,7 +416,7 @@ return {
       'rcarriga/nvim-notify',
     },
     keys = {
-      { '<Leader>gC', function() require('tinygit').smartCommit() end, desc = 'Commit' },
+      { '<Leader>gc', function() require('tinygit').smartCommit() end, desc = 'Commit' },
       { '<Leader>gP', function() require('tinygit').push() end, desc = 'Push' },
       { '<Leader>ga', function() require('tinygit').amendNoEdit() end, desc = 'Amend' },
       { '<Leader>gU', function() require('tinygit').undoLastCommit() end, desc = 'Undo last commit' },
@@ -492,8 +486,11 @@ return {
   },
   {
     'dhruvasagar/vim-table-mode',
-    config = function() vim.g.table_mode_corner = '|' end,
-    keys = { { '<Leader>cT', '<Cmd>TableModeToggle<CR>', desc = 'Table mode' } },
+    config = function()
+      vim.g.table_mode_corner = '|'
+      vim.g.table_mode_disable_mappings = 1
+    end,
+    keys = { { '<Leader>ft', '<Cmd>TableModeToggle<CR>', desc = 'Table mode' } },
   },
   {
     'v1nh1shungry/cppman.nvim',

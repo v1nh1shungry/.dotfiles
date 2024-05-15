@@ -206,9 +206,7 @@ local M = {
             '--header-insertion=never',
             '--include-cleaner-stdlib',
           },
-          on_new_config = function(new_config, _)
-            require('cmake-tools').clangd_on_new_config(new_config)
-          end,
+          on_new_config = function(new_config, _) require('cmake-tools').clangd_on_new_config(new_config) end,
           keys = {
             {
               '<Leader>ct',
@@ -257,10 +255,13 @@ local M = {
       local cmp = require('cmp')
       local luasnip = require('luasnip')
 
-      require('luasnip.loaders.from_vscode').lazy_load()
+      for _, ft in ipairs { 'cpp' } do
+        luasnip.add_snippets(ft, require('plugins.ide.snippets.' .. ft))
+      end
 
       cmp.setup {
         window = { completion = { side_padding = 0 } },
+        snippet = { expand = function(args) require('luasnip').lsp_expand(args.body) end },
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
           format = function(entry, vim_item)
@@ -275,23 +276,14 @@ local M = {
             kind.menu = '    ' .. strings[2]
             return kind
           end,
+          expandable_indicator = true,
         },
         mapping = cmp.mapping.preset.insert {
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<CR>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              if luasnip.expandable() then
-                luasnip.expand()
-              else
-                cmp.confirm { select = true }
-              end
-            else
-              fallback()
-            end
-          end),
+          ['<CR>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               if not cmp.get_selected_entry() then
@@ -299,8 +291,8 @@ local M = {
               else
                 cmp.confirm()
               end
-            elseif luasnip.locally_jumpable(1) then
-              luasnip.jump(1)
+            elseif luasnip.expand_or_locally_jumpable(1) then
+              luasnip.expand_or_jump()
             else
               fallback()
             end
@@ -308,7 +300,7 @@ local M = {
           ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif luasnip.locally_jumpable(-1) then
+            elseif luasnip.jumpable(-1) then
               luasnip.jump(-1)
             else
               fallback()
@@ -360,7 +352,6 @@ local M = {
         dependencies = {
           'L3MON4D3/LuaSnip',
           build = 'make install_jsregexp',
-          dependencies = 'rafamadriz/friendly-snippets',
           opts = { enable_autosnippets = true },
         },
       },
@@ -498,30 +489,14 @@ local M = {
         'jbyuki/one-small-step-for-vimkind',
         config = function()
           local dap = require('dap')
-          dap.adapters.nlua = function(callback, conf)
-            local adapter = {
+          dap.adapters.nlua = function(callback, config)
+            callback {
               type = 'server',
-              host = conf.host or '127.0.0.1',
-              port = conf.port or 8086,
+              host = config.host or '127.0.0.1',
+              port = config.port or 8086,
             }
-            if conf.start_neovim then
-              local dap_run = dap.run
-              dap.run = function(c)
-                adapter.port = c.port
-                adapter.host = c.host
-              end
-              require('osv').run_this()
-              dap.run = dap_run
-            end
-            callback(adapter)
           end
           dap.configurations.lua = {
-            {
-              type = 'nlua',
-              request = 'attach',
-              name = 'Run this file',
-              start_neovim = {},
-            },
             {
               type = 'nlua',
               request = 'attach',
@@ -530,6 +505,7 @@ local M = {
             },
           }
         end,
+        keys = { { '<Leader>dl', function() require('osv').launch { port = 8086 } end, desc = 'Launch DAP server' } },
       },
     },
     keys = {

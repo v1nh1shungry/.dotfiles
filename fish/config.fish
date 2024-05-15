@@ -55,7 +55,10 @@ if status is-interactive
 
     if command -q zoxide
         zoxide init fish | source
-        alias cd z
+        function cd
+            echo 'use `z` instead'
+            return 1
+        end
     end
 
     if string match '*WSL*' (uname -a) > /dev/null

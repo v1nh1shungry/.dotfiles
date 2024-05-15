@@ -149,9 +149,24 @@ return {
               end,
             },
             {
-              function() return 'Spaces: ' .. vim.bo.shiftwidth end,
+              function()
+                if vim.bo.shiftwidth == 0 then
+                  return 'Tab: ' .. vim.bo.tabstop
+                else
+                  return 'Spaces: ' .. vim.bo.shiftwidth
+                end
+              end,
               on_click = function()
-                vim.ui.input({ prompt = 'Tab Size: ' }, function(input) vim.bo.shiftwidth = tonumber(input) end)
+                vim.ui.input({ prompt = 'Tab Size: ' }, function(input)
+                  if input == nil then
+                    return
+                  end
+                  if vim.bo.shiftwidth == 0 then
+                    vim.bo.tabstop = tonumber(input)
+                  else
+                    vim.bo.shiftwidth = tonumber(input)
+                  end
+                end)
               end,
             },
             { 'encoding', fmt = function(str) return string.upper(str) end },
@@ -231,19 +246,13 @@ return {
       'MunifTanjim/nui.nvim',
       {
         'rcarriga/nvim-notify',
-        keys = {
-          {
-            '<Leader>un',
-            function() require('notify').dismiss { silent = true, pending = true } end,
-            desc = 'Dismiss all notifications',
-          },
-        },
         opts = { timeout = 3000 },
       },
     },
     event = 'VeryLazy',
     keys = {
-      { '<Leader>xn', '<Cmd>Noice<CR>', desc = 'Message' },
+      { '<Leader>xn', '<Cmd>NoiceAll<CR>', desc = 'Message' },
+      { '<Leader>un', '<Cmd>Noice dismiss<CR>', desc = 'Dismiss all notifications' },
       {
         '<C-f>',
         function()

@@ -203,11 +203,12 @@ local M = {
         clangd = {
           cmd = {
             'clangd',
-            '--compile-commands-dir=build',
             '--header-insertion=never',
             '--include-cleaner-stdlib',
           },
-          filetypes = { 'c', 'cpp' },
+          on_new_config = function(new_config, _)
+            require('cmake-tools').clangd_on_new_config(new_config)
+          end,
           keys = {
             {
               '<Leader>ct',
@@ -228,7 +229,6 @@ local M = {
               completion = { callSnippet = 'Replace', autoRequire = false },
               telemetry = { enable = false },
               workspace = { checkThirdParty = false },
-              codelens = { enable = true },
             },
           },
         },
@@ -237,7 +237,7 @@ local M = {
   },
   {
     'nvimdev/lspsaga.nvim',
-    event = 'LspAttach',
+    cmd = 'Lspsaga',
     opts = {
       code_action = { extend_gitsigns = false, show_server_name = true },
       lightbulb = { sign = false },
@@ -348,7 +348,6 @@ local M = {
           { name = 'buffer' },
           { name = 'path' },
           { name = 'rg', keyword_length = 3 },
-          { name = 'emoji' },
         },
       })
     end,
@@ -367,7 +366,6 @@ local M = {
       },
       'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
-      'hrsh7th/cmp-emoji',
     },
     event = events.enter_insert,
   },

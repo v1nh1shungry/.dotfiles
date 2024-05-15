@@ -308,14 +308,8 @@ return {
     },
     opts = {
       cmake_generate_options = { '-G', 'Ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=On' },
-      cmake_build_directory = 'build',
       cmake_soft_link_compile_commands = false,
-      cmake_terminal = {
-        opts = {
-          start_insert_in_launch_task = true,
-          focus_on_launch_terminal = true,
-        },
-      },
+      cmake_runner = { name = 'toggleterm' },
     },
   },
   {
@@ -498,11 +492,6 @@ return {
     opts = {},
   },
   {
-    'NStefan002/screenkey.nvim',
-    keys = { { '<Leader>uk', '<Cmd>Screenkey<CR>', desc = 'Screencast keys' } },
-    opts = { win_opts = { border = 'rounded' } },
-  },
-  {
     'v1nh1shungry/biquge.nvim',
     dependencies = {
       'nvim-telescope/telescope.nvim',
@@ -524,5 +513,10 @@ return {
       { '<M-u>', function() require('biquge').scroll(-1) end, desc = 'Scroll up' },
     },
     opts = { height = 5 },
+  },
+  {
+    'nvim-telescope/telescope-symbols.nvim',
+    dependencies = 'nvim-telescope/telescope.nvim',
+    keys = { { '<Leader>se', '<Cmd>Telescope symbols<CR>', desc = 'Emoji' } },
   },
 }

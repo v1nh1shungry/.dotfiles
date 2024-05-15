@@ -79,7 +79,7 @@ return {
   {
     'lewis6991/satellite.nvim',
     event = events.enter_buffer,
-    opts = {},
+    opts = { excluded_filetypes = excluded_filetypes },
   },
   {
     'akinsho/bufferline.nvim',

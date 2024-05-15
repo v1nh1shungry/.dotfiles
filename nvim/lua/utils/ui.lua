@@ -21,7 +21,6 @@ M.excluded_filetypes = {
   'DressingInput',
   'Trouble',
   'checkhealth',
-  'cmake_tools_terminal',
   'dap-repl',
   'dapui_breakpoints',
   'dapui_console',
@@ -44,6 +43,7 @@ M.excluded_filetypes = {
   'sagaoutline',
   'spectre_panel',
   'ssr',
+  'toggleterm',
 }
 
 M.rainbow_highlight = {

@@ -145,6 +145,7 @@ return {
         'c',
         'cmake',
         'cpp',
+        'cuda',
         'diff',
         'doxygen',
         'fish',

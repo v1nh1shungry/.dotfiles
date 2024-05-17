@@ -198,7 +198,6 @@ return {
           'lazy',
           'man',
           'mason',
-          'neo-tree',
           'nvim-dap-ui',
           'quickfix',
           'toggleterm',
@@ -362,80 +361,6 @@ return {
     event = events.enter_buffer,
   },
   {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v3.x',
-    cmd = 'Neotree',
-    keys = { { '<Leader>e', '<Cmd>Neotree reveal toggle<CR>', desc = 'Explorer' } },
-    init = function()
-      if vim.fn.argc() == 1 then
-        local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == 'directory' then
-          require('neo-tree')
-        end
-      end
-    end,
-    opts = {
-      sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
-      open_files_do_not_replace_types = excluded_filetypes,
-      filesystem = {
-        filtered_items = {
-          hide_dotfiles = false,
-          hide_gitignored = false,
-          hide_hidden = false,
-        },
-        bind_to_cwd = false,
-        follow_current_file = { enabled = true },
-        use_libuv_file_watcher = true,
-      },
-      window = {
-        mappings = {
-          ['h'] = function(state)
-            local node = state.tree:get_node()
-            if node.type == 'directory' and node:is_expanded() then
-              require('neo-tree.sources.filesystem').toggle_directory(state, node)
-            else
-              require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
-            end
-          end,
-          ['l'] = function(state)
-            local node = state.tree:get_node()
-            if node.type == 'directory' then
-              if not node:is_expanded() then
-                require('neo-tree.sources.filesystem').toggle_directory(state, node)
-              elseif node:has_children() then
-                require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
-              end
-            elseif node.type == 'file' then
-              require('neo-tree.sources.filesystem.commands').open(state)
-            end
-          end,
-        },
-      },
-      default_component_configs = {
-        indent = {
-          with_expanders = true,
-          expander_collapsed = '',
-          expander_expanded = '',
-          expander_highlight = 'NeoTreeExpander',
-        },
-        diagnostics = {
-          symbols = {
-            hint = diagnostic_signs.hint,
-            info = diagnostic_signs.info,
-            warn = diagnostic_signs.warn,
-            error = diagnostic_signs.error,
-          },
-        },
-      },
-      event_handlers = {
-        {
-          event = 'file_opened',
-          handler = function(_) vim.cmd('Neotree close') end,
-        },
-      },
-    },
-  },
-  {
     'folke/edgy.nvim',
     event = 'VeryLazy',
     dependencies = {
@@ -511,14 +436,6 @@ return {
       },
       left = {
         {
-          title = 'Explorer',
-          ft = 'neo-tree',
-          filter = function(buf) return vim.b[buf].neo_tree_source == 'filesystem' end,
-          open = function() vim.api.nvim_input('<esc><space>e') end,
-          size = { height = 0.6 },
-        },
-        'neo-tree',
-        {
           ft = 'dapui_scopes',
           title = 'Scopes',
           size = { height = 0.25 },
@@ -550,11 +467,6 @@ return {
           title = 'Spectre',
           ft = 'spectre_panel',
           size = { width = 0.5 },
-        },
-        {
-          title = 'Treesitter',
-          ft = 'query',
-          size = { width = 0.4 },
         },
       },
       exit_when_last = true,
@@ -691,6 +603,11 @@ return {
         pattern = { '*.md', '*.puml' },
       })
     end,
+    opts = {},
+  },
+  {
+    'echasnovski/mini.files',
+    keys = { { '<Leader>e', '<Cmd>lua MiniFiles.open()<CR>', desc = 'Explorer' } },
     opts = {},
   },
 }

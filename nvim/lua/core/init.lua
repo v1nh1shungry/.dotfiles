@@ -1,8 +1,3 @@
-vim.cmd('filetype plugin indent on')
-if vim.fn.exists('syntax_on') ~= 1 then
-  vim.cmd([[syntax enable]])
-end
-
 if vim.fn.has('wsl') == 1 then
   vim.g.clipboard = {
     name = 'WslClipboard',
@@ -18,20 +13,9 @@ if vim.fn.has('wsl') == 1 then
   }
 end
 
-vim.cmd.aunmenu('PopUp')
-
-local icons = require('utils.ui').icons.diagnostic
-for name, icon in pairs {
-  DiagnosticSignError = icons.error,
-  DiagnosticSignWarn = icons.warn,
-  DiagnosticSignHint = icons.hint,
-  DiagnosticSignInfo = icons.info,
-} do
-  vim.fn.sign_define(name, { texthl = name, text = icon, numhl = '' })
-end
-
 vim.deprecate = function() end
 
 require('core.autocmds')
 require('core.keymaps')
 require('core.options')
+require('core.ui')

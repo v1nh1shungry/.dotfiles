@@ -334,14 +334,6 @@ local M = {
         mapping = cmdline_mapping,
         sources = cmp.config.sources { { name = 'buffer' } },
       })
-
-      cmp.setup.filetype('markdown', {
-        sources = cmp.config.sources {
-          { name = 'buffer' },
-          { name = 'path' },
-          { name = 'rg', keyword_length = 3 },
-        },
-      })
     end,
     dependencies = {
       'hrsh7th/cmp-buffer',
@@ -365,19 +357,31 @@ local M = {
     event = events.enter_buffer,
     opts = {
       on_attach = function(buffer)
-        local gs = package.loaded.gitsigns
-        local map = function(opts)
-          require('utils.keymaps').noremap(vim.tbl_extend('keep', opts, {
-            buffer = buffer,
-            mode = 'n',
-          }))
-        end
+        local map = function(opts) require('utils.keymaps').nnoremap(vim.tbl_extend('keep', opts, { buffer = buffer })) end
         map { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' }
         map { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' }
         map { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' }
         map { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' }
-        map { ']h', function() gs.next_hunk { navigation_message = false } end, desc = 'Next git hunk' }
-        map { '[h', function() gs.prev_hunk { navigation_message = false } end, desc = 'Previous git hunk' }
+        map {
+          ']h',
+          function() require('gitsigns').nav_hunk('next', { navigation_message = false }) end,
+          desc = 'Next git hunk',
+        }
+        map {
+          '[h',
+          function() require('gitsigns').nav_hunk('prev', { navigation_message = false }) end,
+          desc = 'Previous git hunk',
+        }
+        map {
+          ']H',
+          function() require('gitsigns').nav_hunk('last', { navigation_message = false }) end,
+          desc = 'Last git hunk',
+        }
+        map {
+          '[H',
+          function() require('gitsigns').nav_hunk('first', { navigation_message = false }) end,
+          desc = 'First git hunk',
+        }
         map { 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' }
       end,
     },
@@ -391,45 +395,11 @@ local M = {
   {
     'mfussenegger/nvim-dap',
     config = function()
-      local dap = require('dap')
-      local icons = require('utils.ui').icons.dap
-
-      vim.fn.sign_define('DapBreakpoint', {
-        text = icons.breakpoint,
-        texthl = 'DiagnosticSignError',
-        linehl = '',
-        numhl = '',
-      })
-      vim.fn.sign_define('DapBreakpointCondition', {
-        text = icons.breakpoint_condition,
-        texthl = 'DiagnosticSignError',
-        linehl = '',
-        numhl = '',
-      })
-      vim.fn.sign_define('DapBreakpointRejected', {
-        text = icons.breakpoint_rejected,
-        texthl = 'DapBreakpoint',
-        linehl = '',
-        numhl = '',
-      })
-      vim.fn.sign_define('DapLogPoint', {
-        text = icons.log_point,
-        texthl = 'DiagnosticSignError',
-        linehl = '',
-        numhl = '',
-      })
-      vim.fn.sign_define('DapStopped', {
-        text = icons.stopped,
-        texthl = 'DapStopped',
-        linehl = '',
-        numhl = '',
-      })
-
       local nnoremap = require('utils.keymaps').nnoremap
       nnoremap { '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' }
       nnoremap { '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' }
       nnoremap { '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' }
-      nnoremap { '<Leader>dt', function() dap.terminate() end, desc = 'Terminate' }
+      nnoremap { '<Leader>dt', function() require('dap').terminate() end, desc = 'Terminate' }
     end,
     dependencies = {
       {

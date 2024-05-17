@@ -222,14 +222,13 @@ return {
       require('git-conflict').setup(opts)
       vim.api.nvim_create_autocmd('User', {
         callback = function(args)
-          local nnoremap = function(key)
-            key.buffer = args.buf
-            require('utils.keymaps').nnoremap(key)
+          local map = function(key)
+            require('utils.keymaps').nnoremap(vim.tbl_extend('force', { buffer = args.buf }, key))
           end
-          nnoremap { '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' }
-          nnoremap { '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' }
-          nnoremap { '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' }
-          nnoremap { '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' }
+          map { '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' }
+          map { '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' }
+          map { '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' }
+          map { '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' }
         end,
         pattern = 'GitConflictDetected',
       })

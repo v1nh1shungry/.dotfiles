@@ -92,15 +92,9 @@ return {
               [']a'] = '@parameter.inner',
               [']f'] = '@function.outer',
             },
-            goto_next_end = {
-              [']F'] = '@function.outer',
-            },
             goto_previous_start = {
               ['[a'] = '@parameter.inner',
               ['[f'] = '@function.outer',
-            },
-            goto_previous_end = {
-              ['[F'] = '@function.outer',
             },
           },
         },
@@ -315,8 +309,8 @@ return {
   },
   {
     'echasnovski/mini.bufremove',
-    config = true,
     keys = { { '<C-q>', function() require('mini.bufremove').delete(0, false) end, desc = 'Close buffer' } },
+    opts = {},
   },
   {
     'RRethy/nvim-treesitter-endwise',

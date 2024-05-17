@@ -231,7 +231,7 @@ return {
         ['<Leader><Tab>'] = { name = '+tab' },
         ['<Leader>c'] = { name = '+code' },
         ['<Leader>f'] = { name = '+file' },
-        ['<Leader>g'] = { name = '+Git' },
+        ['<Leader>g'] = { name = '+git' },
         ['<Leader>s'] = { name = '+search' },
         ['<Leader>u'] = { name = '+UI' },
         ['<Leader>x'] = { name = '+diagnostics/quickfix' },
@@ -334,7 +334,7 @@ return {
     keys = {
       { '/', desc = 'Forward search' },
       { '?', desc = 'Backward search' },
-      { '<C-n>', mode = { 'n', 'v' }, desc = 'Multi cursors' }, -- integrate with vim-visual-multi
+      { '<C-n>', mode = { 'n', 'v' }, desc = 'Multi cursors' },
       {
         'n',
         [[<Cmd>execute('normal! ' . v:count1 . 'Nn'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]],
@@ -488,7 +488,7 @@ return {
   },
   {
     'b0o/incline.nvim',
-    event = events.enter_buffer,
+    event = 'LspAttach',
     opts = {
       render = function(props)
         local label = {}
@@ -530,7 +530,7 @@ return {
   },
   {
     'mcauley-penney/visual-whitespace.nvim',
-    event = events.enter_buffer,
+    event = 'ModeChanged *:[vV]*',
     opts = {},
   },
   {

@@ -374,20 +374,10 @@ local M = {
         end
         map { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' }
         map { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' }
-        map {
-          '<Leader>gd',
-          function()
-            gs.diffthis()
-            vim.cmd.wincmd('p')
-          end,
-          desc = 'Diff this',
-        }
         map { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' }
         map { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' }
         map { ']h', function() gs.next_hunk { navigation_message = false } end, desc = 'Next git hunk' }
         map { '[h', function() gs.prev_hunk { navigation_message = false } end, desc = 'Previous git hunk' }
-        map { '<Leader>gs', '<Cmd>Gitsigns stage_hunk<CR>', desc = 'Stage hunk' }
-        map { '<Leader>gu', '<Cmd>Gitsigns undo_stage_hunk<CR>', desc = 'Undo staged hunk' }
         map { 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' }
       end,
     },

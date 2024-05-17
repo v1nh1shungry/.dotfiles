@@ -213,6 +213,13 @@ return {
     ]]
   ),
   constructor_snippet(
+    'vdtor!',
+    'Default virtual destructor',
+    [[
+    virtual ~<cls>() = default;
+    ]]
+  ),
+  constructor_snippet(
     'cc!',
     'Copy constructor',
     [[
@@ -251,7 +258,7 @@ return {
 
   s(
     {
-      trig = 'struct',
+      trig = 'stt',
       name = 'struct',
       desc = 'struct',
       snippetType = 'autosnippet',
@@ -271,7 +278,7 @@ return {
   ),
   s(
     {
-      trig = 'class',
+      trig = 'cls',
       name = 'class',
       desc = 'class',
       snippetType = 'autosnippet',

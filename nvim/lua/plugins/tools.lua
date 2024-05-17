@@ -280,6 +280,7 @@ return {
       optional = true,
       opts = { defaults = { ['<Leader>m'] = { name = '+cmake' } } },
     },
+    ft = 'cmake',
     init = function()
       local loaded = false
       local function check()
@@ -307,7 +308,12 @@ return {
       { '<Leader>ms', '<Cmd>CMakeTargetSettings<CR>', desc = 'Summary' },
     },
     opts = {
-      cmake_generate_options = { '-G', 'Ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=On' },
+      cmake_generate_options = {
+        '-G',
+        'Ninja',
+        '-DCMAKE_EXPORT_COMPILE_COMMANDS=On',
+        '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
+      },
       cmake_build_directory = 'build',
       cmake_soft_link_compile_commands = false,
       cmake_runner = { name = 'toggleterm' },
@@ -352,11 +358,6 @@ return {
     'nvim-pack/nvim-spectre',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = { { '<Leader>sd', '<Cmd>Spectre<CR>', desc = 'Spectre' } },
-  },
-  {
-    'echasnovski/mini.files',
-    keys = { { '<Leader>fe', '<Cmd>lua MiniFiles.open()<CR>', desc = 'Filesystem buffer' } },
-    opts = { options = { use_as_default_explorer = false } },
   },
   {
     'rhysd/committia.vim',
@@ -456,6 +457,7 @@ return {
         '',
         'alpha',
         'markdown',
+        'query',
         'text',
       }, require('utils.ui').excluded_filetypes),
     },

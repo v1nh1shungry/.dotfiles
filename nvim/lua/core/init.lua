@@ -30,6 +30,8 @@ for name, icon in pairs {
   vim.fn.sign_define(name, { texthl = name, text = icon, numhl = '' })
 end
 
+vim.deprecate = function() end
+
 require('core.autocmds')
 require('core.keymaps')
 require('core.options')

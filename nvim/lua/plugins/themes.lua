@@ -18,7 +18,6 @@ return {
             information = { 'undercurl' },
           },
         },
-        neotree = true,
         noice = true,
         notify = true,
         treesitter_context = true,

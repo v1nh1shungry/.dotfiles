@@ -271,7 +271,7 @@ return {
   {
     'sindrets/diffview.nvim',
     cmd = { 'DiffviewFileHistory', 'DiffviewOpen' },
-    keys = { { '<Leader>gD', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
+    keys = { { '<Leader>gd', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
   },
   {
     'Civitasv/cmake-tools.nvim',
@@ -308,6 +308,7 @@ return {
     },
     opts = {
       cmake_generate_options = { '-G', 'Ninja', '-DCMAKE_EXPORT_COMPILE_COMMANDS=On' },
+      cmake_build_directory = 'build',
       cmake_soft_link_compile_commands = false,
       cmake_runner = { name = 'toggleterm' },
     },
@@ -413,7 +414,7 @@ return {
       { '<Leader>gc', function() require('tinygit').smartCommit() end, desc = 'Commit' },
       { '<Leader>gP', function() require('tinygit').push() end, desc = 'Push' },
       { '<Leader>ga', function() require('tinygit').amendNoEdit() end, desc = 'Amend' },
-      { '<Leader>gU', function() require('tinygit').undoLastCommit() end, desc = 'Undo last commit' },
+      { '<Leader>gu', function() require('tinygit').undoLastCommit() end, desc = 'Undo last commit' },
     },
     opts = {},
   },

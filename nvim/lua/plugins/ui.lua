@@ -675,4 +675,22 @@ return {
     },
     keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },
   },
+  {
+    'v1nh1shungry/plantuml-preview.nvim',
+    ft = 'markdown',
+    init = function()
+      vim.api.nvim_create_autocmd(events.enter_buffer, {
+        callback = function(args)
+          require('utils.keymaps').nnoremap {
+            '<Leader>up',
+            function() require('plantuml-preview').toggle() end,
+            buffer = args.buf,
+            desc = 'Toggle plantuml preview',
+          }
+        end,
+        pattern = { '*.md', '*.puml' },
+      })
+    end,
+    opts = {},
+  },
 }

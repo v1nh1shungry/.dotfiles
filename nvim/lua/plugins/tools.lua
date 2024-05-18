@@ -357,6 +357,7 @@ return {
     'nvim-pack/nvim-spectre',
     dependencies = 'nvim-lua/plenary.nvim',
     keys = { { '<Leader>sd', '<Cmd>Spectre<CR>', desc = 'Spectre' } },
+    opts = { open_cmd = 'noswapfile vnew' },
   },
   {
     'rhysd/committia.vim',
@@ -520,5 +521,22 @@ return {
     'nvim-telescope/telescope-symbols.nvim',
     dependencies = 'nvim-telescope/telescope.nvim',
     keys = { { '<Leader>se', '<Cmd>Telescope symbols<CR>', desc = 'Emoji' } },
+  },
+  {
+    'v1nh1shungry/cppinsights.nvim',
+    cmd = 'CppInsights',
+  },
+  {
+    'SuperBo/fugit2.nvim',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'nvim-lua/plenary.nvim',
+    },
+    opts = { external_diffview = true },
+    keys = {
+      { '<Leader>gs', '<Cmd>Fugit2<CR>', desc = 'Fugit2' },
+      { '<Leader>gg', '<Cmd>Fugit2Graph<CR>', desc = 'Git graph' },
+    },
   },
 }

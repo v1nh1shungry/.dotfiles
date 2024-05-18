@@ -1,9 +1,5 @@
 local M = {
-  plugins = {
-    disabled = {},
-    extra = {},
-    langs = {},
-  },
+  plugins = {},
   ui = {
     background = 'dark',
     blend = 10,
@@ -13,6 +9,10 @@ local M = {
     save = true,
     compile = {},
     execute = {},
+  },
+  water = {
+    minute = 30,
+    message = ' ⏰ Time to stand up, drink some water and go to the bathroom',
   },
 }
 

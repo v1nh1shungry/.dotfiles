@@ -1,11 +1,11 @@
 local timer = vim.loop.new_timer()
-local minute = 30
+local minute = require('user').water.minute
 
 timer:start(
   minute * 60 * 1000,
   minute * 60 * 1000,
   vim.schedule_wrap(function()
-    vim.notify(' ⏰ Time to stand up, drink some water and go to the bathroom', vim.log.levels.WARN, {
+    vim.notify(require('user').water.message, vim.log.levels.WARN, {
       title = 'You',
       timeout = false,
       on_open = function() timer:stop() end,

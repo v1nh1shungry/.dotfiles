@@ -1,6 +1,6 @@
 local events = require('utils.events')
 
-local M = {
+return {
   {
     'neovim/nvim-lspconfig',
     config = function(_, lsp_opts)
@@ -548,11 +548,36 @@ local M = {
     'mfussenegger/nvim-lint',
     event = events.enter_buffer,
     opts = {
-      events = { 'BufWritePost', 'BufReadPost', 'InsertLeave' },
+      events = { 'BufWritePost', 'BufReadPost' },
       linters_by_ft = {
+        c = { 'cppcheck' },
+        cpp = { 'cppcheck' },
         fish = { 'fish' },
       },
-      linters = {},
+      linters = {
+        cppcheck = {
+          args = {
+            '--enable=style,performance,warning,portability',
+            function()
+              if vim.bo.filetype == 'cpp' then
+                return '--language=c++'
+              else
+                return '--language=c'
+              end
+            end,
+            '--inline-suppr',
+            '--quiet',
+            function()
+              if vim.fn.isdirectory('build') == 1 then
+                return '--cppcheck-build-dir=build'
+              else
+                return nil
+              end
+            end,
+            '--template={file}:{line}:{column}: [{id}] {severity}: {message}',
+          },
+        },
+      },
     },
     config = function(_, opts)
       local M = {}
@@ -606,11 +631,3 @@ local M = {
     end,
   },
 }
-
-for _, lang in ipairs(require('user').plugins.langs) do
-  for _, spec in ipairs(require('plugins.ide.lang.' .. lang)) do
-    M[#M + 1] = spec
-  end
-end
-
-return M

@@ -20,11 +20,8 @@ for _, module in ipairs { 'core', 'ide', 'ui', 'tools', 'themes' } do
   end
 end
 
-for _, spec in ipairs(require('user').plugins.extra) do
+for _, spec in ipairs(require('user').plugins) do
   lazy_specs[#lazy_specs + 1] = spec
-end
-for _, plugin in ipairs(require('user').plugins.disabled) do
-  lazy_specs[#lazy_specs + 1] = { plugin, enabled = false }
 end
 
 require('lazy').setup {

@@ -14,6 +14,12 @@ local M = {
     minute = 30,
     message = ' ⏰ Time to stand up, drink some water and go to the bathroom',
   },
+  todo = {
+    storage = vim.fs.joinpath(vim.fn.stdpath('data'), '.dotfiles_todo.txt'),
+    width = 30,
+    height = 5,
+    minute = 60,
+  },
 }
 
 local setup = function() vim.cmd.colorscheme(M.ui.colorscheme) end

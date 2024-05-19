@@ -83,6 +83,14 @@ return {
   },
   {
     'akinsho/bufferline.nvim',
+    config = function(_, opts)
+      require('bufferline').setup(opts)
+      vim.api.nvim_create_autocmd({ 'BufAdd', 'BufDelete' }, {
+        callback = function()
+          vim.schedule(function() pcall(nvim_bufferline) end)
+        end,
+      })
+    end,
     event = 'VeryLazy',
     keys = {
       { 'gb', '<Cmd>BufferLinePick<CR>', desc = 'Pick buffer' },
@@ -105,7 +113,13 @@ return {
         desc = 'Previous buffer',
       },
     },
-    opts = { options = { themable = true } },
+    opts = {
+      options = {
+        diagnostics = 'nvim_lsp',
+        diagnostics_update_in_insert = true,
+        themable = true,
+      },
+    },
   },
   {
     'stevearc/dressing.nvim',
@@ -236,6 +250,7 @@ return {
         ['<Leader>u'] = { name = '+UI' },
         ['<Leader>x'] = { name = '+diagnostics/quickfix' },
         ['<Leader>q'] = { name = '+quit/sessions' },
+        ['<Leader>t'] = { name = '+todo' },
       },
     },
   },
@@ -397,13 +412,6 @@ return {
           end
           Offset.edgy = true
         end
-
-        return {
-          options = {
-            diagnostics = 'nvim_lsp',
-            diagnostics_update_in_insert = true,
-          },
-        }
       end,
     },
     opts = {
@@ -417,11 +425,7 @@ return {
           ft = 'noice',
           size = { height = 0.4 },
           filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
-          wo = {
-            number = false,
-            relativenumber = false,
-            colorcolumn = '',
-          },
+          wo = { number = false, relativenumber = false, colorcolumn = '' },
         },
         'Trouble',
         {
@@ -434,7 +438,6 @@ return {
           size = { height = 0.4 },
           filter = function(buf) return vim.bo[buf].buftype == 'help' end,
         },
-        { ft = 'cmake_tools_terminal', title = 'CMakeTools Terminal' },
         { ft = 'dap-repl', title = 'REPL' },
         { ft = 'dapui_console', title = 'Console' },
         { ft = 'man', size = { height = 0.4 } },

@@ -38,6 +38,7 @@ M.excluded_filetypes = {
   'minifiles',
   'minifiles-help',
   'noice',
+  'notify',
   'qf',
   'sagafinder',
   'sagaoutline',

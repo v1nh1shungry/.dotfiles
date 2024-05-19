@@ -305,6 +305,7 @@ return {
       { '<Leader>md', '<Cmd>CMakeDebug<CR>', desc = 'Debug' },
       { '<Leader>ma', ':CMakeLaunchArgs ', desc = 'Set launch arguments' },
       { '<Leader>ms', '<Cmd>CMakeTargetSettings<CR>', desc = 'Summary' },
+      { '<Leader>mc', '<Cmd>CMakeClean<CR>', desc = 'Clean' },
     },
     opts = {
       cmake_generate_options = {

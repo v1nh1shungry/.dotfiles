@@ -388,6 +388,15 @@ return {
       require('telescope').load_extension('persisted')
 
       vim.api.nvim_create_autocmd('User', {
+        command = 'ScopeSaveState',
+        pattern = 'PersistedSavePre',
+      })
+      vim.api.nvim_create_autocmd('User', {
+        command = 'ScopeLoadState',
+        pattern = 'PersistedLoadPost',
+      })
+
+      vim.api.nvim_create_autocmd('User', {
         pattern = 'PersistedTelescopeLoadPre',
         callback = function(_)
           require('persisted').save { session = vim.g.persisted_loaded_session }

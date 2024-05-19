@@ -10,8 +10,8 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  command = 'setlocal wrap',
-  group = augroup('set_wrap'),
+  command = 'setlocal wrap spell',
+  group = augroup('wrap_spell'),
   pattern = { 'gitcommit', 'markdown' },
 })
 
@@ -21,13 +21,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  callback = function()
+  callback = function(arg)
     vim.wo.number = false
     vim.wo.relativenumber = false
-    vim.bo.buflisted = false
+    vim.bo[arg.buf].buflisted = false
     vim.wo.foldenable = false
     vim.wo.cc = ''
     vim.wo.stc = ''
+
+    require('utils.keymaps').nnoremap { 'q', '<Cmd>close<CR>', desc = 'Close', buffer = arg.buf }
   end,
   group = augroup('no_fancy_ui'),
   pattern = require('utils.ui').excluded_filetypes,

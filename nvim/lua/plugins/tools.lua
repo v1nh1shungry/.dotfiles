@@ -391,30 +391,6 @@ return {
     opts = { open_cmd = 'noswapfile vnew' },
   },
   {
-    'rhysd/committia.vim',
-    config = function()
-      vim.api.nvim_create_autocmd('FileType', {
-        callback = function(args)
-          local inoremap = require('utils.keymaps').inoremap
-          inoremap {
-            '<M-d>',
-            '<Plug>(committia-scroll-diff-down-half)',
-            desc = 'Scroll down the diff window',
-            buffer = args.buf,
-          }
-          inoremap {
-            '<M-u>',
-            '<Plug>(committia-scroll-diff-up-half)',
-            desc = 'Scroll up the diff window',
-            buffer = args.buf,
-          }
-        end,
-        pattern = 'gitcommit',
-      })
-    end,
-    event = 'BufReadPre COMMIT_EDITMSG',
-  },
-  {
     'HakonHarnes/img-clip.nvim',
     keys = { { '<Leader>fi', '<Cmd>PasteImage<CR>', desc = 'Paste image from clipboard' } },
   },
@@ -433,46 +409,6 @@ return {
       cn = { enabled = true },
       injector = { cpp = { before = { '#include <bits/stdc++.h>', 'using namespace std;' } } },
     },
-  },
-  {
-    'chrisgrieser/nvim-tinygit',
-    ft = { 'git_rebase', 'gitcommit' },
-    dependencies = {
-      'stevearc/dressing.nvim',
-      'nvim-telescope/telescope.nvim',
-      'rcarriga/nvim-notify',
-    },
-    keys = {
-      {
-        '<Leader>gc',
-        function()
-          require('tinygit').smartCommit()
-        end,
-        desc = 'Commit',
-      },
-      {
-        '<Leader>gP',
-        function()
-          require('tinygit').push()
-        end,
-        desc = 'Push',
-      },
-      {
-        '<Leader>ga',
-        function()
-          require('tinygit').amendNoEdit()
-        end,
-        desc = 'Amend',
-      },
-      {
-        '<Leader>gu',
-        function()
-          require('tinygit').undoLastCommitOrAmend()
-        end,
-        desc = 'Undo last commit',
-      },
-    },
-    opts = {},
   },
   {
     'gabrielpoca/replacer.nvim',
@@ -646,18 +582,5 @@ return {
   {
     'v1nh1shungry/cppinsights.nvim',
     cmd = 'CppInsights',
-  },
-  {
-    'SuperBo/fugit2.nvim',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons',
-      'nvim-lua/plenary.nvim',
-    },
-    opts = { external_diffview = true },
-    keys = {
-      { '<Leader>gs', '<Cmd>Fugit2<CR>', desc = 'Fugit2' },
-      { '<Leader>gg', '<Cmd>Fugit2Graph<CR>', desc = 'Git graph' },
-    },
   },
 }

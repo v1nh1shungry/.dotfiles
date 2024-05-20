@@ -1,15 +1,14 @@
 local events = require('utils.events')
+local map = require('utils.keymap')
 
 return {
   {
     'neovim/nvim-lspconfig',
     config = function(_, lsp_opts)
       local on_attach = function(client, bufnr)
-        local map = function(opts)
-          require('utils.keymaps').noremap(vim.tbl_extend('keep', opts, {
-            buffer = bufnr,
-            mode = 'n',
-          }))
+        local map_local = function(opts)
+          opts.buffer = bufnr
+          map(opts)
         end
 
         local mappings = {
@@ -44,13 +43,7 @@ return {
             { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' },
           },
           ['textDocument/inlayHint'] = {
-            {
-              '<Leader>ui',
-              function()
-                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(bufnr))
-              end,
-              desc = 'Toggle inlay hint',
-            },
+            { '<Leader>ui', require('utils.toggle').inlay_hint, desc = 'Toggle inlay hint' },
           },
           ['textDocument/signatureHelp'] = {
             { '<C-k>', vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help' },
@@ -94,19 +87,20 @@ return {
           { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>', desc = 'Document diagnostics' },
           { '<Leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', desc = 'Workspace Diagnostics' },
           { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
+          { '<Leader>ux', require('utils.toggle').diagnostic, desc = 'Toggle diagnostic' },
         }) do
-          map(key)
+          map_local(key)
         end
         for method, keys in pairs(mappings) do
           if client.supports_method(method) then
             for _, key in ipairs(keys) do
-              map(key)
+              map_local(key)
             end
           end
         end
         if lsp_opts.servers[client.name] and lsp_opts.servers[client.name].keys then
           for _, key in ipairs(lsp_opts.servers[client.name].keys) do
-            map(key)
+            map_local(key)
           end
         end
 
@@ -224,17 +218,8 @@ return {
             require('cmake-tools').clangd_on_new_config(new_config)
           end,
           keys = {
-            {
-              '<Leader>ut',
-              '<Cmd>ClangdAST<CR>',
-              desc = 'Clangd AST',
-              mode = { 'n', 'v' },
-            },
-            {
-              '<Leader>cs',
-              '<Cmd>ClangdSwitchSourceHeader<CR>',
-              desc = 'Switch between source and header',
-            },
+            { '<Leader>ut', '<Cmd>ClangdAST<CR>', desc = 'Clangd AST', mode = { 'n', 'v' } },
+            { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' },
           },
         },
         lua_ls = {
@@ -377,42 +362,43 @@ return {
     event = events.enter_buffer,
     opts = {
       on_attach = function(buffer)
-        local map = function(opts)
-          require('utils.keymaps').nnoremap(vim.tbl_extend('keep', opts, { buffer = buffer }))
+        local map_local = function(opts)
+          opts.buffer = buffer
+          map(opts)
         end
-        map({ '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' })
-        map({ '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' })
-        map({ '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' })
-        map({ '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' })
-        map({
+        map_local({ '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' })
+        map_local({ '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' })
+        map_local({ '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' })
+        map_local({ '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' })
+        map_local({
           ']h',
           function()
             require('gitsigns').nav_hunk('next', { navigation_message = false })
           end,
           desc = 'Next git hunk',
         })
-        map({
+        map_local({
           '[h',
           function()
             require('gitsigns').nav_hunk('prev', { navigation_message = false })
           end,
           desc = 'Previous git hunk',
         })
-        map({
+        map_local({
           ']H',
           function()
             require('gitsigns').nav_hunk('last', { navigation_message = false })
           end,
           desc = 'Last git hunk',
         })
-        map({
+        map_local({
           '[H',
           function()
             require('gitsigns').nav_hunk('first', { navigation_message = false })
           end,
           desc = 'First git hunk',
         })
-        map({ 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' })
+        map_local({ 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' })
       end,
     },
   },
@@ -429,11 +415,10 @@ return {
   {
     'mfussenegger/nvim-dap',
     config = function()
-      local nnoremap = require('utils.keymaps').nnoremap
-      nnoremap({ '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' })
-      nnoremap({ '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' })
-      nnoremap({ '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' })
-      nnoremap({
+      map({ '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' })
+      map({ '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' })
+      map({ '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' })
+      map({
         '<Leader>dt',
         function()
           require('dap').terminate()
@@ -462,7 +447,7 @@ return {
             vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
-          require('utils.keymaps').nnoremap({
+          map({
             '<Leader>de',
             function()
               require('dapui').eval()

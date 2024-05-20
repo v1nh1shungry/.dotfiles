@@ -1,4 +1,4 @@
-local nnoremap = require('utils.keymaps').nnoremap
+local map = require('utils.keymap')
 
 local ID = 'DEBUGPRINT'
 
@@ -74,7 +74,7 @@ local function delete()
   end
 end
 
-nnoremap({ '<Leader>dpp', plain, desc = 'Plain debugprint' })
-nnoremap({ '<Leader>dpv', variable, desc = 'Variable debugprint' })
-nnoremap({ '<Leader>dpt', toggle, desc = 'Toggle debugprint' })
-nnoremap({ '<Leader>dpd', delete, desc = 'Delete debugprint' })
+map({ '<Leader>dpp', plain, desc = 'Plain debugprint' })
+map({ '<Leader>dpv', variable, desc = 'Variable debugprint' })
+map({ '<Leader>dpt', toggle, desc = 'Toggle debugprint' })
+map({ '<Leader>dpd', delete, desc = 'Delete debugprint' })

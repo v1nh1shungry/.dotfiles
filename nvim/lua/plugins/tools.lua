@@ -1,4 +1,5 @@
 local events = require('utils.events')
+local map = require('utils.keymap')
 
 return {
   {
@@ -37,198 +38,6 @@ return {
     dependencies = 'stevearc/dressing.nvim',
   },
   {
-    'monaqa/dial.nvim',
-    config = function()
-      local augend = require('dial.augend')
-      local map = require('utils.keymaps').noremap
-
-      local dials_by_ft = {
-        cmake = 'cmake',
-        javascript = 'typescript',
-        javascriptreact = 'typescript',
-        json = 'json',
-        lua = 'lua',
-        markdown = 'markdown',
-        python = 'python',
-        typescript = 'typescript',
-      }
-
-      local dial = function(increment, g)
-        local is_visual = vim.fn.mode(true):sub(1, 1) == 'v'
-        local func = (increment and 'inc' or 'dec') .. (g and '_g' or '_') .. (is_visual and 'visual' or 'normal')
-        local group = dials_by_ft[vim.bo.filetype] or 'default'
-        return require('dial.map')[func](group)
-      end
-
-      local logical_alias = augend.constant.new({
-        elements = { '&&', '||' },
-        word = false,
-        cyclic = true,
-      })
-
-      local ordinal_numbers = augend.constant.new({
-        elements = {
-          'first',
-          'second',
-          'third',
-          'fourth',
-          'fifth',
-          'sixth',
-          'seventh',
-          'eighth',
-          'ninth',
-          'tenth',
-        },
-        word = false,
-        cyclic = true,
-      })
-
-      local weekdays = augend.constant.new({
-        elements = {
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday',
-        },
-        word = true,
-        cyclic = true,
-      })
-
-      local months = augend.constant.new({
-        elements = {
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-        },
-        word = true,
-        cyclic = true,
-      })
-
-      local capitalized_boolean = augend.constant.new({
-        elements = {
-          'True',
-          'False',
-        },
-        word = true,
-        cyclic = true,
-      })
-
-      local groups = {
-        default = {
-          augend.integer.alias.decimal,
-          augend.integer.alias.hex,
-          augend.date.alias['%Y/%m/%d'],
-        },
-        typescript = {
-          augend.integer.alias.decimal,
-          augend.constant.alias.bool,
-          logical_alias,
-          augend.constant.new({ elements = { 'let', 'const' } }),
-          ordinal_numbers,
-          weekdays,
-          months,
-        },
-        markdown = {
-          augend.misc.alias.markdown_header,
-          ordinal_numbers,
-          weekdays,
-          months,
-        },
-        json = {
-          augend.integer.alias.decimal,
-          augend.semver.alias.semver,
-        },
-        lua = {
-          augend.integer.alias.decimal,
-          augend.constant.alias.bool,
-          augend.constant.new({
-            elements = { 'and', 'or' },
-            word = true,
-            cyclic = true,
-          }),
-          ordinal_numbers,
-          weekdays,
-          months,
-        },
-        python = {
-          augend.integer.alias.decimal,
-          capitalized_boolean,
-          logical_alias,
-          ordinal_numbers,
-          weekdays,
-          months,
-        },
-        cmake = {
-          augend.integer.alias.decimal,
-          augend.semver.alias.semver,
-          augend.constant.new({
-            elements = { 'on', 'off' },
-            word = true,
-            cyclic = true,
-          }),
-          augend.constant.new({
-            elements = { 'ON', 'OFF' },
-            word = true,
-            cyclic = true,
-          }),
-        },
-      }
-
-      require('dial.config').augends:register_group(groups)
-
-      map({
-        '<C-a>',
-        function()
-          return dial(true)
-        end,
-        expr = true,
-        mode = { 'n', 'v' },
-      })
-      map({
-        '<C-x>',
-        function()
-          return dial(false)
-        end,
-        expr = true,
-        mode = { 'n', 'v' },
-      })
-      map({
-        'g<C-a>',
-        function()
-          return dial(true, true)
-        end,
-        expr = true,
-        mode = { 'n', 'v' },
-      })
-      map({
-        'g<C-x>',
-        function()
-          return dial(false, true)
-        end,
-        expr = true,
-        mode = { 'n', 'v' },
-      })
-    end,
-    keys = {
-      { '<C-a>', desc = 'Increment' },
-      { '<C-x>', desc = 'Decrement' },
-      { 'g<C-a>', desc = 'Increment' },
-      { 'g<C-x>', desc = 'Decrement' },
-    },
-  },
-  {
     'danymat/neogen',
     opts = { snippet_engine = 'luasnip' },
     keys = { { '<Leader>cg', '<Cmd>Neogen<CR>', desc = 'Generate document comment' } },
@@ -260,13 +69,14 @@ return {
       require('git-conflict').setup(opts)
       vim.api.nvim_create_autocmd('User', {
         callback = function(args)
-          local map = function(key)
-            require('utils.keymaps').nnoremap(vim.tbl_extend('force', { buffer = args.buf }, key))
+          local map_local = function(key)
+            key.buffer = args.buf
+            map(key)
           end
-          map({ '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' })
-          map({ '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' })
-          map({ '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' })
-          map({ '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' })
+          map_local({ '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' })
+          map_local({ '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' })
+          map_local({ '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' })
+          map_local({ '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' })
         end,
         pattern = 'GitConflictDetected',
       })
@@ -415,7 +225,7 @@ return {
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
-          require('utils.keymaps').nnoremap({
+          map({
             '<Leader>xr',
             function()
               require('replacer').run()
@@ -445,25 +255,12 @@ return {
     opts = {},
   },
   {
-    'm4xshen/hardtime.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-    opts = {
-      disabled_filetypes = vim.list_extend({
-        '',
-        'alpha',
-        'markdown',
-        'query',
-        'text',
-      }, require('utils.ui').excluded_filetypes),
-    },
-  },
-  {
     'Myzel394/jsonfly.nvim',
     config = function()
       require('telescope').load_extension('jsonfly')
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
-          require('utils.keymaps').nnoremap({
+          map({
             '<Leader>sj',
             '<Cmd>Telescope jsonfly<CR>',
             desc = 'Fly me to JSON',

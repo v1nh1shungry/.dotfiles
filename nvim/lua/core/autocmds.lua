@@ -27,7 +27,7 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.wo.cc = ''
     vim.wo.stc = ''
 
-    require('utils.keymaps').nnoremap({ 'q', '<Cmd>close<CR>', desc = 'Close', buffer = arg.buf })
+    require('utils.keymap')({ 'q', '<Cmd>close<CR>', desc = 'Close', buffer = arg.buf })
   end,
   group = augroup('no_fancy_ui'),
   pattern = require('utils.ui').excluded_filetypes,

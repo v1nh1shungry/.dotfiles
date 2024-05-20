@@ -260,15 +260,7 @@ return {
   {
     'altermo/ultimate-autopair.nvim',
     event = events.enter_insert,
-    opts = {
-      tabout = {
-        enable = true,
-        map = '<Tab>',
-        cmap = '<Tab>',
-        hopout = true,
-      },
-      space2 = { enable = true },
-    },
+    opts = {},
   },
   {
     'tiagovla/scope.nvim',
@@ -465,6 +457,7 @@ return {
       local saved_terminal
       return {
         window = { open = 'alternate' },
+        nest_if_no_args = true,
         callbacks = {
           should_block = function(argv) return vim.tbl_contains(argv, '-b') end,
           pre_open = function()

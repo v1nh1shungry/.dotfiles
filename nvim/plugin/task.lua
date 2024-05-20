@@ -87,6 +87,20 @@ for lang, cmd in pairs(compile_opts) do
   })
 end
 
+local term = nil
+
+local function execute(cmd)
+  if term then
+    term:close()
+  end
+  term = require('toggleterm.terminal').Terminal:new {
+    cmd = cmd,
+    direction = 'horizontal',
+    close_on_exit = false,
+  }
+  term:toggle()
+end
+
 for lang, cmd in pairs(execute_opts) do
   vim.api.nvim_create_autocmd('FileType', {
     callback = function(args)
@@ -96,7 +110,7 @@ for lang, cmd in pairs(execute_opts) do
           if opts.save then
             vim.cmd.w()
           end
-          vim.cmd('TermExec cmd="' .. table.concat(cook(cmd), ' ') .. '"')
+          execute(table.concat(cook(cmd), ' '))
         end,
         buffer = args.buf,
         desc = 'Execute',

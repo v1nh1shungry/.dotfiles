@@ -11,7 +11,12 @@ local nnoremap = require('utils.keymaps').nnoremap
 
 local timer = vim.loop.new_timer()
 local winnr, bufnr
-local config = require('user').todo
+local config = {
+  storage = vim.fs.joinpath(vim.fn.stdpath('data'), '.dotfiles_todo.txt'),
+  width = 30,
+  height = 5,
+  minute = 60,
+}
 local ns = vim.api.nvim_create_namespace('dotfiles_todo')
 local augroup = vim.api.nvim_create_augroup('dotfiles_todo', {})
 
@@ -135,11 +140,12 @@ local function close_win()
   end
 end
 
-vim.api.nvim_create_autocmd('VimEnter', {
+vim.api.nvim_create_autocmd('User', {
   callback = function()
     open_win(false)
   end,
   group = augroup,
+  pattern = 'AlphaReady',
 })
 vim.api.nvim_create_autocmd('User', {
   callback = close_win,

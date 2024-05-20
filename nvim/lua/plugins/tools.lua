@@ -12,8 +12,9 @@ return {
       { '<Leader>/', '<Cmd>Telescope live_grep<CR>', desc = 'Live grep' },
       { '<Leader>sa', '<Cmd>Telescope autocommands<CR>', desc = 'Autocommands' },
       { '<Leader>sk', '<Cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
-      { '<Leader>s@', '<Cmd>Telescope resume<CR>', desc = 'Last search' },
+      { '<Leader>s,', '<Cmd>Telescope resume<CR>', desc = 'Last search' },
       { '<Leader>sh', '<Cmd>Telescope highlights<CR>', desc = 'Highlight groups' },
+      { '<Leader>sm', '<Cmd>Telescope man_pages<CR>', desc = 'Manpages' },
     },
     opts = {
       defaults = {
@@ -187,10 +188,38 @@ return {
 
       require('dial.config').augends:register_group(groups)
 
-      map { '<C-a>', function() return dial(true) end, expr = true, mode = { 'n', 'v' } }
-      map { '<C-x>', function() return dial(false) end, expr = true, mode = { 'n', 'v' } }
-      map { 'g<C-a>', function() return dial(true, true) end, expr = true, mode = { 'n', 'v' } }
-      map { 'g<C-x>', function() return dial(false, true) end, expr = true, mode = { 'n', 'v' } }
+      map {
+        '<C-a>',
+        function()
+          return dial(true)
+        end,
+        expr = true,
+        mode = { 'n', 'v' },
+      }
+      map {
+        '<C-x>',
+        function()
+          return dial(false)
+        end,
+        expr = true,
+        mode = { 'n', 'v' },
+      }
+      map {
+        'g<C-a>',
+        function()
+          return dial(true, true)
+        end,
+        expr = true,
+        mode = { 'n', 'v' },
+      }
+      map {
+        'g<C-x>',
+        function()
+          return dial(false, true)
+        end,
+        expr = true,
+        mode = { 'n', 'v' },
+      }
     end,
     keys = {
       { '<C-a>', desc = 'Increment' },
@@ -206,15 +235,24 @@ return {
   },
   {
     'echasnovski/mini.align',
-    config = function() require('mini.align').setup() end,
     keys = {
       { 'ga', mode = { 'n', 'x' }, desc = 'Align' },
       { 'gA', mode = { 'n', 'x' }, desc = 'Align with preview' },
     },
+    opts = {},
   },
   {
     'cshuaimin/ssr.nvim',
-    keys = { { '<Leader>sr', function() require('ssr').open() end, mode = { 'n', 'x' }, desc = 'Structural replace' } },
+    keys = {
+      {
+        '<Leader>sr',
+        function()
+          require('ssr').open()
+        end,
+        mode = { 'n', 'x' },
+        desc = 'Structural replace',
+      },
+    },
   },
   {
     'akinsho/git-conflict.nvim',
@@ -240,32 +278,6 @@ return {
     },
     event = events.enter_buffer,
     opts = { default_mappings = false },
-  },
-  {
-    'andrewferrier/debugprint.nvim',
-    dependencies = {
-      'folke/which-key.nvim',
-      optional = true,
-      opts = { defaults = { ['g?'] = { name = '+debugprint' } } },
-    },
-    keys = {
-      'g?p',
-      'g?P',
-      { 'g?v', mode = { 'n', 'x' } },
-      { 'g?V', mode = { 'n', 'x' } },
-      'g?o',
-      'g?O',
-      'g?t',
-      'g?d',
-    },
-    opts = {
-      keymaps = {
-        normal = {
-          toggle_comment_debug_prints = 'g?t',
-          delete_debug_prints = 'g?d',
-        },
-      },
-    },
   },
   {
     'sindrets/diffview.nvim',
@@ -336,21 +348,39 @@ return {
       'T',
       ',',
       ';',
-      { 'gs', function() require('flash').jump() end, desc = 'Flash' },
-      { 'gt', function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
-      { 'r', function() require('flash').remote() end, mode = 'o', desc = 'Remote Flash' },
+      {
+        'gs',
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'gt',
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        function()
+          require('flash').remote()
+        end,
+        mode = 'o',
+        desc = 'Remote Flash',
+      },
       {
         'R',
-        function() require('flash').treesitter_search() end,
+        function()
+          require('flash').treesitter_search()
+        end,
         mode = { 'o', 'x' },
         desc = 'Treesitter search',
       },
     },
     opts = {
-      modes = {
-        search = { enabled = false },
-        char = { highlight = { backdrop = false } },
-      },
+      modes = { char = { highlight = { backdrop = false } } },
       prompt = { enabled = false },
     },
   },
@@ -413,10 +443,34 @@ return {
       'rcarriga/nvim-notify',
     },
     keys = {
-      { '<Leader>gc', function() require('tinygit').smartCommit() end, desc = 'Commit' },
-      { '<Leader>gP', function() require('tinygit').push() end, desc = 'Push' },
-      { '<Leader>ga', function() require('tinygit').amendNoEdit() end, desc = 'Amend' },
-      { '<Leader>gu', function() require('tinygit').undoLastCommit() end, desc = 'Undo last commit' },
+      {
+        '<Leader>gc',
+        function()
+          require('tinygit').smartCommit()
+        end,
+        desc = 'Commit',
+      },
+      {
+        '<Leader>gP',
+        function()
+          require('tinygit').push()
+        end,
+        desc = 'Push',
+      },
+      {
+        '<Leader>ga',
+        function()
+          require('tinygit').amendNoEdit()
+        end,
+        desc = 'Amend',
+      },
+      {
+        '<Leader>gu',
+        function()
+          require('tinygit').undoLastCommitOrAmend()
+        end,
+        desc = 'Undo last commit',
+      },
     },
     opts = {},
   },
@@ -427,7 +481,9 @@ return {
         callback = function(args)
           require('utils.keymaps').nnoremap {
             '<Leader>xr',
-            function() require('replacer').run() end,
+            function()
+              require('replacer').run()
+            end,
             desc = 'Quickfix replacer',
             buffer = args.buf,
           }
@@ -443,7 +499,9 @@ return {
     keys = {
       {
         '<Leader>sR',
-        function() require('refactoring').select_refactor() end,
+        function()
+          require('refactoring').select_refactor()
+        end,
         desc = 'Refactoring',
         mode = { 'n', 'x' },
       },
@@ -492,7 +550,15 @@ return {
   },
   {
     'v1nh1shungry/cppman.nvim',
-    keys = { { '<Leader>sc', function() require('cppman').search() end, desc = 'Cppman' } },
+    keys = {
+      {
+        '<Leader>sc',
+        function()
+          require('cppman').search()
+        end,
+        desc = 'Cppman',
+      },
+    },
     opts = {},
   },
   {
@@ -506,15 +572,69 @@ return {
       },
     },
     keys = {
-      { '<Leader>b/', function() require('biquge').search() end, desc = 'Search' },
-      { '<Leader>bb', function() require('biquge').toggle() end, desc = 'Toggle' },
-      { '<Leader>bt', function() require('biquge').toc() end, desc = 'TOC' },
-      { '<Leader>bn', function() require('biquge').next_chap() end, desc = 'Next chapter' },
-      { '<Leader>bp', function() require('biquge').prev_chap() end, desc = 'Previous chapter' },
-      { '<Leader>bs', function() require('biquge').star() end, desc = 'Star current book' },
-      { '<Leader>bl', function() require('biquge').bookshelf() end, desc = 'Bookshelf' },
-      { '<M-d>', function() require('biquge').scroll(1) end, desc = 'Scroll down' },
-      { '<M-u>', function() require('biquge').scroll(-1) end, desc = 'Scroll up' },
+      {
+        '<Leader>b/',
+        function()
+          require('biquge').search()
+        end,
+        desc = 'Search',
+      },
+      {
+        '<Leader>bb',
+        function()
+          require('biquge').toggle()
+        end,
+        desc = 'Toggle',
+      },
+      {
+        '<Leader>bt',
+        function()
+          require('biquge').toc()
+        end,
+        desc = 'TOC',
+      },
+      {
+        '<Leader>bn',
+        function()
+          require('biquge').next_chap()
+        end,
+        desc = 'Next chapter',
+      },
+      {
+        '<Leader>bp',
+        function()
+          require('biquge').prev_chap()
+        end,
+        desc = 'Previous chapter',
+      },
+      {
+        '<Leader>bs',
+        function()
+          require('biquge').star()
+        end,
+        desc = 'Star current book',
+      },
+      {
+        '<Leader>bl',
+        function()
+          require('biquge').bookshelf()
+        end,
+        desc = 'Bookshelf',
+      },
+      {
+        '<M-d>',
+        function()
+          require('biquge').scroll(1)
+        end,
+        desc = 'Scroll down',
+      },
+      {
+        '<M-u>',
+        function()
+          require('biquge').scroll(-1)
+        end,
+        desc = 'Scroll up',
+      },
     },
     opts = { height = 5 },
   },

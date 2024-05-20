@@ -583,7 +583,7 @@ return {
   },
   {
     'mcauley-penney/visual-whitespace.nvim',
-    event = 'ModeChanged *:[vV]*',
+    event = 'ModeChanged *:[vV\x16]*',
     opts = {},
   },
   {
@@ -658,7 +658,7 @@ return {
     init = function()
       vim.api.nvim_create_autocmd(events.enter_buffer, {
         callback = function(args)
-          require('utils.keymaps').nnoremap({
+          require('utils.keymap')({
             '<Leader>up',
             function()
               require('plantuml-preview').toggle()

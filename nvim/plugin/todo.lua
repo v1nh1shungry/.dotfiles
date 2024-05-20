@@ -7,7 +7,7 @@
 --       we enter the window, and save the current todo-list only when
 --       we close the window.
 
-local nnoremap = require('utils.keymaps').nnoremap
+local map = require('utils.keymap')
 
 local timer = vim.loop.new_timer()
 local winnr, bufnr
@@ -88,8 +88,8 @@ local function open_win(enter)
   if bufnr == nil or not vim.api.nvim_buf_is_valid(bufnr) then
     bufnr = vim.api.nvim_create_buf(false, true)
 
-    nnoremap({ 'q', '<Cmd>close<CR>', desc = 'Close TODO', buffer = bufnr })
-    nnoremap({ '<ESC>', '<Cmd>close<CR>', desc = 'Close TODO', buffer = bufnr })
+    map({ 'q', '<Cmd>close<CR>', desc = 'Close TODO', buffer = bufnr })
+    map({ '<ESC>', '<Cmd>close<CR>', desc = 'Close TODO', buffer = bufnr })
 
     vim.api.nvim_create_autocmd('InsertEnter', {
       buffer = bufnr,
@@ -153,8 +153,8 @@ vim.api.nvim_create_autocmd('User', {
   pattern = 'AlphaClosed',
 })
 
-nnoremap({ '<Leader>to', open_win, desc = 'Edit TODO' })
-nnoremap({ '<Leader>tq', close_win, desc = 'Close TODO' })
+map({ '<Leader>to', open_win, desc = 'Edit TODO' })
+map({ '<Leader>tq', close_win, desc = 'Close TODO' })
 
 timer:start(
   config.minute * 60 * 1000,

@@ -1,4 +1,4 @@
-local nnoremap = require('utils.keymaps').nnoremap
+local map = require('utils.keymap')
 local opts = require('user').task
 
 local compile_opts = {
@@ -52,7 +52,7 @@ end
 for lang, cmd in pairs(compile_opts) do
   vim.api.nvim_create_autocmd('FileType', {
     callback = function(args)
-      nnoremap({
+      map({
         '<Leader>fb',
         function()
           cmd = cook(cmd)
@@ -104,7 +104,7 @@ end
 for lang, cmd in pairs(execute_opts) do
   vim.api.nvim_create_autocmd('FileType', {
     callback = function(args)
-      nnoremap({
+      map({
         '<Leader>fx',
         function()
           if opts.save then

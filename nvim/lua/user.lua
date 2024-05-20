@@ -12,7 +12,9 @@ local M = {
   },
 }
 
-local setup = function() vim.cmd.colorscheme(M.ui.colorscheme) end
+local setup = function()
+  vim.cmd.colorscheme(M.ui.colorscheme)
+end
 
 local filename = vim.fs.joinpath(os.getenv('HOME'), '.nvimrc')
 if vim.fn.filereadable(filename) ~= 0 then

@@ -8,8 +8,12 @@ timer:start(
     vim.notify(' ⏰ Time to stand up, drink some water and go to the bathroom', vim.log.levels.WARN, {
       title = 'You',
       timeout = false,
-      on_open = function() timer:stop() end,
-      on_close = function() timer:again() end,
+      on_open = function()
+        timer:stop()
+      end,
+      on_close = function()
+        timer:again()
+      end,
     })
   end)
 )

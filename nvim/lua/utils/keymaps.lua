@@ -15,17 +15,29 @@ M.map = function(opts)
   }))
 end
 
-M.nmap = function(opts) M.map(vim.tbl_extend('keep', opts, { mode = 'n' })) end
+M.nmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'n' }))
+end
 
-M.vmap = function(opts) M.map(vim.tbl_extend('keep', opts, { mode = 'v' })) end
+M.vmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'v' }))
+end
 
-M.imap = function(opts) M.map(vim.tbl_extend('keep', opts, { mode = 'i' })) end
+M.imap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'i' }))
+end
 
-M.cmap = function(opts) M.map(vim.tbl_extend('keep', opts, { mode = 'c', silent = false })) end
+M.cmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'c', silent = false }))
+end
 
-M.tmap = function(opts) M.map(vim.tbl_extend('keep', opts, { mode = 't' })) end
+M.tmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 't' }))
+end
 
-M.xmap = function(opts) M.map(vim.tbl_extend('keep', opts, { mode = 'x' })) end
+M.xmap = function(opts)
+  M.map(vim.tbl_extend('keep', opts, { mode = 'x' }))
+end
 
 M.noremap = function(opts)
   map(vim.tbl_extend('keep', opts, {
@@ -35,16 +47,28 @@ M.noremap = function(opts)
   }))
 end
 
-M.nnoremap = function(opts) M.noremap(vim.tbl_extend('keep', opts, { mode = 'n' })) end
+M.nnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'n' }))
+end
 
-M.vnoremap = function(opts) M.noremap(vim.tbl_extend('keep', opts, { mode = 'v' })) end
+M.vnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'v' }))
+end
 
-M.inoremap = function(opts) M.noremap(vim.tbl_extend('keep', opts, { mode = 'i' })) end
+M.inoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'i' }))
+end
 
-M.cnoremap = function(opts) M.noremap(vim.tbl_extend('keep', opts, { mode = 'c', silent = false })) end
+M.cnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'c', silent = false }))
+end
 
-M.tnoremap = function(opts) M.noremap(vim.tbl_extend('keep', opts, { mode = 't' })) end
+M.tnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 't' }))
+end
 
-M.xnoremap = function(opts) M.noremap(vim.tbl_extend('keep', opts, { mode = 'x' })) end
+M.xnoremap = function(opts)
+  M.noremap(vim.tbl_extend('keep', opts, { mode = 'x' }))
+end
 
 return M

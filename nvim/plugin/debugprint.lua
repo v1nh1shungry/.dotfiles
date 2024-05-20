@@ -74,7 +74,7 @@ local function delete()
   end
 end
 
-nnoremap { '<Leader>dpp', plain, desc = 'Plain debugprint' }
-nnoremap { '<Leader>dpv', variable, desc = 'Variable debugprint' }
-nnoremap { '<Leader>dpt', toggle, desc = 'Toggle debugprint' }
-nnoremap { '<Leader>dpd', delete, desc = 'Delete debugprint' }
+nnoremap({ '<Leader>dpp', plain, desc = 'Plain debugprint' })
+nnoremap({ '<Leader>dpv', variable, desc = 'Variable debugprint' })
+nnoremap({ '<Leader>dpt', toggle, desc = 'Toggle debugprint' })
+nnoremap({ '<Leader>dpd', delete, desc = 'Delete debugprint' })

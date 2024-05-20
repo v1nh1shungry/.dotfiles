@@ -60,13 +60,13 @@ return {
         return require('dial.map')[func](group)
       end
 
-      local logical_alias = augend.constant.new {
+      local logical_alias = augend.constant.new({
         elements = { '&&', '||' },
         word = false,
         cyclic = true,
-      }
+      })
 
-      local ordinal_numbers = augend.constant.new {
+      local ordinal_numbers = augend.constant.new({
         elements = {
           'first',
           'second',
@@ -81,9 +81,9 @@ return {
         },
         word = false,
         cyclic = true,
-      }
+      })
 
-      local weekdays = augend.constant.new {
+      local weekdays = augend.constant.new({
         elements = {
           'Monday',
           'Tuesday',
@@ -95,9 +95,9 @@ return {
         },
         word = true,
         cyclic = true,
-      }
+      })
 
-      local months = augend.constant.new {
+      local months = augend.constant.new({
         elements = {
           'January',
           'February',
@@ -114,16 +114,16 @@ return {
         },
         word = true,
         cyclic = true,
-      }
+      })
 
-      local capitalized_boolean = augend.constant.new {
+      local capitalized_boolean = augend.constant.new({
         elements = {
           'True',
           'False',
         },
         word = true,
         cyclic = true,
-      }
+      })
 
       local groups = {
         default = {
@@ -135,7 +135,7 @@ return {
           augend.integer.alias.decimal,
           augend.constant.alias.bool,
           logical_alias,
-          augend.constant.new { elements = { 'let', 'const' } },
+          augend.constant.new({ elements = { 'let', 'const' } }),
           ordinal_numbers,
           weekdays,
           months,
@@ -153,11 +153,11 @@ return {
         lua = {
           augend.integer.alias.decimal,
           augend.constant.alias.bool,
-          augend.constant.new {
+          augend.constant.new({
             elements = { 'and', 'or' },
             word = true,
             cyclic = true,
-          },
+          }),
           ordinal_numbers,
           weekdays,
           months,
@@ -173,53 +173,53 @@ return {
         cmake = {
           augend.integer.alias.decimal,
           augend.semver.alias.semver,
-          augend.constant.new {
+          augend.constant.new({
             elements = { 'on', 'off' },
             word = true,
             cyclic = true,
-          },
-          augend.constant.new {
+          }),
+          augend.constant.new({
             elements = { 'ON', 'OFF' },
             word = true,
             cyclic = true,
-          },
+          }),
         },
       }
 
       require('dial.config').augends:register_group(groups)
 
-      map {
+      map({
         '<C-a>',
         function()
           return dial(true)
         end,
         expr = true,
         mode = { 'n', 'v' },
-      }
-      map {
+      })
+      map({
         '<C-x>',
         function()
           return dial(false)
         end,
         expr = true,
         mode = { 'n', 'v' },
-      }
-      map {
+      })
+      map({
         'g<C-a>',
         function()
           return dial(true, true)
         end,
         expr = true,
         mode = { 'n', 'v' },
-      }
-      map {
+      })
+      map({
         'g<C-x>',
         function()
           return dial(false, true)
         end,
         expr = true,
         mode = { 'n', 'v' },
-      }
+      })
     end,
     keys = {
       { '<C-a>', desc = 'Increment' },
@@ -263,10 +263,10 @@ return {
           local map = function(key)
             require('utils.keymaps').nnoremap(vim.tbl_extend('force', { buffer = args.buf }, key))
           end
-          map { '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' }
-          map { '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' }
-          map { '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' }
-          map { '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' }
+          map({ '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' })
+          map({ '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' })
+          map({ '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' })
+          map({ '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' })
         end,
         pattern = 'GitConflictDetected',
       })
@@ -297,7 +297,7 @@ return {
       local function check()
         local cwd = vim.uv.cwd()
         if vim.fn.filereadable(cwd .. '/CMakeLists.txt') == 1 then
-          require('lazy').load { plugins = { 'cmake-tools.nvim' } }
+          require('lazy').load({ plugins = { 'cmake-tools.nvim' } })
           loaded = true
         end
       end
@@ -415,14 +415,14 @@ return {
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
-          require('utils.keymaps').nnoremap {
+          require('utils.keymaps').nnoremap({
             '<Leader>xr',
             function()
               require('replacer').run()
             end,
             desc = 'Quickfix replacer',
             buffer = args.buf,
-          }
+          })
         end,
         pattern = 'qf',
       })
@@ -463,12 +463,12 @@ return {
       require('telescope').load_extension('jsonfly')
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
-          require('utils.keymaps').nnoremap {
+          require('utils.keymaps').nnoremap({
             '<Leader>sj',
             '<Cmd>Telescope jsonfly<CR>',
             desc = 'Fly me to JSON',
             buffer = args.buf,
-          }
+          })
         end,
         pattern = { 'json', 'jsonc' },
       })

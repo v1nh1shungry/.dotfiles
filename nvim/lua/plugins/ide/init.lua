@@ -59,42 +59,42 @@ return {
             { '<Leader>cl', vim.lsp.codelens.run, mode = { 'n', 'v' }, desc = 'Run codelens' },
           },
         }
-        for _, key in ipairs {
+        for _, key in ipairs({
           { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
           { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' },
           { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' },
           {
             ']w',
             function()
-              require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.WARN }
+              require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.WARN })
             end,
             desc = 'Next warning',
           },
           {
             '[w',
             function()
-              require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.WARN }
+              require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.WARN })
             end,
             desc = 'Previous warning',
           },
           {
             ']e',
             function()
-              require('lspsaga.diagnostic'):goto_next { severity = vim.diagnostic.severity.ERROR }
+              require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
             end,
             desc = 'Next error',
           },
           {
             '[e',
             function()
-              require('lspsaga.diagnostic'):goto_prev { severity = vim.diagnostic.severity.ERROR }
+              require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
             end,
             desc = 'Previous error',
           },
           { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>', desc = 'Document diagnostics' },
           { '<Leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', desc = 'Workspace Diagnostics' },
           { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
-        } do
+        }) do
           map(key)
         end
         for method, keys in pairs(mappings) do
@@ -115,17 +115,17 @@ return {
         end
 
         if client.supports_method('textDocument/codeLens') then
-          vim.lsp.codelens.refresh { bufnr = bufnr }
+          vim.lsp.codelens.refresh({ bufnr = bufnr })
           vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
             buffer = bufnr,
             callback = function()
-              vim.lsp.codelens.refresh { bufnr = bufnr }
+              vim.lsp.codelens.refresh({ bufnr = bufnr })
             end,
           })
         end
       end
 
-      require('mason-lspconfig').setup { automatic_installation = true }
+      require('mason-lspconfig').setup({ automatic_installation = true })
 
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
@@ -271,11 +271,11 @@ return {
       local cmp = require('cmp')
       local luasnip = require('luasnip')
 
-      for _, ft in ipairs { 'cpp' } do
+      for _, ft in ipairs({ 'cpp' }) do
         luasnip.add_snippets(ft, require('plugins.ide.snippets.' .. ft))
       end
 
-      cmp.setup {
+      cmp.setup({
         window = { completion = { side_padding = 0 } },
         snippet = {
           expand = function(args)
@@ -285,11 +285,11 @@ return {
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
           format = function(entry, vim_item)
-            local kind = require('lspkind').cmp_format {
+            local kind = require('lspkind').cmp_format({
               mode = 'symbol_text',
               maxwidth = 50,
               preset = 'codicons',
-            }(entry, vim_item)
+            })(entry, vim_item)
             local strings = vim.split(kind.kind, '%s', { trimempty = true })
             kind.abbr = vim.trim(kind.abbr)
             kind.kind = ' ' .. strings[1] .. ' '
@@ -298,16 +298,16 @@ return {
           end,
           expandable_indicator = true,
         },
-        mapping = cmp.mapping.preset.insert {
+        mapping = cmp.mapping.preset.insert({
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<CR>'] = cmp.mapping.confirm { select = true, behavior = cmp.ConfirmBehavior.Replace },
+          ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               if not cmp.get_selected_entry() then
-                cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
               else
                 cmp.confirm()
               end
@@ -326,7 +326,7 @@ return {
               fallback()
             end
           end, { 'i', 's' }),
-        },
+        }),
         sources = cmp.config.sources({
           { name = 'luasnip' },
           { name = 'nvim_lsp' },
@@ -335,24 +335,24 @@ return {
           { name = 'path' },
           { name = 'rg', keyword_length = 3 },
         }),
-      }
+      })
 
-      local cmdline_mapping = cmp.mapping.preset.cmdline {
+      local cmdline_mapping = cmp.mapping.preset.cmdline({
         ['<C-n>'] = cmp.config.disable,
         ['<C-p>'] = cmp.config.disable,
-      }
+      })
 
       cmp.setup.cmdline(':', {
         mapping = cmdline_mapping,
-        sources = cmp.config.sources {
+        sources = cmp.config.sources({
           { name = 'cmdline' },
           { name = 'path' },
-        },
+        }),
       })
 
       cmp.setup.cmdline({ '/', '?' }, {
         mapping = cmdline_mapping,
-        sources = cmp.config.sources { { name = 'buffer' } },
+        sources = cmp.config.sources({ { name = 'buffer' } }),
       })
     end,
     dependencies = {
@@ -380,39 +380,39 @@ return {
         local map = function(opts)
           require('utils.keymaps').nnoremap(vim.tbl_extend('keep', opts, { buffer = buffer }))
         end
-        map { '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' }
-        map { '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' }
-        map { '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' }
-        map { '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' }
-        map {
+        map({ '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' })
+        map({ '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' })
+        map({ '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' })
+        map({ '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' })
+        map({
           ']h',
           function()
             require('gitsigns').nav_hunk('next', { navigation_message = false })
           end,
           desc = 'Next git hunk',
-        }
-        map {
+        })
+        map({
           '[h',
           function()
             require('gitsigns').nav_hunk('prev', { navigation_message = false })
           end,
           desc = 'Previous git hunk',
-        }
-        map {
+        })
+        map({
           ']H',
           function()
             require('gitsigns').nav_hunk('last', { navigation_message = false })
           end,
           desc = 'Last git hunk',
-        }
-        map {
+        })
+        map({
           '[H',
           function()
             require('gitsigns').nav_hunk('first', { navigation_message = false })
           end,
           desc = 'First git hunk',
-        }
-        map { 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' }
+        })
+        map({ 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' })
       end,
     },
   },
@@ -430,16 +430,16 @@ return {
     'mfussenegger/nvim-dap',
     config = function()
       local nnoremap = require('utils.keymaps').nnoremap
-      nnoremap { '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' }
-      nnoremap { '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' }
-      nnoremap { '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' }
-      nnoremap {
+      nnoremap({ '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' })
+      nnoremap({ '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' })
+      nnoremap({ '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' })
+      nnoremap({
         '<Leader>dt',
         function()
           require('dap').terminate()
         end,
         desc = 'Terminate',
-      }
+      })
     end,
     dependencies = {
       {
@@ -462,14 +462,14 @@ return {
             vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
-          require('utils.keymaps').nnoremap {
+          require('utils.keymaps').nnoremap({
             '<Leader>de',
             function()
               require('dapui').eval()
             end,
             desc = 'Eval',
             mode = { 'n', 'v' },
-          }
+          })
         end,
         dependencies = 'nvim-neotest/nvim-nio',
       },
@@ -492,11 +492,11 @@ return {
         config = function()
           local dap = require('dap')
           dap.adapters.nlua = function(callback, config)
-            callback {
+            callback({
               type = 'server',
               host = config.host or '127.0.0.1',
               port = config.port or 8086,
-            }
+            })
           end
           dap.configurations.lua = {
             {
@@ -507,13 +507,15 @@ return {
             },
           }
         end,
-        keys = { {
-          '<Leader>dl',
-          function()
-            require('osv').launch { port = 8086 }
-          end,
-          desc = 'Launch DAP server',
-        } },
+        keys = {
+          {
+            '<Leader>dl',
+            function()
+              require('osv').launch({ port = 8086 })
+            end,
+            desc = 'Launch DAP server',
+          },
+        },
       },
     },
     keys = {
@@ -529,7 +531,7 @@ return {
         '[q',
         function()
           if require('trouble').is_open() then
-            require('trouble').previous { skip_groups = true, jump = true }
+            require('trouble').previous({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cprev)
             if not ok then
@@ -543,7 +545,7 @@ return {
         ']q',
         function()
           if require('trouble').is_open() then
-            require('trouble').next { skip_groups = true, jump = true }
+            require('trouble').next({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cnext)
             if not ok then
@@ -576,7 +578,7 @@ return {
       {
         '<Leader>cf',
         function()
-          require('conform').format { lsp_fallback = true }
+          require('conform').format({ lsp_fallback = true })
         end,
         desc = 'Format document',
         mode = { 'n', 'v' },
@@ -592,13 +594,15 @@ return {
   {
     'Bekaboo/dropbar.nvim',
     event = events.enter_buffer,
-    keys = { {
-      '<Leader>ud',
-      function()
-        require('dropbar.api').pick()
-      end,
-      desc = 'Dropbar',
-    } },
+    keys = {
+      {
+        '<Leader>ud',
+        function()
+          require('dropbar.api').pick()
+        end,
+        desc = 'Dropbar',
+      },
+    },
   },
   {
     'mfussenegger/nvim-lint',

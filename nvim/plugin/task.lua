@@ -52,7 +52,7 @@ end
 for lang, cmd in pairs(compile_opts) do
   vim.api.nvim_create_autocmd('FileType', {
     callback = function(args)
-      nnoremap {
+      nnoremap({
         '<Leader>fb',
         function()
           cmd = cook(cmd)
@@ -81,7 +81,7 @@ for lang, cmd in pairs(compile_opts) do
         end,
         buffer = args.buf,
         desc = 'Compile',
-      }
+      })
     end,
     pattern = lang,
   })
@@ -93,18 +93,18 @@ local function execute(cmd)
   if term then
     term:close()
   end
-  term = require('toggleterm.terminal').Terminal:new {
+  term = require('toggleterm.terminal').Terminal:new({
     cmd = cmd,
     direction = 'horizontal',
     close_on_exit = false,
-  }
+  })
   term:toggle()
 end
 
 for lang, cmd in pairs(execute_opts) do
   vim.api.nvim_create_autocmd('FileType', {
     callback = function(args)
-      nnoremap {
+      nnoremap({
         '<Leader>fx',
         function()
           if opts.save then
@@ -114,7 +114,7 @@ for lang, cmd in pairs(execute_opts) do
         end,
         buffer = args.buf,
         desc = 'Execute',
-      }
+      })
     end,
     pattern = lang,
   })

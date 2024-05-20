@@ -3,7 +3,9 @@ local events = require('utils.events')
 return {
   {
     'andymass/vim-matchup',
-    config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
+    config = function()
+      vim.g.matchup_matchparen_offscreen = { method = '' }
+    end,
     event = events.enter_buffer,
   },
   {
@@ -48,15 +50,15 @@ return {
       end
       local ic = vim.deepcopy(i)
       local ac = vim.deepcopy(a)
-      for key, name in pairs { n = 'Next', l = 'Last' } do
+      for key, name in pairs({ n = 'Next', l = 'Last' }) do
         i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
         a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
       end
-      require('which-key').register {
+      require('which-key').register({
         mode = { 'o', 'x' },
         i = i,
         a = a,
-      }
+      })
     end,
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
@@ -123,7 +125,7 @@ return {
             return { from = from, to = to }
           end,
           u = ai.gen_spec.function_call(),
-          U = ai.gen_spec.function_call { name_pattern = '[%w_]' },
+          U = ai.gen_spec.function_call({ name_pattern = '[%w_]' }),
         },
       }
     end,
@@ -183,12 +185,26 @@ return {
   },
   {
     'RRethy/vim-illuminate',
-    config = function() require('illuminate').configure { providers = { 'lsp', 'treesitter' } } end,
+    config = function()
+      require('illuminate').configure({ providers = { 'lsp', 'treesitter' } })
+    end,
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
     keys = {
-      { '[[', function() require('illuminate').goto_prev_reference(false) end, desc = 'Previous reference' },
-      { ']]', function() require('illuminate').goto_next_reference(false) end, desc = 'Next reference' },
+      {
+        '[[',
+        function()
+          require('illuminate').goto_prev_reference(false)
+        end,
+        desc = 'Previous reference',
+      },
+      {
+        ']]',
+        function()
+          require('illuminate').goto_next_reference(false)
+        end,
+        desc = 'Next reference',
+      },
     },
   },
   {
@@ -223,7 +239,7 @@ return {
   {
     'echasnovski/mini.surround',
     config = function()
-      require('mini.surround').setup {
+      require('mini.surround').setup({
         mappings = {
           add = 'ys',
           delete = 'ds',
@@ -236,7 +252,7 @@ return {
           suffix_next = '',
         },
         search_method = 'cover_or_next',
-      }
+      })
       vim.keymap.del('x', 'ys')
     end,
     keys = {
@@ -301,7 +317,15 @@ return {
   },
   {
     'echasnovski/mini.bufremove',
-    keys = { { '<C-q>', function() require('mini.bufremove').delete(0, false) end, desc = 'Close buffer' } },
+    keys = {
+      {
+        '<C-q>',
+        function()
+          require('mini.bufremove').delete(0, false)
+        end,
+        desc = 'Close buffer',
+      },
+    },
     opts = {},
   },
   {
@@ -358,7 +382,7 @@ return {
     'olimorris/persisted.nvim',
     cmd = { 'SessionLoad' },
     config = function()
-      require('persisted').setup {
+      require('persisted').setup({
         use_git_branch = true,
         should_autosave = function()
           local bufs = vim.tbl_filter(function(b)
@@ -375,7 +399,7 @@ return {
           end, vim.api.nvim_list_bufs())
           return #bufs ~= 0
         end,
-      }
+      })
 
       require('telescope').load_extension('persisted')
 
@@ -391,7 +415,7 @@ return {
       vim.api.nvim_create_autocmd('User', {
         pattern = 'PersistedTelescopeLoadPre',
         callback = function(_)
-          require('persisted').save { session = vim.g.persisted_loaded_session }
+          require('persisted').save({ session = vim.g.persisted_loaded_session })
           vim.api.nvim_input('<ESC>:%bd!<CR>')
         end,
       })
@@ -418,7 +442,9 @@ return {
     keys = {
       {
         '<leader>sy',
-        function() require('telescope').extensions.yank_history.yank_history {} end,
+        function()
+          require('telescope').extensions.yank_history.yank_history({})
+        end,
         desc = 'Open Yank History',
       },
       { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
@@ -459,7 +485,9 @@ return {
         window = { open = 'alternate' },
         nest_if_no_args = true,
         callbacks = {
-          should_block = function(argv) return vim.tbl_contains(argv, '-b') end,
+          should_block = function(argv)
+            return vim.tbl_contains(argv, '-b')
+          end,
           pre_open = function()
             local term = require('toggleterm.terminal')
             local termid = term.get_focused_id()
@@ -471,7 +499,9 @@ return {
               vim.api.nvim_create_autocmd('BufWritePost', {
                 buffer = bufnr,
                 once = true,
-                callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
+                callback = vim.schedule_wrap(function()
+                  vim.api.nvim_buf_delete(bufnr, {})
+                end),
               })
             end
           end,

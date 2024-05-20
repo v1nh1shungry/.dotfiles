@@ -1,4 +1,6 @@
-local augroup = function(name) return vim.api.nvim_create_augroup('dotfiles_' .. name, { clear = true }) end
+local augroup = function(name)
+  return vim.api.nvim_create_augroup('dotfiles_' .. name, { clear = true })
+end
 
 vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   callback = function()
@@ -9,14 +11,10 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
   group = augroup('checktime'),
 })
 
-vim.api.nvim_create_autocmd('FileType', {
-  command = 'setlocal wrap spell',
-  group = augroup('wrap_spell'),
-  pattern = { 'gitcommit', 'markdown' },
-})
-
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function() vim.highlight.on_yank { timeout = 500 } end,
+  callback = function()
+    vim.highlight.on_yank({ timeout = 500 })
+  end,
   group = augroup('highlight_yank'),
 })
 
@@ -29,7 +27,7 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.wo.cc = ''
     vim.wo.stc = ''
 
-    require('utils.keymaps').nnoremap { 'q', '<Cmd>close<CR>', desc = 'Close', buffer = arg.buf }
+    require('utils.keymaps').nnoremap({ 'q', '<Cmd>close<CR>', desc = 'Close', buffer = arg.buf })
   end,
   group = augroup('no_fancy_ui'),
   pattern = require('utils.ui').excluded_filetypes,
@@ -49,7 +47,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
   end,
-  group = augroup('last_loc')
+  group = augroup('last_loc'),
 })
 
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
@@ -73,7 +71,9 @@ vim.api.nvim_create_autocmd({ 'VimResized' }, {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  callback = function() vim.bo.commentstring = '// %s' end,
+  callback = function()
+    vim.bo.commentstring = '// %s'
+  end,
   group = augroup('cpp_commentstring'),
   pattern = { 'c', 'cpp' },
 })

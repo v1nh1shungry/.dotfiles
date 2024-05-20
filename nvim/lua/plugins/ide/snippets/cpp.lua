@@ -32,10 +32,10 @@ local function all_lines_before_are_comments()
   local lines = vim.api.nvim_buf_get_lines(0, 0, row - 1, false)
   for _, line in ipairs(lines) do
     local match = false
-    for _, p in ipairs {
+    for _, p in ipairs({
       '^%s*//.*$',
       '^%s*$',
-    } do
+    }) do
       if line:match(p) then
         match = true
         break
@@ -106,12 +106,12 @@ local function inject_class_name(_, line_to_cursor, match, captures)
   local buf = vim.api.nvim_get_current_buf()
   return invoke_after_reparse_buffer(buf, match, function(parser, source)
     local pos = { row - 1, col - #match }
-    local node = parser:named_node_for_range {
+    local node = parser:named_node_for_range({
       pos[1],
       pos[2],
       pos[1],
       pos[2],
-    }
+    })
     if node == nil then
       return nil
     end

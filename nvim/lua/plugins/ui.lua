@@ -8,8 +8,20 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     event = events.enter_buffer,
     keys = {
-      { '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous TODO' },
-      { ']t', function() require('todo-comments').jump_next() end, desc = 'Next TODO' },
+      {
+        '[t',
+        function()
+          require('todo-comments').jump_prev()
+        end,
+        desc = 'Previous TODO',
+      },
+      {
+        ']t',
+        function()
+          require('todo-comments').jump_next()
+        end,
+        desc = 'Next TODO',
+      },
       { '<Leader>xt', '<Cmd>TodoTrouble<CR>', desc = 'Todo' },
       { '<Leader>xT', '<Cmd>TodoTrouble keywords=TODO,FIX,FIXME<CR>', desc = 'Todo/Fix/Fixme' },
       { '<Leader>st', '<Cmd>TodoTelescope<CR>', desc = 'Todo' },
@@ -50,7 +62,9 @@ return {
         vim.api.nvim_create_autocmd('User', {
           once = true,
           pattern = 'AlphaReady',
-          callback = function() require('lazy').show() end,
+          callback = function()
+            require('lazy').show()
+          end,
         })
       end
       vim.api.nvim_create_autocmd('User', {
@@ -70,7 +84,9 @@ return {
     keys = {
       {
         '<Leader>um',
-        function() require('codewindow').toggle_minimap() end,
+        function()
+          require('codewindow').toggle_minimap()
+        end,
         desc = 'Toggle Minimap',
       },
     },
@@ -87,7 +103,9 @@ return {
       require('bufferline').setup(opts)
       vim.api.nvim_create_autocmd({ 'BufAdd', 'BufDelete' }, {
         callback = function()
-          vim.schedule(function() pcall(nvim_bufferline) end)
+          vim.schedule(function()
+            pcall(nvim_bufferline)
+          end)
         end,
       })
     end,
@@ -125,11 +143,11 @@ return {
     'stevearc/dressing.nvim',
     init = function()
       vim.ui.select = function(...)
-        require('lazy').load { plugins = { 'dressing.nvim' } }
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
         return vim.ui.select(...)
       end
       vim.ui.input = function(...)
-        require('lazy').load { plugins = { 'dressing.nvim' } }
+        require('lazy').load({ plugins = { 'dressing.nvim' } })
         return vim.ui.input(...)
       end
     end,
@@ -139,7 +157,7 @@ return {
     'nvim-lualine/lualine.nvim',
     config = function()
       vim.opt.laststatus = 3
-      require('lualine').setup {
+      require('lualine').setup({
         options = { component_separators = '', section_separators = '' },
         sections = {
           lualine_a = {},
@@ -150,12 +168,23 @@ return {
             {
               'branch',
               icon = '',
-              on_click = function() require('telescope.builtin').git_branches() end,
+              on_click = function()
+                require('telescope.builtin').git_branches()
+              end,
             },
-            { 'mode', fmt = function(str) return '-- ' .. str .. ' --' end },
+            {
+              'mode',
+              fmt = function(str)
+                return '-- ' .. str .. ' --'
+              end,
+            },
           },
           lualine_x = {
-            { function() return '%S' end },
+            {
+              function()
+                return '%S'
+              end,
+            },
             {
               function()
                 local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -183,7 +212,12 @@ return {
                 end)
               end,
             },
-            { 'encoding', fmt = function(str) return string.upper(str) end },
+            {
+              'encoding',
+              fmt = function(str)
+                return string.upper(str)
+              end,
+            },
             {
               'fileformat',
               icons_enabled = true,
@@ -217,7 +251,7 @@ return {
           'toggleterm',
           'trouble',
         },
-      }
+      })
     end,
     event = 'VeryLazy',
   },
@@ -263,9 +297,15 @@ return {
         'rcarriga/nvim-notify',
         opts = {
           timeout = 3000,
-          max_height = function() return math.floor(vim.o.lines * 0.75) end,
-          max_width = function() return math.floor(vim.o.columns * 0.75) end,
-          on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
+          max_height = function()
+            return math.floor(vim.o.lines * 0.75)
+          end,
+          max_width = function()
+            return math.floor(vim.o.columns * 0.75)
+          end,
+          on_open = function(win)
+            vim.api.nvim_win_set_config(win, { zindex = 100 })
+          end,
         },
       },
     },
@@ -325,7 +365,7 @@ return {
     branch = '0.10',
     config = function()
       local builtin = require('statuscol.builtin')
-      require('statuscol').setup {
+      require('statuscol').setup({
         bt_ignore = { 'nofile', 'terminal' },
         relculright = true,
         segments = {
@@ -335,14 +375,14 @@ return {
           { sign = { namespace = { 'gitsigns' } }, click = 'v:lua.ScSa' },
           { text = { builtin.foldfunc }, click = 'v:lua.ScSa' },
         },
-      }
+      })
     end,
     event = events.enter_buffer,
   },
   {
     'kevinhwang91/nvim-hlslens',
     config = function()
-      require('hlslens').setup { calm_down = true }
+      require('hlslens').setup({ calm_down = true })
       vim.api.nvim_create_autocmd('User', {
         callback = require('hlslens').start,
         pattern = 'visual_multi_start',
@@ -395,7 +435,7 @@ return {
             if package.loaded.edgy then
               local layout = require('edgy.config').layout
               local ret = { left = '', left_size = 0, right = '', right_size = 0 }
-              for _, pos in ipairs { 'left', 'right' } do
+              for _, pos in ipairs({ 'left', 'right' }) do
                 local sb = layout[pos]
                 if sb and #sb.wins > 0 then
                   local blank = (sb.bounds.width - 7) / 2
@@ -420,12 +460,16 @@ return {
         {
           ft = 'toggleterm',
           size = { height = 0.4 },
-          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
+          filter = function(_, win)
+            return vim.api.nvim_win_get_config(win).relative == ''
+          end,
         },
         {
           ft = 'noice',
           size = { height = 0.4 },
-          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
+          filter = function(_, win)
+            return vim.api.nvim_win_get_config(win).relative == ''
+          end,
           wo = { number = false, relativenumber = false, colorcolumn = '' },
         },
         'Trouble',
@@ -433,7 +477,9 @@ return {
         {
           ft = 'help',
           size = { height = 0.4 },
-          filter = function(buf) return vim.bo[buf].buftype == 'help' end,
+          filter = function(buf)
+            return vim.bo[buf].buftype == 'help'
+          end,
         },
         { ft = 'dap-repl', title = 'REPL' },
         { ft = 'dapui_console', title = 'Console' },
@@ -486,7 +532,9 @@ return {
     event = events.enter_buffer,
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
-        callback = function(args) vim.b[args.buf].minitrailspace_disable = true end,
+        callback = function(args)
+          vim.b[args.buf].minitrailspace_disable = true
+        end,
         pattern = excluded_filetypes,
       })
     end,
@@ -497,7 +545,7 @@ return {
     opts = {
       render = function(props)
         local label = {}
-        if #vim.lsp.get_clients { bufnr = props.buf } > 0 then
+        if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
           local icons = {
             Error = diagnostic_signs.error,
             Warn = diagnostic_signs.warn,
@@ -585,12 +633,24 @@ return {
           or function(bufnr)
             return require('ufo')
               .getFolds(bufnr, 'lsp')
-              :catch(function(err) return handleFallbackException(bufnr, err, 'treesitter') end)
-              :catch(function(err) return handleFallbackException(bufnr, err, 'indent') end)
+              :catch(function(err)
+                return handleFallbackException(bufnr, err, 'treesitter')
+              end)
+              :catch(function(err)
+                return handleFallbackException(bufnr, err, 'indent')
+              end)
           end
       end,
     },
-    keys = { { '<Leader>uf', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Preview fold' } },
+    keys = {
+      {
+        '<Leader>uf',
+        function()
+          require('ufo').peekFoldedLinesUnderCursor()
+        end,
+        desc = 'Preview fold',
+      },
+    },
   },
   {
     'v1nh1shungry/plantuml-preview.nvim',
@@ -598,12 +658,14 @@ return {
     init = function()
       vim.api.nvim_create_autocmd(events.enter_buffer, {
         callback = function(args)
-          require('utils.keymaps').nnoremap {
+          require('utils.keymaps').nnoremap({
             '<Leader>up',
-            function() require('plantuml-preview').toggle() end,
+            function()
+              require('plantuml-preview').toggle()
+            end,
             buffer = args.buf,
             desc = 'Toggle plantuml preview',
-          }
+          })
         end,
         pattern = { '*.md', '*.puml' },
       })

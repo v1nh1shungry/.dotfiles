@@ -251,6 +251,7 @@ return {
         ['<Leader>x'] = { name = '+diagnostics/quickfix' },
         ['<Leader>q'] = { name = '+quit/sessions' },
         ['<Leader>t'] = { name = '+todo' },
+        ['<Leader>dp'] = { name = '+debugprint' },
       },
     },
   },
@@ -428,11 +429,7 @@ return {
           wo = { number = false, relativenumber = false, colorcolumn = '' },
         },
         'Trouble',
-        {
-          ft = 'qf',
-          title = 'QuickFix',
-          wo = { number = true, relativenumber = true },
-        },
+        { ft = 'qf', title = 'QuickFix' },
         {
           ft = 'help',
           size = { height = 0.4 },

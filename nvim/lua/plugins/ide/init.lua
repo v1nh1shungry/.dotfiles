@@ -209,7 +209,7 @@ return {
           on_new_config = function(new_config, _) require('cmake-tools').clangd_on_new_config(new_config) end,
           keys = {
             {
-              '<Leader>ct',
+              '<Leader>ut',
               '<Cmd>ClangdAST<CR>',
               desc = 'Clangd AST',
               mode = { 'n', 'v' },

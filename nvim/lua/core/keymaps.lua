@@ -98,7 +98,7 @@ nnoremap { '<Leader>fu', '<Cmd>earlier 1f<CR>', desc = 'Give up modifications' }
 
 xnoremap { '$', 'g_' }
 
-nnoremap { '<Leader>ct', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' }
+nnoremap { '<Leader>ut', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' }
 
 cnoremap { '<C-n>', '<Down>', desc = 'Next command ih history' }
 cnoremap { '<C-p>', '<Up>', desc = 'Previous command ih history' }

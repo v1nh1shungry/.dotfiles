@@ -43,7 +43,7 @@ return {
             { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' },
           },
           ['textDocument/inlayHint'] = {
-            { '<Leader>ui', require('utils.toggle').inlay_hint, desc = 'Toggle inlay hint' },
+            { '<Leader>uh', require('utils.toggle').inlay_hint, desc = 'Toggle inlay hint' },
           },
           ['textDocument/signatureHelp'] = {
             { '<C-k>', vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help' },
@@ -217,10 +217,7 @@ return {
           on_new_config = function(new_config, _)
             require('cmake-tools').clangd_on_new_config(new_config)
           end,
-          keys = {
-            { '<Leader>ut', '<Cmd>ClangdAST<CR>', desc = 'Clangd AST', mode = { 'n', 'v' } },
-            { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' },
-          },
+          keys = { { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' } },
         },
         lua_ls = {
           settings = {

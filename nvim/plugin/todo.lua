@@ -21,6 +21,7 @@ local ns = vim.api.nvim_create_namespace('dotfiles_todo')
 local augroup = vim.api.nvim_create_augroup('dotfiles_todo', {})
 
 local todo = {}
+local wip = nil
 
 local function load_todo()
   if vim.fn.filereadable(config.storage) == 1 then
@@ -59,7 +60,7 @@ local function render()
   else
     for i = 1, #todo do
       vim.api.nvim_buf_set_extmark(bufnr, ns, i - 1, 0, {
-        virt_text = { { '󰄱 ', 'Comment' } },
+        virt_text = { { wip == todo[i] and '🚧 ' or '📋 ', 'Normal' } },
         virt_text_pos = 'inline',
       })
       vim.highlight.range(bufnr, ns, get_highlight(i), { i - 1, 0 }, { i, -1 })
@@ -90,6 +91,18 @@ local function open_win(enter)
 
     map({ 'q', '<Cmd>close<CR>', desc = 'Close TODO', buffer = bufnr })
     map({ '<ESC>', '<Cmd>close<CR>', desc = 'Close TODO', buffer = bufnr })
+    map({
+      '<Enter>',
+      function()
+        local line = vim.api.nvim_get_current_line()
+        if wip == line then
+          wip = nil
+        else
+          wip = line
+        end
+      end,
+      desc = 'Work on/Leave this',
+    })
 
     vim.api.nvim_create_autocmd('InsertEnter', {
       buffer = bufnr,
@@ -108,7 +121,19 @@ local function open_win(enter)
     })
     vim.api.nvim_create_autocmd('BufLeave', {
       buffer = bufnr,
-      callback = save_todo,
+      callback = function()
+        save_todo()
+
+        if vim.list_contains(todo, wip) then
+          if timer:is_active() then
+            timer:stop()
+          end
+        else
+          if not timer:is_active() then
+            timer:again()
+          end
+        end
+      end,
       group = augroup,
     })
   end

@@ -1,7 +1,10 @@
 local M = {
   plugins = {},
   ui = {
-    background = 'dark',
+    background = {
+      light = 8,
+      dark = 18,
+    },
     blend = 10,
     colorscheme = 'tokyonight',
   },

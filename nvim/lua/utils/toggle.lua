@@ -2,24 +2,27 @@ local M = {}
 
 ---@param silent boolean?
 ---@param values { [1]: any, [2]:any }?
+---@return fun()
 function M.option(option, silent, values)
-  if values then
-    if vim.opt_local[option]:get() == values[1] then
-      vim.opt_local[option] = values[2]
+  return function()
+    if values then
+      if vim.opt_local[option]:get() == values[1] then
+        vim.opt_local[option] = values[2]
+      else
+        vim.opt_local[option] = values[1]
+      end
+      if not silent then
+        vim.notify('Set ' .. option .. ' to ' .. vim.opt_local[option]:get(), vim.log.levels.INFO, { title = 'Option' })
+      end
     else
-      vim.opt_local[option] = values[1]
-    end
-    if not silent then
-      vim.notify('Set ' .. option .. ' to ' .. vim.opt_local[option]:get(), vim.log.levels.INFO, { title = 'Option' })
-    end
-  else
-    vim.opt_local[option] = not vim.opt_local[option]:get()
-    if not silent then
-      vim.notify(
-        (vim.opt_local[option]:get() and 'Enabled ' or 'Disabled ') .. option,
-        vim.log.levels.INFO,
-        { title = 'Option' }
-      )
+      vim.opt_local[option] = not vim.opt_local[option]:get()
+      if not silent then
+        vim.notify(
+          (vim.opt_local[option]:get() and 'Enabled ' or 'Disabled ') .. option,
+          vim.log.levels.INFO,
+          { title = 'Option' }
+        )
+      end
     end
   end
 end

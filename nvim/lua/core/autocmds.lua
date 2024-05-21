@@ -69,11 +69,3 @@ vim.api.nvim_create_autocmd({ 'VimResized' }, {
   end,
   group = augroup('resize_splits'),
 })
-
-vim.api.nvim_create_autocmd('FileType', {
-  callback = function()
-    vim.bo.commentstring = '// %s'
-  end,
-  group = augroup('cpp_commentstring'),
-  pattern = { 'c', 'cpp' },
-})

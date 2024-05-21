@@ -32,20 +32,9 @@ map({ '[<Tab>', '<Cmd>tabprev<CR>', desc = 'Previous tab' })
 
 map({ '<Leader>,', '<Cmd>e #<CR>', desc = 'Last buffer' })
 
-map({
-  '<Leader>uc',
-  function()
-    toggle.option('conceallevel', false, { 0, 3 })
-  end,
-  desc = 'Toggle conceal',
-})
-map({
-  '<Leader>uw',
-  function()
-    toggle.option('wrap')
-  end,
-  desc = 'Toggle wrap',
-})
+map({ '<Leader>uc', toggle.option('conceallevel', false, { 0, 3 }), desc = 'Toggle conceal' })
+map({ '<Leader>uw', toggle.option('wrap'), desc = 'Toggle wrap' })
+map({ '<Leader>ug', toggle.option('background', false, { 'light', 'dark' }), desc = 'Set background' })
 
 map({ '<Leader>fc', '<Cmd>e ~/.nvimrc<CR>', desc = 'Open preferences' })
 
@@ -71,10 +60,11 @@ map({ '<Leader>fu', '<Cmd>earlier 1f<CR>', desc = 'Give up modifications' })
 
 map({ '$', 'g_', mode = 'x', desc = 'End of line' })
 
-map({ '<Leader>ut', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' })
+map({ '<Leader>ui', vim.inspect_pos, desc = 'Inspect position under the cursor' })
+map({ '<Leader>uI', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' })
 
-map({ '<C-n>', '<Down>', desc = 'Next command ih history', mode = 'c' })
-map({ '<C-p>', '<Up>', desc = 'Previous command ih history', mode = 'c' })
+map({ '<C-n>', '<Down>', desc = 'Next command in history', mode = 'c', silent = false })
+map({ '<C-p>', '<Up>', desc = 'Previous command in history', mode = 'c', silent = false })
 
 map({
   '<Leader>mp',
@@ -97,25 +87,4 @@ map({
     end)
   end,
   desc = 'Get CPM.cmake',
-})
-
-local selected_hl_ns = vim.api.nvim_create_namespace('dotfiles_selected_highlight')
-map({
-  '<Leader>uh',
-  function()
-    vim.cmd([[execute "normal! \<ESC>"]])
-    vim.highlight.range(0, selected_hl_ns, 'IncSearch', "'<", "'>", {
-      inclusive = true,
-      regtype = vim.fn.visualmode(),
-    })
-  end,
-  desc = 'Highlight selected text',
-  mode = 'x',
-})
-map({
-  '<Leader>uh',
-  function()
-    vim.api.nvim_buf_clear_namespace(0, selected_hl_ns, 1, -1)
-  end,
-  desc = 'Clear all text highlight',
 })

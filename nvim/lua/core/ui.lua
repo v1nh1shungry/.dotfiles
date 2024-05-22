@@ -1,4 +1,5 @@
 local icons = require('utils.ui').icons
+local config = require('user')
 
 for name, icon in pairs({
   DiagnosticSignError = icons.diagnostic.error,
@@ -40,7 +41,7 @@ vim.fn.sign_define('DapStopped', {
   numhl = '',
 })
 
-local background = require('user').ui.background
+local background = config.ui.background
 if type(background) == 'table' then
   local function update()
     local t = os.date('*t', os.time())
@@ -54,3 +55,5 @@ if type(background) == 'table' then
 else
   vim.opt.background = background
 end
+
+vim.cmd('colorscheme ' .. config.ui.colorscheme)

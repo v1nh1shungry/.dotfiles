@@ -120,7 +120,7 @@ return {
       'hrsh7th/cmp-nvim-lsp',
       {
         'folke/neodev.nvim',
-        config = true,
+        opts = {},
       },
       {
         'p00f/clangd_extensions.nvim',
@@ -180,6 +180,15 @@ return {
               completion = { callSnippet = 'Replace', autoRequire = false },
               telemetry = { enable = false },
               workspace = { checkThirdParty = false },
+              doc = { privateName = { '^_' } },
+              hint = {
+                enable = true,
+                setType = false,
+                paramType = true,
+                paramName = 'Disable',
+                semicolon = 'Disable',
+                arrayIndex = 'Disable',
+              },
             },
           },
         },
@@ -256,7 +265,6 @@ return {
           ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               if not cmp.get_selected_entry() then

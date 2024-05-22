@@ -11,21 +11,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local lazy_specs = {}
-
-for _, module in ipairs({ 'core', 'ide', 'ui', 'tools', 'themes' }) do
-  local module_specs = require('plugins.' .. module)
-  for _, spec in ipairs(module_specs) do
-    lazy_specs[#lazy_specs + 1] = spec
-  end
-end
-
-for _, spec in ipairs(require('user').plugins) do
-  lazy_specs[#lazy_specs + 1] = spec
-end
-
-require('lazy').setup({
-  spec = lazy_specs,
+require('lazy').setup('plugins', {
   install = { colorscheme = { require('user').ui.colorscheme } },
   performance = {
     rtp = {
@@ -46,5 +32,3 @@ require('lazy').setup({
     },
   },
 })
-
-require('user').setup()

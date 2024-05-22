@@ -3,9 +3,7 @@ local events = require('utils.events')
 return {
   {
     'andymass/vim-matchup',
-    config = function()
-      vim.g.matchup_matchparen_offscreen = { method = '' }
-    end,
+    config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
     event = events.enter_buffer,
   },
   {
@@ -185,24 +183,18 @@ return {
   },
   {
     'RRethy/vim-illuminate',
-    config = function()
-      require('illuminate').configure({ providers = { 'lsp', 'treesitter' } })
-    end,
+    config = function() require('illuminate').configure({ providers = { 'lsp', 'treesitter' } }) end,
     dependencies = 'nvim-treesitter/nvim-treesitter',
     event = events.enter_buffer,
     keys = {
       {
         '[[',
-        function()
-          require('illuminate').goto_prev_reference(false)
-        end,
+        function() require('illuminate').goto_prev_reference(false) end,
         desc = 'Previous reference',
       },
       {
         ']]',
-        function()
-          require('illuminate').goto_next_reference(false)
-        end,
+        function() require('illuminate').goto_next_reference(false) end,
         desc = 'Next reference',
       },
     },
@@ -320,9 +312,7 @@ return {
     keys = {
       {
         '<C-q>',
-        function()
-          require('mini.bufremove').delete(0, false)
-        end,
+        function() require('mini.bufremove').delete(0, false) end,
         desc = 'Close buffer',
       },
     },
@@ -442,9 +432,7 @@ return {
     keys = {
       {
         '<leader>sy',
-        function()
-          require('telescope').extensions.yank_history.yank_history({})
-        end,
+        function() require('telescope').extensions.yank_history.yank_history({}) end,
         desc = 'Open Yank History',
       },
       { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
@@ -485,9 +473,7 @@ return {
         window = { open = 'alternate' },
         nest_if_no_args = true,
         callbacks = {
-          should_block = function(argv)
-            return vim.tbl_contains(argv, '-b')
-          end,
+          should_block = function(argv) return vim.tbl_contains(argv, '-b') end,
           pre_open = function()
             local term = require('toggleterm.terminal')
             local termid = term.get_focused_id()
@@ -499,9 +485,7 @@ return {
               vim.api.nvim_create_autocmd('BufWritePost', {
                 buffer = bufnr,
                 once = true,
-                callback = vim.schedule_wrap(function()
-                  vim.api.nvim_buf_delete(bufnr, {})
-                end),
+                callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
               })
             end
           end,

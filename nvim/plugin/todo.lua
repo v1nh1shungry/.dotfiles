@@ -29,13 +29,9 @@ local function load_todo()
   end
 end
 
-local function save_todo()
-  vim.fn.writefile(todo, config.storage)
-end
+local function save_todo() vim.fn.writefile(todo, config.storage) end
 
-local function clear_extmark()
-  vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-end
+local function clear_extmark() vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1) end
 
 local function get_highlight(index)
   if index == 1 then
@@ -166,9 +162,7 @@ local function close_win()
 end
 
 vim.api.nvim_create_autocmd('User', {
-  callback = function()
-    open_win(false)
-  end,
+  callback = function() open_win(false) end,
   group = augroup,
   pattern = 'AlphaReady',
 })
@@ -189,12 +183,8 @@ timer:start(
       vim.notify('You have a unfinished TODO list:\n  ● ' .. todo[1], vim.log.levels.WARN, {
         title = 'You',
         timeout = false,
-        on_open = function()
-          timer:stop()
-        end,
-        on_close = function()
-          timer:again()
-        end,
+        on_open = function() timer:stop() end,
+        on_close = function() timer:again() end,
       })
     else
       timer:again()

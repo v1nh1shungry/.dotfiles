@@ -162,7 +162,10 @@ local function close_win()
 end
 
 vim.api.nvim_create_autocmd('User', {
-  callback = function() open_win(false) end,
+  callback = function(args)
+    open_win(false)
+    map({ 't', open_win, desc = 'Edit TODO', buffer = args.buf })
+  end,
   group = augroup,
   pattern = 'AlphaReady',
 })

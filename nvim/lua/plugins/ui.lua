@@ -161,6 +161,9 @@ return {
               on_click = function() require('telescope.builtin').git_branches() end,
             },
             {
+              function() return require('tinygit.statusline').branchState() end,
+            },
+            {
               'mode',
               fmt = function(str) return '-- ' .. str .. ' --' end,
             },
@@ -235,6 +238,7 @@ return {
         },
       })
     end,
+    dependencies = 'chrisgrieser/nvim-tinygit',
     event = 'VeryLazy',
   },
   {
@@ -259,15 +263,19 @@ return {
         [']'] = { name = '+next' },
         ['['] = { name = '+prev' },
         ['<Leader><Tab>'] = { name = '+tab' },
+        ['<Leader>b'] = { name = '+biquge' },
         ['<Leader>c'] = { name = '+code' },
+        ['<Leader>d'] = { name = '+debug' },
+        ['<Leader>dp'] = { name = '+debugprint' },
         ['<Leader>f'] = { name = '+file' },
         ['<Leader>g'] = { name = '+git' },
-        ['<Leader>s'] = { name = '+search' },
-        ['<Leader>u'] = { name = '+UI' },
-        ['<Leader>x'] = { name = '+diagnostics/quickfix' },
+        ['<Leader>gx'] = { name = '+conflict' },
+        ['<Leader>m'] = { name = '+cmake' },
         ['<Leader>q'] = { name = '+quit/sessions' },
+        ['<Leader>s'] = { name = '+search' },
         ['<Leader>t'] = { name = '+todo' },
-        ['<Leader>dp'] = { name = '+debugprint' },
+        ['<Leader>u'] = { name = '+ui' },
+        ['<Leader>x'] = { name = '+diagnostics/quickfix' },
       },
     },
   },
@@ -316,7 +324,11 @@ return {
     },
     opts = {
       views = { split = { enter = true } },
-      presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
+      presets = {
+        long_message_to_split = true,
+        bottom_search = true,
+        command_palette = true,
+      },
       messages = { view_search = false },
       lsp = {
         override = {
@@ -384,15 +396,6 @@ return {
       },
       { '*', [[*<Cmd>lua require('hlslens').start()<CR>]], desc = 'Forward search current word' },
       { '#', [[#<Cmd>lua require('hlslens').start()<CR>]], desc = 'Backward search current word' },
-    },
-  },
-  {
-    'cbochs/portal.nvim',
-    keys = {
-      { '<C-o>', '<Cmd>Portal jumplist backward<CR>', desc = 'Jumplist backward' },
-      { '<C-i>', '<Cmd>Portal jumplist forward<CR>', desc = 'Jumplist forward' },
-      { 'g;', '<Cmd>Portal changelist backward<CR>', desc = 'Changelist backward' },
-      { 'g,', '<Cmd>Portal changelist forward<CR>', desc = 'Changelist forward' },
     },
   },
   {
@@ -571,12 +574,15 @@ return {
       require('ufo').setup(opts)
 
       vim.api.nvim_create_autocmd('FileType', {
-        command = 'UfoDetach',
+        callback = function()
+          vim.cmd('UfoDetach')
+          vim.opt_local.foldcolumn = '0'
+        end,
         pattern = excluded_filetypes,
       })
     end,
     dependencies = { 'kevinhwang91/promise-async', 'luukvbaal/statuscol.nvim' },
-    event = events.enter_buffer,
+    lazy = false,
     opts = {
       preview = {
         win_config = { winblend = require('user').ui.blend },
@@ -589,22 +595,6 @@ return {
           jumpBot = ']',
         },
       },
-      provider_selector = function(_, filetype, buftype)
-        local function handleFallbackException(bufnr, err, providerName)
-          if type(err) == 'string' and err:match('UfoFallbackException') then
-            return require('ufo').getFolds(bufnr, providerName)
-          else
-            return require('promise').reject(err)
-          end
-        end
-        return (filetype == '' or buftype == 'nofile') and 'indent'
-          or function(bufnr)
-            return require('ufo')
-              .getFolds(bufnr, 'lsp')
-              :catch(function(err) return handleFallbackException(bufnr, err, 'treesitter') end)
-              :catch(function(err) return handleFallbackException(bufnr, err, 'indent') end)
-          end
-      end,
     },
     keys = {
       {

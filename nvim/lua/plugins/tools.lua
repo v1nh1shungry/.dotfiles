@@ -55,9 +55,7 @@ return {
     keys = {
       {
         '<Leader>sr',
-        function()
-          require('ssr').open()
-        end,
+        function() require('ssr').open() end,
         mode = { 'n', 'x' },
         desc = 'Structural replace',
       },
@@ -160,31 +158,23 @@ return {
       ';',
       {
         'gs',
-        function()
-          require('flash').jump()
-        end,
+        function() require('flash').jump() end,
         desc = 'Flash',
       },
       {
         'gt',
-        function()
-          require('flash').treesitter()
-        end,
+        function() require('flash').treesitter() end,
         desc = 'Flash Treesitter',
       },
       {
         'r',
-        function()
-          require('flash').remote()
-        end,
+        function() require('flash').remote() end,
         mode = 'o',
         desc = 'Remote Flash',
       },
       {
         'R',
-        function()
-          require('flash').treesitter_search()
-        end,
+        function() require('flash').treesitter_search() end,
         mode = { 'o', 'x' },
         desc = 'Treesitter search',
       },
@@ -227,9 +217,7 @@ return {
         callback = function(args)
           map({
             '<Leader>xr',
-            function()
-              require('replacer').run()
-            end,
+            function() require('replacer').run() end,
             desc = 'Quickfix replacer',
             buffer = args.buf,
           })
@@ -245,9 +233,7 @@ return {
     keys = {
       {
         '<Leader>sR',
-        function()
-          require('refactoring').select_refactor()
-        end,
+        function() require('refactoring').select_refactor() end,
         desc = 'Refactoring',
         mode = { 'n', 'x' },
       },
@@ -286,9 +272,7 @@ return {
     keys = {
       {
         '<Leader>sc',
-        function()
-          require('cppman').search()
-        end,
+        function() require('cppman').search() end,
         desc = 'Cppman',
       },
     },
@@ -307,65 +291,47 @@ return {
     keys = {
       {
         '<Leader>b/',
-        function()
-          require('biquge').search()
-        end,
+        function() require('biquge').search() end,
         desc = 'Search',
       },
       {
         '<Leader>bb',
-        function()
-          require('biquge').toggle()
-        end,
+        function() require('biquge').toggle() end,
         desc = 'Toggle',
       },
       {
         '<Leader>bt',
-        function()
-          require('biquge').toc()
-        end,
+        function() require('biquge').toc() end,
         desc = 'TOC',
       },
       {
         '<Leader>bn',
-        function()
-          require('biquge').next_chap()
-        end,
+        function() require('biquge').next_chap() end,
         desc = 'Next chapter',
       },
       {
         '<Leader>bp',
-        function()
-          require('biquge').prev_chap()
-        end,
+        function() require('biquge').prev_chap() end,
         desc = 'Previous chapter',
       },
       {
         '<Leader>bs',
-        function()
-          require('biquge').star()
-        end,
+        function() require('biquge').star() end,
         desc = 'Star current book',
       },
       {
         '<Leader>bl',
-        function()
-          require('biquge').bookshelf()
-        end,
+        function() require('biquge').bookshelf() end,
         desc = 'Bookshelf',
       },
       {
         '<M-d>',
-        function()
-          require('biquge').scroll(1)
-        end,
+        function() require('biquge').scroll(1) end,
         desc = 'Scroll down',
       },
       {
         '<M-u>',
-        function()
-          require('biquge').scroll(-1)
-        end,
+        function() require('biquge').scroll(-1) end,
         desc = 'Scroll up',
       },
     },

@@ -73,9 +73,7 @@ return {
           vim.lsp.codelens.refresh({ bufnr = bufnr })
           vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
             buffer = bufnr,
-            callback = function()
-              vim.lsp.codelens.refresh({ bufnr = bufnr })
-            end,
+            callback = function() vim.lsp.codelens.refresh({ bufnr = bufnr }) end,
           })
         end
       end
@@ -83,9 +81,7 @@ return {
       require('mason-lspconfig').setup({ automatic_installation = true })
 
       vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(args)
-          on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
-        end,
+        callback = function(args) on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf) end,
       })
 
       local register_capability = vim.lsp.handlers['client/registerCapability']
@@ -175,9 +171,7 @@ return {
             '--header-insertion=never',
             '--include-cleaner-stdlib',
           },
-          on_new_config = function(new_config, _)
-            require('cmake-tools').clangd_on_new_config(new_config)
-          end,
+          on_new_config = function(new_config, _) require('cmake-tools').clangd_on_new_config(new_config) end,
           keys = { { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' } },
         },
         lua_ls = {
@@ -201,30 +195,22 @@ return {
       { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' },
       {
         ']w',
-        function()
-          require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.WARN })
-        end,
+        function() require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.WARN }) end,
         desc = 'Next warning',
       },
       {
         '[w',
-        function()
-          require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.WARN })
-        end,
+        function() require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.WARN }) end,
         desc = 'Previous warning',
       },
       {
         ']e',
-        function()
-          require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
-        end,
+        function() require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR }) end,
         desc = 'Next error',
       },
       {
         '[e',
-        function()
-          require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-        end,
+        function() require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR }) end,
         desc = 'Previous error',
       },
       { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
@@ -250,9 +236,7 @@ return {
       cmp.setup({
         window = { completion = { side_padding = 0 } },
         snippet = {
-          expand = function(item)
-            vim.snippet.expand(item.body)
-          end,
+          expand = function(item) vim.snippet.expand(item.body) end,
         },
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
@@ -347,30 +331,22 @@ return {
         map_local({ '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' })
         map_local({
           ']h',
-          function()
-            require('gitsigns').nav_hunk('next', { navigation_message = false })
-          end,
+          function() require('gitsigns').nav_hunk('next', { navigation_message = false }) end,
           desc = 'Next git hunk',
         })
         map_local({
           '[h',
-          function()
-            require('gitsigns').nav_hunk('prev', { navigation_message = false })
-          end,
+          function() require('gitsigns').nav_hunk('prev', { navigation_message = false }) end,
           desc = 'Previous git hunk',
         })
         map_local({
           ']H',
-          function()
-            require('gitsigns').nav_hunk('last', { navigation_message = false })
-          end,
+          function() require('gitsigns').nav_hunk('last', { navigation_message = false }) end,
           desc = 'Last git hunk',
         })
         map_local({
           '[H',
-          function()
-            require('gitsigns').nav_hunk('first', { navigation_message = false })
-          end,
+          function() require('gitsigns').nav_hunk('first', { navigation_message = false }) end,
           desc = 'First git hunk',
         })
         map_local({ 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' })
@@ -395,9 +371,7 @@ return {
       map({ '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' })
       map({
         '<Leader>dt',
-        function()
-          require('dap').terminate()
-        end,
+        function() require('dap').terminate() end,
         desc = 'Terminate',
       })
     end,
@@ -424,9 +398,7 @@ return {
           end
           map({
             '<Leader>de',
-            function()
-              require('dapui').eval()
-            end,
+            function() require('dapui').eval() end,
             desc = 'Eval',
             mode = { 'n', 'v' },
           })
@@ -470,9 +442,7 @@ return {
         keys = {
           {
             '<Leader>dl',
-            function()
-              require('osv').launch({ port = 8086 })
-            end,
+            function() require('osv').launch({ port = 8086 }) end,
             desc = 'Launch DAP server',
           },
         },
@@ -536,15 +506,11 @@ return {
   },
   {
     'stevearc/conform.nvim',
-    init = function()
-      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-    end,
+    init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
     keys = {
       {
         '<Leader>cf',
-        function()
-          require('conform').format({ lsp_fallback = true, quiet = true })
-        end,
+        function() require('conform').format({ lsp_fallback = true, quiet = true }) end,
         desc = 'Format document',
         mode = { 'n', 'v' },
       },
@@ -562,9 +528,7 @@ return {
     keys = {
       {
         '<Leader>ud',
-        function()
-          require('dropbar.api').pick()
-        end,
+        function() require('dropbar.api').pick() end,
         desc = 'Dropbar',
       },
     },

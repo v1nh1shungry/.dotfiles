@@ -10,16 +10,12 @@ return {
     keys = {
       {
         '[t',
-        function()
-          require('todo-comments').jump_prev()
-        end,
+        function() require('todo-comments').jump_prev() end,
         desc = 'Previous TODO',
       },
       {
         ']t',
-        function()
-          require('todo-comments').jump_next()
-        end,
+        function() require('todo-comments').jump_next() end,
         desc = 'Next TODO',
       },
       { '<Leader>xt', '<Cmd>TodoTrouble<CR>', desc = 'Todo' },
@@ -62,9 +58,7 @@ return {
         vim.api.nvim_create_autocmd('User', {
           once = true,
           pattern = 'AlphaReady',
-          callback = function()
-            require('lazy').show()
-          end,
+          callback = function() require('lazy').show() end,
         })
       end
       vim.api.nvim_create_autocmd('User', {
@@ -84,9 +78,7 @@ return {
     keys = {
       {
         '<Leader>um',
-        function()
-          require('codewindow').toggle_minimap()
-        end,
+        function() require('codewindow').toggle_minimap() end,
         desc = 'Toggle Minimap',
       },
     },
@@ -103,9 +95,7 @@ return {
       require('bufferline').setup(opts)
       vim.api.nvim_create_autocmd({ 'BufAdd', 'BufDelete' }, {
         callback = function()
-          vim.schedule(function()
-            pcall(nvim_bufferline)
-          end)
+          vim.schedule(function() pcall(nvim_bufferline) end)
         end,
       })
     end,
@@ -168,22 +158,16 @@ return {
             {
               'branch',
               icon = '',
-              on_click = function()
-                require('telescope.builtin').git_branches()
-              end,
+              on_click = function() require('telescope.builtin').git_branches() end,
             },
             {
               'mode',
-              fmt = function(str)
-                return '-- ' .. str .. ' --'
-              end,
+              fmt = function(str) return '-- ' .. str .. ' --' end,
             },
           },
           lualine_x = {
             {
-              function()
-                return '%S'
-              end,
+              function() return '%S' end,
             },
             {
               function()
@@ -214,9 +198,7 @@ return {
             },
             {
               'encoding',
-              fmt = function(str)
-                return string.upper(str)
-              end,
+              fmt = function(str) return string.upper(str) end,
             },
             {
               'fileformat',
@@ -297,15 +279,9 @@ return {
         'rcarriga/nvim-notify',
         opts = {
           timeout = 3000,
-          max_height = function()
-            return math.floor(vim.o.lines * 0.75)
-          end,
-          max_width = function()
-            return math.floor(vim.o.columns * 0.75)
-          end,
-          on_open = function(win)
-            vim.api.nvim_win_set_config(win, { zindex = 100 })
-          end,
+          max_height = function() return math.floor(vim.o.lines * 0.75) end,
+          max_width = function() return math.floor(vim.o.columns * 0.75) end,
+          on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
         },
       },
     },
@@ -462,16 +438,12 @@ return {
         {
           ft = 'toggleterm',
           size = { height = 0.4 },
-          filter = function(_, win)
-            return vim.api.nvim_win_get_config(win).relative == ''
-          end,
+          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
         },
         {
           ft = 'noice',
           size = { height = 0.4 },
-          filter = function(_, win)
-            return vim.api.nvim_win_get_config(win).relative == ''
-          end,
+          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == '' end,
           wo = { number = false, relativenumber = false, colorcolumn = '' },
         },
         'Trouble',
@@ -479,9 +451,7 @@ return {
         {
           ft = 'help',
           size = { height = 0.4 },
-          filter = function(buf)
-            return vim.bo[buf].buftype == 'help'
-          end,
+          filter = function(buf) return vim.bo[buf].buftype == 'help' end,
         },
         { ft = 'dap-repl', title = 'REPL' },
         { ft = 'dapui_console', title = 'Console' },
@@ -534,9 +504,7 @@ return {
     event = events.enter_buffer,
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
-        callback = function(args)
-          vim.b[args.buf].minitrailspace_disable = true
-        end,
+        callback = function(args) vim.b[args.buf].minitrailspace_disable = true end,
         pattern = excluded_filetypes,
       })
     end,
@@ -633,21 +601,15 @@ return {
           or function(bufnr)
             return require('ufo')
               .getFolds(bufnr, 'lsp')
-              :catch(function(err)
-                return handleFallbackException(bufnr, err, 'treesitter')
-              end)
-              :catch(function(err)
-                return handleFallbackException(bufnr, err, 'indent')
-              end)
+              :catch(function(err) return handleFallbackException(bufnr, err, 'treesitter') end)
+              :catch(function(err) return handleFallbackException(bufnr, err, 'indent') end)
           end
       end,
     },
     keys = {
       {
         '<Leader>uf',
-        function()
-          require('ufo').peekFoldedLinesUnderCursor()
-        end,
+        function() require('ufo').peekFoldedLinesUnderCursor() end,
         desc = 'Preview fold',
       },
     },
@@ -660,9 +622,7 @@ return {
         callback = function(args)
           require('utils.keymap')({
             '<Leader>up',
-            function()
-              require('plantuml-preview').toggle()
-            end,
+            function() require('plantuml-preview').toggle() end,
             buffer = args.buf,
             desc = 'Toggle plantuml preview',
           })

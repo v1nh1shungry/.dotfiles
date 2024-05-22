@@ -52,45 +52,6 @@ return {
             { '<Leader>cl', vim.lsp.codelens.run, mode = { 'n', 'v' }, desc = 'Run codelens' },
           },
         }
-        for _, key in ipairs({
-          { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
-          { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' },
-          { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' },
-          {
-            ']w',
-            function()
-              require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.WARN })
-            end,
-            desc = 'Next warning',
-          },
-          {
-            '[w',
-            function()
-              require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.WARN })
-            end,
-            desc = 'Previous warning',
-          },
-          {
-            ']e',
-            function()
-              require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
-            end,
-            desc = 'Next error',
-          },
-          {
-            '[e',
-            function()
-              require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-            end,
-            desc = 'Previous error',
-          },
-          { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>', desc = 'Document diagnostics' },
-          { '<Leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', desc = 'Workspace Diagnostics' },
-          { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
-          { '<Leader>ux', require('utils.toggle').diagnostic, desc = 'Toggle diagnostic' },
-        }) do
-          map_local(key)
-        end
         for method, keys in pairs(mappings) do
           if client.supports_method(method) then
             for _, key in ipairs(keys) do
@@ -234,6 +195,40 @@ return {
   {
     'nvimdev/lspsaga.nvim',
     cmd = 'Lspsaga',
+    keys = {
+      { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
+      { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' },
+      { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' },
+      {
+        ']w',
+        function()
+          require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.WARN })
+        end,
+        desc = 'Next warning',
+      },
+      {
+        '[w',
+        function()
+          require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.WARN })
+        end,
+        desc = 'Previous warning',
+      },
+      {
+        ']e',
+        function()
+          require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
+        end,
+        desc = 'Next error',
+      },
+      {
+        '[e',
+        function()
+          require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
+        end,
+        desc = 'Previous error',
+      },
+      { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
+    },
     opts = {
       code_action = { extend_gitsigns = false, show_server_name = true },
       lightbulb = { sign = false },
@@ -266,23 +261,20 @@ return {
         },
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
-          format = function(entry, vim_item)
-            local kind = require('lspkind').cmp_format({
-              mode = 'symbol_text',
-              maxwidth = 50,
-              preset = 'codicons',
-            })(entry, vim_item)
-            local strings = vim.split(kind.kind, '%s', { trimempty = true })
-            kind.abbr = vim.trim(kind.abbr)
-            kind.kind = ' ' .. strings[1] .. ' '
-            kind.menu = '    ' .. strings[2]
-            return kind
+          format = function(_, item)
+            item.abbr = vim.trim(item.abbr)
+            if #item.abbr > 50 then
+              item.abbr = item.abbr:sub(1, 50) .. '…'
+            end
+            item.menu = item.kind
+            item.kind = ' ' .. require('utils.ui').icons.lspkind[item.kind] .. ' '
+            return item
           end,
           expandable_indicator = true,
         },
         mapping = cmp.mapping.preset.insert({
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
@@ -349,7 +341,6 @@ return {
           opts = { enable_autosnippets = true },
         },
       },
-      'onsails/lspkind.nvim',
       'lukas-reineke/cmp-rg',
     },
     event = events.enter_insert,
@@ -509,6 +500,8 @@ return {
     'folke/trouble.nvim',
     cmd = 'TroubleToggle',
     keys = {
+      { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>', desc = 'Document diagnostics' },
+      { '<Leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', desc = 'Workspace Diagnostics' },
       {
         '[q',
         function()
@@ -556,11 +549,14 @@ return {
   },
   {
     'stevearc/conform.nvim',
+    init = function()
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
     keys = {
       {
         '<Leader>cf',
         function()
-          require('conform').format({ lsp_fallback = true })
+          require('conform').format({ lsp_fallback = true, quiet = true })
         end,
         desc = 'Format document',
         mode = { 'n', 'v' },

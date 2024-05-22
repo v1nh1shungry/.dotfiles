@@ -413,8 +413,10 @@ return {
   {
     'cbochs/portal.nvim',
     keys = {
-      { '<C-o>', '<Cmd>Portal jumplist backward<CR>', desc = 'Jump backward' },
-      { '<C-i>', '<Cmd>Portal jumplist forward<CR>', desc = 'Jump forward' },
+      { '<C-o>', '<Cmd>Portal jumplist backward<CR>', desc = 'Jumplist backward' },
+      { '<C-i>', '<Cmd>Portal jumplist forward<CR>', desc = 'Jumplist forward' },
+      { 'g;', '<Cmd>Portal changelist backward<CR>', desc = 'Changelist backward' },
+      { 'g,', '<Cmd>Portal changelist forward<CR>', desc = 'Changelist forward' },
     },
   },
   {
@@ -595,10 +597,8 @@ return {
   {
     'kevinhwang91/nvim-ufo',
     config = function(_, opts)
-      vim.o.foldcolumn = '1'
-      vim.o.foldlevel = 99
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
+      vim.opt.foldcolumn = '1'
+      vim.opt.foldenable = true
 
       require('ufo').setup(opts)
 

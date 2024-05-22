@@ -39,11 +39,11 @@ end
 
 local function get_highlight(index)
   if index == 1 then
-    return 'DiagnosticVirtualTextError'
+    return 'DiagnosticError'
   elseif index < 5 then
-    return 'DiagnosticVirtualTextWarn'
+    return 'DiagnosticWarn'
   else
-    return 'DiagnosticVirtualTextInfo'
+    return 'DiagnosticInfo'
   end
 end
 

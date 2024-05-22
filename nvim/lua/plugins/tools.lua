@@ -79,26 +79,16 @@ return {
         pattern = 'GitConflictDetected',
       })
     end,
-    dependencies = {
-      'folke/which-key.nvim',
-      optional = true,
-      opts = { defaults = { ['<Leader>gx'] = { name = '+conflict' } } },
-    },
     event = events.enter_buffer,
     opts = { default_mappings = false },
   },
   {
     'sindrets/diffview.nvim',
     cmd = { 'DiffviewFileHistory', 'DiffviewOpen' },
-    keys = { { '<Leader>gd', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
+    keys = { { '<Leader>gD', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
   },
   {
     'Civitasv/cmake-tools.nvim',
-    dependencies = {
-      'folke/which-key.nvim',
-      optional = true,
-      opts = { defaults = { ['<Leader>m'] = { name = '+cmake' } } },
-    },
     ft = 'cmake',
     init = function()
       local loaded = false
@@ -180,7 +170,10 @@ return {
       },
     },
     opts = {
-      modes = { char = { highlight = { backdrop = false } } },
+      modes = {
+        search = { enabled = true },
+        char = { multi_line = false, highlight = { backdrop = false } },
+      },
       prompt = { enabled = false },
     },
   },
@@ -280,14 +273,7 @@ return {
   },
   {
     'v1nh1shungry/biquge.nvim',
-    dependencies = {
-      'nvim-telescope/telescope.nvim',
-      {
-        'folke/which-key.nvim',
-        optional = true,
-        opts = { defaults = { ['<Leader>b'] = { name = '+biquge' } } },
-      },
-    },
+    dependencies = 'nvim-telescope/telescope.nvim',
     keys = {
       {
         '<Leader>b/',
@@ -345,5 +331,17 @@ return {
   {
     'v1nh1shungry/cppinsights.nvim',
     cmd = 'CppInsights',
+  },
+  {
+    'chrisgrieser/nvim-tinygit',
+    ft = { 'gitcommit', 'git_rebase' },
+    keys = {
+      { '<Leader>gc', function() require('tinygit').smartCommit() end, desc = 'Commit' },
+      { '<Leader>gP', function() require('tinygit').push() end, desc = 'Push' },
+      { '<Leader>ga', function() require('tinygit').amendNoEdit() end, desc = 'Amend' },
+      { '<Leader>gu', function() require('tinygit').undoLastCommitOrAmend() end, desc = 'Undo last commit' },
+      { '<Leader>gF', function() require('tinygit').searchFileHistory() end, desc = 'Search file history' },
+      { '<Leader>gf', function() require('tinygit').functionHistory() end, desc = 'Search function history' },
+    },
   },
 }

@@ -197,7 +197,7 @@ return {
   },
   {
     'nvimdev/lspsaga.nvim',
-    cmd = 'Lspsaga',
+    event = 'LspAttach',
     keys = {
       { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
       { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' },
@@ -229,7 +229,6 @@ return {
       lightbulb = { sign = false },
       ui = { winblend = require('user').ui.blend },
       beacon = { enable = false },
-      symbol_in_winbar = { enable = false },
     },
   },
   {
@@ -294,7 +293,6 @@ return {
         }, {
           { name = 'buffer' },
           { name = 'path' },
-          { name = 'rg', keyword_length = 3 },
         }),
       })
 
@@ -320,7 +318,6 @@ return {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-path',
-      'lukas-reineke/cmp-rg',
     },
     event = events.enter_insert,
   },
@@ -336,6 +333,7 @@ return {
         map_local({ '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' })
         map_local({ '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' })
         map_local({ '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' })
+        map_local({ '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>', desc = 'Diffthis' })
         map_local({ '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' })
         map_local({
           ']h',
@@ -421,11 +419,6 @@ return {
         'jay-babu/mason-nvim-dap.nvim',
         dependencies = 'williamboman/mason.nvim',
         opts = { automatic_installation = true, handlers = {} },
-      },
-      {
-        'folke/which-key.nvim',
-        optional = true,
-        opts = { defaults = { ['<Leader>d'] = { name = '+debug' } } },
       },
       {
         'jbyuki/one-small-step-for-vimkind',
@@ -527,17 +520,6 @@ return {
       formatters_by_ft = {
         fish = { 'fish_indent' },
         lua = { 'stylua' },
-      },
-    },
-  },
-  {
-    'Bekaboo/dropbar.nvim',
-    event = events.enter_buffer,
-    keys = {
-      {
-        '<Leader>ud',
-        function() require('dropbar.api').pick() end,
-        desc = 'Dropbar',
       },
     },
   },

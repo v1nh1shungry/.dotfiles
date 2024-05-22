@@ -246,17 +246,12 @@ return {
     'hrsh7th/nvim-cmp',
     config = function()
       local cmp = require('cmp')
-      local luasnip = require('luasnip')
-
-      for _, ft in ipairs({ 'cpp' }) do
-        luasnip.add_snippets(ft, require('plugins.ide.snippets.' .. ft))
-      end
 
       cmp.setup({
         window = { completion = { side_padding = 0 } },
         snippet = {
-          expand = function(args)
-            require('luasnip').lsp_expand(args.body)
+          expand = function(item)
+            vim.snippet.expand(item.body)
           end,
         },
         formatting = {
@@ -285,8 +280,8 @@ return {
               else
                 cmp.confirm()
               end
-            elseif luasnip.expand_or_locally_jumpable(1) then
-              luasnip.expand_or_jump()
+            elseif vim.snippet.active({ direction = 1 }) then
+              vim.snippet.jump(1)
             else
               fallback()
             end
@@ -294,16 +289,16 @@ return {
           ['<S-Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
+            elseif vim.snippet.active({ direction = -1 }) then
+              vim.snippet.jump(-1)
             else
               fallback()
             end
           end, { 'i', 's' }),
         }),
         sources = cmp.config.sources({
-          { name = 'luasnip' },
           { name = 'nvim_lsp' },
+          { name = 'snippets' },
         }, {
           { name = 'buffer' },
           { name = 'path' },
@@ -333,14 +328,6 @@ return {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-path',
-      {
-        'saadparwaiz1/cmp_luasnip',
-        dependencies = {
-          'L3MON4D3/LuaSnip',
-          build = 'make install_jsregexp',
-          opts = { enable_autosnippets = true },
-        },
-      },
       'lukas-reineke/cmp-rg',
     },
     event = events.enter_insert,

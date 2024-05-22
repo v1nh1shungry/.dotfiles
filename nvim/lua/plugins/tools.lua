@@ -39,7 +39,7 @@ return {
   },
   {
     'danymat/neogen',
-    opts = { snippet_engine = 'luasnip' },
+    opts = { snippet_engine = 'nvim' },
     keys = { { '<Leader>cg', '<Cmd>Neogen<CR>', desc = 'Generate document comment' } },
   },
   {

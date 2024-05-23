@@ -46,6 +46,7 @@ M.icons = {
 M.excluded_filetypes = {
   'ClangdAST',
   'DressingInput',
+  'Glance',
   'TelescopePrompt',
   'Trouble',
   'checkhealth',

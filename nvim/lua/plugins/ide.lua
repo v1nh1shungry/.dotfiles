@@ -545,6 +545,7 @@ return {
               end
             end,
             '--inline-suppr',
+            '--suppress=internalAstError',
             '--quiet',
             function()
               if vim.fn.isdirectory('build') == 1 then

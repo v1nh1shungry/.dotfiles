@@ -170,10 +170,7 @@ return {
       },
     },
     opts = {
-      modes = {
-        search = { enabled = true },
-        char = { multi_line = false, highlight = { backdrop = false } },
-      },
+      modes = { char = { multi_line = false, highlight = { backdrop = false } } },
       prompt = { enabled = false },
     },
   },

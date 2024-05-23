@@ -373,7 +373,7 @@ return {
   },
   {
     'olimorris/persisted.nvim',
-    cmd = { 'SessionLoad' },
+    cmd = 'SessionLoad',
     config = function()
       require('persisted').setup({
         use_git_branch = true,

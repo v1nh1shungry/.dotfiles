@@ -280,19 +280,21 @@ return {
     },
   },
   {
-    'folke/noice.nvim',
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      {
-        'rcarriga/nvim-notify',
-        opts = {
-          timeout = 3000,
-          max_height = function() return math.floor(vim.o.lines * 0.75) end,
-          max_width = function() return math.floor(vim.o.columns * 0.75) end,
-          on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
-        },
-      },
+    'MunifTanjim/nui.nvim',
+    lazy = true,
+  },
+  {
+    'rcarriga/nvim-notify',
+    lazy = true,
+    opts = {
+      timeout = 3000,
+      max_height = function() return math.floor(vim.o.lines * 0.75) end,
+      max_width = function() return math.floor(vim.o.columns * 0.75) end,
+      on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
     },
+  },
+  {
+    'folke/noice.nvim',
     event = 'VeryLazy',
     keys = {
       { '<Leader>xn', '<Cmd>NoiceAll<CR>', desc = 'Message' },
@@ -563,6 +565,7 @@ return {
     'hiphish/rainbow-delimiters.nvim',
     main = 'rainbow-delimiters.setup',
     dependencies = 'nvim-treesitter/nvim-treesitter',
+    event = events.enter_buffer,
     opts = { highlight = require('utils.ui').rainbow_highlight },
   },
   {

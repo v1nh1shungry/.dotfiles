@@ -329,8 +329,11 @@ return {
     'v1nh1shungry/cppinsights.nvim',
     cmd = 'CppInsights',
     opts = {
-      standard = 'cpp20',
-      more_transformations = { ['edu-show-coroutines'] = true },
+      standard = 'cpp2c',
+      more_transformations = {
+        ['edu-show-coroutines'] = true,
+        ['use-libcpp'] = true,
+      },
     },
   },
   {

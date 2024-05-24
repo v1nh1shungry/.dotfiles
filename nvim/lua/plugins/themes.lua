@@ -1,10 +1,10 @@
 return {
-  { 'folke/tokyonight.nvim', lazy = true },
-  { 'EdenEast/nightfox.nvim', lazy = true },
+  { "folke/tokyonight.nvim", lazy = true },
+  { "EdenEast/nightfox.nvim", lazy = true },
   {
-    'catppuccin/nvim',
+    "catppuccin/nvim",
     lazy = true,
-    name = 'catppuccin',
+    name = "catppuccin",
     opts = {
       integrations = {
         lsp_saga = true,
@@ -12,10 +12,10 @@ return {
         mason = true,
         native_lsp = {
           underlines = {
-            errors = { 'undercurl' },
-            hints = { 'undercurl' },
-            warnings = { 'undercurl' },
-            information = { 'undercurl' },
+            errors = { "undercurl" },
+            hints = { "undercurl" },
+            warnings = { "undercurl" },
+            information = { "undercurl" },
           },
         },
         noice = true,
@@ -26,12 +26,12 @@ return {
     },
   },
   {
-    'ellisonleao/gruvbox.nvim',
+    "ellisonleao/gruvbox.nvim",
     lazy = true,
     opts = {
       overrides = {
-        SignColumn = { link = 'LineNr' },
-        FoldColumn = { link = 'LineNr' },
+        SignColumn = { link = "LineNr" },
+        FoldColumn = { link = "LineNr" },
       },
     },
   },

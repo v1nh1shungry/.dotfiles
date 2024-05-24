@@ -1,78 +1,78 @@
-local events = require('utils.events')
+local events = require("utils.events")
 
 return {
   {
-    'andymass/vim-matchup',
-    config = function() vim.g.matchup_matchparen_offscreen = { method = '' } end,
+    "andymass/vim-matchup",
+    config = function() vim.g.matchup_matchparen_offscreen = { method = "" } end,
     event = events.enter_buffer,
   },
   {
-    'nmac427/guess-indent.nvim',
+    "nmac427/guess-indent.nvim",
     event = events.enter_buffer,
     opts = {},
   },
   {
-    'echasnovski/mini.ai',
+    "echasnovski/mini.ai",
     config = function(_, opts)
-      require('mini.ai').setup(opts)
+      require("mini.ai").setup(opts)
       local i = {
-        [' '] = 'Whitespace',
+        [" "] = "Whitespace",
         ['"'] = 'Balanced "',
         ["'"] = "Balanced '",
-        ['`'] = 'Balanced `',
-        ['('] = 'Balanced (',
-        [')'] = 'Balanced ) including white-space',
-        ['>'] = 'Balanced > including white-space',
-        ['<lt>'] = 'Balanced <',
-        [']'] = 'Balanced ] including white-space',
-        ['['] = 'Balanced [',
-        ['}'] = 'Balanced } including white-space',
-        ['{'] = 'Balanced {',
-        ['?'] = 'User Prompt',
-        _ = 'Underscore',
-        a = 'Argument',
-        b = 'Balanced ), ], }',
-        c = 'Class',
-        d = 'Digit(s)',
-        f = 'Function',
-        g = 'Entire file',
-        o = 'Block, conditional, loop',
-        q = 'Quote `, ", \'',
-        t = 'Tag',
-        u = 'Use/call function & method',
-        U = 'Use/call without dot in name',
+        ["`"] = "Balanced `",
+        ["("] = "Balanced (",
+        [")"] = "Balanced ) including white-space",
+        [">"] = "Balanced > including white-space",
+        ["<lt>"] = "Balanced <",
+        ["]"] = "Balanced ] including white-space",
+        ["["] = "Balanced [",
+        ["}"] = "Balanced } including white-space",
+        ["{"] = "Balanced {",
+        ["?"] = "User Prompt",
+        _ = "Underscore",
+        a = "Argument",
+        b = "Balanced ), ], }",
+        c = "Class",
+        d = "Digit(s)",
+        f = "Function",
+        g = "Entire file",
+        o = "Block, conditional, loop",
+        q = "Quote `, \", '",
+        t = "Tag",
+        u = "Use/call function & method",
+        U = "Use/call without dot in name",
       }
       local a = vim.deepcopy(i)
       for k, v in pairs(a) do
-        a[k] = v:gsub(' including.*', '')
+        a[k] = v:gsub(" including.*", "")
       end
       local ic = vim.deepcopy(i)
       local ac = vim.deepcopy(a)
-      for key, name in pairs({ n = 'Next', l = 'Last' }) do
-        i[key] = vim.tbl_extend('force', { name = 'Inside ' .. name .. ' textobject' }, ic)
-        a[key] = vim.tbl_extend('force', { name = 'Around ' .. name .. ' textobject' }, ac)
+      for key, name in pairs({ n = "Next", l = "Last" }) do
+        i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
+        a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
       end
-      require('which-key').register({
-        mode = { 'o', 'x' },
+      require("which-key").register({
+        mode = { "o", "x" },
         i = i,
         a = a,
       })
     end,
     dependencies = {
-      'folke/which-key.nvim',
+      "folke/which-key.nvim",
       {
-        'nvim-treesitter/nvim-treesitter-textobjects',
+        "nvim-treesitter/nvim-treesitter-textobjects",
         config = function(_, opts)
-          local move = require('nvim-treesitter.textobjects.move')
-          local configs = require('nvim-treesitter.configs')
+          local move = require("nvim-treesitter.textobjects.move")
+          local configs = require("nvim-treesitter.configs")
           for name, fn in pairs(move) do
-            if name:find('goto') == 1 then
+            if name:find("goto") == 1 then
               move[name] = function(q, ...)
                 if vim.wo.diff then
-                  local config = configs.get_module('textobjects.move')[name]
+                  local config = configs.get_module("textobjects.move")[name]
                   for key, query in pairs(config or {}) do
-                    if q == query and key:find('[%]%[][cC]') then
-                      vim.cmd('normal! ' .. key)
+                    if q == query and key:find("[%]%[][cC]") then
+                      vim.cmd("normal! " .. key)
                       return
                     end
                   end
@@ -83,7 +83,7 @@ return {
           end
           configs.setup(opts)
         end,
-        dependencies = 'nvim-treesitter/nvim-treesitter',
+        dependencies = "nvim-treesitter/nvim-treesitter",
         opts = {
           textobjects = {
             swap = { enable = false },
@@ -91,12 +91,12 @@ return {
               enable = true,
               set_jumps = true,
               goto_next_start = {
-                [']a'] = '@parameter.inner',
-                [']f'] = '@function.outer',
+                ["]a"] = "@parameter.inner",
+                ["]f"] = "@function.outer",
               },
               goto_previous_start = {
-                ['[a'] = '@parameter.inner',
-                ['[f'] = '@function.outer',
+                ["[a"] = "@parameter.inner",
+                ["[f"] = "@function.outer",
               },
             },
           },
@@ -105,71 +105,71 @@ return {
     },
     event = events.enter_buffer,
     opts = function()
-      local ai = require('mini.ai')
+      local ai = require("mini.ai")
       return {
         n_lines = 500,
         custom_textobjects = {
           o = ai.gen_spec.treesitter({
-            a = { '@block.outer', '@conditional.outer', '@loop.outer' },
-            i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
           }, {}),
-          f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, {}),
-          c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
-          t = { '<([%p%w]-)%f[^<%w][^<>]->.-</%1>', '^<.->().*()</[^/]->$' },
-          d = { '%f[%d]%d+' },
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
+          d = { "%f[%d]%d+" },
           g = function()
             local from = { line = 1, col = 1 }
             local to = {
-              line = vim.fn.line('$'),
-              col = math.max(vim.fn.getline('$'):len(), 1),
+              line = vim.fn.line("$"),
+              col = math.max(vim.fn.getline("$"):len(), 1),
             }
             return { from = from, to = to }
           end,
           u = ai.gen_spec.function_call(),
-          U = ai.gen_spec.function_call({ name_pattern = '[%w_]' }),
+          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }),
         },
       }
     end,
   },
   {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
     event = events.enter_buffer,
-    main = 'nvim-treesitter.configs',
+    main = "nvim-treesitter.configs",
     opts = {
       ensure_installed = {
-        'bash',
-        'c',
-        'cmake',
-        'cpp',
-        'cuda',
-        'diff',
-        'doxygen',
-        'fish',
-        'git_rebase',
-        'gitcommit',
-        'html',
-        'json',
-        'jsonc',
-        'lua',
-        'luadoc',
-        'luap',
-        'make',
-        'markdown',
-        'markdown_inline',
-        'query',
-        'regex',
-        'vim',
-        'vimdoc',
+        "bash",
+        "c",
+        "cmake",
+        "cpp",
+        "cuda",
+        "diff",
+        "doxygen",
+        "fish",
+        "git_rebase",
+        "gitcommit",
+        "html",
+        "json",
+        "jsonc",
+        "lua",
+        "luadoc",
+        "luap",
+        "make",
+        "markdown",
+        "markdown_inline",
+        "query",
+        "regex",
+        "vim",
+        "vimdoc",
       },
       highlight = { enable = true, additional_vim_regex_highlighting = true },
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = '<C-Space>',
-          node_incremental = '<C-Space>',
+          init_selection = "<C-Space>",
+          node_incremental = "<C-Space>",
           scope_incremental = false,
-          node_decremental = '<bs>',
+          node_decremental = "<bs>",
         },
       },
       indent = { enable = true },
@@ -177,315 +177,315 @@ return {
     },
   },
   {
-    'Wansmer/treesj',
+    "Wansmer/treesj",
     keys = {
-      { 'S', '<Cmd>TSJSplit<CR>', desc = 'Split line' },
-      { 'J', '<Cmd>TSJJoin<CR>', desc = 'Join line' },
+      { "S", "<Cmd>TSJSplit<CR>", desc = "Split line" },
+      { "J", "<Cmd>TSJJoin<CR>", desc = "Join line" },
     },
     opts = { use_default_keymaps = false },
   },
   {
-    'RRethy/vim-illuminate',
-    config = function() require('illuminate').configure({ providers = { 'lsp', 'treesitter' } }) end,
-    dependencies = 'nvim-treesitter/nvim-treesitter',
+    "RRethy/vim-illuminate",
+    config = function() require("illuminate").configure({ providers = { "lsp", "treesitter" } }) end,
+    dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
     keys = {
       {
-        '[[',
-        function() require('illuminate').goto_prev_reference(false) end,
-        desc = 'Previous reference',
+        "[[",
+        function() require("illuminate").goto_prev_reference(false) end,
+        desc = "Previous reference",
       },
       {
-        ']]',
-        function() require('illuminate').goto_next_reference(false) end,
-        desc = 'Next reference',
+        "]]",
+        function() require("illuminate").goto_next_reference(false) end,
+        desc = "Next reference",
       },
     },
   },
   {
-    'lukas-reineke/indent-blankline.nvim',
+    "lukas-reineke/indent-blankline.nvim",
     config = function(_, opts)
-      local hooks = require('ibl.hooks')
+      local hooks = require("ibl.hooks")
       hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-        vim.api.nvim_set_hl(0, 'RainbowDelimiterRed', { fg = '#E06C75' })
-        vim.api.nvim_set_hl(0, 'RainbowDelimiterYellow', { fg = '#E5C07B' })
-        vim.api.nvim_set_hl(0, 'RainbowDelimiterBlue', { fg = '#61AFEF' })
-        vim.api.nvim_set_hl(0, 'RainbowDelimiterOrange', { fg = '#D19A66' })
-        vim.api.nvim_set_hl(0, 'RainbowDelimiterGreen', { fg = '#98C379' })
-        vim.api.nvim_set_hl(0, 'RainbowDelimiterViolet', { fg = '#C678DD' })
-        vim.api.nvim_set_hl(0, 'RainbowDelimiterCyan', { fg = '#56B6C2' })
+        vim.api.nvim_set_hl(0, "RainbowDelimiterRed", { fg = "#E06C75" })
+        vim.api.nvim_set_hl(0, "RainbowDelimiterYellow", { fg = "#E5C07B" })
+        vim.api.nvim_set_hl(0, "RainbowDelimiterBlue", { fg = "#61AFEF" })
+        vim.api.nvim_set_hl(0, "RainbowDelimiterOrange", { fg = "#D19A66" })
+        vim.api.nvim_set_hl(0, "RainbowDelimiterGreen", { fg = "#98C379" })
+        vim.api.nvim_set_hl(0, "RainbowDelimiterViolet", { fg = "#C678DD" })
+        vim.api.nvim_set_hl(0, "RainbowDelimiterCyan", { fg = "#56B6C2" })
       end)
       hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-      require('ibl').setup(opts)
+      require("ibl").setup(opts)
     end,
-    dependencies = 'nvim-treesitter/nvim-treesitter',
+    dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
     opts = {
-      indent = { char = '│', tab_char = '│' },
+      indent = { char = "│", tab_char = "│" },
       scope = {
         show_start = false,
         show_end = false,
-        include = { node_type = { lua = { 'table_constructor' } } },
-        highlight = require('utils.ui').rainbow_highlight,
+        include = { node_type = { lua = { "table_constructor" } } },
+        highlight = require("utils.ui").rainbow_highlight,
       },
-      exclude = { filetypes = require('utils.ui').excluded_filetypes },
+      exclude = { filetypes = require("utils.ui").excluded_filetypes },
     },
   },
   {
-    'echasnovski/mini.surround',
+    "echasnovski/mini.surround",
     config = function()
-      require('mini.surround').setup({
+      require("mini.surround").setup({
         mappings = {
-          add = 'ys',
-          delete = 'ds',
-          find = '',
-          find_left = '',
-          highlight = '',
-          replace = 'cs',
-          update_n_lines = '',
-          suffix_last = '',
-          suffix_next = '',
+          add = "ys",
+          delete = "ds",
+          find = "",
+          find_left = "",
+          highlight = "",
+          replace = "cs",
+          update_n_lines = "",
+          suffix_last = "",
+          suffix_next = "",
         },
-        search_method = 'cover_or_next',
+        search_method = "cover_or_next",
       })
-      vim.keymap.del('x', 'ys')
+      vim.keymap.del("x", "ys")
     end,
     keys = {
-      { 'ys', desc = 'Add surrounding' },
-      { 'ds', desc = 'Delete surrounding' },
-      { 'cs', desc = 'Change surrounding' },
-      { 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = 'x' },
-      { 'yss', 'ys_', remap = true },
+      { "ys", desc = "Add surrounding" },
+      { "ds", desc = "Delete surrounding" },
+      { "cs", desc = "Change surrounding" },
+      { "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = "x" },
+      { "yss", "ys_", remap = true },
     },
   },
   {
-    'mg979/vim-visual-multi',
+    "mg979/vim-visual-multi",
     config = function()
       vim.g.VM_silent_exit = true
       vim.g.VM_set_statusline = 0
       vim.g.VM_quit_after_leaving_insert_mode = true
       vim.g.VM_show_warnings = 0
     end,
-    keys = { { '<C-n>', mode = { 'n', 'v' }, desc = 'Multi cursors' } },
+    keys = { { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" } },
   },
   {
-    'altermo/ultimate-autopair.nvim',
+    "altermo/ultimate-autopair.nvim",
     event = events.enter_insert,
     opts = {},
   },
   {
-    'tiagovla/scope.nvim',
-    event = 'VeryLazy',
+    "tiagovla/scope.nvim",
+    event = "VeryLazy",
     opts = {},
   },
   {
-    'LunarVim/bigfile.nvim',
+    "LunarVim/bigfile.nvim",
     event = events.enter_buffer,
   },
   {
-    'chrisgrieser/nvim-spider',
+    "chrisgrieser/nvim-spider",
     keys = {
-      { 'w', "<Cmd>lua require('spider').motion('w')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Next word' },
-      { 'e', "<Cmd>lua require('spider').motion('e')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Next end of word' },
-      { 'b', "<Cmd>lua require('spider').motion('b')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Previous word' },
-      { 'ge', "<Cmd>lua require('spider').motion('ge')<CR>", mode = { 'n', 'o', 'x' }, desc = 'Previous end of word' },
+      { "w", "<Cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" }, desc = "Next word" },
+      { "e", "<Cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" }, desc = "Next end of word" },
+      { "b", "<Cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" }, desc = "Previous word" },
+      { "ge", "<Cmd>lua require('spider').motion('ge')<CR>", mode = { "n", "o", "x" }, desc = "Previous end of word" },
     },
   },
   {
-    'axkirillov/hbac.nvim',
+    "axkirillov/hbac.nvim",
     event = events.enter_buffer,
     opts = { threshold = 6 },
   },
   {
-    'echasnovski/mini.operators',
+    "echasnovski/mini.operators",
     keys = {
-      { 'g=', mode = { 'n', 'v' }, desc = 'Evaluate' },
-      { 'cx', mode = { 'n', 'v' }, desc = 'Exchange' },
-      { 'gm', mode = { 'n', 'v' }, desc = 'Dumplicate' },
-      { 'gr', mode = { 'n', 'v' }, desc = 'Replace with register' },
-      { 'gS', mode = { 'n', 'v' }, desc = 'Sort' },
+      { "g=", mode = { "n", "v" }, desc = "Evaluate" },
+      { "cx", mode = { "n", "v" }, desc = "Exchange" },
+      { "gm", mode = { "n", "v" }, desc = "Dumplicate" },
+      { "gr", mode = { "n", "v" }, desc = "Replace with register" },
+      { "gS", mode = { "n", "v" }, desc = "Sort" },
     },
     opts = {
-      sort = { prefix = 'gS' },
-      exchange = { prefix = 'cx' },
+      sort = { prefix = "gS" },
+      exchange = { prefix = "cx" },
     },
   },
   {
-    'echasnovski/mini.bufremove',
+    "echasnovski/mini.bufremove",
     keys = {
       {
-        '<C-q>',
-        function() require('mini.bufremove').delete(0, false) end,
-        desc = 'Close buffer',
+        "<C-q>",
+        function() require("mini.bufremove").delete(0, false) end,
+        desc = "Close buffer",
       },
     },
     opts = {},
   },
   {
-    'RRethy/nvim-treesitter-endwise',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    event = 'InsertEnter',
-    main = 'nvim-treesitter.configs',
+    "RRethy/nvim-treesitter-endwise",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = "InsertEnter",
+    main = "nvim-treesitter.configs",
     opts = { endwise = { enable = true } },
   },
   {
-    'chrisgrieser/nvim-recorder',
-    opts = { mapping = { switchSlot = '<M-q>' } },
+    "chrisgrieser/nvim-recorder",
+    opts = { mapping = { switchSlot = "<M-q>" } },
     keys = {
-      'q',
-      'Q',
-      '<M-q>',
-      { 'cq', desc = 'Edit macro' },
-      { 'dq', desc = 'Delete all macros' },
-      { 'yq', desc = 'Yank macro' },
+      "q",
+      "Q",
+      "<M-q>",
+      { "cq", desc = "Edit macro" },
+      { "dq", desc = "Delete all macros" },
+      { "yq", desc = "Yank macro" },
     },
   },
   {
-    'Wansmer/sibling-swap.nvim',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
+    "Wansmer/sibling-swap.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
     opts = {
       keymaps = {
-        ['<C-l>'] = 'swap_with_right',
-        ['<C-h>'] = 'swap_with_left',
+        ["<C-l>"] = "swap_with_right",
+        ["<C-h>"] = "swap_with_left",
       },
     },
     keys = {
-      { '<C-l>', desc = 'Swap with right' },
-      { '<C-h>', desc = 'Swap with left' },
+      { "<C-l>", desc = "Swap with right" },
+      { "<C-h>", desc = "Swap with left" },
     },
   },
   {
-    'tzachar/highlight-undo.nvim',
-    keys = { 'u', '<C-r>' },
+    "tzachar/highlight-undo.nvim",
+    keys = { "u", "<C-r>" },
     opts = {
-      undo = { hlgroup = 'IncSearch' },
-      redo = { hlgroup = 'IncSearch' },
+      undo = { hlgroup = "IncSearch" },
+      redo = { hlgroup = "IncSearch" },
     },
   },
   {
-    'lambdalisue/suda.vim',
-    cmd = { 'SudaRead', 'SudaWrite' },
+    "lambdalisue/suda.vim",
+    cmd = { "SudaRead", "SudaWrite" },
   },
   {
-    'keaising/im-select.nvim',
+    "keaising/im-select.nvim",
     event = events.enter_insert,
     opts = {},
   },
   {
-    'olimorris/persisted.nvim',
-    cmd = 'SessionLoad',
+    "olimorris/persisted.nvim",
+    cmd = "SessionLoad",
     config = function()
-      require('persisted').setup({
+      require("persisted").setup({
         use_git_branch = true,
         should_autosave = function()
           local bufs = vim.tbl_filter(function(b)
-            if vim.bo[b].buftype ~= '' then
+            if vim.bo[b].buftype ~= "" then
               return false
             end
             if vim.bo[b].buflisted == false then
               return false
             end
-            if vim.tbl_contains({ 'gitcommit', 'gitrebase' }, vim.bo[b].buftype) then
+            if vim.tbl_contains({ "gitcommit", "gitrebase" }, vim.bo[b].buftype) then
               return false
             end
-            return vim.api.nvim_buf_get_name(b) ~= ''
+            return vim.api.nvim_buf_get_name(b) ~= ""
           end, vim.api.nvim_list_bufs())
           return #bufs ~= 0
         end,
       })
 
-      require('telescope').load_extension('persisted')
+      require("telescope").load_extension("persisted")
 
-      vim.api.nvim_create_autocmd('User', {
-        command = 'ScopeSaveState',
-        pattern = 'PersistedSavePre',
+      vim.api.nvim_create_autocmd("User", {
+        command = "ScopeSaveState",
+        pattern = "PersistedSavePre",
       })
-      vim.api.nvim_create_autocmd('User', {
-        command = 'ScopeLoadState',
-        pattern = 'PersistedLoadPost',
+      vim.api.nvim_create_autocmd("User", {
+        command = "ScopeLoadState",
+        pattern = "PersistedLoadPost",
       })
 
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'PersistedTelescopeLoadPre',
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "PersistedTelescopeLoadPre",
         callback = function(_)
-          require('persisted').save({ session = vim.g.persisted_loaded_session })
-          vim.api.nvim_input('<ESC>:%bd!<CR>')
+          require("persisted").save({ session = vim.g.persisted_loaded_session })
+          vim.api.nvim_input("<ESC>:%bd!<CR>")
         end,
       })
     end,
-    dependencies = 'nvim-telescope/telescope.nvim',
+    dependencies = "nvim-telescope/telescope.nvim",
     event = events.enter_buffer,
     keys = {
-      { '<Leader>qs', '<Cmd>SessionLoad<CR>', desc = 'Restore current session' },
-      { '<Leader>ql', '<Cmd>SessionLoadLast<CR>', desc = 'Restore last session' },
-      { '<Leader>sq', '<Cmd>Telescope persisted<CR>', desc = 'Session' },
+      { "<Leader>qs", "<Cmd>SessionLoad<CR>", desc = "Restore current session" },
+      { "<Leader>ql", "<Cmd>SessionLoadLast<CR>", desc = "Restore last session" },
+      { "<Leader>sq", "<Cmd>Telescope persisted<CR>", desc = "Session" },
       {
-        '<Leader>qd',
+        "<Leader>qd",
         function()
-          vim.cmd('SessionStop')
-          vim.cmd('qa!')
+          vim.cmd("SessionStop")
+          vim.cmd("qa!")
         end,
-        desc = 'Quit without saving session',
+        desc = "Quit without saving session",
       },
-      { '<Leader>qc', '<Cmd>SessionDelete<CR>', desc = 'Delete current session' },
+      { "<Leader>qc", "<Cmd>SessionDelete<CR>", desc = "Delete current session" },
     },
   },
   {
-    'gbprod/yanky.nvim',
+    "gbprod/yanky.nvim",
     keys = {
       {
-        '<leader>sy',
-        function() require('telescope').extensions.yank_history.yank_history({}) end,
-        desc = 'Open Yank History',
+        "<leader>sy",
+        function() require("telescope").extensions.yank_history.yank_history({}) end,
+        desc = "Open Yank History",
       },
-      { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' }, desc = 'Yank text' },
-      { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after cursor' },
-      { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before cursor' },
-      { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' }, desc = 'Put yanked text after selection' },
-      { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' }, desc = 'Put yanked text before selection' },
-      { '[y', '<Plug>(YankyPreviousEntry)', desc = 'Select previous entry through yank history' },
-      { ']y', '<Plug>(YankyNextEntry)', desc = 'Select next entry through yank history' },
-      { ']p', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
-      { '[p', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
-      { ']P', '<Plug>(YankyPutIndentAfterLinewise)', desc = 'Put indented after cursor (linewise)' },
-      { '[P', '<Plug>(YankyPutIndentBeforeLinewise)', desc = 'Put indented before cursor (linewise)' },
-      { '>p', '<Plug>(YankyPutIndentAfterShiftRight)', desc = 'Put and indent right' },
-      { '<p', '<Plug>(YankyPutIndentAfterShiftLeft)', desc = 'Put and indent left' },
-      { '>P', '<Plug>(YankyPutIndentBeforeShiftRight)', desc = 'Put before and indent right' },
-      { '<P', '<Plug>(YankyPutIndentBeforeShiftLeft)', desc = 'Put before and indent left' },
-      { '=p', '<Plug>(YankyPutAfterFilter)', desc = 'Put after applying a filter' },
-      { '=P', '<Plug>(YankyPutBeforeFilter)', desc = 'Put before applying a filter' },
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
+      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
+      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
+      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
+      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
+      { "[y", "<Plug>(YankyPreviousEntry)", desc = "Select previous entry through yank history" },
+      { "]y", "<Plug>(YankyNextEntry)", desc = "Select next entry through yank history" },
+      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+      { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+      { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right" },
+      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left" },
+      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
+      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left" },
+      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
+      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
     },
     opts = {},
   },
   {
-    'numToStr/Navigator.nvim',
+    "numToStr/Navigator.nvim",
     keys = {
-      { '<M-h>', '<Cmd>NavigatorLeft<CR>', desc = 'Go to left window', mode = { 'n', 't' } },
-      { '<M-l>', '<Cmd>NavigatorRight<CR>', desc = 'Go to right window', mode = { 'n', 't' } },
-      { '<M-j>', '<Cmd>NavigatorDown<CR>', desc = 'Go to lower window', mode = { 'n', 't' } },
-      { '<M-k>', '<Cmd>NavigatorUp<CR>', desc = 'Go to upper window', mode = { 'n', 't' } },
+      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Go to left window", mode = { "n", "t" } },
+      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Go to right window", mode = { "n", "t" } },
+      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Go to lower window", mode = { "n", "t" } },
+      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Go to upper window", mode = { "n", "t" } },
     },
     opts = {},
   },
   {
-    'willothy/flatten.nvim',
+    "willothy/flatten.nvim",
     opts = function()
       local saved_terminal
       return {
-        window = { open = 'alternate' },
+        window = { open = "alternate" },
         nest_if_no_args = true,
         callbacks = {
-          should_block = function(argv) return vim.tbl_contains(argv, '-b') end,
+          should_block = function(argv) return vim.tbl_contains(argv, "-b") end,
           pre_open = function()
-            local term = require('toggleterm.terminal')
+            local term = require("toggleterm.terminal")
             local termid = term.get_focused_id()
             saved_terminal = term.get(termid)
           end,
           post_open = function(bufnr, _, ft, _)
             saved_terminal:close()
-            if ft == 'gitcommit' or ft == 'gitrebase' then
-              vim.api.nvim_create_autocmd('BufWritePost', {
+            if ft == "gitcommit" or ft == "gitrebase" then
+              vim.api.nvim_create_autocmd("BufWritePost", {
                 buffer = bufnr,
                 once = true,
                 callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
@@ -505,8 +505,8 @@ return {
     end,
   },
   {
-    'folke/ts-comments.nvim',
-    event = 'VeryLazy',
+    "folke/ts-comments.nvim",
+    event = "VeryLazy",
     opts = {},
   },
 }

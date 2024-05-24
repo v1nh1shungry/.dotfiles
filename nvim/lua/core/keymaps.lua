@@ -62,8 +62,8 @@ map({ '<Leader>fu', '<Cmd>earlier 1f<CR>', desc = 'Give up modifications' })
 
 map({ '$', 'g_', mode = 'x', desc = 'End of line' })
 
-map({ '<Leader>ui', vim.inspect_pos, desc = 'Inspect position under the cursor' })
-map({ '<Leader>uI', vim.treesitter.inspect_tree, desc = 'Treesitter Tree' })
+map({ '<Leader>ui', '<Cmd>Inspect<CR>', desc = 'Inspect position under the cursor' })
+map({ '<Leader>uI', '<Cmd>InspectTree<CR>', desc = 'Treesitter Tree' })
 
 map({ '<C-n>', '<Down>', desc = 'Next command in history', mode = 'c', silent = false })
 map({ '<C-p>', '<Up>', desc = 'Previous command in history', mode = 'c', silent = false })
@@ -75,6 +75,7 @@ map({
       vim.notify("CPM.cmake: can't create 'cmake' directory", vim.log.levels.ERROR)
       return
     end
+    vim.notify('Downloading CPM.cmake...')
     vim.system({
       'wget',
       '-O',

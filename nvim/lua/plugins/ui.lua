@@ -147,6 +147,11 @@ return {
     'nvim-lualine/lualine.nvim',
     config = function()
       vim.opt.laststatus = 3
+
+      local function is_cmake_project()
+        return package.loaded['cmake-tools'] and require('cmake-tools').is_cmake_project()
+      end
+
       require('lualine').setup({
         options = { component_separators = '', section_separators = '' },
         sections = {
@@ -155,13 +160,45 @@ return {
           lualine_y = {},
           lualine_z = {},
           lualine_c = {
+            { 'branch', icon = '' },
             {
-              'branch',
-              icon = '',
-              on_click = function() require('telescope.builtin').git_branches() end,
+              function()
+                return 'CMake: [' .. (require('cmake-tools').get_configure_preset() or 'X') .. ']'
+              end,
+              cond = function() return is_cmake_project() and require('cmake-tools').has_cmake_preset() end,
             },
             {
-              function() return require('tinygit.statusline').branchState() end,
+              function()
+                return 'CMake: [' .. (require('cmake-tools').get_build_type() or 'X') .. ']'
+              end,
+              cond = function() return is_cmake_project() and not require('cmake-tools').has_cmake_preset() end,
+            },
+            {
+              function()
+                return '[' .. (require('cmake-tools').get_kit() or 'X') .. ']'
+              end,
+              cond = function() return is_cmake_project() and require('cmake-tools').has_cmake_preset() end,
+              icon = '󱌣',
+            },
+            {
+              function()
+                return '[' .. (require('cmake-tools').get_build_preset() or 'X') .. ']'
+              end,
+              cond = function() return is_cmake_project() and require('cmake-tools').has_cmake_preset() end,
+            },
+            {
+              function()
+                return '[' .. (require('cmake-tools').get_build_target() or 'X') .. ']'
+              end,
+              cond = is_cmake_project,
+              icon = '',
+            },
+            {
+              function()
+                return '[' .. (require('cmake-tools').get_launch_target() or 'X') .. ']'
+              end,
+              cond = is_cmake_project,
+              icon = ''
             },
             {
               'mode',
@@ -169,9 +206,7 @@ return {
             },
           },
           lualine_x = {
-            {
-              function() return '%S' end,
-            },
+            { function() return '%S' end },
             {
               function()
                 local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -186,18 +221,6 @@ return {
                   return 'Spaces: ' .. vim.bo.shiftwidth
                 end
               end,
-              on_click = function()
-                vim.ui.input({ prompt = 'Tab Size: ' }, function(input)
-                  if input == nil then
-                    return
-                  end
-                  if vim.bo.shiftwidth == 0 then
-                    vim.bo.tabstop = tonumber(input)
-                  else
-                    vim.bo.shiftwidth = tonumber(input)
-                  end
-                end)
-              end,
             },
             {
               'encoding',
@@ -207,14 +230,6 @@ return {
               'fileformat',
               icons_enabled = true,
               symbols = { unix = 'LF', dos = 'CRLF', mac = 'CR' },
-              on_click = function()
-                local table = { LF = 'unix', CRLF = 'dos', CR = 'mac' }
-                vim.ui.select({ 'LF', 'CRLF', 'CR' }, { prompt = 'Line Ending:' }, function(choice)
-                  if choice ~= nil then
-                    vim.bo.fileformat = table[choice]
-                  end
-                end)
-              end,
             },
             { 'filetype', icons_enabled = false },
           },
@@ -238,7 +253,6 @@ return {
         },
       })
     end,
-    dependencies = 'chrisgrieser/nvim-tinygit',
     event = 'VeryLazy',
   },
   {

@@ -528,36 +528,8 @@ return {
     event = events.enter_buffer,
     opts = {
       events = { 'BufWritePost', 'BufReadPost' },
-      linters_by_ft = {
-        c = { 'cppcheck' },
-        cpp = { 'cppcheck' },
-        fish = { 'fish' },
-      },
-      linters = {
-        cppcheck = {
-          args = {
-            '--enable=style,performance,warning,portability',
-            function()
-              if vim.bo.filetype == 'cpp' then
-                return '--language=c++'
-              else
-                return '--language=c'
-              end
-            end,
-            '--inline-suppr',
-            '--suppress=internalAstError',
-            '--quiet',
-            function()
-              if vim.fn.isdirectory('build') == 1 then
-                return '--cppcheck-build-dir=build'
-              else
-                return nil
-              end
-            end,
-            '--template={file}:{line}:{column}: [{id}] {severity}: {message}',
-          },
-        },
-      },
+      linters_by_ft = { fish = { 'fish' } },
+      linters = {},
     },
     config = function(_, opts)
       local M = {}

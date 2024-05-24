@@ -3,6 +3,7 @@ local opts = require('user').task
 
 local compile_opts = {
   c = {
+    'ccache',
     'gcc',
     '${filename}',
     '-o',
@@ -14,6 +15,7 @@ local compile_opts = {
     '-Wextra',
   },
   cpp = {
+    'ccache',
     'g++',
     '${filename}',
     '-o',

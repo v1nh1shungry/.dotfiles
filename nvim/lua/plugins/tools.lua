@@ -126,7 +126,7 @@ return {
       },
       cmake_build_directory = 'build',
       cmake_soft_link_compile_commands = false,
-      cmake_runner = { name = 'toggleterm' },
+      cmake_runner = { name = 'toggleterm', opts = { direction = 'horizontal' } },
     },
   },
   {
@@ -328,6 +328,10 @@ return {
   {
     'v1nh1shungry/cppinsights.nvim',
     cmd = 'CppInsights',
+    opts = {
+      standard = 'cpp20',
+      more_transformations = { ['edu-show-coroutines'] = true },
+    },
   },
   {
     'chrisgrieser/nvim-tinygit',

@@ -25,4 +25,14 @@ return {
       },
     },
   },
+  {
+    'ellisonleao/gruvbox.nvim',
+    lazy = true,
+    opts = {
+      overrides = {
+        SignColumn = { link = 'LineNr' },
+        FoldColumn = { link = 'LineNr' },
+      },
+    },
+  },
 }

@@ -49,14 +49,14 @@ local function render()
   if #todo == 0 then
     vim.api.nvim_buf_set_extmark(bufnr, ns, 0, 0, {
       virt_text = {
-        { '✅ ', 'Normal' },
+        { '✅ ', '' },
         { 'All clear!', 'Comment' },
       },
     })
   else
     for i = 1, #todo do
       vim.api.nvim_buf_set_extmark(bufnr, ns, i - 1, 0, {
-        virt_text = { { wip == todo[i] and '🚧 ' or '📋 ', 'Normal' } },
+        virt_text = { { wip == todo[i] and '🚧 ' or '📋 ', '' } },
         virt_text_pos = 'inline',
       })
       vim.highlight.range(bufnr, ns, get_highlight(i), { i - 1, 0 }, { i, -1 })

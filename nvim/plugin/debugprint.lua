@@ -2,53 +2,59 @@ local map = require('utils.keymap')
 
 local ID = 'DEBUGPRINT'
 
----@type table<string, fun(string, boolean): string>
-local filetype_snippet = {
-  cpp = function(item, var)
-    local template = 'std::cerr << "[' .. ID .. ' " << __FILE__ << ":" << __LINE__ << "] "<< %s << std::endl;'
-    if var then
-      return template:format(string.format('"%s = " << %s', item, item))
-    else
-      return template:format('"after ' .. item .. '"')
-    end
-  end,
-  lua = function(item, var)
-    local source = 'debug.getinfo(1).source:sub(2)'
-    local linenr = 'debug.getinfo(1).currentline'
-    local template = "print('[" .. ID .. "', " .. source .. " .. ':' .. " .. linenr .. " .. ']', %s)"
-    if var then
-      return template:format(string.format("'%s =', vim.inspect(%s)", item, item))
-    else
-      return template:format('"after ' .. item .. '"')
-    end
-  end,
+local filetype_assets = {
+  cpp = {
+    treesitter_query = { 'identifier' },
+    template = [[std::cerr << "[%s " << %s << ':' << %s << "] " << %%s << std::endl;]],
+    file = '__FILE__',
+    line = '__LINE__',
+    var = [["%s = " << %s]],
+  },
+  lua = {
+    treesitter_query = { 'identifier' },
+    template = [[print("[%s", %s .. ":" .. %s .. "]", %%s)]],
+    file = 'debug.getinfo(1).source:sub(2)',
+    line = 'debug.getinfo(1).currentline',
+    var = [["%s =", vim.inspect(%s)]],
+  },
 }
 
-local filetype_variable = {
-  cpp = { 'identifier' },
-  lua = { 'identifier' },
-}
+local function debugprint(filetype, item, var, above)
+  local asset = filetype_assets[filetype]
+  if var then
+    item = asset.var:format(item, item)
+  else
+    item = ([["%s %s"]]):format(above and 'before' or 'after', item)
+  end
+  return asset.template:format(ID, asset.file, asset.line):format(item)
+end
 
-local function plain()
+local function plain(above)
   local line = vim.trim(vim.api.nvim_get_current_line())
   local linenr, _ = unpack(vim.api.nvim_win_get_cursor(0))
-  vim.api.nvim_buf_set_lines(0, linenr, linenr, true, { filetype_snippet[vim.bo.filetype](line, false) })
+  if above then
+    linenr = linenr - 1
+  end
+  vim.api.nvim_buf_set_lines(0, linenr, linenr, true, { debugprint(vim.bo.filetype, line, false, above) })
   vim.cmd(linenr + 1 .. 'normal! ==')
 end
 
-local function variable()
+local function variable(above)
   local node = vim.treesitter.get_node()
-  if node == nil or not vim.tbl_contains(filetype_variable[vim.bo.filetype], node:type()) then
+  if node == nil or not vim.tbl_contains(filetype_assets[vim.bo.filetype].treesitter_query, node:type()) then
     vim.notify('No variable under the cursor', vim.log.levels.ERROR, { title = 'debugprint' })
     return
   end
   local linenr, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  if above then
+    linenr = linenr - 1
+  end
   vim.api.nvim_buf_set_lines(
     0,
     linenr,
     linenr,
     true,
-    { filetype_snippet[vim.bo.filetype](vim.treesitter.get_node_text(node, 0), true) }
+    { debugprint(vim.bo.filetype, vim.treesitter.get_node_text(node, 0), true, above) }
   )
   vim.cmd(linenr + 1 .. 'normal! ==')
 end
@@ -74,7 +80,9 @@ local function delete()
   end
 end
 
-map({ '<Leader>dpp', plain, desc = 'Plain debugprint' })
-map({ '<Leader>dpv', variable, desc = 'Variable debugprint' })
+map({ '<Leader>dpp', plain, desc = 'Plain debugprint (below)' })
+map({ '<Leader>dpP', function() plain(true) end, desc = 'Plain debuprint (above)' })
+map({ '<Leader>dpv', variable, desc = 'Variable debugprint (below)' })
+map({ '<Leader>dpV', function() variable(true) end, desc = 'Variable debuprint (above)' })
 map({ '<Leader>dpt', toggle, desc = 'Toggle debugprint' })
 map({ '<Leader>dpd', delete, desc = 'Delete debugprint' })

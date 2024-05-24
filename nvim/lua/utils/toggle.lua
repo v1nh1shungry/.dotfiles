@@ -12,15 +12,15 @@ function M.option(option, silent, values)
         vim.opt_local[option] = values[1]
       end
       if not silent then
-        vim.notify('Set ' .. option .. ' to ' .. vim.opt_local[option]:get(), vim.log.levels.INFO, { title = 'Option' })
+        vim.notify("Set " .. option .. " to " .. vim.opt_local[option]:get(), vim.log.levels.INFO, { title = "Option" })
       end
     else
       vim.opt_local[option] = not vim.opt_local[option]:get()
       if not silent then
         vim.notify(
-          (vim.opt_local[option]:get() and 'Enabled ' or 'Disabled ') .. option,
+          (vim.opt_local[option]:get() and "Enabled " or "Disabled ") .. option,
           vim.log.levels.INFO,
-          { title = 'Option' }
+          { title = "Option" }
         )
       end
     end
@@ -28,18 +28,18 @@ function M.option(option, silent, values)
 end
 
 function M.quickfix()
-  local nr = vim.fn.winnr('$')
-  vim.cmd('cwindow')
-  if nr == vim.fn.winnr('$') then
-    vim.cmd('cclose')
+  local nr = vim.fn.winnr("$")
+  vim.cmd("cwindow")
+  if nr == vim.fn.winnr("$") then
+    vim.cmd("cclose")
   end
 end
 
 function M.location()
-  local nr = vim.fn.winnr('$')
-  vim.cmd('lwindow')
-  if nr == vim.fn.winnr('$') then
-    vim.cmd('lclose')
+  local nr = vim.fn.winnr("$")
+  vim.cmd("lwindow")
+  if nr == vim.fn.winnr("$") then
+    vim.cmd("lclose")
   end
 end
 

@@ -1,13 +1,13 @@
 local M = {}
 
 M.enter_buffer = {
-  'BufNewFile',
-  'BufReadPost',
+  "BufNewFile",
+  "BufReadPost",
 }
 
 M.enter_insert = {
-  'InsertEnter',
-  'CmdlineEnter',
+  "InsertEnter",
+  "CmdlineEnter",
 }
 
 return M

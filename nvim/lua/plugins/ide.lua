@@ -1,9 +1,9 @@
-local events = require('utils.events')
-local map = require('utils.keymap')
+local events = require("utils.events")
+local map = require("utils.keymap")
 
 return {
   {
-    'neovim/nvim-lspconfig',
+    "neovim/nvim-lspconfig",
     config = function(_, lsp_opts)
       local on_attach = function(client, bufnr)
         local map_local = function(opts)
@@ -12,44 +12,44 @@ return {
         end
 
         local mappings = {
-          ['textDocument/rename'] = {
-            { '<Leader>cr', '<Cmd>Lspsaga rename<CR>', desc = 'Rename' },
+          ["textDocument/rename"] = {
+            { "<Leader>cr", "<Cmd>Lspsaga rename<CR>", desc = "Rename" },
           },
-          ['textDocument/codeAction'] = {
-            { '<Leader>ca', '<Cmd>Lspsaga code_action<CR>', desc = 'Code action' },
+          ["textDocument/codeAction"] = {
+            { "<Leader>ca", "<Cmd>Lspsaga code_action<CR>", desc = "Code action" },
           },
-          ['textDocument/documentSymbol'] = {
-            { '<Leader>uo', '<Cmd>Lspsaga outline<CR>', desc = 'Symbol outline' },
-            { '<Leader>ss', '<Cmd>Telescope lsp_document_symbols<CR>', desc = 'Browse LSP symbols (Document)' },
-            { '<Leader>sS', '<Cmd>Telescope lsp_workspace_symbols<CR>', desc = 'Browse LSP symbols (Workspace)' },
+          ["textDocument/documentSymbol"] = {
+            { "<Leader>uo", "<Cmd>Lspsaga outline<CR>", desc = "Symbol outline" },
+            { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Browse LSP symbols (Document)" },
+            { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "Browse LSP symbols (Workspace)" },
           },
-          ['textDocument/references'] = {
-            { 'gR', '<Cmd>Glance references<CR>', desc = 'Go to references' },
+          ["textDocument/references"] = {
+            { "gR", "<Cmd>Glance references<CR>", desc = "Go to references" },
           },
-          ['textDocument/definition'] = {
-            { 'gd', '<Cmd>Glance definitions<CR>', desc = 'Go to definition' },
-            { '<Leader>cp', '<Cmd>Lspsaga peek_definition<CR>', desc = 'Preview definition' },
+          ["textDocument/definition"] = {
+            { "gd", "<Cmd>Glance definitions<CR>", desc = "Go to definition" },
+            { "<Leader>cp", "<Cmd>Lspsaga peek_definition<CR>", desc = "Preview definition" },
           },
-          ['textDocument/typeDefinition*'] = {
-            { 'gy', '<Cmd>Glance type_definitions<CR>', desc = 'Go to type definition' },
+          ["textDocument/typeDefinition*"] = {
+            { "gy", "<Cmd>Glance type_definitions<CR>", desc = "Go to type definition" },
           },
-          ['textDocument/implementation*'] = {
-            { 'gi', '<Cmd>Glance implementations<CR>', desc = 'Go to implementation' },
+          ["textDocument/implementation*"] = {
+            { "gi", "<Cmd>Glance implementations<CR>", desc = "Go to implementation" },
           },
-          ['callHierarchy/incomingCalls'] = {
-            { '<Leader>ci', '<Cmd>Lspsaga incoming_calls<CR>', desc = 'Incoming calls' },
+          ["callHierarchy/incomingCalls"] = {
+            { "<Leader>ci", "<Cmd>Lspsaga incoming_calls<CR>", desc = "Incoming calls" },
           },
-          ['callHierarchy/outgoingCalls'] = {
-            { '<Leader>co', '<Cmd>Lspsaga outgoing_calls<CR>', desc = 'Outgoing calls' },
+          ["callHierarchy/outgoingCalls"] = {
+            { "<Leader>co", "<Cmd>Lspsaga outgoing_calls<CR>", desc = "Outgoing calls" },
           },
-          ['textDocument/inlayHint'] = {
-            { '<Leader>uh', require('utils.toggle').inlay_hint, desc = 'Toggle inlay hint' },
+          ["textDocument/inlayHint"] = {
+            { "<Leader>uh", require("utils.toggle").inlay_hint, desc = "Toggle inlay hint" },
           },
-          ['textDocument/signatureHelp'] = {
-            { '<C-k>', vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help' },
+          ["textDocument/signatureHelp"] = {
+            { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
           },
-          ['textDocument/codeLens'] = {
-            { '<Leader>cl', vim.lsp.codelens.run, mode = { 'n', 'v' }, desc = 'Run codelens' },
+          ["textDocument/codeLens"] = {
+            { "<Leader>cl", vim.lsp.codelens.run, mode = { "n", "v" }, desc = "Run codelens" },
           },
         }
         for method, keys in pairs(mappings) do
@@ -69,24 +69,24 @@ return {
           vim.lsp.inlay_hint.enable(true)
         end
 
-        if client.supports_method('textDocument/codeLens') then
+        if client.supports_method("textDocument/codeLens") then
           vim.lsp.codelens.refresh({ bufnr = bufnr })
-          vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+          vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
             buffer = bufnr,
             callback = function() vim.lsp.codelens.refresh({ bufnr = bufnr }) end,
           })
         end
       end
 
-      require('mason-lspconfig').setup({ automatic_installation = true })
+      require("mason-lspconfig").setup({ automatic_installation = true })
 
-      vim.api.nvim_create_autocmd('LspAttach', {
+      vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args) on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf) end,
       })
 
-      local register_capability = vim.lsp.handlers['client/registerCapability']
+      local register_capability = vim.lsp.handlers["client/registerCapability"]
 
-      vim.lsp.handlers['client/registerCapability'] = function(err, res, ctx)
+      vim.lsp.handlers["client/registerCapability"] = function(err, res, ctx)
         local ret = register_capability(err, res, ctx)
         local client_id = ctx.client_id
         local client = vim.lsp.get_client_by_id(client_id)
@@ -98,10 +98,10 @@ return {
       vim.diagnostic.config(vim.deepcopy(lsp_opts.diagnostics))
 
       local capabilities = vim.tbl_deep_extend(
-        'force',
+        "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        require('cmp_nvim_lsp').default_capabilities()
+        require("cmp_nvim_lsp").default_capabilities()
       )
       capabilities.textDocument.foldingRange = {
         dynamicRegistration = false,
@@ -109,55 +109,55 @@ return {
       }
 
       for server, opts in pairs(lsp_opts.servers) do
-        opts = vim.tbl_deep_extend('force', {
+        opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
           single_file_support = true,
         }, opts)
-        require('lspconfig')[server].setup(opts)
+        require("lspconfig")[server].setup(opts)
       end
     end,
     dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
+      "hrsh7th/cmp-nvim-lsp",
       {
-        'folke/neodev.nvim',
+        "folke/neodev.nvim",
         opts = {},
       },
       {
-        'p00f/clangd_extensions.nvim',
+        "p00f/clangd_extensions.nvim",
         opts = {
           ast = {
             role_icons = {
-              type = '',
-              declaration = '',
-              expression = '',
-              specifier = '',
-              statement = '',
-              ['template argument'] = '',
+              type = "",
+              declaration = "",
+              expression = "",
+              specifier = "",
+              statement = "",
+              ["template argument"] = "",
             },
             kind_icons = {
-              Compound = '',
-              Recovery = '',
-              TranslationUnit = '',
-              PackExpansion = '',
-              TemplateTypeParm = '',
-              TemplateTemplateParm = '',
-              TemplateParamObject = '',
+              Compound = "",
+              Recovery = "",
+              TranslationUnit = "",
+              PackExpansion = "",
+              TemplateTypeParm = "",
+              TemplateTemplateParm = "",
+              TemplateParamObject = "",
             },
           },
         },
       },
       {
-        'williamboman/mason-lspconfig.nvim',
-        dependencies = 'williamboman/mason.nvim',
+        "williamboman/mason-lspconfig.nvim",
+        dependencies = "williamboman/mason.nvim",
       },
       {
-        'folke/neoconf.nvim',
+        "folke/neoconf.nvim",
         opts = {},
       },
     },
     opts = {
       diagnostics = {
-        virtual_text = { spacing = 4, source = 'if_many' },
+        virtual_text = { spacing = 4, source = "if_many" },
         severity_sort = true,
         signs = false,
         update_in_insert = true,
@@ -167,27 +167,27 @@ return {
         neocmake = {},
         clangd = {
           cmd = {
-            'clangd',
-            '--header-insertion=never',
-            '--include-cleaner-stdlib',
+            "clangd",
+            "--header-insertion=never",
+            "--include-cleaner-stdlib",
           },
-          on_new_config = function(new_config, _) require('cmake-tools').clangd_on_new_config(new_config) end,
-          keys = { { '<Leader>cs', '<Cmd>ClangdSwitchSourceHeader<CR>', desc = 'Switch between source and header' } },
+          on_new_config = function(new_config, _) require("cmake-tools").clangd_on_new_config(new_config) end,
+          keys = { { "<Leader>cs", "<Cmd>ClangdSwitchSourceHeader<CR>", desc = "Switch between source and header" } },
         },
         lua_ls = {
           settings = {
             Lua = {
-              completion = { callSnippet = 'Replace', autoRequire = false },
+              completion = { callSnippet = "Replace", autoRequire = false },
               telemetry = { enable = false },
               workspace = { checkThirdParty = false },
-              doc = { privateName = { '^_' } },
+              doc = { privateName = { "^_" } },
               hint = {
                 enable = true,
                 setType = false,
                 paramType = true,
-                paramName = 'Disable',
-                semicolon = 'Disable',
-                arrayIndex = 'Disable',
+                paramName = "Disable",
+                semicolon = "Disable",
+                arrayIndex = "Disable",
               },
             },
           },
@@ -196,50 +196,50 @@ return {
     },
   },
   {
-    'nvimdev/lspsaga.nvim',
-    event = 'LspAttach',
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
     keys = {
-      { '<Leader>cd', '<Cmd>Lspsaga show_line_diagnostics<CR>', desc = 'Show diagnostics' },
-      { ']d', '<Cmd>Lspsaga diagnostic_jump_next<CR>', desc = 'Next diagnostic' },
-      { '[d', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', desc = 'Previous diagnostic' },
+      { "<Leader>cd", "<Cmd>Lspsaga show_line_diagnostics<CR>", desc = "Show diagnostics" },
+      { "]d", "<Cmd>Lspsaga diagnostic_jump_next<CR>", desc = "Next diagnostic" },
+      { "[d", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", desc = "Previous diagnostic" },
       {
-        ']w',
-        function() require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.WARN }) end,
-        desc = 'Next warning',
+        "]w",
+        function() require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.WARN }) end,
+        desc = "Next warning",
       },
       {
-        '[w',
-        function() require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.WARN }) end,
-        desc = 'Previous warning',
+        "[w",
+        function() require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.WARN }) end,
+        desc = "Previous warning",
       },
       {
-        ']e',
-        function() require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR }) end,
-        desc = 'Next error',
+        "]e",
+        function() require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR }) end,
+        desc = "Next error",
       },
       {
-        '[e',
-        function() require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR }) end,
-        desc = 'Previous error',
+        "[e",
+        function() require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR }) end,
+        desc = "Previous error",
       },
-      { '<Leader>cn', '<Cmd>Lspsaga finder<CR>', desc = 'LSP nagivation pane' },
+      { "<Leader>cn", "<Cmd>Lspsaga finder<CR>", desc = "LSP nagivation pane" },
     },
     opts = {
       code_action = { extend_gitsigns = false, show_server_name = true },
       lightbulb = { sign = false },
-      ui = { winblend = require('user').ui.blend },
+      ui = { winblend = require("user").ui.blend },
       beacon = { enable = false },
     },
   },
   {
-    'williamboman/mason.nvim',
-    keys = { { '<Leader>cm', '<Cmd>Mason<CR>', desc = 'Mason' } },
-    opts = { ensure_installed = { 'stylua', 'gersemi' } },
+    "williamboman/mason.nvim",
+    keys = { { "<Leader>cm", "<Cmd>Mason<CR>", desc = "Mason" } },
+    opts = { ensure_installed = { "stylua", "gersemi" } },
   },
   {
-    'hrsh7th/nvim-cmp',
+    "hrsh7th/nvim-cmp",
     config = function()
-      local cmp = require('cmp')
+      local cmp = require("cmp")
 
       cmp.setup({
         window = { completion = { side_padding = 0 } },
@@ -247,24 +247,24 @@ return {
           expand = function(item) vim.snippet.expand(item.body) end,
         },
         formatting = {
-          fields = { 'kind', 'abbr', 'menu' },
+          fields = { "kind", "abbr", "menu" },
           format = function(_, item)
             item.abbr = vim.trim(item.abbr)
             if #item.abbr > 50 then
-              item.abbr = item.abbr:sub(1, 50) .. '…'
+              item.abbr = item.abbr:sub(1, 50) .. "…"
             end
             item.menu = item.kind
-            item.kind = ' ' .. require('utils.ui').icons.lspkind[item.kind] .. ' '
+            item.kind = " " .. require("utils.ui").icons.lspkind[item.kind] .. " "
             return item
           end,
           expandable_indicator = true,
         },
         mapping = cmp.mapping.preset.insert({
-          ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<Tab>'] = cmp.mapping(function(fallback)
+          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               if not cmp.get_selected_entry() then
                 cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
@@ -276,8 +276,8 @@ return {
             else
               fallback()
             end
-          end, { 'i', 's' }),
-          ['<S-Tab>'] = cmp.mapping(function(fallback)
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
             elseif vim.snippet.active({ direction = -1 }) then
@@ -285,44 +285,44 @@ return {
             else
               fallback()
             end
-          end, { 'i', 's' }),
+          end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'snippets' },
+          { name = "nvim_lsp" },
+          { name = "snippets" },
         }, {
-          { name = 'buffer' },
-          { name = 'path' },
+          { name = "buffer" },
+          { name = "path" },
         }),
       })
 
       local cmdline_mapping = cmp.mapping.preset.cmdline({
-        ['<C-n>'] = cmp.config.disable,
-        ['<C-p>'] = cmp.config.disable,
+        ["<C-n>"] = cmp.config.disable,
+        ["<C-p>"] = cmp.config.disable,
       })
 
-      cmp.setup.cmdline(':', {
+      cmp.setup.cmdline(":", {
         mapping = cmdline_mapping,
         sources = cmp.config.sources({
-          { name = 'cmdline' },
-          { name = 'path' },
+          { name = "cmdline" },
+          { name = "path" },
         }),
       })
 
-      cmp.setup.cmdline({ '/', '?' }, {
+      cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmdline_mapping,
-        sources = cmp.config.sources({ { name = 'buffer' } }),
+        sources = cmp.config.sources({ { name = "buffer" } }),
       })
     end,
     dependencies = {
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/cmp-path',
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-path",
     },
     event = events.enter_insert,
   },
   {
-    'lewis6991/gitsigns.nvim',
+    "lewis6991/gitsigns.nvim",
     event = events.enter_buffer,
     opts = {
       on_attach = function(buffer)
@@ -330,141 +330,141 @@ return {
           opts.buffer = buffer
           map(opts)
         end
-        map_local({ '<Leader>gp', '<Cmd>Gitsigns preview_hunk<CR>', desc = 'Preview hunk' })
-        map_local({ '<Leader>gr', '<Cmd>Gitsigns reset_hunk<CR>', desc = 'Reset hunk' })
-        map_local({ '<Leader>gb', '<Cmd>Gitsigns blame_line<CR>', desc = 'Blame this line' })
-        map_local({ '<Leader>gd', '<Cmd>Gitsigns diffthis<CR>', desc = 'Diffthis' })
-        map_local({ '<Leader>ub', '<Cmd>Gitsigns toggle_current_line_blame<CR>', desc = 'Toggle git blame' })
+        map_local({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview hunk" })
+        map_local({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk" })
+        map_local({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
+        map_local({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
+        map_local({ "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" })
         map_local({
-          ']h',
-          function() require('gitsigns').nav_hunk('next', { navigation_message = false }) end,
-          desc = 'Next git hunk',
+          "]h",
+          function() require("gitsigns").nav_hunk("next", { navigation_message = false }) end,
+          desc = "Next git hunk",
         })
         map_local({
-          '[h',
-          function() require('gitsigns').nav_hunk('prev', { navigation_message = false }) end,
-          desc = 'Previous git hunk',
+          "[h",
+          function() require("gitsigns").nav_hunk("prev", { navigation_message = false }) end,
+          desc = "Previous git hunk",
         })
         map_local({
-          ']H',
-          function() require('gitsigns').nav_hunk('last', { navigation_message = false }) end,
-          desc = 'Last git hunk',
+          "]H",
+          function() require("gitsigns").nav_hunk("last", { navigation_message = false }) end,
+          desc = "Last git hunk",
         })
         map_local({
-          '[H',
-          function() require('gitsigns').nav_hunk('first', { navigation_message = false }) end,
-          desc = 'First git hunk',
+          "[H",
+          function() require("gitsigns").nav_hunk("first", { navigation_message = false }) end,
+          desc = "First git hunk",
         })
-        map_local({ 'ih', ':<C-U>Gitsigns select_hunk<CR>', mode = { 'o', 'x' }, desc = 'Git hunk' })
+        map_local({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
       end,
     },
   },
   {
-    'akinsho/toggleterm.nvim',
-    cmd = 'TermExec',
-    keys = { { '<M-=>', desc = 'Toggle terminal' } },
+    "akinsho/toggleterm.nvim",
+    cmd = "TermExec",
+    keys = { { "<M-=>", desc = "Toggle terminal" } },
     opts = {
-      open_mapping = '<M-=>',
+      open_mapping = "<M-=>",
       size = 10,
-      float_opts = { title_pos = 'center', border = 'curved' },
+      float_opts = { title_pos = "center", border = "curved" },
     },
   },
   {
-    'mfussenegger/nvim-dap',
+    "mfussenegger/nvim-dap",
     config = function()
-      map({ '<Leader>dv', '<Cmd>DapStepOver<CR>', desc = 'Step over' })
-      map({ '<Leader>di', '<Cmd>DapStepInto<CR>', desc = 'Step into' })
-      map({ '<Leader>do', '<Cmd>DapStepOut<CR>', desc = 'Step out' })
+      map({ "<Leader>dv", "<Cmd>DapStepOver<CR>", desc = "Step over" })
+      map({ "<Leader>di", "<Cmd>DapStepInto<CR>", desc = "Step into" })
+      map({ "<Leader>do", "<Cmd>DapStepOut<CR>", desc = "Step out" })
       map({
-        '<Leader>dt',
-        function() require('dap').terminate() end,
-        desc = 'Terminate',
+        "<Leader>dt",
+        function() require("dap").terminate() end,
+        desc = "Terminate",
       })
     end,
     dependencies = {
       {
-        'rcarriga/nvim-dap-ui',
+        "rcarriga/nvim-dap-ui",
         config = function()
-          local dap, dapui = require('dap'), require('dapui')
+          local dap, dapui = require("dap"), require("dapui")
           dapui.setup()
-          dap.listeners.after.event_initialized['dapui_config'] = function()
+          dap.listeners.after.event_initialized["dapui_config"] = function()
             vim.diagnostic.hide()
             vim.lsp.inlay_hint.enable(false)
             dapui.open()
           end
-          dap.listeners.before.event_terminated['dapui_config'] = function()
+          dap.listeners.before.event_terminated["dapui_config"] = function()
             vim.diagnostic.show()
             vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
-          dap.listeners.before.event_exited['dapui_config'] = function()
+          dap.listeners.before.event_exited["dapui_config"] = function()
             vim.diagnostic.show()
             vim.lsp.inlay_hint.enable(true)
             dapui.close()
           end
           map({
-            '<Leader>de',
-            function() require('dapui').eval() end,
-            desc = 'Eval',
-            mode = { 'n', 'v' },
+            "<Leader>de",
+            function() require("dapui").eval() end,
+            desc = "Eval",
+            mode = { "n", "v" },
           })
         end,
-        dependencies = 'nvim-neotest/nvim-nio',
+        dependencies = "nvim-neotest/nvim-nio",
       },
       {
-        'theHamsta/nvim-dap-virtual-text',
+        "theHamsta/nvim-dap-virtual-text",
         opts = {},
       },
       {
-        'jay-babu/mason-nvim-dap.nvim',
-        dependencies = 'williamboman/mason.nvim',
+        "jay-babu/mason-nvim-dap.nvim",
+        dependencies = "williamboman/mason.nvim",
         opts = { automatic_installation = true, handlers = {} },
       },
       {
-        'jbyuki/one-small-step-for-vimkind',
+        "jbyuki/one-small-step-for-vimkind",
         config = function()
-          local dap = require('dap')
+          local dap = require("dap")
           dap.adapters.nlua = function(callback, config)
             callback({
-              type = 'server',
-              host = config.host or '127.0.0.1',
+              type = "server",
+              host = config.host or "127.0.0.1",
               port = config.port or 8086,
             })
           end
           dap.configurations.lua = {
             {
-              type = 'nlua',
-              request = 'attach',
-              name = 'Attach to running Neovim instance (port = 8086)',
+              type = "nlua",
+              request = "attach",
+              name = "Attach to running Neovim instance (port = 8086)",
               port = 8086,
             },
           }
         end,
         keys = {
           {
-            '<Leader>dl',
-            function() require('osv').launch({ port = 8086 }) end,
-            desc = 'Launch DAP server',
+            "<Leader>dl",
+            function() require("osv").launch({ port = 8086 }) end,
+            desc = "Launch DAP server",
           },
         },
       },
     },
     keys = {
-      { '<Leader>db', '<Cmd>DapToggleBreakpoint<CR>', desc = 'Toggle breakpoint' },
-      { '<Leader>dc', '<Cmd>DapContinue<CR>', desc = 'Continue' },
+      { "<Leader>db", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
+      { "<Leader>dc", "<Cmd>DapContinue<CR>", desc = "Continue" },
     },
   },
   {
-    'folke/trouble.nvim',
-    cmd = 'TroubleToggle',
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
     keys = {
-      { '<Leader>xx', '<Cmd>TroubleToggle document_diagnostics<CR>', desc = 'Document diagnostics' },
-      { '<Leader>xX', '<Cmd>TroubleToggle workspace_diagnostics<CR>', desc = 'Workspace Diagnostics' },
+      { "<Leader>xx", "<Cmd>TroubleToggle document_diagnostics<CR>", desc = "Document diagnostics" },
+      { "<Leader>xX", "<Cmd>TroubleToggle workspace_diagnostics<CR>", desc = "Workspace Diagnostics" },
       {
-        '[q',
+        "[q",
         function()
-          if require('trouble').is_open() then
-            require('trouble').previous({ skip_groups = true, jump = true })
+          if require("trouble").is_open() then
+            require("trouble").previous({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cprev)
             if not ok then
@@ -472,13 +472,13 @@ return {
             end
           end
         end,
-        desc = 'Previous trouble/quickfix item',
+        desc = "Previous trouble/quickfix item",
       },
       {
-        ']q',
+        "]q",
         function()
-          if require('trouble').is_open() then
-            require('trouble').next({ skip_groups = true, jump = true })
+          if require("trouble").is_open() then
+            require("trouble").next({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cnext)
             if not ok then
@@ -486,13 +486,13 @@ return {
             end
           end
         end,
-        desc = 'Next trouble/quickfix item',
+        desc = "Next trouble/quickfix item",
       },
     },
   },
   {
-    'DNLHC/glance.nvim',
-    cmd = 'Glance',
+    "DNLHC/glance.nvim",
+    cmd = "Glance",
     opts = {
       hooks = {
         before_open = function(results, open, jump, _)
@@ -506,38 +506,38 @@ return {
     },
   },
   {
-    'stevearc/conform.nvim',
+    "stevearc/conform.nvim",
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
     keys = {
       {
-        '<Leader>cf',
-        function() require('conform').format({ lsp_fallback = true, quiet = true }) end,
-        desc = 'Format document',
-        mode = { 'n', 'v' },
+        "<Leader>cf",
+        function() require("conform").format({ lsp_fallback = true, quiet = true }) end,
+        desc = "Format document",
+        mode = { "n", "v" },
       },
     },
     opts = {
       formatters_by_ft = {
-        fish = { 'fish_indent' },
-        lua = { 'stylua' },
+        fish = { "fish_indent" },
+        lua = { "stylua" },
       },
     },
   },
   {
-    'mfussenegger/nvim-lint',
+    "mfussenegger/nvim-lint",
     event = events.enter_buffer,
     opts = {
-      events = { 'BufWritePost', 'BufReadPost' },
-      linters_by_ft = { fish = { 'fish' } },
+      events = { "BufWritePost", "BufReadPost" },
+      linters_by_ft = { fish = { "fish" } },
       linters = {},
     },
     config = function(_, opts)
       local M = {}
 
-      local lint = require('lint')
+      local lint = require("lint")
       for name, linter in pairs(opts.linters) do
-        if type(linter) == 'table' and type(lint.linters[name]) == 'table' then
-          lint.linters[name] = vim.tbl_deep_extend('force', lint.linters[name], linter)
+        if type(linter) == "table" and type(lint.linters[name]) == "table" then
+          lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
         else
           lint.linters[name] = linter
         end
@@ -559,17 +559,17 @@ return {
         local names = lint._resolve_linter_by_ft(vim.bo.filetype)
         names = vim.list_extend({}, names)
         if #names == 0 then
-          vim.list_extend(names, lint.linters_by_ft['_'] or {})
+          vim.list_extend(names, lint.linters_by_ft["_"] or {})
         end
-        vim.list_extend(names, lint.linters_by_ft['*'] or {})
+        vim.list_extend(names, lint.linters_by_ft["*"] or {})
         local ctx = { filename = vim.api.nvim_buf_get_name(0) }
-        ctx.dirname = vim.fn.fnamemodify(ctx.filename, ':h')
+        ctx.dirname = vim.fn.fnamemodify(ctx.filename, ":h")
         names = vim.tbl_filter(function(name)
           local linter = lint.linters[name]
           if not linter then
-            vim.notify('Linter not found: ' .. name, vim.log.levels.WARN, { title = 'nvim-lint' })
+            vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
           end
-          return linter and not (type(linter) == 'table' and linter.condition and not linter.condition(ctx))
+          return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
         if #names > 0 then
           lint.try_lint(names)
@@ -577,7 +577,7 @@ return {
       end
 
       vim.api.nvim_create_autocmd(opts.events, {
-        group = vim.api.nvim_create_augroup('nvim-lint', { clear = true }),
+        group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
         callback = M.debounce(100, M.lint),
       })
     end,

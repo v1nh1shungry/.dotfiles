@@ -1,37 +1,37 @@
-local augroup = function(name) return vim.api.nvim_create_augroup('dotfiles_' .. name, { clear = true }) end
+local augroup = function(name) return vim.api.nvim_create_augroup("dotfiles_" .. name, { clear = true }) end
 
-vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   callback = function()
-    if vim.o.buftype ~= 'nofile' then
-      vim.cmd('checktime')
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
     end
   end,
-  group = augroup('checktime'),
+  group = augroup("checktime"),
 })
 
-vim.api.nvim_create_autocmd('TextYankPost', {
+vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.highlight.on_yank({ timeout = 500 }) end,
-  group = augroup('highlight_yank'),
+  group = augroup("highlight_yank"),
 })
 
-vim.api.nvim_create_autocmd('FileType', {
+vim.api.nvim_create_autocmd("FileType", {
   callback = function(arg)
     vim.wo.number = false
     vim.wo.relativenumber = false
     vim.bo[arg.buf].buflisted = false
     vim.wo.foldenable = false
-    vim.wo.cc = ''
-    vim.wo.stc = ''
+    vim.wo.cc = ""
+    vim.wo.stc = ""
 
-    require('utils.keymap')({ 'q', '<Cmd>close<CR>', desc = 'Close', buffer = arg.buf })
+    require("utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = arg.buf })
   end,
-  group = augroup('no_fancy_ui'),
-  pattern = require('utils.ui').excluded_filetypes,
+  group = augroup("no_fancy_ui"),
+  pattern = require("utils.ui").excluded_filetypes,
 })
 
-vim.api.nvim_create_autocmd('BufReadPost', {
+vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(event)
-    local exclude = { 'gitcommit', 'man' }
+    local exclude = { "gitcommit", "man" }
     local buf = event.buf
     if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].dotfiles_last_loc then
       return
@@ -43,25 +43,25 @@ vim.api.nvim_create_autocmd('BufReadPost', {
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
   end,
-  group = augroup('last_loc'),
+  group = augroup("last_loc"),
 })
 
-vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   callback = function(event)
-    if event.match:match('^%w%w+:[\\/][\\/]') then
+    if event.match:match("^%w%w+:[\\/][\\/]") then
       return
     end
     local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
+    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
-  group = augroup('auto_create_dir'),
+  group = augroup("auto_create_dir"),
 })
 
-vim.api.nvim_create_autocmd({ 'VimResized' }, {
+vim.api.nvim_create_autocmd({ "VimResized" }, {
   callback = function()
     local current_tab = vim.fn.tabpagenr()
-    vim.cmd('tabdo wincmd =')
-    vim.cmd('tabnext ' .. current_tab)
+    vim.cmd("tabdo wincmd =")
+    vim.cmd("tabnext " .. current_tab)
   end,
-  group = augroup('resize_splits'),
+  group = augroup("resize_splits"),
 })

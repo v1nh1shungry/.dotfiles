@@ -1,106 +1,106 @@
-local events = require('utils.events')
-local map = require('utils.keymap')
+local events = require("utils.events")
+local map = require("utils.keymap")
 
 return {
   {
-    'nvim-telescope/telescope.nvim',
-    cmd = 'Telescope',
-    dependencies = 'nvim-lua/plenary.nvim',
+    "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+    dependencies = "nvim-lua/plenary.nvim",
     keys = {
-      { '<Leader>h', '<Cmd>Telescope help_tags<CR>', desc = 'Help pages' },
-      { '<Leader>ff', '<Cmd>Telescope find_files<CR>', desc = 'Find files' },
-      { '<Leader>fr', '<Cmd>Telescope oldfiles cwd_only=true<CR>', desc = 'Recent files' },
-      { '<Leader>/', '<Cmd>Telescope live_grep<CR>', desc = 'Live grep' },
-      { '<Leader>sa', '<Cmd>Telescope autocommands<CR>', desc = 'Autocommands' },
-      { '<Leader>sk', '<Cmd>Telescope keymaps<CR>', desc = 'Keymaps' },
-      { '<Leader>s,', '<Cmd>Telescope resume<CR>', desc = 'Last search' },
-      { '<Leader>sh', '<Cmd>Telescope highlights<CR>', desc = 'Highlight groups' },
-      { '<Leader>sm', '<Cmd>Telescope man_pages<CR>', desc = 'Manpages' },
+      { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
+      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
+      { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
+      { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
+      { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
+      { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
+      { "<Leader>sh", "<Cmd>Telescope highlights<CR>", desc = "Highlight groups" },
+      { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
     },
     opts = {
       defaults = {
-        prompt_prefix = '🔎 ',
-        selection_caret = '➤ ',
-        layout_strategy = 'bottom_pane',
+        prompt_prefix = "🔎 ",
+        selection_caret = "➤ ",
+        layout_strategy = "bottom_pane",
         layout_config = {
           bottom_pane = {
             height = 0.4,
             preview_cutoff = 100,
-            prompt_position = 'bottom',
+            prompt_position = "bottom",
           },
         },
       },
     },
   },
   {
-    'krady21/compiler-explorer.nvim',
-    cmd = { 'CECompile', 'CECompileLive' },
-    dependencies = 'stevearc/dressing.nvim',
+    "krady21/compiler-explorer.nvim",
+    cmd = { "CECompile", "CECompileLive" },
+    dependencies = "stevearc/dressing.nvim",
   },
   {
-    'danymat/neogen',
-    opts = { snippet_engine = 'nvim' },
-    keys = { { '<Leader>cg', '<Cmd>Neogen<CR>', desc = 'Generate document comment' } },
+    "danymat/neogen",
+    opts = { snippet_engine = "nvim" },
+    keys = { { "<Leader>cg", "<Cmd>Neogen<CR>", desc = "Generate document comment" } },
   },
   {
-    'echasnovski/mini.align',
+    "echasnovski/mini.align",
     keys = {
-      { 'ga', mode = { 'n', 'x' }, desc = 'Align' },
-      { 'gA', mode = { 'n', 'x' }, desc = 'Align with preview' },
+      { "ga", mode = { "n", "x" }, desc = "Align" },
+      { "gA", mode = { "n", "x" }, desc = "Align with preview" },
     },
     opts = {},
   },
   {
-    'cshuaimin/ssr.nvim',
+    "cshuaimin/ssr.nvim",
     keys = {
       {
-        '<Leader>sr',
-        function() require('ssr').open() end,
-        mode = { 'n', 'x' },
-        desc = 'Structural replace',
+        "<Leader>sr",
+        function() require("ssr").open() end,
+        mode = { "n", "x" },
+        desc = "Structural replace",
       },
     },
   },
   {
-    'akinsho/git-conflict.nvim',
+    "akinsho/git-conflict.nvim",
     config = function(_, opts)
-      require('git-conflict').setup(opts)
-      vim.api.nvim_create_autocmd('User', {
+      require("git-conflict").setup(opts)
+      vim.api.nvim_create_autocmd("User", {
         callback = function(args)
           local map_local = function(key)
             key.buffer = args.buf
             map(key)
           end
-          map_local({ '<Leader>gxo', '<Plug>(git-conflict-ours)', desc = 'Choose ours' })
-          map_local({ '<Leader>gxt', '<Plug>(git-conflict-theirs)', desc = 'Choose theirs' })
-          map_local({ '<Leader>gxb', '<Plug>(git-conflict-both)', desc = 'Choose both' })
-          map_local({ '<Leader>gx0', '<Plug>(git-conflict-none)', desc = 'Choose none' })
+          map_local({ "<Leader>gxo", "<Plug>(git-conflict-ours)", desc = "Choose ours" })
+          map_local({ "<Leader>gxt", "<Plug>(git-conflict-theirs)", desc = "Choose theirs" })
+          map_local({ "<Leader>gxb", "<Plug>(git-conflict-both)", desc = "Choose both" })
+          map_local({ "<Leader>gx0", "<Plug>(git-conflict-none)", desc = "Choose none" })
         end,
-        pattern = 'GitConflictDetected',
+        pattern = "GitConflictDetected",
       })
     end,
     event = events.enter_buffer,
     opts = { default_mappings = false },
   },
   {
-    'sindrets/diffview.nvim',
-    cmd = { 'DiffviewFileHistory', 'DiffviewOpen' },
-    keys = { { '<Leader>gD', '<Cmd>DiffviewOpen<CR>', desc = 'Open git diff pane' } },
+    "sindrets/diffview.nvim",
+    cmd = { "DiffviewFileHistory", "DiffviewOpen" },
+    keys = { { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" } },
   },
   {
-    'Civitasv/cmake-tools.nvim',
-    ft = 'cmake',
+    "Civitasv/cmake-tools.nvim",
+    ft = "cmake",
     init = function()
       local loaded = false
       local function check()
         local cwd = vim.uv.cwd()
-        if vim.fn.filereadable(cwd .. '/CMakeLists.txt') == 1 then
-          require('lazy').load({ plugins = { 'cmake-tools.nvim' } })
+        if vim.fn.filereadable(cwd .. "/CMakeLists.txt") == 1 then
+          require("lazy").load({ plugins = { "cmake-tools.nvim" } })
           loaded = true
         end
       end
       check()
-      vim.api.nvim_create_autocmd('DirChanged', {
+      vim.api.nvim_create_autocmd("DirChanged", {
         callback = function()
           if not loaded then
             check()
@@ -109,64 +109,64 @@ return {
       })
     end,
     keys = {
-      { '<Leader>mg', '<Cmd>CMakeGenerate<CR>', desc = 'Configure' },
-      { '<Leader>mb', '<Cmd>CMakeBuild<CR>', desc = 'Build' },
-      { '<Leader>mr', '<Cmd>CMakeRun<CR>', desc = 'Run executable' },
-      { '<Leader>md', '<Cmd>CMakeDebug<CR>', desc = 'Debug' },
-      { '<Leader>ma', ':CMakeLaunchArgs ', desc = 'Set launch arguments' },
-      { '<Leader>ms', '<Cmd>CMakeTargetSettings<CR>', desc = 'Summary' },
-      { '<Leader>mc', '<Cmd>CMakeClean<CR>', desc = 'Clean' },
+      { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
+      { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },
+      { "<Leader>mr", "<Cmd>CMakeRun<CR>", desc = "Run executable" },
+      { "<Leader>md", "<Cmd>CMakeDebug<CR>", desc = "Debug" },
+      { "<Leader>ma", ":CMakeLaunchArgs ", desc = "Set launch arguments" },
+      { "<Leader>ms", "<Cmd>CMakeTargetSettings<CR>", desc = "Summary" },
+      { "<Leader>mc", "<Cmd>CMakeClean<CR>", desc = "Clean" },
     },
     opts = {
       cmake_generate_options = {
-        '-G',
-        'Ninja',
-        '-DCMAKE_EXPORT_COMPILE_COMMANDS=On',
-        '-DCMAKE_CXX_COMPILER_LAUNCHER=ccache',
+        "-G",
+        "Ninja",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=On",
+        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
       },
-      cmake_build_directory = 'build',
+      cmake_build_directory = "build",
       cmake_soft_link_compile_commands = false,
-      cmake_runner = { name = 'toggleterm', opts = { direction = 'horizontal' } },
+      cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
     },
   },
   {
-    'johmsalas/text-case.nvim',
-    dependencies = 'nvim-telescope/telescope.nvim',
-    keys = '<Leader>cc',
-    opts = { prefix = '<Leader>cc' },
+    "johmsalas/text-case.nvim",
+    dependencies = "nvim-telescope/telescope.nvim",
+    keys = "<Leader>cc",
+    opts = { prefix = "<Leader>cc" },
   },
   {
-    'folke/flash.nvim',
+    "folke/flash.nvim",
     keys = {
-      '/',
-      '?',
-      'f',
-      'F',
-      't',
-      'T',
-      ',',
-      ';',
+      "/",
+      "?",
+      "f",
+      "F",
+      "t",
+      "T",
+      ",",
+      ";",
       {
-        'gs',
-        function() require('flash').jump() end,
-        desc = 'Flash',
+        "gs",
+        function() require("flash").jump() end,
+        desc = "Flash",
       },
       {
-        'gt',
-        function() require('flash').treesitter() end,
-        desc = 'Flash Treesitter',
+        "gt",
+        function() require("flash").treesitter() end,
+        desc = "Flash Treesitter",
       },
       {
-        'r',
-        function() require('flash').remote() end,
-        mode = 'o',
-        desc = 'Remote Flash',
+        "r",
+        function() require("flash").remote() end,
+        mode = "o",
+        desc = "Remote Flash",
       },
       {
-        'R',
-        function() require('flash').treesitter_search() end,
-        mode = { 'o', 'x' },
-        desc = 'Treesitter search',
+        "R",
+        function() require("flash").treesitter_search() end,
+        mode = { "o", "x" },
+        desc = "Treesitter search",
       },
     },
     opts = {
@@ -175,177 +175,177 @@ return {
     },
   },
   {
-    'nvim-pack/nvim-spectre',
-    dependencies = 'nvim-lua/plenary.nvim',
-    keys = { { '<Leader>sd', '<Cmd>Spectre<CR>', desc = 'Spectre' } },
-    opts = { open_cmd = 'noswapfile vnew' },
+    "nvim-pack/nvim-spectre",
+    dependencies = "nvim-lua/plenary.nvim",
+    keys = { { "<Leader>sd", "<Cmd>Spectre<CR>", desc = "Spectre" } },
+    opts = { open_cmd = "noswapfile vnew" },
   },
   {
-    'HakonHarnes/img-clip.nvim',
-    keys = { { '<Leader>fi', '<Cmd>PasteImage<CR>', desc = 'Paste image from clipboard' } },
+    "HakonHarnes/img-clip.nvim",
+    keys = { { "<Leader>fi", "<Cmd>PasteImage<CR>", desc = "Paste image from clipboard" } },
   },
   {
-    'kawre/leetcode.nvim',
-    build = ':TSUpdate html',
+    "kawre/leetcode.nvim",
+    build = ":TSUpdate html",
     dependencies = {
-      'nvim-telescope/telescope.nvim',
-      'MunifTanjim/nui.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'rcarriga/nvim-notify',
-      'nvim-tree/nvim-web-devicons',
+      "nvim-telescope/telescope.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "rcarriga/nvim-notify",
+      "nvim-tree/nvim-web-devicons",
     },
-    lazy = vim.fn.argv()[1] ~= 'leetcode.nvim',
+    lazy = vim.fn.argv()[1] ~= "leetcode.nvim",
     opts = {
       cn = { enabled = true },
-      injector = { cpp = { before = { '#include <bits/stdc++.h>', 'using namespace std;' } } },
+      injector = { cpp = { before = { "#include <bits/stdc++.h>", "using namespace std;" } } },
     },
   },
   {
-    'gabrielpoca/replacer.nvim',
+    "gabrielpoca/replacer.nvim",
     init = function()
-      vim.api.nvim_create_autocmd('FileType', {
+      vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)
           map({
-            '<Leader>xr',
-            function() require('replacer').run() end,
-            desc = 'Quickfix replacer',
+            "<Leader>xr",
+            function() require("replacer").run() end,
+            desc = "Quickfix replacer",
             buffer = args.buf,
           })
         end,
-        pattern = 'qf',
+        pattern = "qf",
       })
     end,
-    ft = 'qf',
+    ft = "qf",
   },
   {
-    'ThePrimeagen/refactoring.nvim',
-    cmd = 'Refactor',
+    "ThePrimeagen/refactoring.nvim",
+    cmd = "Refactor",
     keys = {
       {
-        '<Leader>sR',
-        function() require('refactoring').select_refactor() end,
-        desc = 'Refactoring',
-        mode = { 'n', 'x' },
+        "<Leader>sR",
+        function() require("refactoring").select_refactor() end,
+        desc = "Refactoring",
+        mode = { "n", "x" },
       },
     },
     opts = {},
   },
   {
-    'Myzel394/jsonfly.nvim',
+    "Myzel394/jsonfly.nvim",
     config = function()
-      require('telescope').load_extension('jsonfly')
-      vim.api.nvim_create_autocmd('FileType', {
+      require("telescope").load_extension("jsonfly")
+      vim.api.nvim_create_autocmd("FileType", {
         callback = function(args)
           map({
-            '<Leader>sj',
-            '<Cmd>Telescope jsonfly<CR>',
-            desc = 'Fly me to JSON',
+            "<Leader>sj",
+            "<Cmd>Telescope jsonfly<CR>",
+            desc = "Fly me to JSON",
             buffer = args.buf,
           })
         end,
-        pattern = { 'json', 'jsonc' },
+        pattern = { "json", "jsonc" },
       })
     end,
-    dependencies = 'nvim-telescope/telescope.nvim',
-    ft = { 'json', 'jsonc' },
+    dependencies = "nvim-telescope/telescope.nvim",
+    ft = { "json", "jsonc" },
   },
   {
-    'dhruvasagar/vim-table-mode',
+    "dhruvasagar/vim-table-mode",
     config = function()
-      vim.g.table_mode_corner = '|'
+      vim.g.table_mode_corner = "|"
       vim.g.table_mode_disable_mappings = 1
     end,
-    keys = { { '<Leader>ft', '<Cmd>TableModeToggle<CR>', desc = 'Table mode' } },
+    keys = { { "<Leader>ft", "<Cmd>TableModeToggle<CR>", desc = "Table mode" } },
   },
   {
-    'v1nh1shungry/cppman.nvim',
+    "v1nh1shungry/cppman.nvim",
     keys = {
       {
-        '<Leader>sc',
-        function() require('cppman').search() end,
-        desc = 'Cppman',
+        "<Leader>sc",
+        function() require("cppman").search() end,
+        desc = "Cppman",
       },
     },
     opts = {},
   },
   {
-    'v1nh1shungry/biquge.nvim',
-    dependencies = 'nvim-telescope/telescope.nvim',
+    "v1nh1shungry/biquge.nvim",
+    dependencies = "nvim-telescope/telescope.nvim",
     keys = {
       {
-        '<Leader>b/',
-        function() require('biquge').search() end,
-        desc = 'Search',
+        "<Leader>b/",
+        function() require("biquge").search() end,
+        desc = "Search",
       },
       {
-        '<Leader>bb',
-        function() require('biquge').toggle() end,
-        desc = 'Toggle',
+        "<Leader>bb",
+        function() require("biquge").toggle() end,
+        desc = "Toggle",
       },
       {
-        '<Leader>bt',
-        function() require('biquge').toc() end,
-        desc = 'TOC',
+        "<Leader>bt",
+        function() require("biquge").toc() end,
+        desc = "TOC",
       },
       {
-        '<Leader>bn',
-        function() require('biquge').next_chap() end,
-        desc = 'Next chapter',
+        "<Leader>bn",
+        function() require("biquge").next_chap() end,
+        desc = "Next chapter",
       },
       {
-        '<Leader>bp',
-        function() require('biquge').prev_chap() end,
-        desc = 'Previous chapter',
+        "<Leader>bp",
+        function() require("biquge").prev_chap() end,
+        desc = "Previous chapter",
       },
       {
-        '<Leader>bs',
-        function() require('biquge').star() end,
-        desc = 'Star current book',
+        "<Leader>bs",
+        function() require("biquge").star() end,
+        desc = "Star current book",
       },
       {
-        '<Leader>bl',
-        function() require('biquge').bookshelf() end,
-        desc = 'Bookshelf',
+        "<Leader>bl",
+        function() require("biquge").bookshelf() end,
+        desc = "Bookshelf",
       },
       {
-        '<M-d>',
-        function() require('biquge').scroll(1) end,
-        desc = 'Scroll down',
+        "<M-d>",
+        function() require("biquge").scroll(1) end,
+        desc = "Scroll down",
       },
       {
-        '<M-u>',
-        function() require('biquge').scroll(-1) end,
-        desc = 'Scroll up',
+        "<M-u>",
+        function() require("biquge").scroll(-1) end,
+        desc = "Scroll up",
       },
     },
     opts = { height = 5 },
   },
   {
-    'nvim-telescope/telescope-symbols.nvim',
-    dependencies = 'nvim-telescope/telescope.nvim',
-    keys = { { '<Leader>se', '<Cmd>Telescope symbols<CR>', desc = 'Emoji' } },
+    "nvim-telescope/telescope-symbols.nvim",
+    dependencies = "nvim-telescope/telescope.nvim",
+    keys = { { "<Leader>se", "<Cmd>Telescope symbols<CR>", desc = "Emoji" } },
   },
   {
-    'v1nh1shungry/cppinsights.nvim',
-    cmd = 'CppInsights',
+    "v1nh1shungry/cppinsights.nvim",
+    cmd = "CppInsights",
     opts = {
-      standard = 'cpp2c',
+      standard = "cpp2c",
       more_transformations = {
-        ['edu-show-coroutines'] = true,
-        ['use-libcpp'] = true,
+        ["edu-show-coroutines"] = true,
+        ["use-libcpp"] = true,
       },
     },
   },
   {
-    'chrisgrieser/nvim-tinygit',
-    ft = { 'gitcommit', 'git_rebase' },
+    "chrisgrieser/nvim-tinygit",
+    ft = { "gitcommit", "git_rebase" },
     keys = {
-      { '<Leader>gc', function() require('tinygit').smartCommit() end, desc = 'Commit' },
-      { '<Leader>gP', function() require('tinygit').push() end, desc = 'Push' },
-      { '<Leader>ga', function() require('tinygit').amendNoEdit() end, desc = 'Amend' },
-      { '<Leader>gu', function() require('tinygit').undoLastCommitOrAmend() end, desc = 'Undo last commit' },
-      { '<Leader>gF', function() require('tinygit').searchFileHistory() end, desc = 'Search file history' },
-      { '<Leader>gf', function() require('tinygit').functionHistory() end, desc = 'Search function history' },
+      { "<Leader>gc", function() require("tinygit").smartCommit() end, desc = "Commit" },
+      { "<Leader>gP", function() require("tinygit").push() end, desc = "Push" },
+      { "<Leader>ga", function() require("tinygit").amendNoEdit() end, desc = "Amend" },
+      { "<Leader>gu", function() require("tinygit").undoLastCommitOrAmend() end, desc = "Undo last commit" },
+      { "<Leader>gF", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
+      { "<Leader>gf", function() require("tinygit").functionHistory() end, desc = "Search function history" },
     },
   },
 }

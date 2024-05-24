@@ -1,1 +1,1 @@
-return require('user').plugins
+return require("user").plugins

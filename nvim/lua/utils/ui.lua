@@ -2,17 +2,17 @@ local M = {}
 
 M.icons = {
   diagnostic = {
-    error = "",
-    warn = "",
-    hint = "",
-    info = "",
+    Error = "",
+    Warn = "",
+    Hint = "",
+    Info = "",
   },
   dap = {
-    breakpoint = "󰝥",
-    breakpoint_condition = "",
-    breakpoint_rejected = "",
-    log_point = "",
-    stopped = "󰁕",
+    Breakpoint = { "󰝥", "DiagnosticError" },
+    BreakpointCondition = "",
+    BreakpointRejected = { "", "DiagnosticError" },
+    LogPoint = "",
+    Stopped = { "󰁕", "DiagnosticWarn", "DapStoppedLine" },
   },
   lspkind = {
     Text = "",
@@ -74,6 +74,8 @@ M.excluded_filetypes = {
   "ssr",
   "toggleterm",
 }
+
+M.excluded_buftypes = { "nofile", "help", "quickfix", "terminal" }
 
 M.rainbow_highlight = {
   "RainbowDelimiterRed",

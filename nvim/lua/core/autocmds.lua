@@ -1,4 +1,4 @@
-local augroup = function(name) return vim.api.nvim_create_augroup("dotfiles_" .. name, { clear = true }) end
+local augroup = function(name) return vim.api.nvim_create_augroup("dotfiles_" .. name, {}) end
 
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   callback = function()
@@ -15,14 +15,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  callback = function(arg)
+  callback = function()
     vim.wo.number = false
     vim.wo.relativenumber = false
-    vim.bo[arg.buf].buflisted = false
+    vim.bo.buflisted = false
     vim.wo.foldenable = false
     vim.wo.cc = ""
     vim.wo.stc = ""
-
     require("utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = arg.buf })
   end,
   group = augroup("no_fancy_ui"),

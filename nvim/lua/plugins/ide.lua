@@ -370,55 +370,36 @@ return {
     },
   },
   {
-    "mfussenegger/nvim-dap",
+    "rcarriga/nvim-dap-ui",
     config = function()
-      map({ "<Leader>dv", "<Cmd>DapStepOver<CR>", desc = "Step over" })
-      map({ "<Leader>di", "<Cmd>DapStepInto<CR>", desc = "Step into" })
-      map({ "<Leader>do", "<Cmd>DapStepOut<CR>", desc = "Step out" })
-      map({
-        "<Leader>dt",
-        function() require("dap").terminate() end,
-        desc = "Terminate",
-      })
+      local dap, dapui = require("dap"), require("dapui")
+      local function enable_fancy_ui(enable)
+        vim.diagnostic.enable(enable)
+        vim.lsp.inlay_hint.enable(enable)
+      end
+      dapui.setup()
+      dap.listeners.after.event_initialized.dapui_config = function()
+        enable_fancy_ui(false)
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        enable_fancy_ui(true)
+        dapui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        enable_fancy_ui(true)
+        dapui.close()
+      end
     end,
     dependencies = {
+      "nvim-neotest/nvim-nio",
       {
-        "rcarriga/nvim-dap-ui",
-        config = function()
-          local dap, dapui = require("dap"), require("dapui")
-          dapui.setup()
-          dap.listeners.after.event_initialized["dapui_config"] = function()
-            vim.diagnostic.hide()
-            vim.lsp.inlay_hint.enable(false)
-            dapui.open()
-          end
-          dap.listeners.before.event_terminated["dapui_config"] = function()
-            vim.diagnostic.show()
-            vim.lsp.inlay_hint.enable(true)
-            dapui.close()
-          end
-          dap.listeners.before.event_exited["dapui_config"] = function()
-            vim.diagnostic.show()
-            vim.lsp.inlay_hint.enable(true)
-            dapui.close()
-          end
-          map({
-            "<Leader>de",
-            function() require("dapui").eval() end,
-            desc = "Eval",
-            mode = { "n", "v" },
-          })
-        end,
-        dependencies = "nvim-neotest/nvim-nio",
-      },
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {},
-      },
-      {
-        "jay-babu/mason-nvim-dap.nvim",
-        dependencies = "williamboman/mason.nvim",
-        opts = { automatic_installation = true, handlers = {} },
+        "mfussenegger/nvim-dap",
+        dependencies = {
+          "jay-babu/mason-nvim-dap.nvim",
+          dependencies = "williamboman/mason.nvim",
+          opts = { automatic_installation = true, handlers = {} },
+        },
       },
       {
         "jbyuki/one-small-step-for-vimkind",
@@ -440,18 +421,26 @@ return {
             },
           }
         end,
-        keys = {
-          {
-            "<Leader>dl",
-            function() require("osv").launch({ port = 8086 }) end,
-            desc = "Launch DAP server",
-          },
-        },
+      },
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        opts = {},
       },
     },
     keys = {
       { "<Leader>db", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
       { "<Leader>dc", "<Cmd>DapContinue<CR>", desc = "Continue" },
+      { "<Leader>d,", function() require("dap").run_last() end, "Run last" },
+      { "<Leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to cursor" },
+      { "<Leader>dn", "<Cmd>DapStepOver<CR>", desc = "Step over" },
+      { "<Leader>ds", "<Cmd>DapStepInto<CR>", desc = "Step into" },
+      { "<Leader>do", "<Cmd>DapStepOut<CR>", desc = "Step out" },
+      { "<Leader>dj", function() require("dap").down() end, desc = "Go down in current stacktrace" },
+      { "<Leader>dk", function() require("dap").up() end, desc = "Go up in current stacktrace" },
+      { "<Leader>dt", "<Cmd>DapTerminate<CR>", desc = "Terminate" },
+      { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval", mode = { "n", "v" } },
+      { "<Leader>du", function() require("dapui").toggle() end, desc = "Toggle UI" },
+      { "<Leader>dl", function() require("osv").launch({ port = 8086 }) end, desc = "Launch DAP server" },
     },
   },
   {

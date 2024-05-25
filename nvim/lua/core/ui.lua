@@ -1,45 +1,20 @@
 local icons = require("utils.ui").icons
 local config = require("user")
 
-for name, icon in pairs({
-  DiagnosticSignError = icons.diagnostic.error,
-  DiagnosticSignWarn = icons.diagnostic.warn,
-  DiagnosticSignHint = icons.diagnostic.hint,
-  DiagnosticSignInfo = icons.diagnostic.info,
-}) do
+for name, icon in pairs(icons.diagnostic) do
+  name = "DiagnosticSign" .. name
   vim.fn.sign_define(name, { texthl = name, text = icon, numhl = "" })
 end
 
-vim.fn.sign_define("DapBreakpoint", {
-  text = icons.dap.breakpoint,
-  texthl = "DiagnosticSignError",
-  linehl = "",
-  numhl = "",
-})
-vim.fn.sign_define("DapBreakpointCondition", {
-  text = icons.dap.breakpoint_condition,
-  texthl = "DiagnosticSignError",
-  linehl = "",
-  numhl = "",
-})
-vim.fn.sign_define("DapBreakpointRejected", {
-  text = icons.dap.breakpoint_rejected,
-  texthl = "DapBreakpoint",
-  linehl = "",
-  numhl = "",
-})
-vim.fn.sign_define("DapLogPoint", {
-  text = icons.dap.log_point,
-  texthl = "DiagnosticSignError",
-  linehl = "",
-  numhl = "",
-})
-vim.fn.sign_define("DapStopped", {
-  text = icons.dap.stopped,
-  texthl = "DapStopped",
-  linehl = "",
-  numhl = "",
-})
+vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+
+for name, sign in pairs(icons.dap) do
+  sign = type(sign) == "table" and sign or { sign }
+  vim.fn.sign_define(
+    "Dap" .. name,
+    { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
+  )
+end
 
 local background = config.ui.background
 if type(background) == "table" then

@@ -36,6 +36,7 @@ return {
         d = "Digit(s)",
         f = "Function",
         g = "Entire file",
+        i = "Indent",
         o = "Block, conditional, loop",
         q = "Quote `, \", '",
         t = "Tag",
@@ -62,7 +63,7 @@ return {
       "folke/which-key.nvim",
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
-        config = function(_, opts)
+        config = function()
           local move = require("nvim-treesitter.textobjects.move")
           local configs = require("nvim-treesitter.configs")
           for name, fn in pairs(move) do
@@ -81,26 +82,8 @@ return {
               end
             end
           end
-          configs.setup(opts)
         end,
         dependencies = "nvim-treesitter/nvim-treesitter",
-        opts = {
-          textobjects = {
-            swap = { enable = false },
-            move = {
-              enable = true,
-              set_jumps = true,
-              goto_next_start = {
-                ["]a"] = "@parameter.inner",
-                ["]f"] = "@function.outer",
-              },
-              goto_previous_start = {
-                ["[a"] = "@parameter.inner",
-                ["[f"] = "@function.outer",
-              },
-            },
-          },
-        },
       },
     },
     event = events.enter_buffer,
@@ -117,13 +100,47 @@ return {
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
           d = { "%f[%d]%d+" },
-          g = function()
-            local from = { line = 1, col = 1 }
-            local to = {
-              line = vim.fn.line("$"),
-              col = math.max(vim.fn.getline("$"):len(), 1),
-            }
-            return { from = from, to = to }
+          g = function(ai_type)
+            local start_line, end_line = 1, vim.fn.line("$")
+            if ai_type == "i" then
+              local first_nonblank, last_nonblank = vim.fn.nextnonblank(start_line), vim.fn.prevnonblank(end_line)
+              if first_nonblank == 0 or last_nonblank == 0 then
+                return { from = { line = start_line, col = 1 } }
+              end
+              start_line, end_line = first_nonblank, last_nonblank
+            end
+            local to_col = math.max(vim.fn.getline(end_line):len(), 1)
+            return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
+          end,
+          i = function(ai_type)
+            local spaces = (" "):rep(vim.o.tabstop)
+            local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+            local indents = {}
+            for l, line in ipairs(lines) do
+              if not line:find("^%s*$") then
+                indents[#indents + 1] = { line = l, indent = #line:gsub("\t", spaces):match("^%s*"), text = line }
+              end
+            end
+            local ret = {}
+            for i = 1, #indents do
+              if i == 1 or indents[i - 1].indent < indents[i].indent then
+                local from, to = i, i
+                for j = i + 1, #indents do
+                  if indents[j].indent < indents[i].indent then
+                    break
+                  end
+                  to = j
+                end
+                from = ai_type == "a" and from > 1 and from - 1 or from
+                to = ai_type == "a" and to < #indents and to + 1 or to
+                ret[#ret + 1] = {
+                  indent = indents[i].indent,
+                  from = { line = indents[from].line, col = ai_type == "a" and 1 or indents[from].indent + 1 },
+                  to = { line = indents[to].line, col = #indents[to].text },
+                }
+              end
+            end
+            return ret
           end,
           u = ai.gen_spec.function_call(),
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }),
@@ -174,6 +191,16 @@ return {
       },
       indent = { enable = true },
       matchup = { enable = true },
+      textobjects = {
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = { ["]a"] = "@parameter.inner", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+          goto_previous_start = { ["[a"] = "@parameter.inner", ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+          goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+        },
+      },
     },
   },
   {

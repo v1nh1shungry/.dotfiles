@@ -1,5 +1,5 @@
 local events = require("utils.events")
-local diagnostic_signs = require("utils.ui").icons.diagnostic
+local excluded_buftypes = require("utils.ui").excluded_buftypes
 local excluded_filetypes = require("utils.ui").excluded_filetypes
 
 return {
@@ -358,7 +358,8 @@ return {
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
-        bt_ignore = { "nofile", "terminal" },
+        bt_ignore = excluded_buftypes,
+        ft_ignore = excluded_filetypes,
         relculright = true,
         segments = {
           { sign = { name = { "RecallSign" } }, click = "v:lua.ScSa" },
@@ -451,7 +452,6 @@ return {
           ft = "noice",
           size = { height = 0.4 },
           filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
-          wo = { number = false, relativenumber = false, colorcolumn = "" },
         },
         "Trouble",
         { ft = "qf", title = "QuickFix" },
@@ -523,12 +523,7 @@ return {
       render = function(props)
         local label = {}
         if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
-          local icons = {
-            Error = diagnostic_signs.error,
-            Warn = diagnostic_signs.warn,
-            Hint = diagnostic_signs.hint,
-            Info = diagnostic_signs.info,
-          }
+          local icons = require("utils.ui").icons.diagnostic
           for severity, icon in pairs(icons) do
             local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
             if n > 0 then
@@ -578,12 +573,20 @@ return {
 
       require("ufo").setup(opts)
 
+      local augroup = vim.api.nvim_create_augroup("dotfiles_disable_ufo", {})
+
       vim.api.nvim_create_autocmd("FileType", {
-        callback = function()
-          vim.cmd("UfoDetach")
-          vim.opt_local.foldcolumn = "0"
-        end,
+        command = "UfoDetach",
+        group = augroup,
         pattern = excluded_filetypes,
+      })
+      vim.api.nvim_create_autocmd("BufEnter", {
+        callback = function()
+          if vim.list_contains(excluded_buftypes, vim.bo.buftype) then
+            vim.cmd("UfoDetach")
+          end
+        end,
+        group = augroup,
       })
     end,
     dependencies = { "kevinhwang91/promise-async", "luukvbaal/statuscol.nvim" },

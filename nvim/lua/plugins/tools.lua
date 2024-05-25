@@ -181,12 +181,7 @@ return {
     opts = { open_cmd = "noswapfile vnew" },
   },
   {
-    "HakonHarnes/img-clip.nvim",
-    keys = { { "<Leader>fi", "<Cmd>PasteImage<CR>", desc = "Paste image from clipboard" } },
-  },
-  {
     "kawre/leetcode.nvim",
-    build = ":TSUpdate html",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "MunifTanjim/nui.nvim",

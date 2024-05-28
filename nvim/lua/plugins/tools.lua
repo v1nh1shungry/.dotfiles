@@ -226,25 +226,6 @@ return {
     opts = {},
   },
   {
-    "Myzel394/jsonfly.nvim",
-    config = function()
-      require("telescope").load_extension("jsonfly")
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(args)
-          map({
-            "<Leader>sj",
-            "<Cmd>Telescope jsonfly<CR>",
-            desc = "Fly me to JSON",
-            buffer = args.buf,
-          })
-        end,
-        pattern = { "json", "jsonc" },
-      })
-    end,
-    dependencies = "nvim-telescope/telescope.nvim",
-    ft = { "json", "jsonc" },
-  },
-  {
     "dhruvasagar/vim-table-mode",
     config = function()
       vim.g.table_mode_corner = "|"

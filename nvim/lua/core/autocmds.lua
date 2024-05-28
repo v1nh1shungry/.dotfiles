@@ -15,17 +15,28 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  callback = function(event)
+  callback = function()
     vim.wo.number = false
     vim.wo.relativenumber = false
     vim.bo.buflisted = false
     vim.wo.foldenable = false
     vim.wo.cc = ""
     vim.wo.stc = ""
-    require("utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
   end,
   group = augroup("minimal_ui"),
   pattern = require("utils.ui").excluded_filetypes,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function(event)
+    if vim.list_contains(require("utils.ui").excluded_buftypes, vim.bo.buftype) then
+      local ret = vim.fn.maparg("q", "n", false, true)
+      if ret.buffer ~= 1 then
+        require("utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
+      end
+    end
+  end,
+  group = augroup("close_with_q"),
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {

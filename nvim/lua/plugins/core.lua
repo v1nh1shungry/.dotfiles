@@ -100,10 +100,6 @@ return {
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
           d = { "%f[%d]%d+" },
-          e = {
-            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
-            "^().*()$",
-          },
           g = function(ai_type)
             local start_line, end_line = 1, vim.fn.line("$")
             if ai_type == "i" then
@@ -148,6 +144,10 @@ return {
           end,
           u = ai.gen_spec.function_call(),
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }),
+          w = {
+            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
+            "^().*()$",
+          },
         },
       }
     end,
@@ -534,11 +534,5 @@ return {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
     opts = {},
-  },
-  {
-    "m4xshen/hardtime.nvim",
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    event = "VeryLazy",
-    opts = { disabled_filetypes = require("utils.ui").excluded_filetypes },
   },
 }

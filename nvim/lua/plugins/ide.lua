@@ -389,27 +389,6 @@ return {
         },
       },
       {
-        "jbyuki/one-small-step-for-vimkind",
-        config = function()
-          local dap = require("dap")
-          dap.adapters.nlua = function(callback, config)
-            callback({
-              type = "server",
-              host = config.host or "127.0.0.1",
-              port = config.port or 8086,
-            })
-          end
-          dap.configurations.lua = {
-            {
-              type = "nlua",
-              request = "attach",
-              name = "Attach to running Neovim instance (port = 8086)",
-              port = 8086,
-            },
-          }
-        end,
-      },
-      {
         "theHamsta/nvim-dap-virtual-text",
         opts = {},
       },
@@ -427,7 +406,6 @@ return {
       { "<Leader>dt", "<Cmd>DapTerminate<CR>", desc = "Terminate" },
       { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval", mode = { "n", "v" } },
       { "<Leader>du", function() require("dapui").toggle() end, desc = "Toggle UI" },
-      { "<Leader>dl", function() require("osv").launch({ port = 8086 }) end, desc = "Launch DAP server" },
     },
   },
   {

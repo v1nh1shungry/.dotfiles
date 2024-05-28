@@ -74,17 +74,6 @@ return {
     end,
   },
   {
-    "gorbit99/codewindow.nvim",
-    keys = {
-      {
-        "<Leader>um",
-        function() require("codewindow").toggle_minimap() end,
-        desc = "Toggle Minimap",
-      },
-    },
-    opts = { exclude_filetypes = excluded_filetypes, z_index = 50 },
-  },
-  {
     "akinsho/bufferline.nvim",
     config = function(_, opts)
       require("bufferline").setup(opts)
@@ -96,7 +85,6 @@ return {
     end,
     event = "VeryLazy",
     keys = {
-      { "gb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
       {
         "]b",
         function()
@@ -115,9 +103,16 @@ return {
         end,
         desc = "Previous buffer",
       },
+      { "g1", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
+      { "g2", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
+      { "g3", "<Cmd>BufferLineGoToBuffer 3<CR>", desc = "Go to buffer 3" },
+      { "g4", "<Cmd>BufferLineGoToBuffer 4<CR>", desc = "Go to buffer 4" },
+      { "g5", "<Cmd>BufferLineGoToBuffer 5<CR>", desc = "Go to buffer 5" },
+      { "g6", "<Cmd>BufferLineGoToBuffer 6<CR>", desc = "Go to buffer 6" },
     },
     opts = {
       options = {
+        numbers = "ordinal",
         diagnostics = "nvim_lsp",
         diagnostics_update_in_insert = true,
         themable = true,
@@ -322,32 +317,41 @@ return {
         mode = { "i", "n", "s" },
       },
     },
-    opts = {
-      views = { split = { enter = true } },
-      presets = {
-        long_message_to_split = true,
-        bottom_search = true,
-        command_palette = true,
-      },
-      messages = { view_search = false },
-      lsp = {
-        hover = { enabled = false },
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
+    opts = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(event)
+          vim.schedule(function() require("noice.text.markdown").keys(event.buf) end)
+        end,
+        pattern = "markdown",
+      })
+
+      return {
+        views = { split = { enter = true } },
+        presets = {
+          long_message_to_split = true,
+          bottom_search = true,
+          command_palette = true,
         },
-      },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            any = { { find = "%d+L, %d+B" }, { find = "; after #%d+" }, { find = "; before #%d+" } },
+        messages = { view_search = false },
+        lsp = {
+          hover = { enabled = false },
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
           },
-          view = "mini",
         },
-      },
-    },
+        routes = {
+          {
+            filter = {
+              event = "msg_show",
+              any = { { find = "%d+L, %d+B" }, { find = "; after #%d+" }, { find = "; before #%d+" } },
+            },
+            view = "mini",
+          },
+        },
+      }
+    end,
   },
   {
     "luukvbaal/statuscol.nvim",
@@ -485,6 +489,13 @@ return {
       },
       right = {
         { title = "Outline", ft = "sagaoutline" },
+        {
+          title = "Treesitter",
+          ft = "query",
+          filter = function(buf, _) return vim.bo[buf].buftype ~= "" end,
+          size = { width = 0.4 },
+          wo = { number = false, relativenumber = false, stc = "" },
+        },
         {
           title = "Clang AST",
           ft = "ClangdAST",

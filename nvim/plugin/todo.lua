@@ -77,9 +77,6 @@ local function open_win(enter)
   if bufnr == nil or not vim.api.nvim_buf_is_valid(bufnr) then
     bufnr = vim.api.nvim_create_buf(false, true)
 
-    map({ "q", "<Cmd>close<CR>", desc = "Close TODO", buffer = bufnr })
-    map({ "<ESC>", "<Cmd>close<CR>", desc = "Close TODO", buffer = bufnr })
-
     vim.api.nvim_create_autocmd("InsertEnter", {
       buffer = bufnr,
       callback = clear_extmark,

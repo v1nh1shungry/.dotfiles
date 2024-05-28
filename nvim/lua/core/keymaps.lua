@@ -34,8 +34,8 @@ map({ "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = "Vi
 
 map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close tab" })
 map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New tab" })
-map({ "]<Tab>", "<Cmd>tabnext<CR>", desc = "Next tab" })
-map({ "[<Tab>", "<Cmd>tabprev<CR>", desc = "Previous tab" })
+map({ "]<Tab>", function() return "<Cmd>+" .. vim.v.count1 .. "tabnext<CR>" end, desc = "Next tab", expr = true })
+map({ "[<Tab>", function() return "<Cmd>-" .. vim.v.count1 .. "tabnext<CR>" end, desc = "Previous tab", expr = true })
 
 map({ "<Leader>,", "<Cmd>e #<CR>", desc = "Last buffer" })
 
@@ -95,4 +95,26 @@ map({
     end)
   end,
   desc = "Get CPM.cmake",
+})
+
+map({
+  "<Leader>cx",
+  function()
+    vim.cmd([[execute "normal! \<ESC>"]])
+    local start_pos = vim.fn.getpos("'<")
+    local end_pos = vim.fn.getpos("'>")
+    local current_bufnr = vim.api.nvim_get_current_buf()
+    local current_winnr = vim.api.nvim_win_get_number(vim.api.nvim_get_current_win())
+    local lines = vim.api.nvim_buf_get_lines(current_bufnr, start_pos[2] - 1, end_pos[2], true)
+    vim.api.nvim_buf_set_lines(current_bufnr, start_pos[2] - 1, end_pos[2], true, {})
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    vim.bo[bufnr].filetype = vim.bo[current_bufnr].filetype
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, lines)
+    vim.api.nvim_open_win(bufnr, true, { split = "right" })
+    vim.cmd([[execute "normal! =G"]])
+    vim.bo[bufnr].modifiable = false
+    vim.cmd(current_winnr .. " wincmd w")
+  end,
+  mode = "x",
+  desc = "Snapshot",
 })

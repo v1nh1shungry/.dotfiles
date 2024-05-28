@@ -1,6 +1,11 @@
 local map = require("utils.keymap")
 local toggle = require("utils.toggle")
 
+vim.keymap.del("n", "grn")
+vim.keymap.del("n", "grr")
+vim.keymap.del("n", "gra")
+vim.keymap.del("i", "<C-s>")
+
 vim.g.mapleader = " "
 
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
@@ -65,8 +70,8 @@ map({ "$", "g_", mode = "x", desc = "End of line" })
 map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = "Inspect position under the cursor" })
 map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
 
-map({ "<C-n>", "<Down>", desc = "Next command in history", mode = "c", silent = false })
-map({ "<C-p>", "<Up>", desc = "Previous command in history", mode = "c", silent = false })
+map({ "<C-n>", "<Down>", desc = "Next command in history", mode = "c" })
+map({ "<C-p>", "<Up>", desc = "Previous command in history", mode = "c" })
 
 map({
   "<Leader>mp",
@@ -91,7 +96,3 @@ map({
   end,
   desc = "Get CPM.cmake",
 })
-
-vim.keymap.del('n', 'grn')
-vim.keymap.del('n', 'grr')
-vim.keymap.del('n', 'gra')

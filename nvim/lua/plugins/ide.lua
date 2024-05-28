@@ -373,23 +373,10 @@ return {
     "rcarriga/nvim-dap-ui",
     config = function()
       local dap, dapui = require("dap"), require("dapui")
-      local function enable_fancy_ui(enable)
-        vim.diagnostic.enable(enable)
-        vim.lsp.inlay_hint.enable(enable)
-      end
       dapui.setup()
-      dap.listeners.after.event_initialized.dapui_config = function()
-        enable_fancy_ui(false)
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated.dapui_config = function()
-        enable_fancy_ui(true)
-        dapui.close()
-      end
-      dap.listeners.before.event_exited.dapui_config = function()
-        enable_fancy_ui(true)
-        dapui.close()
-      end
+      dap.listeners.after.event_initialized.dapui_config = function() dapui.open() end
+      dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
+      dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
     end,
     dependencies = {
       "nvim-neotest/nvim-nio",
@@ -500,7 +487,7 @@ return {
     keys = {
       {
         "<Leader>cf",
-        function() require("conform").format({ lsp_fallback = true, quiet = true }) end,
+        function() require("conform").format({ lsp_fallback = true }) end,
         desc = "Format document",
         mode = { "n", "v" },
       },

@@ -15,16 +15,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-  callback = function()
+  callback = function(event)
     vim.wo.number = false
     vim.wo.relativenumber = false
     vim.bo.buflisted = false
     vim.wo.foldenable = false
     vim.wo.cc = ""
     vim.wo.stc = ""
-    require("utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = arg.buf })
+    require("utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
   end,
-  group = augroup("no_fancy_ui"),
+  group = augroup("minimal_ui"),
   pattern = require("utils.ui").excluded_filetypes,
 })
 

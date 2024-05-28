@@ -85,11 +85,6 @@ return {
     opts = { exclude_filetypes = excluded_filetypes, z_index = 50 },
   },
   {
-    "lewis6991/satellite.nvim",
-    event = events.enter_buffer,
-    opts = { excluded_filetypes = excluded_filetypes },
-  },
-  {
     "akinsho/bufferline.nvim",
     config = function(_, opts)
       require("bufferline").setup(opts)
@@ -195,6 +190,7 @@ return {
           },
           lualine_x = {
             { function() return "%S" end },
+            { "progress" },
             {
               function()
                 local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -335,6 +331,7 @@ return {
       },
       messages = { view_search = false },
       lsp = {
+        hover = { enabled = false },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
@@ -504,17 +501,15 @@ return {
   },
   {
     "echasnovski/mini.trailspace",
-    config = function()
-      require("mini.trailspace").setup()
-      vim.cmd("highlight MiniTrailspace ctermbg=LightGreen guibg=LightGreen")
-    end,
     event = events.enter_buffer,
     init = function()
+      vim.api.nvim_set_hl(0, "MiniTrailspace", { bg = "LightGreen" })
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(args) vim.b[args.buf].minitrailspace_disable = true end,
         pattern = excluded_filetypes,
       })
     end,
+    opts = {},
   },
   {
     "b0o/incline.nvim",
@@ -560,6 +555,7 @@ return {
   },
   {
     "hiphish/rainbow-delimiters.nvim",
+    cond = false,
     main = "rainbow-delimiters.setup",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,

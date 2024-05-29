@@ -56,7 +56,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   group = augroup("last_loc"),
 })
 
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function(event)
     if event.match:match("^%w%w+:[\\/][\\/]") then
       return

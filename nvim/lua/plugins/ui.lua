@@ -266,7 +266,6 @@ return {
         ["<Leader>m"] = { name = "+cmake" },
         ["<Leader>q"] = { name = "+quit/sessions" },
         ["<Leader>s"] = { name = "+search" },
-        ["<Leader>t"] = { name = "+todo" },
         ["<Leader>u"] = { name = "+ui" },
         ["<Leader>x"] = { name = "+diagnostics/quickfix" },
       },
@@ -566,7 +565,6 @@ return {
   },
   {
     "hiphish/rainbow-delimiters.nvim",
-    cond = false,
     main = "rainbow-delimiters.setup",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,

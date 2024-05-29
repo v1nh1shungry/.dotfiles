@@ -7,11 +7,12 @@
 --       we enter the window, and save the current todo-list only when
 --       we close the window.
 
+local file = require("utils.file")
 local map = require("utils.keymap")
 
 local winnr, bufnr
 local config = {
-  storage = vim.fs.joinpath(vim.fn.stdpath("data"), ".dotfiles_todo.txt"),
+  storage = vim.fs.joinpath(vim.fn.stdpath("data"), ".dotfiles", "todo.txt"),
   width = 30,
   height = 5,
 }
@@ -20,13 +21,9 @@ local augroup = vim.api.nvim_create_augroup("dotfiles_todo_autocmd", {})
 
 local todo = {}
 
-local function load_todo()
-  if vim.fn.filereadable(config.storage) == 1 then
-    todo = vim.fn.readfile(config.storage)
-  end
-end
+local function load_todo() todo = file.read(config.storage) or {} end
 
-local function save_todo() vim.fn.writefile(todo, config.storage) end
+local function save_todo() file.write(todo, config.storage) end
 
 local function clear_extmark() vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1) end
 
@@ -120,25 +117,26 @@ local function open_win(enter)
   render()
 end
 
-local function close_win()
-  if winnr and vim.api.nvim_win_is_valid(winnr) then
-    vim.api.nvim_win_close(winnr, false)
-  end
-end
-
 vim.api.nvim_create_autocmd("User", {
   callback = function(args)
     open_win(false)
-    map({ "t", open_win, desc = "Edit TODO", buffer = args.buf })
+    vim.api.nvim_win_set_config(winnr, {
+      footer = " Press t to enter ",
+      footer_pos = "center",
+    })
+    map({ "t", open_win, desc = "TODO panel", buffer = args.buf })
   end,
   group = augroup,
   pattern = "AlphaReady",
 })
 vim.api.nvim_create_autocmd("User", {
-  callback = close_win,
+  callback = function()
+    if vim.api.nvim_win_is_valid(winnr) then
+      vim.api.nvim_win_close(winnr, true)
+    end
+  end,
   group = augroup,
   pattern = "AlphaClosed",
 })
 
-map({ "<Leader>to", open_win, desc = "Edit TODO" })
-map({ "<Leader>tq", close_win, desc = "Close TODO" })
+map({ "<Leader>ut", open_win, desc = "Open TODO" })

@@ -1,4 +1,4 @@
-local timer = vim.loop.new_timer()
+local timer = vim.uv.new_timer()
 local minute = 30
 
 timer:start(

@@ -317,7 +317,7 @@ return {
     ft = { "gitcommit", "git_rebase" },
     keys = {
       { "<Leader>gc", function() require("tinygit").smartCommit() end, desc = "Commit" },
-      { "<Leader>gP", function() require("tinygit").push() end, desc = "Push" },
+      { "<Leader>gP", function() require("tinygit").push({}) end, desc = "Push" },
       { "<Leader>ga", function() require("tinygit").amendNoEdit() end, desc = "Amend" },
       { "<Leader>gu", function() require("tinygit").undoLastCommitOrAmend() end, desc = "Undo last commit" },
       { "<Leader>gF", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },

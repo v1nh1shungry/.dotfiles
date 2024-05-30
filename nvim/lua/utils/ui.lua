@@ -48,7 +48,6 @@ M.excluded_filetypes = {
   "DressingInput",
   "Glance",
   "TelescopePrompt",
-  "Trouble",
   "checkhealth",
   "dap-repl",
   "dapui_breakpoints",
@@ -70,9 +69,9 @@ M.excluded_filetypes = {
   "qf",
   "sagafinder",
   "sagaoutline",
-  "spectre_panel",
   "ssr",
   "toggleterm",
+  "trouble",
 }
 
 M.excluded_buftypes = { "nofile", "help", "quickfix", "terminal" }

@@ -47,4 +47,21 @@ function M.diagnostic() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) e
 
 function M.inlay_hint() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
 
+local maximized = nil
+function M.maximize()
+  if maximized then
+    vim.o.winwidth = maximized.width
+    vim.o.winheight = maximized.height
+    maximized = nil
+    vim.cmd("wincmd =")
+  else
+    maximized = {
+      width = vim.o.winwidth,
+      height = vim.o.winheight,
+    }
+    vim.o.winwidth = 999
+    vim.o.winheight = 999
+  end
+end
+
 return M

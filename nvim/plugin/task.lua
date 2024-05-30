@@ -5,9 +5,9 @@ local compile_opts = {
   c = {
     "ccache",
     "gcc",
-    "${filename}",
+    "${relativeFile}",
     "-o",
-    "${filenameNoExtesion}",
+    "${relativeFileDirname}/${fileBasenameNoExtension}",
     "-g",
     "-fsanitize=address,undefined",
     "-std=c17",
@@ -17,9 +17,9 @@ local compile_opts = {
   cpp = {
     "ccache",
     "g++",
-    "${filename}",
+    "${relativeFile}",
     "-o",
-    "${filenameNoExtesion}",
+    "${relativeFileDirname}/${fileBasenameNoExtension}",
     "-g",
     "-fsanitize=address,undefined",
     "-std=c++17",
@@ -29,24 +29,41 @@ local compile_opts = {
 }
 
 local execute_opts = {
-  c = { "${filenameNoExtesion}" },
-  cpp = { "${filenameNoExtesion}" },
-  python = { "python", "${filename}" },
-  lua = { "nvim", "-l", "${filename}" },
-  javascript = { "node", "${filename}" },
+  c = { "${relativeFileDirname}/${fileBasenameNoExtension}" },
+  cpp = { "${relativeFileDirname}/${fileBasenameNoExtension}" },
+  python = { "python", "${relativeFile}" },
+  lua = { "nvim", "-l", "${relativeFile}" },
+  javascript = { "node", "${relativeFile}" },
 }
 
 compile_opts = vim.tbl_deep_extend("force", compile_opts, opts.compile)
 execute_opts = vim.tbl_deep_extend("force", execute_opts, opts.execute)
 
-local cook = function(cmd)
+local function cook_variable(line)
+  local variables = {
+    ["${file}"] = function() return vim.fn.expand("%:p") end,
+    ["${relativeFile}"] = function() return vim.fn.expand("%") end,
+    ["${relativeFileDirname}"] = function() return vim.fn.expand("%:h") end,
+    ["${fileBasename}"] = function() return vim.fn.expand("%:t") end,
+    ["${fileBasenameNoExtension}"] = function() return vim.fn.expand("%:t:r") end,
+    ["${fileExtname}"] = function() return vim.fn.expand("%:e") end,
+    ["${fileDirname}"] = function() return vim.fs.dirname(vim.fn.expand("%:p:h")) end,
+    ["${fileDirnameBasename}"] = function() return vim.fn.expand("%:p:h:t") end,
+    ["${cwd}"] = function() return vim.uv.cwd() end,
+    ["${/}"] = function() return "/" end,
+  }
+
+  for k, v in pairs(variables) do
+    line = line:gsub(k, v())
+  end
+
+  return line
+end
+
+local function cook_command(cmd)
   cmd = vim.deepcopy(cmd)
-  for i, c in ipairs(cmd) do
-    if c == "${filename}" then
-      cmd[i] = vim.fn.expand("%:p")
-    elseif c == "${filenameNoExtesion}" then
-      cmd[i] = vim.fn.expand("%:p:r")
-    end
+  for i, line in ipairs(cmd) do
+    cmd[i] = cook_variable(line)
   end
   return cmd
 end
@@ -57,26 +74,36 @@ for lang, cmd in pairs(compile_opts) do
       map({
         "<Leader>fb",
         function()
-          cmd = cook(cmd)
-          vim.fn.setqflist({}, " ", { title = table.concat(cmd, " ") })
+          cmd = cook_command(cmd)
+
           if opts.save then
             vim.cmd.w()
           end
+
+          vim.fn.setqflist({}, " ", { title = table.concat(cmd, " ") })
+
           vim.system(
             cmd,
-            {
-              stderr = vim.schedule_wrap(function(error, data)
-                if error == nil and data == nil then
-                  return
-                end
-                vim.fn.setqflist({}, "a", { lines = vim.split(error and error or data, "\n", { trimempty = true }) })
-                vim.cmd.copen()
-                vim.cmd.wincmd("p")
-              end),
-            },
+            { text = true },
             vim.schedule_wrap(function(res)
               if res.code == 0 then
                 vim.notify("Sucessfully compile the program!", vim.log.levels.INFO, { title = "Task" })
+              else
+                vim.notify("Compile error!", vim.log.levels.ERROR, { title = "Task" })
+              end
+              if res.stderr then
+                local winnr = vim.fn.winnr()
+                local lines = vim.tbl_filter(
+                  function(l) return l:match("^.+:%d+:%d+:") end,
+                  vim.split(res.stderr, "\n", { trimempty = true })
+                )
+                if #lines == 0 then
+                  vim.cmd("cclose")
+                  return
+                end
+                vim.fn.setqflist({}, "a", { lines = lines })
+                vim.cmd("copen")
+                vim.cmd(winnr .. " wincmd w")
               end
             end)
           )
@@ -112,7 +139,7 @@ for lang, cmd in pairs(execute_opts) do
           if opts.save then
             vim.cmd.w()
           end
-          execute(table.concat(cook(cmd), " "))
+          execute(table.concat(cook_command(cmd), " "))
         end,
         buffer = args.buf,
         desc = "Execute",

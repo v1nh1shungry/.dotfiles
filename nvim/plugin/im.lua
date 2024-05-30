@@ -49,5 +49,5 @@ vim.api.nvim_create_autocmd("FocusGained", {
     if not vim.api.nvim_get_mode().mode:match("i") then
       restore_default_im()
     end
-  end
+  end,
 })

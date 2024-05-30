@@ -14,7 +14,7 @@ local winnr, bufnr
 local config = {
   storage = vim.fs.joinpath(vim.fn.stdpath("data"), ".dotfiles", "todo.txt"),
   width = 30,
-  height = 5,
+  height = 10,
 }
 local ns = vim.api.nvim_create_namespace("dotfiles_todo_ns")
 local augroup = vim.api.nvim_create_augroup("dotfiles_todo_autocmd", {})
@@ -104,7 +104,7 @@ local function open_win(enter)
       title_pos = "center",
       style = "minimal",
       width = config.width,
-      height = config.height,
+      height = math.max(config.height, #todo),
       row = 1,
       col = vim.o.columns - config.width,
     })

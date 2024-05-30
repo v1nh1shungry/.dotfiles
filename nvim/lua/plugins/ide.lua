@@ -19,7 +19,7 @@ return {
             { "<Leader>ca", "<Cmd>Lspsaga code_action<CR>", desc = "Code action" },
           },
           ["textDocument/documentSymbol"] = {
-            { "<Leader>uo", "<Cmd>Lspsaga outline<CR>", desc = "Symbol outline" },
+            { "<Leader>uo", "<Cmd>Trouble symbols toggle<CR>", desc = "Symbol outline" },
             { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Browse LSP symbols (Document)" },
             { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "Browse LSP symbols (Workspace)" },
           },
@@ -48,9 +48,6 @@ return {
           ["textDocument/signatureHelp"] = {
             { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
           },
-          ["textDocument/codeLens"] = {
-            { "<Leader>cl", vim.lsp.codelens.run, mode = { "n", "v" }, desc = "Run codelens" },
-          },
         }
         for method, keys in pairs(mappings) do
           if client.supports_method(method) then
@@ -67,14 +64,6 @@ return {
 
         if client.server_capabilities.inlayHintProvider then
           vim.lsp.inlay_hint.enable(true)
-        end
-
-        if client.supports_method("textDocument/codeLens") then
-          vim.lsp.codelens.refresh({ bufnr = bufnr })
-          vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-            buffer = bufnr,
-            callback = function() vim.lsp.codelens.refresh({ bufnr = bufnr }) end,
-          })
         end
       end
 
@@ -222,13 +211,14 @@ return {
         function() require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR }) end,
         desc = "Previous error",
       },
-      { "<Leader>cn", "<Cmd>Lspsaga finder<CR>", desc = "LSP nagivation pane" },
+      { "<Leader>cn", "<Cmd>Lspsaga finder<CR>", desc = "LSP nagivation panel" },
     },
     opts = {
-      code_action = { extend_gitsigns = false, show_server_name = true },
+      code_action = { show_server_name = true },
       lightbulb = { sign = false },
       ui = { winblend = require("user").ui.blend },
       beacon = { enable = false },
+      symbol_in_winbar = { enable = false },
     },
   },
   {
@@ -356,6 +346,7 @@ return {
           desc = "First git hunk",
         })
         map_local({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
+        map_local({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
       end,
     },
   },
@@ -374,9 +365,9 @@ return {
     config = function()
       local dap, dapui = require("dap"), require("dapui")
       dapui.setup()
-      dap.listeners.after.event_initialized.dapui_config = function() dapui.open() end
-      dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
-      dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
+      dap.listeners.after.event_initialized.dapui_config = dapui.open
+      dap.listeners.before.event_terminated.dapui_config = dapui.close
+      dap.listeners.before.event_exited.dapui_config = dapui.close
     end,
     dependencies = {
       "nvim-neotest/nvim-nio",
@@ -404,16 +395,16 @@ return {
       { "<Leader>dj", function() require("dap").down() end, desc = "Go down in current stacktrace" },
       { "<Leader>dk", function() require("dap").up() end, desc = "Go up in current stacktrace" },
       { "<Leader>dt", "<Cmd>DapTerminate<CR>", desc = "Terminate" },
-      { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval", mode = { "n", "v" } },
+      { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval" },
       { "<Leader>du", function() require("dapui").toggle() end, desc = "Toggle UI" },
     },
   },
   {
     "folke/trouble.nvim",
-    cmd = "TroubleToggle",
+    cmd = "Trouble",
     keys = {
-      { "<Leader>xx", "<Cmd>TroubleToggle document_diagnostics<CR>", desc = "Document diagnostics" },
-      { "<Leader>xX", "<Cmd>TroubleToggle workspace_diagnostics<CR>", desc = "Workspace Diagnostics" },
+      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Document diagnostics" },
+      { "<Leader>xX", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Workspace Diagnostics" },
       {
         "[q",
         function()
@@ -443,6 +434,7 @@ return {
         desc = "Next trouble/quickfix item",
       },
     },
+    opts = {},
   },
   {
     "DNLHC/glance.nvim",

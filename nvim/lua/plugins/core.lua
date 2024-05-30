@@ -7,9 +7,8 @@ return {
     event = events.enter_buffer,
   },
   {
-    "nmac427/guess-indent.nvim",
+    "tpope/vim-sleuth",
     event = events.enter_buffer,
-    opts = {},
   },
   {
     "echasnovski/mini.ai",
@@ -174,7 +173,6 @@ return {
         "jsonc",
         "lua",
         "luadoc",
-        "luap",
         "make",
         "markdown",
         "markdown_inline",
@@ -182,7 +180,6 @@ return {
         "regex",
         "vim",
         "vimdoc",
-        "xml",
       },
       highlight = { enable = true, additional_vim_regex_highlighting = true },
       incremental_selection = {
@@ -488,10 +485,10 @@ return {
   {
     "numToStr/Navigator.nvim",
     keys = {
-      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Go to left window", mode = { "n", "t" } },
-      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Go to right window", mode = { "n", "t" } },
-      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Go to lower window", mode = { "n", "t" } },
-      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Go to upper window", mode = { "n", "t" } },
+      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Go to left window", mode = { "i", "n", "t" } },
+      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Go to right window", mode = { "i", "n", "t" } },
+      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Go to lower window", mode = { "i", "n", "t" } },
+      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Go to upper window", mode = { "i", "n", "t" } },
     },
     opts = {},
   },

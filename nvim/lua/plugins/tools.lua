@@ -16,6 +16,7 @@ return {
       { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
       { "<Leader>sh", "<Cmd>Telescope highlights<CR>", desc = "Highlight groups" },
       { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
+      { "<Leader>sx", "<Cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
     },
     opts = function()
       local function flash(prompt_bufnr)
@@ -35,8 +36,6 @@ return {
         })
       end
 
-      local open_with_trouble = require("trouble.sources.telescope").open
-
       return {
         defaults = {
           prompt_prefix = "🔎 ",
@@ -50,11 +49,7 @@ return {
             },
           },
           mappings = {
-            i = {
-              ["<C-t>"] = open_with_trouble,
-              ["<M-t>"] = open_with_trouble,
-              ["<C-s>"] = flash,
-            },
+            i = { ["<C-s>"] = flash },
             n = { s = flash },
           },
         },
@@ -113,7 +108,7 @@ return {
   },
   {
     "sindrets/diffview.nvim",
-    cmd = { "DiffviewFileHistory", "DiffviewOpen" },
+    cmd = "DiffviewOpen",
     keys = { { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" } },
   },
   {
@@ -237,11 +232,11 @@ return {
   },
   {
     "ThePrimeagen/refactoring.nvim",
-    cmd = "Refactor",
+    dependencies = "nvim-telescope/telescope.nvim",
     keys = {
       {
-        "<Leader>sR",
-        function() require("refactoring").select_refactor() end,
+        "<Leader>sg",
+        function() require('telescope').extensions.refactoring.refactors() end,
         desc = "Refactoring",
         mode = { "n", "x" },
       },
@@ -254,7 +249,7 @@ return {
       vim.g.table_mode_corner = "|"
       vim.g.table_mode_disable_mappings = 1
     end,
-    keys = { { "<Leader>ft", "<Cmd>TableModeToggle<CR>", desc = "Table mode" } },
+    keys = { { "<Leader>ct", "<Cmd>TableModeToggle<CR>", desc = "Table mode" } },
   },
   {
     "v1nh1shungry/cppman.nvim",

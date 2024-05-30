@@ -7,8 +7,6 @@ return {
     name = "catppuccin",
     opts = {
       integrations = {
-        lsp_saga = true,
-        lsp_trouble = true,
         mason = true,
         native_lsp = {
           underlines = {

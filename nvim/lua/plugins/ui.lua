@@ -18,8 +18,8 @@ return {
         function() require("todo-comments").jump_next() end,
         desc = "Next TODO",
       },
-      { "<Leader>xt", "<Cmd>TodoTrouble<CR>", desc = "Todo" },
-      { "<Leader>xT", "<Cmd>TodoTrouble keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
+      { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
+      { "<Leader>xT", "<Cmd>TodoQuickFix keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
       { "<Leader>st", "<Cmd>TodoTelescope<CR>", desc = "Todo" },
       { "<Leader>sT", "<Cmd>TodoTelescope keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
     },
@@ -103,12 +103,6 @@ return {
         end,
         desc = "Previous buffer",
       },
-      { "g1", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
-      { "g2", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
-      { "g3", "<Cmd>BufferLineGoToBuffer 3<CR>", desc = "Go to buffer 3" },
-      { "g4", "<Cmd>BufferLineGoToBuffer 4<CR>", desc = "Go to buffer 4" },
-      { "g5", "<Cmd>BufferLineGoToBuffer 5<CR>", desc = "Go to buffer 5" },
-      { "g6", "<Cmd>BufferLineGoToBuffer 6<CR>", desc = "Go to buffer 6" },
     },
     opts = {
       options = {
@@ -228,7 +222,6 @@ return {
           "nvim-dap-ui",
           "quickfix",
           "toggleterm",
-          "trouble",
         },
       })
     end,
@@ -462,16 +455,6 @@ return {
           size = { height = 0.4 },
           filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
         },
-        {
-          ft = "trouble",
-          filter = function(_, win)
-            return vim.w[win].trouble
-              and vim.w[win].trouble.position == "bottom"
-              and vim.w[win].trouble.type == "split"
-              and vim.w[win].trouble.relative == "editor"
-              and not vim.w[win].trouble_preview
-          end,
-        },
         { ft = "qf", title = "QuickFix" },
         {
           ft = "help",
@@ -505,16 +488,6 @@ return {
         },
       },
       right = {
-        {
-          ft = "trouble",
-          filter = function(_, win)
-            return vim.w[win].trouble
-              and vim.w[win].trouble.position == "right"
-              and vim.w[win].trouble.type == "split"
-              and vim.w[win].trouble.relative == "editor"
-              and not vim.w[win].trouble_preview
-          end,
-        },
         {
           title = "Treesitter",
           ft = "query",
@@ -614,5 +587,10 @@ return {
     "echasnovski/mini.files",
     keys = { { "<Leader>e", "<Cmd>lua MiniFiles.open()<CR>", desc = "Explorer" } },
     opts = {},
+  },
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+    dependencies = "nvim-treesitter/nvim-treesitter",
   },
 }

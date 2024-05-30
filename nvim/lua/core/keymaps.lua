@@ -19,7 +19,6 @@ map({ "<", "<gv", mode = "v" })
 map({ ">", ">gv", mode = "v" })
 
 map({ "<Leader>xq", toggle.quickfix, desc = "Toggle quickfix" })
-
 map({ "<Leader>xl", toggle.location, desc = "Toggle location list" })
 
 map({ "<Leader>ux", require("utils.toggle").diagnostic, desc = "Toggle diagnostic" })
@@ -42,7 +41,7 @@ map({ "<Leader>,", "<Cmd>e #<CR>", desc = "Last buffer" })
 
 map({ "<Leader>uc", toggle.option("conceallevel", false, { 0, 3 }), desc = "Toggle conceal" })
 map({ "<Leader>uw", toggle.option("wrap"), desc = "Toggle wrap" })
-map({ "<Leader>ug", toggle.option("background", false, { "light", "dark" }), desc = "Set background" })
+map({ "<Leader>ug", toggle.option("background", false, { "light", "dark" }), desc = "Change background" })
 
 map({ "<Leader>fc", "<Cmd>e ~/.nvimrc<CR>", desc = "Open preferences" })
 
@@ -131,3 +130,74 @@ map({ "[Q", "<Cmd>cfirst<CR>", desc = "First quickfix" })
 map({ "]Q", "<Cmd>clast<CR>", desc = "Last quickfix" })
 
 map({ "<Leader>fs", "<Cmd>luafile %<CR>", desc = "Souce" })
+
+map({
+  "]d",
+  function() vim.diagnostic.jump({ count = vim.v.count1, float = true }) end,
+  desc = "Jump to the next diagnostic",
+})
+map({
+  "[d",
+  function() vim.diagnostic.jump({ count = -vim.v.count1, float = true }) end,
+  desc = "Jump to the next diagnostic",
+})
+map({
+  "]w",
+  function() vim.diagnostic.jump({ count = vim.v.count1, float = true, severity = vim.diagnostic.severity.WARN }) end,
+  desc = "Jump to the next warning",
+})
+map({
+  "[w",
+  function() vim.diagnostic.jump({ count = -vim.v.count1, float = true, severity = vim.diagnostic.severity.WARN }) end,
+  desc = "Jump to the previous warning",
+})
+map({
+  "]e",
+  function() vim.diagnostic.jump({ count = vim.v.count1, float = true, severity = vim.diagnostic.severity.ERROR }) end,
+  desc = "Jump to the next error",
+})
+map({
+  "[e",
+  function() vim.diagnostic.jump({ count = -vim.v.count1, float = true, severity = vim.diagnostic.severity.ERROR }) end,
+  desc = "Jump to the previous error",
+})
+map({
+  "]D",
+  function() vim.diagnostic.jump({ count = math.huge, float = true, wrap = false }) end,
+  desc = "Jump to the last diagnostic",
+})
+map({
+  "[D",
+  function() vim.diagnostic.jump({ count = -math.huge, float = true, wrap = false }) end,
+  desc = "Jump to the first diagnostic",
+})
+map({
+  "]W",
+  function()
+    vim.diagnostic.jump({ count = math.huge, float = true, severity = vim.diagnostic.severity.WARN, wrap = false })
+  end,
+  desc = "Jump to the last warning",
+})
+map({
+  "[W",
+  function()
+    vim.diagnostic.jump({ count = -math.huge, float = true, severity = vim.diagnostic.severity.WARN, wrap = false })
+  end,
+  desc = "Jump to the first warning",
+})
+map({
+  "]E",
+  function()
+    vim.diagnostic.jump({ count = math.huge, float = true, severity = vim.diagnostic.severity.ERROR, wrap = false })
+  end,
+  desc = "Jump to the last error",
+})
+map({
+  "[E",
+  function()
+    vim.diagnostic.jump({ count = -math.huge, float = true, severity = vim.diagnostic.severity.ERROR, wrap = false })
+  end,
+  desc = "Jump to the first error",
+})
+
+map({ "<Leader>xx", vim.diagnostic.setqflist, desc = "Diagnostics" })

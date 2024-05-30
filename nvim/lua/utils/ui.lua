@@ -67,11 +67,8 @@ M.excluded_filetypes = {
   "noice",
   "notify",
   "qf",
-  "sagafinder",
-  "sagaoutline",
   "ssr",
   "toggleterm",
-  "trouble",
 }
 
 M.excluded_buftypes = { "nofile", "help", "quickfix", "terminal" }

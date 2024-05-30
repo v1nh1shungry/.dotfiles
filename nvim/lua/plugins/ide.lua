@@ -13,34 +13,38 @@ return {
 
         local mappings = {
           ["textDocument/rename"] = {
-            { "<Leader>cr", "<Cmd>Lspsaga rename<CR>", desc = "Rename" },
+            { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
           },
           ["textDocument/codeAction"] = {
-            { "<Leader>ca", "<Cmd>Lspsaga code_action<CR>", desc = "Code action" },
+            { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
           },
           ["textDocument/documentSymbol"] = {
-            { "<Leader>uo", "<Cmd>Trouble symbols toggle<CR>", desc = "Symbol outline" },
             { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Browse LSP symbols (Document)" },
             { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "Browse LSP symbols (Workspace)" },
           },
           ["textDocument/references"] = {
-            { "gR", "<Cmd>Glance references<CR>", desc = "Go to references" },
+            { "gR", vim.lsp.buf.references, desc = "Go to references" },
+            { "<Leader>sR", "<Cmd>Telescope lsp_references<CR>", desc = "Browse LSP references" },
           },
           ["textDocument/definition"] = {
-            { "gd", "<Cmd>Glance definitions<CR>", desc = "Go to definition" },
-            { "<Leader>cp", "<Cmd>Lspsaga peek_definition<CR>", desc = "Preview definition" },
+            { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
+            { "<Leader>sd", "<Cmd>Telescope lsp_definitions<CR>", desc = "Browse LSP definitions" },
           },
           ["textDocument/typeDefinition*"] = {
-            { "gy", "<Cmd>Glance type_definitions<CR>", desc = "Go to type definition" },
+            { "gy", vim.lsp.buf.type_definition, desc = "Go to type definition" },
+            { "<Leader>sy", "<Cmd>Telescope lsp_type_definitions<CR>", desc = "Browse LSP type definitions" },
           },
           ["textDocument/implementation*"] = {
-            { "gi", "<Cmd>Glance implementations<CR>", desc = "Go to implementation" },
+            { "gI", vim.lsp.buf.implementation, desc = "Go to implementation" },
+            { "<Leader>sI", "<Cmd>Telescope lsp_implementations<CR>", desc = "Browse LSP implementations" },
           },
           ["callHierarchy/incomingCalls"] = {
-            { "<Leader>ci", "<Cmd>Lspsaga incoming_calls<CR>", desc = "Incoming calls" },
+            { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming calls" },
+            { "<Leader>si", "<Cmd>Telescope lsp_incoming_calls<CR>", desc = "Browse LSP incoming calls" },
           },
           ["callHierarchy/outgoingCalls"] = {
-            { "<Leader>co", "<Cmd>Lspsaga outgoing_calls<CR>", desc = "Outgoing calls" },
+            { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing calls" },
+            { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "Browse LSP outgoing calls" },
           },
           ["textDocument/inlayHint"] = {
             { "<Leader>uh", require("utils.toggle").inlay_hint, desc = "Toggle inlay hint" },
@@ -84,8 +88,6 @@ return {
         return ret
       end
 
-      vim.diagnostic.config(vim.deepcopy(lsp_opts.diagnostics))
-
       local capabilities = vim.tbl_deep_extend(
         "force",
         {},
@@ -112,30 +114,6 @@ return {
         opts = {},
       },
       {
-        "p00f/clangd_extensions.nvim",
-        opts = {
-          ast = {
-            role_icons = {
-              type = "",
-              declaration = "",
-              expression = "",
-              specifier = "",
-              statement = "",
-              ["template argument"] = "",
-            },
-            kind_icons = {
-              Compound = "",
-              Recovery = "",
-              TranslationUnit = "",
-              PackExpansion = "",
-              TemplateTypeParm = "",
-              TemplateTemplateParm = "",
-              TemplateParamObject = "",
-            },
-          },
-        },
-      },
-      {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",
       },
@@ -145,12 +123,6 @@ return {
       },
     },
     opts = {
-      diagnostics = {
-        virtual_text = { spacing = 4, source = "if_many" },
-        severity_sort = true,
-        signs = false,
-        update_in_insert = true,
-      },
       servers = {
         jsonls = {},
         neocmake = {},
@@ -161,7 +133,6 @@ return {
             "--include-cleaner-stdlib",
           },
           on_new_config = function(new_config, _) require("cmake-tools").clangd_on_new_config(new_config) end,
-          keys = { { "<Leader>cs", "<Cmd>ClangdSwitchSourceHeader<CR>", desc = "Switch between source and header" } },
         },
         lua_ls = {
           settings = {
@@ -182,43 +153,6 @@ return {
           },
         },
       },
-    },
-  },
-  {
-    "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
-    keys = {
-      { "<Leader>cd", "<Cmd>Lspsaga show_line_diagnostics<CR>", desc = "Show diagnostics" },
-      { "]d", "<Cmd>Lspsaga diagnostic_jump_next<CR>", desc = "Next diagnostic" },
-      { "[d", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", desc = "Previous diagnostic" },
-      {
-        "]w",
-        function() require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.WARN }) end,
-        desc = "Next warning",
-      },
-      {
-        "[w",
-        function() require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.WARN }) end,
-        desc = "Previous warning",
-      },
-      {
-        "]e",
-        function() require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR }) end,
-        desc = "Next error",
-      },
-      {
-        "[e",
-        function() require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR }) end,
-        desc = "Previous error",
-      },
-      { "<Leader>cn", "<Cmd>Lspsaga finder<CR>", desc = "LSP nagivation panel" },
-    },
-    opts = {
-      code_action = { show_server_name = true },
-      lightbulb = { sign = false },
-      ui = { winblend = require("user").ui.blend },
-      beacon = { enable = false },
-      symbol_in_winbar = { enable = false },
     },
   },
   {
@@ -397,58 +331,6 @@ return {
       { "<Leader>dt", "<Cmd>DapTerminate<CR>", desc = "Terminate" },
       { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval" },
       { "<Leader>du", function() require("dapui").toggle() end, desc = "Toggle UI" },
-    },
-  },
-  {
-    "folke/trouble.nvim",
-    cmd = "Trouble",
-    keys = {
-      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Document diagnostics" },
-      { "<Leader>xX", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Workspace Diagnostics" },
-      {
-        "[q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").previous({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cprev)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Previous trouble/quickfix item",
-      },
-      {
-        "]q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").next({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cnext)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Next trouble/quickfix item",
-      },
-    },
-    opts = {},
-  },
-  {
-    "DNLHC/glance.nvim",
-    cmd = "Glance",
-    opts = {
-      hooks = {
-        before_open = function(results, open, jump, _)
-          if #results == 1 then
-            jump(results[1])
-          else
-            open(results)
-          end
-        end,
-      },
     },
   },
   {

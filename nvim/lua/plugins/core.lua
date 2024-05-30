@@ -458,7 +458,7 @@ return {
     "gbprod/yanky.nvim",
     keys = {
       {
-        "<leader>sy",
+        "<leader>sY",
         function() require("telescope").extensions.yank_history.yank_history({}) end,
         desc = "Open Yank History",
       },

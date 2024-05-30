@@ -1,6 +1,14 @@
 local icons = require("utils.ui").icons
 local config = require("user")
 
+vim.diagnostic.config({
+  virtual_text = { spacing = 4, source = "if_many" },
+  severity_sort = true,
+  signs = false,
+  update_in_insert = true,
+  float = { border = "rounded" },
+})
+
 for name, icon in pairs(icons.diagnostic) do
   name = "DiagnosticSign" .. name
   vim.fn.sign_define(name, { texthl = name, text = icon, numhl = "" })

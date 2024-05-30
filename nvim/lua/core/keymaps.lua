@@ -7,6 +7,7 @@ vim.keymap.del("n", "gra")
 vim.keymap.del("i", "<C-s>")
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
 
@@ -27,8 +28,8 @@ map({ ",", ",<c-g>u", mode = "i" })
 map({ ".", ".<c-g>u", mode = "i" })
 map({ ";", ";<c-g>u", mode = "i" })
 
-map({ "j", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down" })
-map({ "k", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up" })
+map({ "j", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down", mode = { "n", "x" } })
+map({ "k", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up", mode = { "n", "x" } })
 
 map({ "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = "Visually select changed text" })
 
@@ -47,6 +48,8 @@ map({ "<Leader>fc", "<Cmd>e ~/.nvimrc<CR>", desc = "Open preferences" })
 
 map({ "<C-j>", "<Cmd>m .+1<CR>==", desc = "Move down" })
 map({ "<C-k>", "<Cmd>m .-2<CR>==", desc = "Move up" })
+map({ "<C-j>", "<Esc><Cmd>m .+1<Cr>==gi", mode = "i", desc = "Move Down" })
+map({ "<C-k>", "<Esc><Cmd>m .-2<Cr>==gi", mode = "i", desc = "Move Up" })
 map({ "<C-j>", ":m '>+1<CR>gv=gv", mode = "v", desc = "Move down" })
 map({ "<C-k>", ":m '<-2<CR>gv=gv", mode = "v", desc = "Move up" })
 
@@ -63,7 +66,7 @@ map({
 
 map({ "<Leader>l", "<Cmd>Lazy home<CR>", desc = "Lazy" })
 
-map({ "<Leader>fu", "<Cmd>earlier 1f<CR>", desc = "Give up modifications" })
+map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Give up modifications" })
 
 map({ "$", "g_", mode = "x", desc = "End of line" })
 
@@ -118,3 +121,13 @@ map({
   mode = "x",
   desc = "Snapshot",
 })
+
+map({ "gco", "o<Esc>Vcx<Esc><Cmd>normal gcc<Cr>fxa<Bs>", desc = "Add Comment Below" })
+map({ "gcO", "O<Esc>Vcx<Esc><Cmd>normal gcc<Cr>fxa<Bs>", desc = "Add Comment Above" })
+
+map({ "<Leader>um", toggle.maximize, desc = "Maximize current window" })
+
+map({ "[Q", "<Cmd>cfirst<CR>", desc = "First quickfix" })
+map({ "]Q", "<Cmd>clast<CR>", desc = "Last quickfix" })
+
+map({ "<Leader>fs", "<Cmd>luafile %<CR>", desc = "Souce" })

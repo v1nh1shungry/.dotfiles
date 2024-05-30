@@ -245,13 +245,16 @@ return {
     config = function(_, opts)
       local wk = require("which-key")
       wk.setup(opts)
-      wk.register(opts.defaults)
+
+      wk.register(opts.normal_group)
+      wk.register(opts.visual_group, { mode = "v" })
+      wk.register(opts.operator_group, { mode = "o" })
     end,
     event = "VeryLazy",
     opts = {
       window = { winblend = require("user").ui.blend },
       layout = { height = { max = 10 } },
-      defaults = {
+      normal_group = {
         ["g"] = { name = "+goto" },
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
@@ -268,6 +271,15 @@ return {
         ["<Leader>s"] = { name = "+search" },
         ["<Leader>u"] = { name = "+ui" },
         ["<Leader>x"] = { name = "+diagnostics/quickfix" },
+      },
+      visual_group = {
+        ["<Leader>c"] = { name = "+code" },
+        ["<Leader>s"] = { name = "+search" },
+      },
+      operator_group = {
+        ["g"] = { name = "+goto" },
+        ["]"] = { name = "+next" },
+        ["["] = { name = "+prev" },
       },
     },
   },
@@ -362,15 +374,12 @@ return {
         ft_ignore = excluded_filetypes,
         relculright = true,
         segments = {
-          { sign = { name = { "RecallSign" } }, click = "v:lua.ScSa" },
           { sign = { name = { "Dap" } }, click = "v:lua.ScSa" },
           { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
           { sign = { namespace = { "gitsigns" } }, click = "v:lua.ScSa" },
-          { text = { builtin.foldfunc }, click = "v:lua.ScSa" },
         },
       })
     end,
-    event = events.enter_buffer,
   },
   {
     "kevinhwang91/nvim-hlslens",
@@ -453,7 +462,16 @@ return {
           size = { height = 0.4 },
           filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
         },
-        "Trouble",
+        {
+          ft = "trouble",
+          filter = function(_, win)
+            return vim.w[win].trouble
+              and vim.w[win].trouble.position == "bottom"
+              and vim.w[win].trouble.type == "split"
+              and vim.w[win].trouble.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        },
         { ft = "qf", title = "QuickFix" },
         {
           ft = "help",
@@ -487,7 +505,16 @@ return {
         },
       },
       right = {
-        { title = "Outline", ft = "sagaoutline" },
+        {
+          ft = "trouble",
+          filter = function(_, win)
+            return vim.w[win].trouble
+              and vim.w[win].trouble.position == "right"
+              and vim.w[win].trouble.type == "split"
+              and vim.w[win].trouble.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        },
         {
           title = "Treesitter",
           ft = "query",
@@ -499,11 +526,6 @@ return {
           title = "Clang AST",
           ft = "ClangdAST",
           size = { width = 0.4 },
-        },
-        {
-          title = "Spectre",
-          ft = "spectre_panel",
-          size = { width = 0.5 },
         },
       },
       exit_when_last = true,
@@ -569,53 +591,6 @@ return {
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
     opts = { highlight = require("utils.ui").rainbow_highlight },
-  },
-  {
-    "kevinhwang91/nvim-ufo",
-    config = function(_, opts)
-      vim.opt.foldcolumn = "1"
-      vim.opt.foldenable = true
-
-      require("ufo").setup(opts)
-
-      local augroup = vim.api.nvim_create_augroup("dotfiles_disable_ufo", {})
-
-      vim.api.nvim_create_autocmd("FileType", {
-        command = "UfoDetach",
-        group = augroup,
-        pattern = excluded_filetypes,
-      })
-      vim.api.nvim_create_autocmd("BufEnter", {
-        callback = function()
-          if vim.list_contains(excluded_buftypes, vim.bo.buftype) then
-            vim.cmd("UfoDetach")
-          end
-        end,
-        group = augroup,
-      })
-    end,
-    dependencies = { "kevinhwang91/promise-async", "luukvbaal/statuscol.nvim" },
-    lazy = false,
-    opts = {
-      preview = {
-        win_config = { winblend = require("user").ui.blend },
-        mappings = {
-          scrollU = "<C-u>",
-          scrollD = "<C-d>",
-          scrollB = "<C-b>",
-          scroolF = "<C-f>",
-          jumpTop = "[",
-          jumpBot = "]",
-        },
-      },
-    },
-    keys = {
-      {
-        "<Leader>uf",
-        function() require("ufo").peekFoldedLinesUnderCursor() end,
-        desc = "Preview fold",
-      },
-    },
   },
   {
     "v1nh1shungry/plantuml-preview.nvim",

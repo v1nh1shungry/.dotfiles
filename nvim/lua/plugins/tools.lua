@@ -17,20 +17,49 @@ return {
       { "<Leader>sh", "<Cmd>Telescope highlights<CR>", desc = "Highlight groups" },
       { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
     },
-    opts = {
-      defaults = {
-        prompt_prefix = "🔎 ",
-        selection_caret = "➤ ",
-        layout_strategy = "bottom_pane",
-        layout_config = {
-          bottom_pane = {
-            height = 0.4,
-            preview_cutoff = 100,
-            prompt_position = "bottom",
+    opts = function()
+      local function flash(prompt_bufnr)
+        require("flash").jump({
+          pattern = "^",
+          label = { after = { 0, 0 } },
+          search = {
+            mode = "search",
+            exclude = {
+              function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults" end,
+            },
+          },
+          action = function(match)
+            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+            picker:set_selection(match.pos[1] - 1)
+          end,
+        })
+      end
+
+      local open_with_trouble = require("trouble.sources.telescope").open
+
+      return {
+        defaults = {
+          prompt_prefix = "🔎 ",
+          selection_caret = "➤ ",
+          layout_strategy = "bottom_pane",
+          layout_config = {
+            bottom_pane = {
+              height = 0.4,
+              preview_cutoff = 100,
+              prompt_position = "bottom",
+            },
+          },
+          mappings = {
+            i = {
+              ["<C-t>"] = open_with_trouble,
+              ["<M-t>"] = open_with_trouble,
+              ["<C-s>"] = flash,
+            },
+            n = { s = flash },
           },
         },
-      },
-    },
+      }
+    end,
   },
   {
     "krady21/compiler-explorer.nvim",
@@ -175,12 +204,6 @@ return {
     },
   },
   {
-    "nvim-pack/nvim-spectre",
-    dependencies = "nvim-lua/plenary.nvim",
-    keys = { { "<Leader>sd", "<Cmd>Spectre<CR>", desc = "Spectre" } },
-    opts = { open_cmd = "noswapfile vnew" },
-  },
-  {
     "kawre/leetcode.nvim",
     dependencies = {
       "nvim-telescope/telescope.nvim",
@@ -323,5 +346,11 @@ return {
       { "<Leader>gF", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
       { "<Leader>gf", function() require("tinygit").functionHistory() end, desc = "Search function history" },
     },
+  },
+  {
+    "debugloop/telescope-undo.nvim",
+    config = function() require("telescope").load_extension("undo") end,
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+    keys = { { "<Leader>fu", "<Cmd>Telescope undo<CR>", desc = "Undotree" } },
   },
 }

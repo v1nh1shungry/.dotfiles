@@ -53,16 +53,12 @@ return {
             { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
           },
         }
+
         for method, keys in pairs(mappings) do
           if client.supports_method(method) then
             for _, key in ipairs(keys) do
               map_local(key)
             end
-          end
-        end
-        if lsp_opts.servers[client.name] and lsp_opts.servers[client.name].keys then
-          for _, key in ipairs(lsp_opts.servers[client.name].keys) do
-            map_local(key)
           end
         end
 
@@ -113,10 +109,7 @@ return {
         "folke/neodev.nvim",
         opts = {},
       },
-      {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = "williamboman/mason.nvim",
-      },
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
       {
         "folke/neoconf.nvim",
         opts = {},
@@ -152,13 +145,21 @@ return {
             },
           },
         },
+        basedpyright = {},
       },
     },
   },
   {
-    "williamboman/mason.nvim",
-    keys = { { "<Leader>cm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    opts = { ensure_installed = { "stylua", "gersemi" } },
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = {
+      {
+        "williamboman/mason.nvim",
+        keys = { { "<Leader>cm", "<Cmd>Mason<CR>", desc = "Mason" } },
+        opts = {},
+      },
+      "williamboman/mason-lspconfig.nvim",
+    },
+    opts = { ensure_installed = { "stylua", "black", "codelldb" } },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -256,6 +257,7 @@ return {
         end
         map_local({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview hunk" })
         map_local({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk" })
+        map_local({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
         map_local({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
         map_local({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
         map_local({ "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" })
@@ -307,11 +309,31 @@ return {
       "nvim-neotest/nvim-nio",
       {
         "mfussenegger/nvim-dap",
-        dependencies = {
-          "jay-babu/mason-nvim-dap.nvim",
-          dependencies = "williamboman/mason.nvim",
-          opts = { automatic_installation = true, handlers = {} },
-        },
+        config = function()
+          local dap = require("dap")
+          dap.adapters.codelldb = {
+            type = "server",
+            port = "${port}",
+            executable = {
+              command = vim.fn.exepath("codelldb"),
+              args = { "--port", "${port}" },
+            },
+          }
+          for _, ft in ipairs({ "c", "cpp" }) do
+            dap.configurations[ft] = {
+              {
+                name = "LLDB: Launch",
+                type = "codelldb",
+                request = "launch",
+                program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
+                cwd = "${workspaceFolder}",
+                stopOnEntry = false,
+                args = {},
+                console = "integratedTerminal",
+              },
+            }
+          end
+        end,
       },
       {
         "theHamsta/nvim-dap-virtual-text",
@@ -336,6 +358,7 @@ return {
   {
     "stevearc/conform.nvim",
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
+    dependencies = "WhoIsSethDaniel/mason-tool-installer.nvim",
     keys = {
       {
         "<Leader>cf",
@@ -348,11 +371,13 @@ return {
       formatters_by_ft = {
         fish = { "fish_indent" },
         lua = { "stylua" },
+        python = { "black" },
       },
     },
   },
   {
     "mfussenegger/nvim-lint",
+    dependencies = "WhoIsSethDaniel/mason-tool-installer.nvim",
     event = events.enter_buffer,
     opts = {
       events = { "BufWritePost", "BufReadPost" },

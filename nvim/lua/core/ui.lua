@@ -26,14 +26,11 @@ end
 
 local background = config.ui.background
 if type(background) == "table" then
-  local function update()
-    local t = os.date("*t", os.time())
-    vim.opt.background = (background.light <= t.hour and t.hour < background.dark) and "light" or "dark"
-  end
-  update()
-  vim.api.nvim_create_autocmd("FocusGained", {
-    callback = update,
-    group = vim.api.nvim_create_augroup("dotfiles_auto_background", {}),
+  vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
+    callback = function()
+      local t = os.date("*t", os.time())
+      vim.opt.background = (background.light <= t.hour and t.hour < background.dark) and "light" or "dark"
+    end,
   })
 else
   vim.opt.background = background

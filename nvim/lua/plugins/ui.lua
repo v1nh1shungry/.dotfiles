@@ -103,6 +103,7 @@ return {
         end,
         desc = "Previous buffer",
       },
+      { "gb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
     },
     opts = {
       options = {
@@ -293,6 +294,16 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
+    config = function(_, opts)
+      require("noice").setup(opts)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(event)
+          vim.schedule(function() require("noice.text.markdown").keys(event.buf) end)
+        end,
+        pattern = "markdown",
+      })
+    end,
     keys = {
       { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" },
       { "<Leader>un", "<Cmd>Noice dismiss<CR>", desc = "Dismiss all notifications" },
@@ -321,41 +332,33 @@ return {
         mode = { "i", "n", "s" },
       },
     },
-    opts = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(event)
-          vim.schedule(function() require("noice.text.markdown").keys(event.buf) end)
-        end,
-        pattern = "markdown",
-      })
-
-      return {
-        views = { split = { enter = true } },
-        presets = {
-          long_message_to_split = true,
-          bottom_search = true,
-          command_palette = true,
+    opts = {
+      views = { split = { enter = true } },
+      presets = {
+        long_message_to_split = true,
+        bottom_search = true,
+        command_palette = true,
+      },
+      messages = { view_search = false },
+      lsp = {
+        hover = { enabled = false },
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
         },
-        messages = { view_search = false },
-        lsp = {
-          hover = { enabled = false },
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
+      },
+      markdown = { hover = { ["%[.-%]%((%S-)%)"] = vim.ui.open } },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            any = { { find = "%d+L, %d+B" }, { find = "; after #%d+" }, { find = "; before #%d+" } },
           },
+          view = "mini",
         },
-        routes = {
-          {
-            filter = {
-              event = "msg_show",
-              any = { { find = "%d+L, %d+B" }, { find = "; after #%d+" }, { find = "; before #%d+" } },
-            },
-            view = "mini",
-          },
-        },
-      }
-    end,
+      },
+    },
   },
   {
     "luukvbaal/statuscol.nvim",

@@ -29,11 +29,15 @@ map({ ";", ";<c-g>u", mode = "i" })
 
 map({ "j", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down", mode = { "n", "x" } })
 map({ "k", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up", mode = { "n", "x" } })
+map({ "<Down>", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down", mode = { "n", "x" } })
+map({ "<Up>", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up", mode = { "n", "x" } })
 
 map({ "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = "Visually select changed text" })
 
 map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close tab" })
 map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New tab" })
+map({ "<Leader><Tab>0", "<Cmd>tabfirst<CR>", desc = "First tab" })
+map({ "<Leader><Tab>$", "<Cmd>tablast<CR>", desc = "Last tab" })
 map({ "]<Tab>", function() return "<Cmd>+" .. vim.v.count1 .. "tabnext<CR>" end, desc = "Next tab", expr = true })
 map({ "[<Tab>", function() return "<Cmd>-" .. vim.v.count1 .. "tabnext<CR>" end, desc = "Previous tab", expr = true })
 

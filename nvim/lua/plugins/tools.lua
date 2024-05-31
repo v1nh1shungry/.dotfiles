@@ -236,7 +236,7 @@ return {
     keys = {
       {
         "<Leader>sg",
-        function() require('telescope').extensions.refactoring.refactors() end,
+        function() require("telescope").extensions.refactoring.refactors() end,
         desc = "Refactoring",
         mode = { "n", "x" },
       },
@@ -347,5 +347,16 @@ return {
     config = function() require("telescope").load_extension("undo") end,
     dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
     keys = { { "<Leader>fu", "<Cmd>Telescope undo<CR>", desc = "Undotree" } },
+  },
+  {
+    "rafcamlet/nvim-luapad",
+    cmd = "Luapad",
+    opts = {
+      on_init = function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        vim.bo[bufnr].buflisted = false
+        require("utils.keymap")({ "q", "<C-w>q", desc = "Quit", buffer = bufnr })
+      end,
+    },
   },
 }

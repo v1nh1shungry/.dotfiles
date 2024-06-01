@@ -130,8 +130,18 @@ map({ "gcO", "O<Esc>Vcx<Esc><Cmd>normal gcc<Cr>fxa<Bs>", desc = "Add Comment Abo
 
 map({ "<Leader>um", toggle.maximize, desc = "Maximize current window" })
 
-map({ "]q", "<Cmd>cnext<CR>", desc = "Jump to the next quickfix" })
-map({ "[q", "<Cmd>cprevious<CR>", desc = "Jump to the previous quickfix" })
+map({
+  "]q",
+  function() return "<Cmd>" .. vim.v.count1 .. "cnext<CR>" end,
+  expr = true,
+  desc = "Jump to the next quickfix",
+})
+map({
+  "[q",
+  function() return "<Cmd>" .. vim.v.count1 .. "cprevious<CR>" end,
+  expr = true,
+  desc = "Jump to the previous quickfix",
+})
 map({ "[Q", "<Cmd>cfirst<CR>", desc = "Jump to the first quickfix" })
 map({ "]Q", "<Cmd>clast<CR>", desc = "Jump to the last quickfix" })
 

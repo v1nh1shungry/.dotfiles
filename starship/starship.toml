@@ -8,12 +8,19 @@ format = "via [$symbol v$output-gcc]($style) "
 [cmake]
 detect_extensions = ["cmake"]
 
-[haskell]
-symbol = " "
-
 [custom.vim]
-command = "nvim -v | head -1"
+command = "nvim -v | head -1 | cut -d- -f1"
 symbol = ""
 detect_extensions = ["vim"]
 style = "bold green"
+format = "via [$symbol $output]($style) "
+
+[lua]
+disabled = true
+
+[custom.lua]
+command = "nvim -v | head -1 | cut -d- -f1"
+symbol = "🌙"
+detect_extensions = ["lua"]
+style = "bold blue"
 format = "via [$symbol $output]($style) "

@@ -12,6 +12,7 @@ local M = {
     save = true,
     compile = {},
     execute = {},
+    launch = {},
   },
 }
 

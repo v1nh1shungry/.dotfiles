@@ -67,14 +67,16 @@ return {
         end
       end
 
-      require("mason-lspconfig").setup({ automatic_installation = true })
-
       vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args) on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf) end,
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client then
+            on_attach(client, args.buf)
+          end
+        end,
       })
 
       local register_capability = vim.lsp.handlers["client/registerCapability"]
-
       vim.lsp.handlers["client/registerCapability"] = function(err, res, ctx)
         local ret = register_capability(err, res, ctx)
         local client_id = ctx.client_id
@@ -88,28 +90,54 @@ return {
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        require("cmp_nvim_lsp").default_capabilities()
+        require("cmp_nvim_lsp").default_capabilities(),
+        {
+          workspace = {
+            fileOperations = {
+              didRename = true,
+              willRename = true,
+            },
+          },
+        }
       )
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
 
-      for server, opts in pairs(lsp_opts.servers) do
-        opts = vim.tbl_deep_extend("force", {
+      local function setup(server)
+        local opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
           single_file_support = true,
-        }, opts)
+        }, lsp_opts.servers[server])
+        if lsp_opts.setup[server] then
+          if lsp_opts.setup[server](server, opts) then
+            return
+          end
+        elseif lsp_opts.setup["*"] then
+          if lsp_opts.setup["*"](server, opts) then
+            return
+          end
+        end
         require("lspconfig")[server].setup(opts)
       end
+
+      local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+      local ensure_installed = {}
+      for server, opts in pairs(lsp_opts.servers) do
+        if opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+          setup(server)
+        else
+          ensure_installed[#ensure_installed + 1] = server
+        end
+      end
+      require("mason-lspconfig").setup({
+        ensure_installed = ensure_installed,
+        handlers = { setup },
+      })
     end,
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       {
-        "folke/neodev.nvim",
-        opts = {},
+        "williamboman/mason-lspconfig.nvim",
+        dependencies = "williamboman/mason.nvim",
       },
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
       {
         "folke/neoconf.nvim",
         opts = {},
@@ -117,7 +145,18 @@ return {
     },
     opts = {
       servers = {
-        jsonls = {},
+        jsonls = {
+          on_new_config = function(new_config)
+            new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+            vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
+          end,
+          settings = {
+            json = {
+              format = { enable = true },
+              validate = { enable = true },
+            },
+          },
+        },
         neocmake = {},
         clangd = {
           cmd = {
@@ -150,19 +189,73 @@ return {
           },
         },
         basedpyright = {},
+        vtsls = {
+          settings = {
+            complete_function_calls = true,
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = { completion = { enableServerSideFuzzyMatch = true } },
+            },
+            typescript = {
+              updateImportsOnFileMove = { enabled = "always" },
+              suggest = { completeFunctionCalls = true },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
+              },
+            },
+          },
+        },
+      },
+      setup = {
+        vtsls = function(_, opts)
+          opts.settings.javascript =
+            vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
+        end,
       },
     },
   },
   {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    dependencies = {
-      {
-        "williamboman/mason.nvim",
-        keys = { { "<Leader>cm", "<Cmd>Mason<CR>", desc = "Mason" } },
-        opts = {},
-      },
-      "williamboman/mason-lspconfig.nvim",
-    },
+    "b0o/SchemaStore.nvim",
+    lazy = true,
+  },
+  {
+    "folke/lazydev.nvim",
+    dependencies = "Bilal2453/luvit-meta",
+    ft = "lua",
+    opts = { library = { vim.env.LAZY .. "/luvit-meta/library" } },
+  },
+  {
+    "williamboman/mason.nvim",
+    config = function(_, opts)
+      require("mason").setup(opts)
+      local mr = require("mason-registry")
+      mr:on("package:install:success", function()
+        vim.defer_fn(
+          function()
+            require("lazy.core.handler.event").trigger({
+              event = "FileType",
+              buf = vim.api.nvim_get_current_buf(),
+            })
+          end,
+          100
+        )
+      end)
+      mr.refresh(function()
+        for _, tool in ipairs(opts.ensure_installed) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then
+            p:install()
+          end
+        end
+      end)
+    end,
+    keys = { { "<Leader>cm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = { ensure_installed = { "stylua", "black", "codelldb" } },
   },
   {
@@ -351,7 +444,7 @@ return {
   {
     "stevearc/conform.nvim",
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
-    dependencies = "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = "williamboman/mason.nvim",
     keys = {
       {
         "<Leader>cf",
@@ -370,7 +463,7 @@ return {
   },
   {
     "mfussenegger/nvim-lint",
-    dependencies = "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = "williamboman/mason.nvim",
     event = events.enter_buffer,
     opts = {
       events = { "BufWritePost", "BufReadPost" },

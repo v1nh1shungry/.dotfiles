@@ -32,7 +32,7 @@ vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx)
       end
 
       if not ret.type then
-        ret.type = line:match("^→ (.+)")
+        ret.type = line:match("^→ .+")
         if ret.type then
           goto continue
         end
@@ -64,20 +64,20 @@ vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx)
     end
 
     local new_docs = {}
-    if vim.tbl_count(params) ~= 0 then
-      local params_section = {}
-      for _, desc in pairs(params) do
-        params_section[#params_section + 1] = desc
-      end
-      new_docs[#new_docs + 1] = table.concat(params_section, "\n")
-    end
     if ret.type then
       local ret_section = {}
-      ret_section[#ret_section + 1] = "Returns " .. ret.type
+      ret_section[#ret_section + 1] = ret.type
       if ret.desc then
         ret_section[#ret_section + 1] = ret.desc
       end
       new_docs[#new_docs + 1] = table.concat(ret_section, "\n")
+    end
+    if vim.tbl_count(params) ~= 0 then
+      local params_section = { "Parameters:" }
+      for _, desc in pairs(params) do
+        params_section[#params_section + 1] = desc
+      end
+      new_docs[#new_docs + 1] = table.concat(params_section, "\n")
     end
     if #comments ~= 0 then
       local comment_section = {}
@@ -87,7 +87,7 @@ vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx)
       new_docs[#new_docs + 1] = table.concat(comment_section, "\n")
     end
 
-    sections[2] = table.concat(new_docs, "\n---\n")
+    sections[2] = table.concat(new_docs, "\n\n")
     result.contents.value = table.concat(sections, "\n---\n")
   end
 

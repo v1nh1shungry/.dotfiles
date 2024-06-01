@@ -130,10 +130,14 @@ map({ "gcO", "O<Esc>Vcx<Esc><Cmd>normal gcc<Cr>fxa<Bs>", desc = "Add Comment Abo
 
 map({ "<Leader>um", toggle.maximize, desc = "Maximize current window" })
 
-map({ "[Q", "<Cmd>cfirst<CR>", desc = "First quickfix" })
-map({ "]Q", "<Cmd>clast<CR>", desc = "Last quickfix" })
+map({ "]q", "<Cmd>cnext<CR>", desc = "Jump to the next quickfix" })
+map({ "[q", "<Cmd>cprevious<CR>", desc = "Jump to the previous quickfix" })
+map({ "[Q", "<Cmd>cfirst<CR>", desc = "Jump to the first quickfix" })
+map({ "]Q", "<Cmd>clast<CR>", desc = "Jump to the last quickfix" })
 
 map({ "<Leader>fs", "<Cmd>luafile %<CR>", desc = "Souce" })
+
+map({ "<Leader>cd", vim.diagnostic.open_float, desc = "Show diagnostics" })
 
 map({
   "]d",

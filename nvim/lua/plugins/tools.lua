@@ -148,7 +148,6 @@ return {
         "-DCMAKE_EXPORT_COMPILE_COMMANDS=On",
         "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
       },
-      cmake_build_directory = "build",
       cmake_soft_link_compile_commands = false,
       cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
     },

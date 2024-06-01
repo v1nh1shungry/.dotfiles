@@ -1,43 +1,59 @@
 local map = require("utils.keymap")
-local opts = require("user").task
 
-local compile_opts = {
-  c = {
-    "ccache",
-    "gcc",
-    "${relativeFile}",
-    "-o",
-    "${relativeFileDirname}/${fileBasenameNoExtension}",
-    "-g",
-    "-fsanitize=address,undefined",
-    "-std=c17",
-    "-Wall",
-    "-Wextra",
+local config = {
+  save = true,
+  compile = {
+    c = {
+      "ccache",
+      "gcc",
+      "${relativeFile}",
+      "-o",
+      "${relativeFileDirname}${/}${fileBasenameNoExtension}",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-std=c17",
+      "-Wall",
+      "-Wextra",
+    },
+    cpp = {
+      "ccache",
+      "g++",
+      "${relativeFile}",
+      "-o",
+      "${relativeFileDirname}${/}${fileBasenameNoExtension}",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+    },
   },
-  cpp = {
-    "ccache",
-    "g++",
-    "${relativeFile}",
-    "-o",
-    "${relativeFileDirname}/${fileBasenameNoExtension}",
-    "-g",
-    "-fsanitize=address,undefined",
-    "-std=c++17",
-    "-Wall",
-    "-Wextra",
+  execute = {
+    c = { "${relativeFileDirname}${/}${fileBasenameNoExtension}" },
+    cpp = { "${relativeFileDirname}${/}${fileBasenameNoExtension}" },
+    python = { "python", "${relativeFile}" },
+    lua = { "nvim", "-l", "${relativeFile}" },
+    javascript = { "node", "${relativeFile}" },
   },
+  launch = {},
 }
 
-local execute_opts = {
-  c = { "${relativeFileDirname}/${fileBasenameNoExtension}" },
-  cpp = { "${relativeFileDirname}/${fileBasenameNoExtension}" },
-  python = { "python", "${relativeFile}" },
-  lua = { "nvim", "-l", "${relativeFile}" },
-  javascript = { "node", "${relativeFile}" },
-}
+for _, ft in ipairs({ "c", "cpp" }) do
+  config.launch[ft] = {
+    {
+      name = "LLDB: Launch",
+      type = "codelldb",
+      request = "launch",
+      program = "${relativeFileDirname}/${fileBasenameNoExtension}",
+      cwd = "${workspaceFolder}",
+      stopOnEntry = false,
+      args = {},
+      console = "integratedTerminal",
+    },
+  }
+end
 
-compile_opts = vim.tbl_deep_extend("force", compile_opts, opts.compile)
-execute_opts = vim.tbl_deep_extend("force", execute_opts, opts.execute)
+config = vim.tbl_deep_extend("force", config, require("user").task)
 
 local function cook_variable(line)
   local variables = {
@@ -68,20 +84,19 @@ local function cook_command(cmd)
   return cmd
 end
 
-for lang, cmd in pairs(compile_opts) do
+local augroup = vim.api.nvim_create_augroup("dotfiles_task_autocmds", {})
+
+for lang, cmd in pairs(config.compile) do
   vim.api.nvim_create_autocmd("FileType", {
     callback = function(args)
       map({
         "<Leader>fb",
         function()
           cmd = cook_command(cmd)
-
-          if opts.save then
-            vim.cmd.w()
+          if config.save then
+            vim.cmd("w")
           end
-
           vim.fn.setqflist({}, " ", { title = table.concat(cmd, " ") })
-
           vim.system(
             cmd,
             { text = true },
@@ -91,19 +106,17 @@ for lang, cmd in pairs(compile_opts) do
               else
                 vim.notify("Compile error!", vim.log.levels.ERROR, { title = "Task" })
               end
-              if res.stderr then
+              if res.stderr and res.stderr ~= "" then
                 local winnr = vim.fn.winnr()
                 local lines = vim.tbl_filter(
                   function(l) return l:match("^.+:%d+:%d+:") end,
                   vim.split(res.stderr, "\n", { trimempty = true })
                 )
-                if #lines == 0 then
-                  vim.cmd("cclose")
-                  return
-                end
                 vim.fn.setqflist({}, "a", { lines = lines })
                 vim.cmd("copen")
                 vim.cmd(winnr .. " wincmd w")
+              else
+                vim.cmd("cclose")
               end
             end)
           )
@@ -112,6 +125,7 @@ for lang, cmd in pairs(compile_opts) do
         desc = "Compile",
       })
     end,
+    group = augroup,
     pattern = lang,
   })
 end
@@ -130,21 +144,43 @@ local function execute(cmd)
   term:toggle()
 end
 
-for lang, cmd in pairs(execute_opts) do
+for ft, cmd in pairs(config.execute) do
   vim.api.nvim_create_autocmd("FileType", {
-    callback = function(args)
+    callback = function(event)
       map({
         "<Leader>fx",
         function()
-          if opts.save then
-            vim.cmd.w()
+          if config.save then
+            vim.cmd("w")
           end
           execute(table.concat(cook_command(cmd), " "))
         end,
-        buffer = args.buf,
+        buffer = event.buf,
         desc = "Execute",
       })
     end,
-    pattern = lang,
+    group = augroup,
+    pattern = ft,
+  })
+end
+
+for ft, conf in pairs(config.launch) do
+  vim.api.nvim_create_autocmd("FileType", {
+    callback = function(event)
+      map({
+        "<Leader>dc",
+        function()
+          local dap = require("dap")
+          if not dap.configurations[ft] then
+            dap.configurations[ft] = conf
+          end
+          vim.cmd("DapContinue")
+        end,
+        buffer = event.buf,
+        desc = "Continue",
+      })
+    end,
+    group = augroup,
+    pattern = ft,
   })
 end

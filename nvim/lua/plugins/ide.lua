@@ -125,7 +125,11 @@ return {
             "--header-insertion=never",
             "--include-cleaner-stdlib",
           },
-          on_new_config = function(new_config, _) require("cmake-tools").clangd_on_new_config(new_config) end,
+          on_new_config = function(new_config, _)
+            if package.loaded["cmake-tools"] then
+              require("cmake-tools").clangd_on_new_config(new_config)
+            end
+          end,
         },
         lua_ls = {
           settings = {
@@ -167,7 +171,10 @@ return {
       local cmp = require("cmp")
 
       cmp.setup({
-        window = { completion = { side_padding = 0 } },
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
+        },
         snippet = {
           expand = function(item) vim.snippet.expand(item.body) end,
         },
@@ -179,7 +186,7 @@ return {
               item.abbr = item.abbr:sub(1, 50) .. "…"
             end
             item.menu = item.kind
-            item.kind = " " .. require("utils.ui").icons.lspkind[item.kind] .. " "
+            item.kind = require("utils.ui").icons.lspkind[item.kind]
             return item
           end,
           expandable_indicator = true,
@@ -319,20 +326,6 @@ return {
               args = { "--port", "${port}" },
             },
           }
-          for _, ft in ipairs({ "c", "cpp" }) do
-            dap.configurations[ft] = {
-              {
-                name = "LLDB: Launch",
-                type = "codelldb",
-                request = "launch",
-                program = function() return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file") end,
-                cwd = "${workspaceFolder}",
-                stopOnEntry = false,
-                args = {},
-                console = "integratedTerminal",
-              },
-            }
-          end
         end,
       },
       {
@@ -343,7 +336,7 @@ return {
     keys = {
       { "<Leader>db", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
       { "<Leader>dc", "<Cmd>DapContinue<CR>", desc = "Continue" },
-      { "<Leader>d,", function() require("dap").run_last() end, "Run last" },
+      { "<Leader>d,", function() require("dap").run_last() end, desc = "Run last" },
       { "<Leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to cursor" },
       { "<Leader>dn", "<Cmd>DapStepOver<CR>", desc = "Step over" },
       { "<Leader>ds", "<Cmd>DapStepInto<CR>", desc = "Step into" },

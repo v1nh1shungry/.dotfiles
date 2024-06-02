@@ -342,7 +342,6 @@ return {
       },
       messages = { view_search = false },
       lsp = {
-        hover = { enabled = false },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
@@ -555,7 +554,7 @@ return {
     main = "render-markdown",
     dependencies = "nvim-treesitter/nvim-treesitter",
     ft = "markdown",
-    opts = {},
+    opts = { win_options = { conceallevel = { rendered = 0 } } },
   },
   {
     "mcauley-penney/visual-whitespace.nvim",

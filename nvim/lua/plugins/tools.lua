@@ -17,6 +17,7 @@ return {
       { "<Leader>sh", "<Cmd>Telescope highlights<CR>", desc = "Highlight groups" },
       { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
       { "<Leader>sx", "<Cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
+      { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
     },
     opts = function()
       local function flash(prompt_bufnr)
@@ -41,11 +42,12 @@ return {
           prompt_prefix = "🔎 ",
           selection_caret = "➤ ",
           layout_strategy = "bottom_pane",
+          sorting_strategy = "ascending",
           layout_config = {
             bottom_pane = {
               height = 0.4,
               preview_cutoff = 100,
-              prompt_position = "bottom",
+              prompt_position = "top",
             },
           },
           mappings = {

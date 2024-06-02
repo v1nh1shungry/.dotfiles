@@ -19,32 +19,32 @@ return {
             { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
           },
           ["textDocument/documentSymbol"] = {
-            { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Browse LSP symbols (Document)" },
-            { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "Browse LSP symbols (Workspace)" },
+            { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "LSP symbols (Document)" },
+            { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "LSP symbols (Workspace)" },
           },
           ["textDocument/references"] = {
             { "gR", vim.lsp.buf.references, desc = "Go to references" },
-            { "<Leader>sR", "<Cmd>Telescope lsp_references<CR>", desc = "Browse LSP references" },
+            { "<Leader>sR", "<Cmd>Telescope lsp_references<CR>", desc = "LSP references" },
           },
           ["textDocument/definition"] = {
             { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
-            { "<Leader>sd", "<Cmd>Telescope lsp_definitions<CR>", desc = "Browse LSP definitions" },
+            { "<Leader>sd", "<Cmd>Telescope lsp_definitions<CR>", desc = "LSP definitions" },
           },
           ["textDocument/typeDefinition*"] = {
             { "gy", vim.lsp.buf.type_definition, desc = "Go to type definition" },
-            { "<Leader>sy", "<Cmd>Telescope lsp_type_definitions<CR>", desc = "Browse LSP type definitions" },
+            { "<Leader>sy", "<Cmd>Telescope lsp_type_definitions<CR>", desc = "LSP type definitions" },
           },
           ["textDocument/implementation*"] = {
             { "gI", vim.lsp.buf.implementation, desc = "Go to implementation" },
-            { "<Leader>sI", "<Cmd>Telescope lsp_implementations<CR>", desc = "Browse LSP implementations" },
+            { "<Leader>sI", "<Cmd>Telescope lsp_implementations<CR>", desc = "LSP implementations" },
           },
           ["callHierarchy/incomingCalls"] = {
             { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming calls" },
-            { "<Leader>si", "<Cmd>Telescope lsp_incoming_calls<CR>", desc = "Browse LSP incoming calls" },
+            { "<Leader>si", "<Cmd>Telescope lsp_incoming_calls<CR>", desc = "LSP incoming calls" },
           },
           ["callHierarchy/outgoingCalls"] = {
             { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing calls" },
-            { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "Browse LSP outgoing calls" },
+            { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "LSP outgoing calls" },
           },
           ["textDocument/inlayHint"] = {
             { "<Leader>uh", require("utils.toggle").inlay_hint, desc = "Toggle inlay hint" },
@@ -226,9 +226,18 @@ return {
   },
   {
     "folke/lazydev.nvim",
-    dependencies = "Bilal2453/luvit-meta",
+    dependencies = {
+      "Bilal2453/luvit-meta",
+      {
+        "hrsh7th/nvim-cmp",
+        opts = function(_, opts)
+          opts.sources = opts.sources or {}
+          table.insert(opts.sources, { name = "lazydev", group_index = 0 })
+        end,
+      },
+    },
     ft = "lua",
-    opts = { library = { vim.env.LAZY .. "/luvit-meta/library" } },
+    opts = { library = { "luvit-meta/library" } },
   },
   {
     "williamboman/mason.nvim",
@@ -383,6 +392,7 @@ return {
         })
         map_local({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
         map_local({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
+        map_local({ "<Leader>xh", "<Cmd>Gitsigns setqflist<CR>", desc = "Git hunks" })
       end,
     },
   },

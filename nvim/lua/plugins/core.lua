@@ -226,13 +226,21 @@ return {
     keys = {
       {
         "[[",
-        function() require("illuminate").goto_prev_reference(false) end,
-        desc = "Previous reference",
+        function()
+          for _ = 1, vim.v.count1 do
+            require("illuminate").goto_prev_reference(false)
+          end
+        end,
+        desc = "Jump to the previous reference",
       },
       {
         "]]",
-        function() require("illuminate").goto_next_reference(false) end,
-        desc = "Next reference",
+        function()
+          for _ = 1, vim.v.count1 do
+            require("illuminate").goto_next_reference(false)
+          end
+        end,
+        desc = "Jump to the next reference",
       },
     },
   },
@@ -427,7 +435,7 @@ return {
     keys = {
       { "<Leader>qs", "<Cmd>SessionLoad<CR>", desc = "Restore current session" },
       { "<Leader>ql", "<Cmd>SessionLoadLast<CR>", desc = "Restore last session" },
-      { "<Leader>sq", "<Cmd>Telescope persisted<CR>", desc = "Session" },
+      { "<Leader>q/", "<Cmd>Telescope persisted<CR>", desc = "Search sessions" },
       {
         "<Leader>qd",
         function()

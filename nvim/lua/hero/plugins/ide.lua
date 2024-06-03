@@ -1,5 +1,5 @@
-local events = require("utils.events")
-local map = require("utils.keymap")
+local events = require("hero.utils.events")
+local map = require("hero.utils.keymap")
 
 return {
   {
@@ -47,7 +47,7 @@ return {
             { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "LSP outgoing calls" },
           },
           ["textDocument/inlayHint"] = {
-            { "<Leader>uh", require("utils.toggle").inlay_hint, desc = "Toggle inlay hint" },
+            { "<Leader>uh", require("hero.utils.toggle").inlay_hint, desc = "Toggle inlay hint" },
           },
           ["textDocument/signatureHelp"] = {
             { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
@@ -288,7 +288,7 @@ return {
               item.abbr = item.abbr:sub(1, 50) .. "…"
             end
             item.menu = item.kind
-            item.kind = require("utils.ui").icons.lspkind[item.kind]
+            item.kind = require("hero.utils.ui").icons.lspkind[item.kind]
             return item
           end,
           expandable_indicator = true,

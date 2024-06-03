@@ -1,6 +1,6 @@
-local events = require("utils.events")
-local excluded_buftypes = require("utils.ui").excluded_buftypes
-local excluded_filetypes = require("utils.ui").excluded_filetypes
+local events = require("hero.utils.events")
+local excluded_buftypes = require("hero.utils.ui").excluded_buftypes
+local excluded_filetypes = require("hero.utils.ui").excluded_filetypes
 
 return {
   {
@@ -246,7 +246,7 @@ return {
     end,
     event = "VeryLazy",
     opts = {
-      window = { winblend = require("user").ui.blend },
+      window = { winblend = require("hero.user").ui.blend },
       layout = { height = { max = 10 } },
       normal_group = {
         ["g"] = { name = "+goto" },
@@ -526,7 +526,7 @@ return {
       render = function(props)
         local label = {}
         if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
-          local icons = require("utils.ui").icons.diagnostic
+          local icons = require("hero.utils.ui").icons.diagnostic
           for severity, icon in pairs(icons) do
             local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
             if n > 0 then
@@ -566,7 +566,7 @@ return {
     main = "rainbow-delimiters.setup",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
-    opts = { highlight = require("utils.ui").rainbow_highlight },
+    opts = { highlight = require("hero.utils.ui").rainbow_highlight },
   },
   {
     "v1nh1shungry/plantuml-preview.nvim",
@@ -574,7 +574,7 @@ return {
     init = function()
       vim.api.nvim_create_autocmd(events.enter_buffer, {
         callback = function(args)
-          require("utils.keymap")({
+          require("hero.utils.keymap")({
             "<Leader>up",
             function() require("plantuml-preview").toggle() end,
             buffer = args.buf,

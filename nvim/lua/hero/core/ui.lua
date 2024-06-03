@@ -1,5 +1,5 @@
-local icons = require("utils.ui").icons
-local config = require("user")
+local icons = require("hero.utils.ui").icons
+local config = require("hero.user")
 
 vim.diagnostic.config({
   virtual_text = { spacing = 4, source = "if_many" },

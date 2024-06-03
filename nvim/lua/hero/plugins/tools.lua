@@ -1,5 +1,5 @@
-local events = require("utils.events")
-local map = require("utils.keymap")
+local events = require("hero.utils.events")
+local map = require("hero.utils.keymap")
 
 return {
   {
@@ -356,7 +356,7 @@ return {
       on_init = function()
         local bufnr = vim.api.nvim_get_current_buf()
         vim.bo[bufnr].buflisted = false
-        require("utils.keymap")({ "q", "<C-w>q", desc = "Quit", buffer = bufnr })
+        require("hero.utils.keymap")({ "q", "<C-w>q", desc = "Quit", buffer = bufnr })
       end,
     },
   },

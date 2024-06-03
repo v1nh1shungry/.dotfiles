@@ -1,4 +1,4 @@
-local map = require("utils.keymap")
+local map = require("hero.utils.keymap")
 
 local marker = "<!-- markdown-toc -->"
 
@@ -43,7 +43,7 @@ local function update()
   toc(start_linenr, end_linenr)
 end
 
-local augroup = vim.api.nvim_create_augroup("dotfiles_markdown_toc_autocmds", {})
+local augroup = vim.api.nvim_create_augroup("hero_markdown_toc_autocmds", {})
 
 vim.api.nvim_create_autocmd("FileType", {
   callback = function(event)

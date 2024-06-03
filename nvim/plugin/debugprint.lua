@@ -1,4 +1,4 @@
-local map = require("utils.keymap")
+local map = require("hero.utils.keymap")
 
 local ID = "DEBUGPRINT"
 

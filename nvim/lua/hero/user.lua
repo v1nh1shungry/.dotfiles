@@ -24,7 +24,7 @@ else
   local default_config = vim.split(vim.inspect(M), "\n")
   default_config[1] = "return " .. default_config[1]
   vim.list_extend(content, default_config)
-  require("utils.file").write(content, filename)
+  require("hero.utils.file").write(content, filename)
 end
 
 return M

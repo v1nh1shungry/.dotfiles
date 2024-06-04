@@ -7,6 +7,7 @@ vim.diagnostic.config({
   signs = false,
   update_in_insert = true,
   float = { border = "rounded" },
+  jump = { float = true },
 })
 
 for name, icon in pairs(icons.diagnostic) do
@@ -26,12 +27,8 @@ end
 
 local background = config.ui.background
 if type(background) == "table" then
-  vim.api.nvim_create_autocmd({ "FocusGained", "VimEnter" }, {
-    callback = function()
-      local t = os.date("*t", os.time())
-      vim.opt.background = (background.light <= t.hour and t.hour < background.dark) and "light" or "dark"
-    end,
-  })
+  local t = os.date("*t", os.time())
+  vim.opt.background = (background.light <= t.hour and t.hour < background.dark) and "light" or "dark"
 else
   vim.opt.background = background
 end

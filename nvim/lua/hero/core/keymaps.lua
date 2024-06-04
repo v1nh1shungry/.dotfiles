@@ -151,71 +151,70 @@ map({ "<Leader>cd", vim.diagnostic.open_float, desc = "Show diagnostics" })
 
 map({
   "]d",
-  function() vim.diagnostic.jump({ count = vim.v.count1, float = true }) end,
+  function() vim.diagnostic.jump({ count = vim.v.count1 }) end,
   desc = "Jump to the next diagnostic",
 })
 map({
   "[d",
-  function() vim.diagnostic.jump({ count = -vim.v.count1, float = true }) end,
+  function() vim.diagnostic.jump({ count = -vim.v.count1 }) end,
   desc = "Jump to the next diagnostic",
 })
 map({
   "]w",
-  function() vim.diagnostic.jump({ count = vim.v.count1, float = true, severity = vim.diagnostic.severity.WARN }) end,
+  function() vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.WARN }) end,
   desc = "Jump to the next warning",
 })
 map({
   "[w",
-  function() vim.diagnostic.jump({ count = -vim.v.count1, float = true, severity = vim.diagnostic.severity.WARN }) end,
+  function() vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.WARN }) end,
   desc = "Jump to the previous warning",
 })
 map({
   "]e",
-  function() vim.diagnostic.jump({ count = vim.v.count1, float = true, severity = vim.diagnostic.severity.ERROR }) end,
+  function() vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR }) end,
   desc = "Jump to the next error",
 })
 map({
   "[e",
-  function() vim.diagnostic.jump({ count = -vim.v.count1, float = true, severity = vim.diagnostic.severity.ERROR }) end,
+  function() vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR }) end,
   desc = "Jump to the previous error",
 })
 map({
   "]D",
-  function() vim.diagnostic.jump({ count = math.huge, float = true, wrap = false }) end,
+  function() vim.diagnostic.jump({ count = math.huge, wrap = false }) end,
   desc = "Jump to the last diagnostic",
 })
 map({
   "[D",
-  function() vim.diagnostic.jump({ count = -math.huge, float = true, wrap = false }) end,
+  function() vim.diagnostic.jump({ count = -math.huge, wrap = false }) end,
   desc = "Jump to the first diagnostic",
 })
 map({
   "]W",
-  function()
-    vim.diagnostic.jump({ count = math.huge, float = true, severity = vim.diagnostic.severity.WARN, wrap = false })
-  end,
+  function() vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.WARN, wrap = false }) end,
   desc = "Jump to the last warning",
 })
 map({
   "[W",
-  function()
-    vim.diagnostic.jump({ count = -math.huge, float = true, severity = vim.diagnostic.severity.WARN, wrap = false })
-  end,
+  function() vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.WARN, wrap = false }) end,
   desc = "Jump to the first warning",
 })
 map({
   "]E",
-  function()
-    vim.diagnostic.jump({ count = math.huge, float = true, severity = vim.diagnostic.severity.ERROR, wrap = false })
-  end,
+  function() vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false }) end,
   desc = "Jump to the last error",
 })
 map({
   "[E",
-  function()
-    vim.diagnostic.jump({ count = -math.huge, float = true, severity = vim.diagnostic.severity.ERROR, wrap = false })
-  end,
+  function() vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false }) end,
   desc = "Jump to the first error",
 })
 
 map({ "<Leader>xx", vim.diagnostic.setqflist, desc = "Diagnostics" })
+
+map({ "<BS>", "<C-o>s", mode = "s" })
+
+map({ "<C-f>", "<Right>", mode = { "i", "c" }, desc = "Move a character forward" })
+map({ "<C-b>", "<Left>", mode = { "i", "c" }, desc = "Move a character backward" })
+map({ "<C-a>", "<Home>", mode = { "i", "c" }, desc = "Begin of line" })
+map({ "<C-e>", "<End>", mode = { "i", "c" }, desc = "End of line" })

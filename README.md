@@ -13,7 +13,7 @@
 * [fd](https://github.com/sharkdp/fd)
 * [zoxide](https://github.com/ajeetdsouza/zoxide)
 
-## Linux
+### Linux
 
 * fish
 * [fisher](https://github.com/jorgebucaran/fisher) - fish plugin manager
@@ -28,7 +28,7 @@
 * [bob](https://github.com/MordechaiHadad/bob) - Neovim version manager
 * [delta](https://github.com/dandavison/delta)
 
-## Windows
+### Windows
 
 * [Scoop](https://github.com/ScoopInstaller/Scoop)
 * [scoop-completion](https://github.com/Moeologist/scoop-completion)

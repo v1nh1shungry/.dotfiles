@@ -143,6 +143,7 @@ return {
         opts = {},
       },
     },
+    event = events.enter_buffer,
     opts = {
       servers = {
         jsonls = {
@@ -226,18 +227,12 @@ return {
   },
   {
     "folke/lazydev.nvim",
-    dependencies = {
-      "Bilal2453/luvit-meta",
-      {
-        "hrsh7th/nvim-cmp",
-        opts = function(_, opts)
-          opts.sources = opts.sources or {}
-          table.insert(opts.sources, { name = "lazydev", group_index = 0 })
-        end,
-      },
-    },
     ft = "lua",
-    opts = { library = { "luvit-meta/library" } },
+    opts = { library = { { path = "luvit-meta/library", words = { "vim%.uv" } } } },
+  },
+  {
+    "Bilal2453/luvit-meta",
+    lazy = true,
   },
   {
     "williamboman/mason.nvim",
@@ -293,11 +288,12 @@ return {
           end,
           expandable_indicator = true,
         },
-        mapping = cmp.mapping.preset.insert({
+        mapping = {
           ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-e>"] = cmp.mapping.abort(),
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               if not cmp.get_selected_entry() then
@@ -320,20 +316,41 @@ return {
               fallback()
             end
           end, { "i", "s" }),
-        }),
+        },
         sources = cmp.config.sources({
+          { name = "lazydev" },
+        }, {
           { name = "nvim_lsp" },
           { name = "snippets" },
         }, {
           { name = "buffer" },
           { name = "path" },
+        }, {
+          { name = "rg" },
         }),
       })
 
-      local cmdline_mapping = cmp.mapping.preset.cmdline({
-        ["<C-n>"] = cmp.config.disable,
-        ["<C-p>"] = cmp.config.disable,
-      })
+      local cmdline_mapping = {
+        ["<Tab>"] = {
+          c = function()
+            if cmp.visible() then
+              cmp.select_next_item()
+            else
+              cmp.complete()
+            end
+          end,
+        },
+        ["<S-Tab>"] = {
+          c = function()
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              cmp.complete()
+            end
+          end,
+        },
+        ["<C-e>"] = { c = cmp.mapping.abort() },
+      }
 
       cmp.setup.cmdline(":", {
         mapping = cmdline_mapping,
@@ -352,6 +369,7 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-path",
+      "lukas-reineke/cmp-rg",
     },
     event = events.enter_insert,
   },
@@ -458,7 +476,7 @@ return {
     keys = {
       {
         "<Leader>cf",
-        function() require("conform").format({ lsp_fallback = true }) end,
+        function() require("conform").format({ timeout_ms = 3000, async = false, quiet = false, lsp_fallback = true }) end,
         desc = "Format document",
         mode = { "n", "v" },
       },
@@ -468,7 +486,11 @@ return {
         fish = { "fish_indent" },
         lua = { "stylua" },
         python = { "black" },
+        query = { "format-queries" },
+        markdown = { "injected" },
+        ["_"] = { "trim_whitespace" },
       },
+      formatters = { injected = { options = { ignore_errors = true } } },
     },
   },
   {

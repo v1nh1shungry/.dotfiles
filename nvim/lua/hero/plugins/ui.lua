@@ -240,15 +240,15 @@ return {
       local wk = require("which-key")
       wk.setup(opts)
 
-      wk.register(opts.normal_group)
-      wk.register(opts.visual_group, { mode = "v" })
-      wk.register(opts.operator_group, { mode = "o" })
+      for _, mode in ipairs({ "n", "v", "o" }) do
+        wk.register(opts[mode], { mode = mode })
+      end
     end,
     event = "VeryLazy",
     opts = {
       window = { winblend = require("hero.user").ui.blend },
       layout = { height = { max = 10 } },
-      normal_group = {
+      n = {
         ["g"] = { name = "+goto" },
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
@@ -256,21 +256,19 @@ return {
         ["<Leader>b"] = { name = "+biquge" },
         ["<Leader>c"] = { name = "+code" },
         ["<Leader>d"] = { name = "+debug" },
-        ["<Leader>dp"] = { name = "+debugprint" },
         ["<Leader>f"] = { name = "+file" },
         ["<Leader>g"] = { name = "+git" },
-        ["<Leader>gx"] = { name = "+conflict" },
         ["<Leader>m"] = { name = "+cmake" },
         ["<Leader>q"] = { name = "+quit/sessions" },
         ["<Leader>s"] = { name = "+search" },
         ["<Leader>u"] = { name = "+ui" },
         ["<Leader>x"] = { name = "+diagnostics/quickfix" },
       },
-      visual_group = {
+      v = {
         ["<Leader>c"] = { name = "+code" },
         ["<Leader>s"] = { name = "+search" },
       },
-      operator_group = {
+      o = {
         ["g"] = { name = "+goto" },
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
@@ -311,7 +309,7 @@ return {
         "<C-f>",
         function()
           if not require("noice.lsp").scroll(4) then
-            return "<C-f>"
+            return vim.fn.mode() == "i" and "<Right>" or "<C-f>"
           end
         end,
         silent = true,
@@ -323,7 +321,7 @@ return {
         "<C-b>",
         function()
           if not require("noice.lsp").scroll(-4) then
-            return "<C-b>"
+            return vim.fn.mode() == "i" and "<Left>" or "<C-b>"
           end
         end,
         silent = true,
@@ -506,18 +504,6 @@ return {
       },
       exit_when_last = true,
     },
-  },
-  {
-    "echasnovski/mini.trailspace",
-    event = events.enter_buffer,
-    init = function()
-      vim.api.nvim_set_hl(0, "MiniTrailspace", { bg = "LightGreen" })
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(args) vim.b[args.buf].minitrailspace_disable = true end,
-        pattern = excluded_filetypes,
-      })
-    end,
-    opts = {},
   },
   {
     "b0o/incline.nvim",

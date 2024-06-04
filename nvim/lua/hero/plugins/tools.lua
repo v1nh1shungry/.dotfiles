@@ -215,23 +215,6 @@ return {
     },
   },
   {
-    "gabrielpoca/replacer.nvim",
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(args)
-          map({
-            "<Leader>xr",
-            function() require("replacer").run() end,
-            desc = "Quickfix replacer",
-            buffer = args.buf,
-          })
-        end,
-        pattern = "qf",
-      })
-    end,
-    ft = "qf",
-  },
-  {
     "ThePrimeagen/refactoring.nvim",
     dependencies = "nvim-telescope/telescope.nvim",
     keys = {

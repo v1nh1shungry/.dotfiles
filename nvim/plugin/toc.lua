@@ -16,7 +16,7 @@ local function toc(start_linenr, end_linenr)
     local level = tonumber(node:child(0):type():match("atx_h(%d)_marker")) - 2
     if level >= 0 then
       local title = vim.treesitter.get_node_text(node:field("heading_content")[1], 0)
-      local link = title:gsub("%s", "-")
+      local link = title:gsub("%s+", "-"):lower()
       lines[#lines + 1] = ("  "):rep(level) .. ("* [%s](#%s)"):format(title, link)
     end
   end

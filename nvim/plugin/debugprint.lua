@@ -1,5 +1,3 @@
-local map = require("hero.utils.keymap")
-
 local ID = "DEBUGPRINT"
 
 local filetype_assets = {
@@ -80,9 +78,20 @@ local function delete()
   end
 end
 
-map({ "<Leader>dpp", plain, desc = "Plain debugprint (below)" })
-map({ "<Leader>dpP", function() plain(true) end, desc = "Plain debuprint (above)" })
-map({ "<Leader>dpv", variable, desc = "Variable debugprint (below)" })
-map({ "<Leader>dpV", function() variable(true) end, desc = "Variable debuprint (above)" })
-map({ "<Leader>dpt", toggle, desc = "Toggle debugprint" })
-map({ "<Leader>dpd", delete, desc = "Delete debugprint" })
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(event)
+    local map = function(key)
+      key.buffer = event.buf
+      require("hero.utils.keymap")(key)
+    end
+
+    map({ "<Leader>dpp", plain, desc = "Plain debugprint (below)" })
+    map({ "<Leader>dpP", function() plain(true) end, desc = "Plain debuprint (above)" })
+    map({ "<Leader>dpv", variable, desc = "Variable debugprint (below)" })
+    map({ "<Leader>dpV", function() variable(true) end, desc = "Variable debuprint (above)" })
+    map({ "<Leader>dpt", toggle, desc = "Toggle debugprint" })
+    map({ "<Leader>dpd", delete, desc = "Delete debugprint" })
+  end,
+  group = vim.api.nvim_create_augroup("hero_debugprint_autocmds", {}),
+  pattern = vim.tbl_keys(filetype_assets),
+})

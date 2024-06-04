@@ -261,7 +261,10 @@ return {
         include = { node_type = { lua = { "table_constructor" } } },
         highlight = require("hero.utils.ui").rainbow_highlight,
       },
-      exclude = { filetypes = require("hero.utils.ui").excluded_filetypes },
+      exclude = {
+        filetypes = require("hero.utils.ui").excluded_filetypes,
+        buftypes = require("hero.utils.ui").excluded_buftypes,
+      },
     },
   },
   {

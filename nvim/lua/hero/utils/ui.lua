@@ -71,7 +71,7 @@ M.excluded_filetypes = {
   "toggleterm",
 }
 
-M.excluded_buftypes = { "nofile", "help", "quickfix", "terminal" }
+M.excluded_buftypes = { "nofile", "help", "prompt" , "quickfix", "terminal"}
 
 M.rainbow_highlight = {
   "RainbowDelimiterRed",

@@ -75,8 +75,15 @@ return {
   },
   {
     "akinsho/bufferline.nvim",
-    config = function(_, opts)
-      require("bufferline").setup(opts)
+    config = function()
+      require("bufferline").setup({
+        options = {
+          numbers = "ordinal",
+          diagnostics = "nvim_lsp",
+          diagnostics_update_in_insert = true,
+          themable = true,
+        },
+      })
       vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
           vim.schedule(function() pcall(nvim_bufferline) end)
@@ -104,14 +111,6 @@ return {
         desc = "Previous buffer",
       },
       { "gb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
-    },
-    opts = {
-      options = {
-        numbers = "ordinal",
-        diagnostics = "nvim_lsp",
-        diagnostics_update_in_insert = true,
-        themable = true,
-      },
     },
   },
   {
@@ -555,24 +554,6 @@ return {
     opts = { highlight = require("dotfiles.utils.ui").rainbow_highlight },
   },
   {
-    "v1nh1shungry/plantuml-preview.nvim",
-    ft = "markdown",
-    init = function()
-      vim.api.nvim_create_autocmd(events.enter_buffer, {
-        callback = function(args)
-          require("dotfiles.utils.keymap")({
-            "<Leader>up",
-            function() require("plantuml-preview").toggle() end,
-            buffer = args.buf,
-            desc = "Toggle plantuml preview",
-          })
-        end,
-        pattern = { "*.md", "*.puml" },
-      })
-    end,
-    opts = {},
-  },
-  {
     "echasnovski/mini.files",
     config = function()
       require("mini.files").setup()
@@ -633,7 +614,7 @@ return {
   },
   {
     "kevinhwang91/nvim-bqf",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "junegunn/fzf" },
+    dependencies = "nvim-treesitter/nvim-treesitter",
     ft = "qf",
   },
 }

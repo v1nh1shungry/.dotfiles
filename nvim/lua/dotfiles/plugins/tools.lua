@@ -5,21 +5,7 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
-    dependencies = "nvim-lua/plenary.nvim",
-    keys = {
-      { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
-      { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
-      { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
-      { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
-      { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
-      { "<Leader>sh", "<Cmd>Telescope highlights<CR>", desc = "Highlight groups" },
-      { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
-      { "<Leader>sx", "<Cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
-      { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
-    },
-    opts = function()
+    config = function()
       local function flash(prompt_bufnr)
         require("flash").jump({
           pattern = "^",
@@ -37,17 +23,16 @@ return {
         })
       end
 
-      return {
+      require("telescope").setup({
         defaults = {
           prompt_prefix = "🔎 ",
           selection_caret = "➤ ",
           layout_strategy = "bottom_pane",
-          sorting_strategy = "ascending",
           layout_config = {
             bottom_pane = {
               height = 0.4,
               preview_cutoff = 100,
-              prompt_position = "top",
+              prompt_position = "bottom",
             },
           },
           mappings = {
@@ -55,8 +40,47 @@ return {
             n = { s = flash },
           },
         },
-      }
+      })
+
+      require("telescope").load_extension("fzf")
     end,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+      },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(event)
+          map({
+            "zf",
+            function()
+              vim.cmd("cclose")
+              vim.cmd("Telescope quickfix")
+            end,
+            buffer = event.buf,
+            desc = "Enter fzf mode",
+          })
+        end,
+        pattern = "qf",
+        group = vim.api.nvim_create_augroup("quickfix_to_telescope_keymap", {}),
+      })
+    end,
+    keys = {
+      { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
+      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
+      { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
+      { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
+      { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
+      { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
+      { "<Leader>sh", "<Cmd>Telescope highlights<CR>", desc = "Highlight groups" },
+      { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
+      { "<Leader>sx", "<Cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
+      { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
+    },
   },
   {
     "krady21/compiler-explorer.nvim",
@@ -302,17 +326,6 @@ return {
     "nvim-telescope/telescope-symbols.nvim",
     dependencies = "nvim-telescope/telescope.nvim",
     keys = { { "<Leader>se", "<Cmd>Telescope symbols<CR>", desc = "Emoji" } },
-  },
-  {
-    "v1nh1shungry/cppinsights.nvim",
-    cmd = "CppInsights",
-    opts = {
-      standard = "cpp2c",
-      more_transformations = {
-        ["edu-show-coroutines"] = true,
-        ["use-libcpp"] = true,
-      },
-    },
   },
   {
     "chrisgrieser/nvim-tinygit",

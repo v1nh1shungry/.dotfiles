@@ -7,8 +7,8 @@
 --       we enter the window, and save the current todo-list only when
 --       we close the window.
 
-local file = require("hero.utils.file")
-local map = require("hero.utils.keymap")
+local file = require("dotfiles.utils.file")
+local map = require("dotfiles.utils.keymap")
 
 local winnr, bufnr
 local config = {
@@ -16,8 +16,8 @@ local config = {
   width = 30,
   height = 10,
 }
-local ns = vim.api.nvim_create_namespace("hero_todo_ns")
-local augroup = vim.api.nvim_create_augroup("hero_todo_autocmd", {})
+local ns = vim.api.nvim_create_namespace("dotfiles_todo_ns")
+local augroup = vim.api.nvim_create_augroup("dotfiles_todo_autocmd", {})
 
 local todo = {}
 

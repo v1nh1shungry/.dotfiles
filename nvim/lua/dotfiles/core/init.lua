@@ -1,0 +1,5 @@
+require("dotfiles.core.autocmds")
+require("dotfiles.core.keymaps")
+require("dotfiles.core.options")
+require("dotfiles.core.plugin")
+require("dotfiles.core.ui")

@@ -1,7 +1,7 @@
-local map = require("hero.utils.keymap")
+local map = require("dotfiles.utils.keymap")
 local close = function(bufnr) require("mini.bufremove").delete(bufnr) end
 
-local augroup = vim.api.nvim_create_augroup("hero_six_buffers_autocmds", {})
+local augroup = vim.api.nvim_create_augroup("dotfiles_six_buffers_autocmds", {})
 
 local threshold = 6
 

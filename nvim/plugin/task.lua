@@ -1,4 +1,4 @@
-local map = require("hero.utils.keymap")
+local map = require("dotfiles.utils.keymap")
 
 local config = {
   save = true,
@@ -53,7 +53,7 @@ for _, ft in ipairs({ "c", "cpp" }) do
   }
 end
 
-config = vim.tbl_deep_extend("force", config, require("hero.user").task)
+config = vim.tbl_deep_extend("force", config, require("dotfiles.user").task)
 
 local function cook_variable(line)
   local variables = {
@@ -84,7 +84,7 @@ local function cook_command(cmd)
   return cmd
 end
 
-local augroup = vim.api.nvim_create_augroup("hero_task_autocmds", {})
+local augroup = vim.api.nvim_create_augroup("dotfiles_task_autocmds", {})
 
 for lang, cmd in pairs(config.compile) do
   vim.api.nvim_create_autocmd("FileType", {

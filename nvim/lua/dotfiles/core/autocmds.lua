@@ -1,4 +1,4 @@
-local augroup = function(name) return vim.api.nvim_create_augroup("hero_" .. name, {}) end
+local augroup = function(name) return vim.api.nvim_create_augroup("dotfiles_" .. name, {}) end
 
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   callback = function()
@@ -24,15 +24,15 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.wo.stc = ""
   end,
   group = augroup("minimal_ui"),
-  pattern = require("hero.utils.ui").excluded_filetypes,
+  pattern = require("dotfiles.utils.ui").excluded_filetypes,
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(event)
-    if vim.list_contains(require("hero.utils.ui").excluded_buftypes, vim.bo.buftype) then
+    if vim.list_contains(require("dotfiles.utils.ui").excluded_buftypes, vim.bo.buftype) then
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then
-        require("hero.utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
+        require("dotfiles.utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
       end
     end
   end,
@@ -43,10 +43,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(event)
     local exclude = { "gitcommit", "man" }
     local buf = event.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].hero_last_loc then
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].dotfiles_last_loc then
       return
     end
-    vim.b[buf].hero_last_loc = true
+    vim.b[buf].dotfiles_last_loc = true
     local mark = vim.api.nvim_buf_get_mark(buf, '"')
     local lcount = vim.api.nvim_buf_line_count(buf)
     if mark[1] > 0 and mark[1] <= lcount then

@@ -1,5 +1,0 @@
-require("hero.core.autocmds")
-require("hero.core.keymaps")
-require("hero.core.options")
-require("hero.core.plugin")
-require("hero.core.ui")

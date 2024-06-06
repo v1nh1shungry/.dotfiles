@@ -33,5 +33,9 @@ return {
       },
     },
   },
-  { "rose-pine/neovim", lazy = true },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    lazy = true,
+  },
 }

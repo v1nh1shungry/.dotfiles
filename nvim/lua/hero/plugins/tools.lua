@@ -343,4 +343,9 @@ return {
       end,
     },
   },
+  {
+    "v1nh1shungry/lyricify.nvim",
+    keys = { { "<Leader>us", function() require("lyricify").toggle() end, desc = "Spotify" } },
+    opts = {},
+  },
 }

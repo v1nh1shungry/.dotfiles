@@ -1,4 +1,4 @@
-local map = require("hero.utils.keymap")
+local map = require("dotfiles.utils.keymap")
 
 local config = {
   vert_resize = 10,

@@ -1,4 +1,4 @@
-local match_group = "HeroTrailer"
+local match_group = "DotfilesTrailer"
 
 local function get_match_id()
   for _, match in ipairs(vim.fn.getmatches()) do
@@ -18,13 +18,13 @@ local function highlight()
   if get_match_id() then
     return
   end
-  if vim.bo.buftype ~= "" or vim.list_contains(require("hero.utils.ui").excluded_filetypes, vim.bo.filetype) then
+  if vim.bo.buftype ~= "" or vim.list_contains(require("dotfiles.utils.ui").excluded_filetypes, vim.bo.filetype) then
     return
   end
   vim.fn.matchadd(match_group, [[\s\+$]])
 end
 
-local augroup = vim.api.nvim_create_augroup("hero_trailer_autocmds", {})
+local augroup = vim.api.nvim_create_augroup("dotfiles_trailer_autocmds", {})
 
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertLeave" }, {
   callback = highlight,

@@ -38,7 +38,7 @@ vim.opt.list = true
 vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "→ " }
 vim.opt.mousemoveevent = true
 vim.opt.number = true
-vim.opt.pumblend = require("hero.user").ui.blend
+vim.opt.pumblend = require("dotfiles.user").ui.blend
 vim.opt.pumheight = 10
 vim.opt.relativenumber = true
 vim.opt.ruler = false
@@ -66,7 +66,7 @@ vim.opt.termguicolors = true
 vim.opt.timeoutlen = 300
 vim.opt.updatetime = 200
 vim.opt.virtualedit = "block"
-vim.opt.winblend = require("hero.user").ui.blend
+vim.opt.winblend = require("dotfiles.user").ui.blend
 vim.opt.winminwidth = 5
 vim.opt.wrap = false
 vim.opt.writebackup = false

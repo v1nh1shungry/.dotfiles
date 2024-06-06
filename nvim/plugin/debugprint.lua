@@ -82,7 +82,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(event)
     local map = function(key)
       key.buffer = event.buf
-      require("hero.utils.keymap")(key)
+      require("dotfiles.utils.keymap")(key)
     end
 
     map({ "<Leader>dpp", plain, desc = "Plain debugprint (below)" })
@@ -92,6 +92,6 @@ vim.api.nvim_create_autocmd("FileType", {
     map({ "<Leader>dpt", toggle, desc = "Toggle debugprint" })
     map({ "<Leader>dpd", delete, desc = "Delete debugprint" })
   end,
-  group = vim.api.nvim_create_augroup("hero_debugprint_autocmds", {}),
+  group = vim.api.nvim_create_augroup("dotfiles_debugprint_autocmds", {}),
   pattern = vim.tbl_keys(filetype_assets),
 })

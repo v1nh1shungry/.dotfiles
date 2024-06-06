@@ -34,7 +34,7 @@ local function restore_previous_im()
   )
 end
 
-local augroup = vim.api.nvim_create_augroup("hero_im_autocmd", {})
+local augroup = vim.api.nvim_create_augroup("dotfiles_im_autocmd", {})
 
 vim.api.nvim_create_autocmd("InsertEnter", {
   callback = restore_previous_im,

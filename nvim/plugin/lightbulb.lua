@@ -1,4 +1,4 @@
-local ns = vim.api.nvim_create_namespace("hero_lsp_lightbulb_ns")
+local ns = vim.api.nvim_create_namespace("dotfiles_lsp_lightbulb_ns")
 
 local config = {
   icon = "💡",
@@ -54,7 +54,7 @@ local function update(bufnr)
   end)
 end
 
-local name = "hero_lsp_lightbulb_autocmds"
+local name = "dotfiles_lsp_lightbulb_autocmds"
 local augroup = vim.api.nvim_create_augroup(name, {})
 
 vim.api.nvim_create_autocmd("LspAttach", {

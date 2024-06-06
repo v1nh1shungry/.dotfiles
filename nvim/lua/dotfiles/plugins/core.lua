@@ -1,4 +1,4 @@
-local events = require("hero.utils.events")
+local events = require("dotfiles.utils.events")
 
 return {
   {
@@ -259,11 +259,11 @@ return {
         show_start = false,
         show_end = false,
         include = { node_type = { lua = { "table_constructor" } } },
-        highlight = require("hero.utils.ui").rainbow_highlight,
+        highlight = require("dotfiles.utils.ui").rainbow_highlight,
       },
       exclude = {
-        filetypes = require("hero.utils.ui").excluded_filetypes,
-        buftypes = require("hero.utils.ui").excluded_buftypes,
+        filetypes = require("dotfiles.utils.ui").excluded_filetypes,
+        buftypes = require("dotfiles.utils.ui").excluded_buftypes,
       },
     },
   },

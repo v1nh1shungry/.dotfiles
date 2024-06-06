@@ -1,5 +1,5 @@
-local map = require("hero.utils.keymap")
-local toggle = require("hero.utils.toggle")
+local map = require("dotfiles.utils.keymap")
+local toggle = require("dotfiles.utils.toggle")
 
 vim.keymap.del("n", "grn")
 vim.keymap.del("n", "grr")
@@ -21,7 +21,7 @@ map({ ">", ">gv", mode = "v" })
 map({ "<Leader>xq", toggle.quickfix, desc = "Toggle quickfix" })
 map({ "<Leader>xl", toggle.location, desc = "Toggle location list" })
 
-map({ "<Leader>ux", require("hero.utils.toggle").diagnostic, desc = "Toggle diagnostic" })
+map({ "<Leader>ux", require("dotfiles.utils.toggle").diagnostic, desc = "Toggle diagnostic" })
 
 map({ ",", ",<c-g>u", mode = "i" })
 map({ ".", ".<c-g>u", mode = "i" })

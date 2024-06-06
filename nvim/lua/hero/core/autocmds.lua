@@ -75,3 +75,25 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   end,
   group = augroup("resize_splits"),
 })
+
+vim.api.nvim_create_autocmd("BufNew", {
+  callback = function()
+    if vim.bo.buftype ~= "" then
+      return
+    end
+    local name = vim.api.nvim_buf_get_name(0)
+    if name == "" then
+      return
+    end
+    if vim.fn.filereadable(name) == 0 then
+      return
+    end
+    for p in vim.fs.parents(name) do
+      if p == vim.fn.getcwd() then
+        return
+      end
+    end
+    vim.bo.modifiable = false
+  end,
+  group = augroup("non_cwd_files_unmodifiable"),
+})

@@ -574,12 +574,66 @@ return {
   },
   {
     "echasnovski/mini.files",
-    keys = { { "<Leader>e", "<Cmd>lua MiniFiles.open()<CR>", desc = "Explorer" } },
-    opts = {},
+    config = function()
+      require("mini.files").setup()
+
+      local map = require("hero.utils.keymap")
+
+      local function map_split(bufnr, lhs, direction, close_on_file)
+        map({
+          lhs,
+          function()
+            local new_target_window
+            local cur_target_window = MiniFiles.get_target_window()
+            if cur_target_window then
+              vim.api.nvim_win_call(cur_target_window, function()
+                vim.cmd("belowright " .. direction .. " split")
+                new_target_window = vim.api.nvim_get_current_win()
+              end)
+              MiniFiles.set_target_window(new_target_window)
+              MiniFiles.go_in({ close_on_file = close_on_file })
+            end
+          end,
+          buffer = bufnr,
+          desc = "Open in " .. direction .. " split" .. (close_on_file and " and close" or ""),
+        })
+      end
+
+      local function cwd()
+        local cur_entry_path = MiniFiles.get_fs_entry().path
+        local cur_directory = vim.fs.dirname(cur_entry_path)
+        if cur_entry_path then
+          vim.fn.chdir(cur_directory)
+        end
+      end
+
+      vim.api.nvim_create_autocmd("User", {
+        callback = function(event)
+          local bufnr = event.data.buf_id
+          map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
+          map_split(bufnr, "<C-w>s", "horizontal", false)
+          map_split(bufnr, "<C-w>v", "vertical", false)
+          map_split(bufnr, "<C-w>S", "horizontal", true)
+          map_split(bufnr, "<C-w>V", "vertical", true)
+        end,
+        pattern = "MiniFilesBufferCreate",
+      })
+    end,
+    keys = {
+      {
+        "<Leader>e",
+        function()
+          if not MiniFiles.close() then
+            MiniFiles.open()
+          end
+        end,
+        desc = "Explorer",
+      },
+    },
   },
   {
     "kevinhwang91/nvim-bqf",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "junegunn/fzf" },
     ft = "qf",
-    dependencies = "nvim-treesitter/nvim-treesitter",
   },
 }

@@ -12,56 +12,58 @@ return {
   },
   {
     "echasnovski/mini.ai",
+    config = function(_, opts)
+      require("mini.ai").setup(opts)
+
+      local ok, wk = pcall(require, "which-key")
+      if not ok then
+        return
+      end
+      local i = {
+        [" "] = "Whitespace",
+        ['"'] = 'Balanced "',
+        ["'"] = "Balanced '",
+        ["`"] = "Balanced `",
+        ["("] = "Balanced (",
+        [")"] = "Balanced ) including white-space",
+        [">"] = "Balanced > including white-space",
+        ["<lt>"] = "Balanced <",
+        ["]"] = "Balanced ] including white-space",
+        ["["] = "Balanced [",
+        ["}"] = "Balanced } including white-space",
+        ["{"] = "Balanced {",
+        ["?"] = "User Prompt",
+        _ = "Underscore",
+        a = "Argument",
+        b = "Balanced ), ], }",
+        c = "Class",
+        d = "Digit(s)",
+        f = "Function",
+        g = "Entire file",
+        i = "Indent",
+        o = "Block, conditional, loop",
+        q = "Quote `, \", '",
+        t = "Tag",
+        u = "Use/call function & method",
+        U = "Use/call without dot in name",
+      }
+      local a = vim.deepcopy(i)
+      for k, v in pairs(a) do
+        a[k] = v:gsub(" including.*", "")
+      end
+      local ic = vim.deepcopy(i)
+      local ac = vim.deepcopy(a)
+      for key, name in pairs({ n = "Next", l = "Last" }) do
+        i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
+        a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
+      end
+      wk.register({
+        mode = { "o", "x" },
+        i = i,
+        a = a,
+      })
+    end,
     dependencies = {
-      {
-        "folke/which-key.nvim",
-        config = function()
-          local i = {
-            [" "] = "Whitespace",
-            ['"'] = 'Balanced "',
-            ["'"] = "Balanced '",
-            ["`"] = "Balanced `",
-            ["("] = "Balanced (",
-            [")"] = "Balanced ) including white-space",
-            [">"] = "Balanced > including white-space",
-            ["<lt>"] = "Balanced <",
-            ["]"] = "Balanced ] including white-space",
-            ["["] = "Balanced [",
-            ["}"] = "Balanced } including white-space",
-            ["{"] = "Balanced {",
-            ["?"] = "User Prompt",
-            _ = "Underscore",
-            a = "Argument",
-            b = "Balanced ), ], }",
-            c = "Class",
-            d = "Digit(s)",
-            f = "Function",
-            g = "Entire file",
-            i = "Indent",
-            o = "Block, conditional, loop",
-            q = "Quote `, \", '",
-            t = "Tag",
-            u = "Use/call function & method",
-            U = "Use/call without dot in name",
-          }
-          local a = vim.deepcopy(i)
-          for k, v in pairs(a) do
-            a[k] = v:gsub(" including.*", "")
-          end
-          local ic = vim.deepcopy(i)
-          local ac = vim.deepcopy(a)
-          for key, name in pairs({ n = "Next", l = "Last" }) do
-            i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
-            a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
-          end
-          require("which-key").register({
-            mode = { "o", "x" },
-            i = i,
-            a = a,
-          })
-        end,
-        optional = true,
-      },
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
         config = function()
@@ -264,16 +266,6 @@ return {
     opts = {},
   },
   {
-    "mg979/vim-visual-multi",
-    config = function()
-      vim.g.VM_silent_exit = true
-      vim.g.VM_set_statusline = 0
-      vim.g.VM_quit_after_leaving_insert_mode = true
-      vim.g.VM_show_warnings = 0
-    end,
-    keys = { { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" } },
-  },
-  {
     "altermo/ultimate-autopair.nvim",
     event = events.enter_insert,
     opts = {},
@@ -369,5 +361,44 @@ return {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
     opts = {},
+  },
+  {
+    "folke/flash.nvim",
+    keys = {
+      "/",
+      "?",
+      "f",
+      "F",
+      "t",
+      "T",
+      ",",
+      ";",
+      {
+        "gs",
+        function() require("flash").jump() end,
+        desc = "Flash",
+      },
+      {
+        "gt",
+        function() require("flash").treesitter() end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        function() require("flash").remote() end,
+        mode = "o",
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        function() require("flash").treesitter_search() end,
+        mode = { "o", "x" },
+        desc = "Treesitter search",
+      },
+    },
+    opts = {
+      modes = { char = { multi_line = false, highlight = { backdrop = false } } },
+      prompt = { enabled = false },
+    },
   },
 }

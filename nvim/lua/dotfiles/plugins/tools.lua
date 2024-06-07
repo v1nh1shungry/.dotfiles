@@ -212,45 +212,6 @@ return {
     opts = { prefix = "<Leader>cc" },
   },
   {
-    "folke/flash.nvim",
-    keys = {
-      "/",
-      "?",
-      "f",
-      "F",
-      "t",
-      "T",
-      ",",
-      ";",
-      {
-        "gs",
-        function() require("flash").jump() end,
-        desc = "Flash",
-      },
-      {
-        "gt",
-        function() require("flash").treesitter() end,
-        desc = "Flash Treesitter",
-      },
-      {
-        "r",
-        function() require("flash").remote() end,
-        mode = "o",
-        desc = "Remote Flash",
-      },
-      {
-        "R",
-        function() require("flash").treesitter_search() end,
-        mode = { "o", "x" },
-        desc = "Treesitter search",
-      },
-    },
-    opts = {
-      modes = { char = { multi_line = false, highlight = { backdrop = false } } },
-      prompt = { enabled = false },
-    },
-  },
-  {
     "kawre/leetcode.nvim",
     dependencies = {
       "nvim-telescope/telescope.nvim",
@@ -588,5 +549,15 @@ return {
         desc = "Explorer",
       },
     },
+  },
+  {
+    "mg979/vim-visual-multi",
+    config = function()
+      vim.g.VM_silent_exit = true
+      vim.g.VM_set_statusline = 0
+      vim.g.VM_quit_after_leaving_insert_mode = true
+      vim.g.VM_show_warnings = 0
+    end,
+    keys = { { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" } },
   },
 }

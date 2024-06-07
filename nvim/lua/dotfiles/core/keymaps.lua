@@ -80,30 +80,6 @@ map({ "<C-n>", "<Down>", desc = "Next command in history", mode = "c" })
 map({ "<C-p>", "<Up>", desc = "Previous command in history", mode = "c" })
 
 map({
-  "<Leader>mp",
-  function()
-    if vim.fn.mkdir("cmake", "p") == 0 then
-      vim.notify("CPM.cmake: can't create 'cmake' directory", vim.log.levels.ERROR)
-      return
-    end
-    vim.notify("Downloading CPM.cmake...")
-    vim.system({
-      "wget",
-      "-O",
-      "cmake/CPM.cmake",
-      "https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake",
-    }, {}, function(out)
-      if out.code == 0 then
-        vim.notify("CPM.cmake: downloaded cmake/CPM.cmake successfully")
-      else
-        vim.notify("CPM.cmake: failed to download CPM.cmake", vim.log.levels.ERROR)
-      end
-    end)
-  end,
-  desc = "Get CPM.cmake",
-})
-
-map({
   "<Leader>cx",
   function()
     vim.cmd([[execute "normal! \<ESC>"]])
@@ -218,3 +194,13 @@ map({ "<C-f>", "<Right>", mode = { "i", "c" }, desc = "Move a character forward"
 map({ "<C-b>", "<Left>", mode = { "i", "c" }, desc = "Move a character backward" })
 map({ "<C-a>", "<Home>", mode = { "i", "c" }, desc = "Begin of line" })
 map({ "<C-e>", "<End>", mode = { "i", "c" }, desc = "End of line" })
+
+map({ "]b", function() return "<Cmd>" .. vim.v.count1 .. "bnext<CR>" end, expr = true, desc = "Go to the next buffer" })
+map({
+  "[b",
+  function() return "<Cmd>" .. vim.v.count1 .. "bprevious<CR>" end,
+  expr = true,
+  desc = "Go to the previous buffer",
+})
+map({ "]B", "<Cmd>blast<CR>", desc = "Go to the first buffer" })
+map({ "[B", "<Cmd>bfrist<CR>", desc = "Go to the last buffer" })

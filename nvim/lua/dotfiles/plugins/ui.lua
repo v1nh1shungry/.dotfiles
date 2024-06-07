@@ -1,6 +1,14 @@
 local events = require("dotfiles.utils.events")
-local excluded_buftypes = require("dotfiles.utils.ui").excluded_buftypes
-local excluded_filetypes = require("dotfiles.utils.ui").excluded_filetypes
+local ui = require("dotfiles.utils.ui")
+local rainbow_highlight = {
+  "RainbowDelimiterRed",
+  "RainbowDelimiterYellow",
+  "RainbowDelimiterBlue",
+  "RainbowDelimiterOrange",
+  "RainbowDelimiterGreen",
+  "RainbowDelimiterViolet",
+  "RainbowDelimiterCyan",
+}
 
 return {
   {
@@ -99,7 +107,7 @@ return {
             vim.cmd("BufferLineCycleNext")
           end
         end,
-        desc = "Next buffer",
+        desc = "Jump to the next buffer",
       },
       {
         "[b",
@@ -108,8 +116,10 @@ return {
             vim.cmd("BufferLineCyclePrev")
           end
         end,
-        desc = "Previous buffer",
+        desc = "Jump to the previous buffer",
       },
+      { "[B", function() require("bufferline").go_to(1, true) end, desc = "Jump to the first buffer" },
+      { "]B", function() require("bufferline").got_to(-1, true) end, desc = "Jump to the last buffer" },
       { "gb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
     },
   },
@@ -238,39 +248,27 @@ return {
     config = function(_, opts)
       local wk = require("which-key")
       wk.setup(opts)
-
-      for _, mode in ipairs({ "n", "v", "o" }) do
-        wk.register(opts[mode], { mode = mode })
-      end
+      wk.register(opts.defaults)
     end,
     event = "VeryLazy",
     opts = {
       window = { winblend = require("dotfiles.user").ui.blend },
       layout = { height = { max = 10 } },
-      n = {
+      defaults = {
+        mode = { "n", "v" },
         ["g"] = { name = "+goto" },
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
+        ["z"] = { name = "+fold" },
         ["<Leader><Tab>"] = { name = "+tab" },
-        ["<Leader>b"] = { name = "+biquge" },
         ["<Leader>c"] = { name = "+code" },
         ["<Leader>d"] = { name = "+debug" },
         ["<Leader>f"] = { name = "+file" },
         ["<Leader>g"] = { name = "+git" },
-        ["<Leader>m"] = { name = "+cmake" },
         ["<Leader>q"] = { name = "+quit/sessions" },
         ["<Leader>s"] = { name = "+search" },
         ["<Leader>u"] = { name = "+ui" },
         ["<Leader>x"] = { name = "+diagnostics/quickfix" },
-      },
-      v = {
-        ["<Leader>c"] = { name = "+code" },
-        ["<Leader>s"] = { name = "+search" },
-      },
-      o = {
-        ["g"] = { name = "+goto" },
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+prev" },
       },
     },
   },
@@ -363,8 +361,8 @@ return {
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
-        bt_ignore = excluded_buftypes,
-        ft_ignore = excluded_filetypes,
+        bt_ignore = ui.excluded_buftypes,
+        ft_ignore = ui.excluded_filetypes,
         relculright = true,
         segments = {
           { sign = { name = { "Dap" } }, click = "v:lua.ScSa" },
@@ -524,7 +522,7 @@ return {
         end
         return label
       end,
-      ignore = { filetypes = excluded_filetypes },
+      ignore = { filetypes = ui.excluded_filetypes },
       window = {
         margin = {
           vertical = { top = 3, bottom = 0 },
@@ -547,74 +545,43 @@ return {
     opts = {},
   },
   {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function(_, opts)
+      local hooks = require("ibl.hooks")
+      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+      require("ibl").setup(opts)
+    end,
+    dependencies = { "nvim-treesitter/nvim-treesitter", "hiphish/rainbow-delimiters.nvim" },
+    event = events.enter_buffer,
+    opts = {
+      indent = { char = "│", tab_char = "│" },
+      scope = {
+        show_start = false,
+        show_end = false,
+        include = { node_type = { lua = { "table_constructor" } } },
+        highlight = rainbow_highlight,
+      },
+      exclude = { filetypes = ui.excluded_filetypes, buftypes = ui.excluded_buftypes },
+    },
+  },
+  {
     "hiphish/rainbow-delimiters.nvim",
     main = "rainbow-delimiters.setup",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
-    opts = { highlight = require("dotfiles.utils.ui").rainbow_highlight },
-  },
-  {
-    "echasnovski/mini.files",
-    config = function()
-      require("mini.files").setup()
-
-      local map = require("dotfiles.utils.keymap")
-
-      local function map_split(bufnr, lhs, direction, close_on_file)
-        map({
-          lhs,
-          function()
-            local new_target_window
-            local cur_target_window = MiniFiles.get_target_window()
-            if cur_target_window then
-              vim.api.nvim_win_call(cur_target_window, function()
-                vim.cmd("belowright " .. direction .. " split")
-                new_target_window = vim.api.nvim_get_current_win()
-              end)
-              MiniFiles.set_target_window(new_target_window)
-              MiniFiles.go_in({ close_on_file = close_on_file })
-            end
-          end,
-          buffer = bufnr,
-          desc = "Open in " .. direction .. " split" .. (close_on_file and " and close" or ""),
-        })
-      end
-
-      local function cwd()
-        local cur_entry_path = MiniFiles.get_fs_entry().path
-        local cur_directory = vim.fs.dirname(cur_entry_path)
-        if cur_entry_path then
-          vim.fn.chdir(cur_directory)
-        end
-      end
-
-      vim.api.nvim_create_autocmd("User", {
-        callback = function(event)
-          local bufnr = event.data.buf_id
-          map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
-          map_split(bufnr, "<C-w>s", "horizontal", false)
-          map_split(bufnr, "<C-w>v", "vertical", false)
-          map_split(bufnr, "<C-w>S", "horizontal", true)
-          map_split(bufnr, "<C-w>V", "vertical", true)
-        end,
-        pattern = "MiniFilesBufferCreate",
-      })
-    end,
-    keys = {
-      {
-        "<Leader>e",
-        function()
-          if not MiniFiles.close() then
-            MiniFiles.open()
-          end
-        end,
-        desc = "Explorer",
-      },
+    opts = {
+      highlight = rainbow_highlight,
+      query = { lua = "rainbow-blocks", query = "rainbow-blocks" },
     },
   },
   {
     "kevinhwang91/nvim-bqf",
     dependencies = "nvim-treesitter/nvim-treesitter",
     ft = "qf",
+  },
+  {
+    "tiagovla/scope.nvim",
+    event = "VeryLazy",
+    opts = {},
   },
 }

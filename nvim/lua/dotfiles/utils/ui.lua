@@ -73,14 +73,4 @@ M.excluded_filetypes = {
 
 M.excluded_buftypes = { "nofile", "help", "prompt" , "quickfix", "terminal"}
 
-M.rainbow_highlight = {
-  "RainbowDelimiterRed",
-  "RainbowDelimiterYellow",
-  "RainbowDelimiterBlue",
-  "RainbowDelimiterOrange",
-  "RainbowDelimiterGreen",
-  "RainbowDelimiterViolet",
-  "RainbowDelimiterCyan",
-}
-
 return M

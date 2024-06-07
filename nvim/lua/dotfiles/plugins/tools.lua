@@ -83,11 +83,6 @@ return {
     },
   },
   {
-    "krady21/compiler-explorer.nvim",
-    cmd = { "CECompile", "CECompileLive" },
-    dependencies = "stevearc/dressing.nvim",
-  },
-  {
     "danymat/neogen",
     opts = { snippet_engine = "nvim" },
     keys = { { "<Leader>cg", "<Cmd>Neogen<CR>", desc = "Generate document comment" } },
@@ -158,6 +153,15 @@ return {
         end,
       })
     end,
+    dependencies = {
+      "folke/which-key.nvim",
+      optional = true,
+      opts = function(_, opts)
+        opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
+          ["<Leader>m"] = { name = "+cmake" },
+        })
+      end,
+    },
     keys = {
       { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
       { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },
@@ -166,6 +170,29 @@ return {
       { "<Leader>ma", ":CMakeLaunchArgs ", desc = "Set launch arguments" },
       { "<Leader>ms", "<Cmd>CMakeTargetSettings<CR>", desc = "Summary" },
       { "<Leader>mc", "<Cmd>CMakeClean<CR>", desc = "Clean" },
+      {
+        "<Leader>mp",
+        function()
+          if vim.fn.mkdir("cmake", "p") == 0 then
+            vim.notify("CPM.cmake: can't create 'cmake' directory", vim.log.levels.ERROR)
+            return
+          end
+          vim.notify("Downloading CPM.cmake...")
+          vim.system({
+            "wget",
+            "-O",
+            "cmake/CPM.cmake",
+            "https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake",
+          }, {}, function(out)
+            if out.code == 0 then
+              vim.notify("CPM.cmake: downloaded cmake/CPM.cmake successfully")
+            else
+              vim.notify("CPM.cmake: failed to download CPM.cmake", vim.log.levels.ERROR)
+            end
+          end)
+        end,
+        desc = "Get CPM.cmake",
+      },
     },
     opts = {
       cmake_generate_options = {
@@ -272,7 +299,18 @@ return {
   },
   {
     "v1nh1shungry/biquge.nvim",
-    dependencies = "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      {
+        "folke/which-key.nvim",
+        optional = true,
+        opts = function(_, opts)
+          opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
+            ["<Leader>b"] = { name = "+biquge" },
+          })
+        end,
+      },
+    },
     keys = {
       {
         "<Leader>b/",
@@ -360,5 +398,195 @@ return {
     "v1nh1shungry/lyricify.nvim",
     keys = { { "<Leader>us", function() require("lyricify").toggle() end, desc = "Spotify" } },
     opts = {},
+  },
+  {
+    "olimorris/persisted.nvim",
+    cmd = "SessionLoad",
+    config = function()
+      require("persisted").setup({
+        use_git_branch = true,
+        should_autosave = function()
+          local bufs = vim.tbl_filter(function(b)
+            if vim.bo[b].buftype ~= "" then
+              return false
+            end
+            if vim.bo[b].buflisted == false then
+              return false
+            end
+            if vim.tbl_contains({ "gitcommit", "gitrebase" }, vim.bo[b].buftype) then
+              return false
+            end
+            return vim.api.nvim_buf_get_name(b) ~= ""
+          end, vim.api.nvim_list_bufs())
+          return #bufs ~= 0
+        end,
+      })
+
+      require("telescope").load_extension("persisted")
+
+      vim.api.nvim_create_autocmd("User", {
+        command = "ScopeSaveState",
+        pattern = "PersistedSavePre",
+      })
+      vim.api.nvim_create_autocmd("User", {
+        command = "ScopeLoadState",
+        pattern = "PersistedLoadPost",
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "PersistedTelescopeLoadPre",
+        callback = function(_)
+          require("persisted").save({ session = vim.g.persisted_loaded_session })
+          vim.api.nvim_input("<ESC>:%bd!<CR>")
+        end,
+      })
+    end,
+    dependencies = "nvim-telescope/telescope.nvim",
+    event = events.enter_buffer,
+    keys = {
+      { "<Leader>qs", "<Cmd>SessionLoad<CR>", desc = "Restore current session" },
+      { "<Leader>ql", "<Cmd>SessionLoadLast<CR>", desc = "Restore last session" },
+      { "<Leader>q/", "<Cmd>Telescope persisted<CR>", desc = "Search sessions" },
+      {
+        "<Leader>qd",
+        function()
+          vim.cmd("SessionStop")
+          vim.cmd("qa!")
+        end,
+        desc = "Quit without saving session",
+      },
+      { "<Leader>qc", "<Cmd>SessionDelete<CR>", desc = "Delete current session" },
+    },
+  },
+  {
+    "willothy/flatten.nvim",
+    opts = function()
+      local saved_terminal
+      return {
+        window = { open = "alternate" },
+        nest_if_no_args = true,
+        callbacks = {
+          should_block = function(argv) return vim.tbl_contains(argv, "-b") end,
+          pre_open = function()
+            local term = require("toggleterm.terminal")
+            local termid = term.get_focused_id()
+            saved_terminal = term.get(termid)
+          end,
+          post_open = function(bufnr, _, ft, _)
+            saved_terminal:close()
+            if ft == "gitcommit" or ft == "gitrebase" then
+              vim.api.nvim_create_autocmd("BufWritePost", {
+                buffer = bufnr,
+                once = true,
+                callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
+              })
+            end
+          end,
+          block_end = function()
+            vim.schedule(function()
+              if saved_terminal then
+                saved_terminal:open()
+                saved_terminal = nil
+              end
+            end)
+          end,
+        },
+      }
+    end,
+  },
+  {
+    "gbprod/yanky.nvim",
+    keys = {
+      {
+        "<leader>sY",
+        function() require("telescope").extensions.yank_history.yank_history({}) end,
+        desc = "Open Yank History",
+      },
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
+      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
+      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
+      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
+      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
+      { "[y", "<Plug>(YankyPreviousEntry)", desc = "Select previous entry through yank history" },
+      { "]y", "<Plug>(YankyNextEntry)", desc = "Select next entry through yank history" },
+      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+      { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
+      { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
+      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right" },
+      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left" },
+      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
+      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left" },
+      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
+      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
+    },
+    opts = {},
+  },
+  {
+    "akinsho/toggleterm.nvim",
+    cmd = "TermExec",
+    keys = { { "<M-=>", desc = "Toggle terminal" } },
+    opts = {
+      open_mapping = "<M-=>",
+      size = 10,
+      float_opts = { title_pos = "center", border = "curved" },
+    },
+  },
+  {
+    "echasnovski/mini.files",
+    config = function()
+      require("mini.files").setup()
+
+      local function map_split(bufnr, lhs, direction, close_on_file)
+        map({
+          lhs,
+          function()
+            local new_target_window
+            local cur_target_window = MiniFiles.get_target_window()
+            if cur_target_window then
+              vim.api.nvim_win_call(cur_target_window, function()
+                vim.cmd("belowright " .. direction .. " split")
+                new_target_window = vim.api.nvim_get_current_win()
+              end)
+              MiniFiles.set_target_window(new_target_window)
+              MiniFiles.go_in({ close_on_file = close_on_file })
+            end
+          end,
+          buffer = bufnr,
+          desc = "Open in " .. direction .. " split" .. (close_on_file and " and close" or ""),
+        })
+      end
+
+      local function cwd()
+        local cur_entry_path = MiniFiles.get_fs_entry().path
+        local cur_directory = vim.fs.dirname(cur_entry_path)
+        if cur_entry_path then
+          vim.fn.chdir(cur_directory)
+        end
+      end
+
+      vim.api.nvim_create_autocmd("User", {
+        callback = function(event)
+          local bufnr = event.data.buf_id
+          map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
+          map_split(bufnr, "<C-w>s", "horizontal", false)
+          map_split(bufnr, "<C-w>v", "vertical", false)
+          map_split(bufnr, "<C-w>S", "horizontal", true)
+          map_split(bufnr, "<C-w>V", "vertical", true)
+        end,
+        pattern = "MiniFilesBufferCreate",
+      })
+    end,
+    keys = {
+      {
+        "<Leader>e",
+        function()
+          if not MiniFiles.close() then
+            MiniFiles.open()
+          end
+        end,
+        desc = "Explorer",
+      },
+    },
   },
 }

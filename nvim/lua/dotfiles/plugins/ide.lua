@@ -415,16 +415,6 @@ return {
     },
   },
   {
-    "akinsho/toggleterm.nvim",
-    cmd = "TermExec",
-    keys = { { "<M-=>", desc = "Toggle terminal" } },
-    opts = {
-      open_mapping = "<M-=>",
-      size = 10,
-      float_opts = { title_pos = "center", border = "curved" },
-    },
-  },
-  {
     "rcarriga/nvim-dap-ui",
     config = function()
       local dap, dapui = require("dap"), require("dapui")

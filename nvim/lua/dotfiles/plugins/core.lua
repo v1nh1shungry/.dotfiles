@@ -12,54 +12,56 @@ return {
   },
   {
     "echasnovski/mini.ai",
-    config = function(_, opts)
-      require("mini.ai").setup(opts)
-      local i = {
-        [" "] = "Whitespace",
-        ['"'] = 'Balanced "',
-        ["'"] = "Balanced '",
-        ["`"] = "Balanced `",
-        ["("] = "Balanced (",
-        [")"] = "Balanced ) including white-space",
-        [">"] = "Balanced > including white-space",
-        ["<lt>"] = "Balanced <",
-        ["]"] = "Balanced ] including white-space",
-        ["["] = "Balanced [",
-        ["}"] = "Balanced } including white-space",
-        ["{"] = "Balanced {",
-        ["?"] = "User Prompt",
-        _ = "Underscore",
-        a = "Argument",
-        b = "Balanced ), ], }",
-        c = "Class",
-        d = "Digit(s)",
-        f = "Function",
-        g = "Entire file",
-        i = "Indent",
-        o = "Block, conditional, loop",
-        q = "Quote `, \", '",
-        t = "Tag",
-        u = "Use/call function & method",
-        U = "Use/call without dot in name",
-      }
-      local a = vim.deepcopy(i)
-      for k, v in pairs(a) do
-        a[k] = v:gsub(" including.*", "")
-      end
-      local ic = vim.deepcopy(i)
-      local ac = vim.deepcopy(a)
-      for key, name in pairs({ n = "Next", l = "Last" }) do
-        i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
-        a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
-      end
-      require("which-key").register({
-        mode = { "o", "x" },
-        i = i,
-        a = a,
-      })
-    end,
     dependencies = {
-      "folke/which-key.nvim",
+      {
+        "folke/which-key.nvim",
+        config = function()
+          local i = {
+            [" "] = "Whitespace",
+            ['"'] = 'Balanced "',
+            ["'"] = "Balanced '",
+            ["`"] = "Balanced `",
+            ["("] = "Balanced (",
+            [")"] = "Balanced ) including white-space",
+            [">"] = "Balanced > including white-space",
+            ["<lt>"] = "Balanced <",
+            ["]"] = "Balanced ] including white-space",
+            ["["] = "Balanced [",
+            ["}"] = "Balanced } including white-space",
+            ["{"] = "Balanced {",
+            ["?"] = "User Prompt",
+            _ = "Underscore",
+            a = "Argument",
+            b = "Balanced ), ], }",
+            c = "Class",
+            d = "Digit(s)",
+            f = "Function",
+            g = "Entire file",
+            i = "Indent",
+            o = "Block, conditional, loop",
+            q = "Quote `, \", '",
+            t = "Tag",
+            u = "Use/call function & method",
+            U = "Use/call without dot in name",
+          }
+          local a = vim.deepcopy(i)
+          for k, v in pairs(a) do
+            a[k] = v:gsub(" including.*", "")
+          end
+          local ic = vim.deepcopy(i)
+          local ac = vim.deepcopy(a)
+          for key, name in pairs({ n = "Next", l = "Last" }) do
+            i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
+            a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
+          end
+          require("which-key").register({
+            mode = { "o", "x" },
+            i = i,
+            a = a,
+          })
+        end,
+        optional = true,
+      },
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
         config = function()
@@ -245,54 +247,21 @@ return {
     },
   },
   {
-    "lukas-reineke/indent-blankline.nvim",
-    config = function(_, opts)
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-      require("ibl").setup(opts)
-    end,
-    dependencies = { "nvim-treesitter/nvim-treesitter", "hiphish/rainbow-delimiters.nvim" },
-    event = events.enter_buffer,
-    opts = {
-      indent = { char = "│", tab_char = "│" },
-      scope = {
-        show_start = false,
-        show_end = false,
-        include = { node_type = { lua = { "table_constructor" } } },
-        highlight = require("dotfiles.utils.ui").rainbow_highlight,
-      },
-      exclude = {
-        filetypes = require("dotfiles.utils.ui").excluded_filetypes,
-        buftypes = require("dotfiles.utils.ui").excluded_buftypes,
-      },
-    },
-  },
-  {
     "echasnovski/mini.surround",
-    config = function()
-      require("mini.surround").setup({
-        mappings = {
-          add = "ys",
-          delete = "ds",
-          find = "",
-          find_left = "",
-          highlight = "",
-          replace = "cs",
-          update_n_lines = "",
-          suffix_last = "",
-          suffix_next = "",
-        },
-        search_method = "cover_or_next",
-      })
-      vim.keymap.del("x", "ys")
+    keys = function(_, keys)
+      local mappings = {
+        { "sa", desc = "Add Surrounding", mode = { "n", "v" } },
+        { "sd", desc = "Delete Surrounding" },
+        { "sf", desc = "Find Right Surrounding" },
+        { "sF", desc = "Find Left Surrounding" },
+        { "sh", desc = "Highlight Surrounding" },
+        { "sr", desc = "Replace Surrounding" },
+        { "sn", desc = "Update `MiniSurround.config.n_lines`" },
+      }
+      mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
+      return vim.list_extend(mappings, keys)
     end,
-    keys = {
-      { "ys", desc = "Add surrounding" },
-      { "ds", desc = "Delete surrounding" },
-      { "cs", desc = "Change surrounding" },
-      { "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = "x" },
-      { "yss", "ys_", remap = true },
-    },
+    opts = {},
   },
   {
     "mg979/vim-visual-multi",
@@ -307,11 +276,6 @@ return {
   {
     "altermo/ultimate-autopair.nvim",
     event = events.enter_insert,
-    opts = {},
-  },
-  {
-    "tiagovla/scope.nvim",
-    event = "VeryLazy",
     opts = {},
   },
   {
@@ -392,93 +356,6 @@ return {
     cmd = { "SudaRead", "SudaWrite" },
   },
   {
-    "olimorris/persisted.nvim",
-    cmd = "SessionLoad",
-    config = function()
-      require("persisted").setup({
-        use_git_branch = true,
-        should_autosave = function()
-          local bufs = vim.tbl_filter(function(b)
-            if vim.bo[b].buftype ~= "" then
-              return false
-            end
-            if vim.bo[b].buflisted == false then
-              return false
-            end
-            if vim.tbl_contains({ "gitcommit", "gitrebase" }, vim.bo[b].buftype) then
-              return false
-            end
-            return vim.api.nvim_buf_get_name(b) ~= ""
-          end, vim.api.nvim_list_bufs())
-          return #bufs ~= 0
-        end,
-      })
-
-      require("telescope").load_extension("persisted")
-
-      vim.api.nvim_create_autocmd("User", {
-        command = "ScopeSaveState",
-        pattern = "PersistedSavePre",
-      })
-      vim.api.nvim_create_autocmd("User", {
-        command = "ScopeLoadState",
-        pattern = "PersistedLoadPost",
-      })
-
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "PersistedTelescopeLoadPre",
-        callback = function(_)
-          require("persisted").save({ session = vim.g.persisted_loaded_session })
-          vim.api.nvim_input("<ESC>:%bd!<CR>")
-        end,
-      })
-    end,
-    dependencies = "nvim-telescope/telescope.nvim",
-    event = events.enter_buffer,
-    keys = {
-      { "<Leader>qs", "<Cmd>SessionLoad<CR>", desc = "Restore current session" },
-      { "<Leader>ql", "<Cmd>SessionLoadLast<CR>", desc = "Restore last session" },
-      { "<Leader>q/", "<Cmd>Telescope persisted<CR>", desc = "Search sessions" },
-      {
-        "<Leader>qd",
-        function()
-          vim.cmd("SessionStop")
-          vim.cmd("qa!")
-        end,
-        desc = "Quit without saving session",
-      },
-      { "<Leader>qc", "<Cmd>SessionDelete<CR>", desc = "Delete current session" },
-    },
-  },
-  {
-    "gbprod/yanky.nvim",
-    keys = {
-      {
-        "<leader>sY",
-        function() require("telescope").extensions.yank_history.yank_history({}) end,
-        desc = "Open Yank History",
-      },
-      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
-      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
-      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
-      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
-      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
-      { "[y", "<Plug>(YankyPreviousEntry)", desc = "Select previous entry through yank history" },
-      { "]y", "<Plug>(YankyNextEntry)", desc = "Select next entry through yank history" },
-      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
-      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
-      { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
-      { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
-      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right" },
-      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left" },
-      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
-      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left" },
-      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
-      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
-    },
-    opts = {},
-  },
-  {
     "numToStr/Navigator.nvim",
     keys = {
       { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Go to left window", mode = { "i", "n", "t" } },
@@ -487,42 +364,6 @@ return {
       { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Go to upper window", mode = { "i", "n", "t" } },
     },
     opts = {},
-  },
-  {
-    "willothy/flatten.nvim",
-    opts = function()
-      local saved_terminal
-      return {
-        window = { open = "alternate" },
-        nest_if_no_args = true,
-        callbacks = {
-          should_block = function(argv) return vim.tbl_contains(argv, "-b") end,
-          pre_open = function()
-            local term = require("toggleterm.terminal")
-            local termid = term.get_focused_id()
-            saved_terminal = term.get(termid)
-          end,
-          post_open = function(bufnr, _, ft, _)
-            saved_terminal:close()
-            if ft == "gitcommit" or ft == "gitrebase" then
-              vim.api.nvim_create_autocmd("BufWritePost", {
-                buffer = bufnr,
-                once = true,
-                callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
-              })
-            end
-          end,
-          block_end = function()
-            vim.schedule(function()
-              if saved_terminal then
-                saved_terminal:open()
-                saved_terminal = nil
-              end
-            end)
-          end,
-        },
-      }
-    end,
   },
   {
     "folke/ts-comments.nvim",

@@ -1,5 +1,8 @@
 local M = {
-  plugins = {},
+  plugins = {
+    user = {},
+    extra = {},
+  },
   ui = {
     background = {
       light = 8,

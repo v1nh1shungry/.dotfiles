@@ -11,7 +11,14 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("dotfiles.plugins", {
+require("lazy").setup({
+  spec = vim.list_extend(
+    { { import = "dotfiles.plugins" } },
+    vim
+      .iter(require("dotfiles.user").plugins.extra)
+      :map(function(m) return { import = "dotfiles.plugins.extra." .. m } end)
+      :totable()
+  ),
   install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },
   performance = {
     rtp = {

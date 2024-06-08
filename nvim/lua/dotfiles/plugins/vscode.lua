@@ -12,6 +12,9 @@ Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
 Config.options.defaults.cond = function(plugin) return vim.list_contains(enabled, plugin[1]) end
 
+local vscode = require("vscode")
+vim.notify = vscode.notify
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",

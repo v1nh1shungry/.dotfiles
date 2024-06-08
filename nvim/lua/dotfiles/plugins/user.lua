@@ -1,1 +1,1 @@
-return require("dotfiles.user").plugins
+return require("dotfiles.user").plugins.user

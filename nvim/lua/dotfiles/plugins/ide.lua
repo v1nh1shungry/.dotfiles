@@ -106,13 +106,15 @@ return {
           capabilities = vim.deepcopy(capabilities),
           single_file_support = true,
         }, lsp_opts.servers[server])
-        if lsp_opts.setup[server] then
-          if lsp_opts.setup[server](server, opts) then
-            return
-          end
-        elseif lsp_opts.setup["*"] then
-          if lsp_opts.setup["*"](server, opts) then
-            return
+        if lsp_opts.setup then
+          if lsp_opts.setup[server] then
+            if lsp_opts.setup[server](server, opts) then
+              return
+            end
+          elseif lsp_opts.setup["*"] then
+            if lsp_opts.setup["*"](server, opts) then
+              return
+            end
           end
         end
         require("lspconfig")[server].setup(opts)
@@ -189,35 +191,6 @@ return {
             },
           },
         },
-        basedpyright = {},
-        vtsls = {
-          settings = {
-            complete_function_calls = true,
-            vtsls = {
-              enableMoveToFileCodeAction = true,
-              autoUseWorkspaceTsdk = true,
-              experimental = { completion = { enableServerSideFuzzyMatch = true } },
-            },
-            typescript = {
-              updateImportsOnFileMove = { enabled = "always" },
-              suggest = { completeFunctionCalls = true },
-              inlayHints = {
-                enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = "literals" },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = false },
-              },
-            },
-          },
-        },
-      },
-      setup = {
-        vtsls = function(_, opts)
-          opts.settings.javascript =
-            vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
-        end,
       },
     },
   },
@@ -260,7 +233,7 @@ return {
       end)
     end,
     keys = { { "<Leader>cm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    opts = { ensure_installed = { "stylua", "black", "codelldb" } },
+    opts = { ensure_installed = { "stylua", "codelldb" } },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -475,7 +448,6 @@ return {
       formatters_by_ft = {
         fish = { "fish_indent" },
         lua = { "stylua" },
-        python = { "black" },
         query = { "format-queries" },
         markdown = { "injected" },
         ["_"] = { "trim_whitespace" },

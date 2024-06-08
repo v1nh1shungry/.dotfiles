@@ -155,7 +155,6 @@ return {
     end,
     dependencies = {
       "folke/which-key.nvim",
-      optional = true,
       opts = function(_, opts)
         opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
           ["<Leader>m"] = { name = "+cmake" },
@@ -264,12 +263,15 @@ return {
       "nvim-telescope/telescope.nvim",
       {
         "folke/which-key.nvim",
-        optional = true,
         opts = function(_, opts)
           opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
             ["<Leader>b"] = { name = "+biquge" },
           })
         end,
+      },
+      {
+        "nvim-treesitter/nvim-treesitter",
+        opts = function(_, opts) vim.list_extend(opts.ensure_installed, { "html" }) end,
       },
     },
     keys = {

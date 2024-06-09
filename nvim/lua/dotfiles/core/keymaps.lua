@@ -67,7 +67,7 @@ map({
   desc = "Put empty line below",
 })
 
-map({ "<Leader>l", "<Cmd>Lazy home<CR>", desc = "Lazy" })
+map({ "<Leader>pl", "<Cmd>Lazy home<CR>", desc = "Lazy" })
 
 map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Give up modifications" })
 

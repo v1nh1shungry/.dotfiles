@@ -3,7 +3,12 @@ local events = require("dotfiles.utils.events")
 return {
   {
     "andymass/vim-matchup",
-    config = function() vim.g.matchup_matchparen_offscreen = { method = "" } end,
+    config = function()
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      vim.g.matchup_transmute_enabled = true
+      vim.g.matchup_matchparen_deferred = true
+      vim.g.matchup_matchparen_hi_surround_always = true
+    end,
     event = events.enter_buffer,
   },
   {
@@ -170,8 +175,11 @@ return {
         "diff",
         "doxygen",
         "fish",
+        "git_config",
         "git_rebase",
+        "gitattributes",
         "gitcommit",
+        "gitignore",
         "json",
         "jsonc",
         "lua",
@@ -244,20 +252,33 @@ return {
   },
   {
     "echasnovski/mini.surround",
+    config = function(_, opts)
+      require("mini.surround").setup(opts)
+      vim.keymap.del("x", "ys")
+    end,
     keys = function(_, keys)
       local mappings = {
-        { "sa", desc = "Add Surrounding", mode = { "n", "v" } },
-        { "sd", desc = "Delete Surrounding" },
-        { "sf", desc = "Find Right Surrounding" },
-        { "sF", desc = "Find Left Surrounding" },
-        { "sh", desc = "Highlight Surrounding" },
-        { "sr", desc = "Replace Surrounding" },
-        { "sn", desc = "Update `MiniSurround.config.n_lines`" },
+        { "ys", desc = "Add surrounding" },
+        { "ds", desc = "Delete surrounding" },
+        { "cs", desc = "Replace surrounding" },
+        { "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = "x", desc = "Add surrounding" },
+        { "yss", "ys_", remap = true, desc = "Add surrounding for line" },
       }
       mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
       return vim.list_extend(mappings, keys)
     end,
-    opts = {},
+    opts = {
+      mappings = {
+        add = "ys",
+        delete = "ds",
+        find = "",
+        find_left = "",
+        highlight = "",
+        replace = "cs",
+        update_n_lines = "",
+      },
+      search_method = "cover_or_next",
+    },
   },
   {
     "altermo/ultimate-autopair.nvim",

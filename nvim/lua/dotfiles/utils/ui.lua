@@ -71,6 +71,6 @@ M.excluded_filetypes = {
   "toggleterm",
 }
 
-M.excluded_buftypes = { "nofile", "help", "prompt" , "quickfix", "terminal"}
+M.excluded_buftypes = { "nofile", "help", "prompt", "quickfix", "terminal" }
 
 return M

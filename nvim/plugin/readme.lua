@@ -6,13 +6,13 @@ local function update()
   if not contents then
     return
   end
-  local plugins_section = {
-    marker,
-    "## Neovim plugins",
-  }
+  local plugins_section = {}
   for _, spec in ipairs(require("lazy").plugins()) do
     table.insert(plugins_section, ("* [%s](%s)"):format(spec[1], spec.url))
   end
+  table.sort(plugins_section)
+  table.insert(plugins_section, 1, marker)
+  table.insert(plugins_section, 1, "## Neovim plugins")
   table.insert(plugins_section, marker)
   local start_row, end_row
   for i, line in ipairs(contents) do

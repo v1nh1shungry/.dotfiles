@@ -164,7 +164,7 @@ return {
     keys = {
       { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
       { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },
-      { "<Leader>mr", "<Cmd>CMakeRun<CR>", desc = "Run executable" },
+      { "<Leader>mx", "<Cmd>CMakeRun<CR>", desc = "Run executable" },
       { "<Leader>md", "<Cmd>CMakeDebug<CR>", desc = "Debug" },
       { "<Leader>ma", ":CMakeLaunchArgs ", desc = "Set launch arguments" },
       { "<Leader>ms", "<Cmd>CMakeTargetSettings<CR>", desc = "Summary" },

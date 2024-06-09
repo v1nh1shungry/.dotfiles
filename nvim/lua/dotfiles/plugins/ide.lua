@@ -232,7 +232,7 @@ return {
         end
       end)
     end,
-    keys = { { "<Leader>cm", "<Cmd>Mason<CR>", desc = "Mason" } },
+    keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = { ensure_installed = { "stylua", "codelldb" } },
   },
   {
@@ -262,8 +262,8 @@ return {
           expandable_indicator = true,
         },
         mapping = {
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-e>"] = cmp.mapping.abort(),

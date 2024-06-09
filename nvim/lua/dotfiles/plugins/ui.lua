@@ -136,6 +136,7 @@ return {
       end
     end,
     lazy = true,
+    opts = { input = { insert_only = false } },
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -265,6 +266,7 @@ return {
         ["<Leader>d"] = { name = "+debug" },
         ["<Leader>f"] = { name = "+file" },
         ["<Leader>g"] = { name = "+git" },
+        ["<Leader>p"] = { name = "+package" },
         ["<Leader>q"] = { name = "+quit/sessions" },
         ["<Leader>s"] = { name = "+search" },
         ["<Leader>u"] = { name = "+ui" },

@@ -5,42 +5,8 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
-    config = function()
-      local function flash(prompt_bufnr)
-        require("flash").jump({
-          pattern = "^",
-          label = { after = { 0, 0 } },
-          search = {
-            mode = "search",
-            exclude = {
-              function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults" end,
-            },
-          },
-          action = function(match)
-            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-            picker:set_selection(match.pos[1] - 1)
-          end,
-        })
-      end
-
-      require("telescope").setup({
-        defaults = {
-          prompt_prefix = "🔎 ",
-          selection_caret = "➤ ",
-          layout_strategy = "bottom_pane",
-          layout_config = {
-            bottom_pane = {
-              height = 0.4,
-              preview_cutoff = 100,
-              prompt_position = "bottom",
-            },
-          },
-          mappings = {
-            i = { ["<C-s>"] = flash },
-            n = { s = flash },
-          },
-        },
-      })
+    config = function(_, opts)
+      require("telescope").setup(opts)
 
       require("telescope").load_extension("fzf")
     end,
@@ -70,8 +36,6 @@ return {
     end,
     keys = {
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
       { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
       { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
@@ -81,6 +45,44 @@ return {
       { "<Leader>sx", "<Cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
       { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
     },
+    opts = function()
+      local function flash(prompt_bufnr)
+        require("flash").jump({
+          pattern = "^",
+          label = { after = { 0, 0 } },
+          search = {
+            mode = "search",
+            exclude = {
+              function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults" end,
+            },
+          },
+          action = function(match)
+            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+            picker:set_selection(match.pos[1] - 1)
+          end,
+        })
+      end
+
+      return {
+        defaults = {
+          prompt_prefix = "🔎 ",
+          selection_caret = "➤ ",
+          layout_strategy = "bottom_pane",
+          sorting_strategy = "ascending",
+          layout_config = {
+            bottom_pane = {
+              height = 0.4,
+              preview_cutoff = 100,
+              prompt_position = "top",
+            },
+          },
+          mappings = {
+            i = { ["<C-s>"] = flash },
+            n = { s = flash },
+          },
+        },
+      }
+    end,
   },
   {
     "danymat/neogen",
@@ -330,14 +332,16 @@ return {
   },
   {
     "chrisgrieser/nvim-tinygit",
+    dependencies = { "stevearc/dressing.nvim", "nvim-telescope/telescope.nvim", "rcarriga/nvim-notify" },
     ft = { "gitcommit", "git_rebase" },
     keys = {
       { "<Leader>gc", function() require("tinygit").smartCommit() end, desc = "Commit" },
       { "<Leader>gP", function() require("tinygit").push({}) end, desc = "Push" },
       { "<Leader>ga", function() require("tinygit").amendNoEdit() end, desc = "Amend" },
-      { "<Leader>gu", function() require("tinygit").undoLastCommitOrAmend() end, desc = "Undo last commit" },
-      { "<Leader>gF", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
-      { "<Leader>gf", function() require("tinygit").functionHistory() end, desc = "Search function history" },
+      { "<Leader>gU", function() require("tinygit").undoLastCommitOrAmend() end, desc = "Undo last commit" },
+      { "<Leader>gs", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
+      { "<Leader>gS", function() require("tinygit").functionHistory() end, desc = "Search function history" },
+      { "<Leader>gf", function() require("tinygit").githubUrl() end, desc = "Open in Github" },
     },
   },
   {
@@ -561,5 +565,22 @@ return {
       vim.g.VM_show_warnings = 0
     end,
     keys = { { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" } },
+  },
+  {
+    "danielfalk/smart-open.nvim",
+    branch = "0.2.x",
+    config = function() require("telescope").load_extension("smart_open") end,
+    dependencies = {
+      "kkharji/sqlite.lua",
+      {
+        "nvim-telescope/telescope.nvim",
+        opts = function(_, opts)
+          opts.extensions = vim.tbl_deep_extend("force", opts.extensions or {}, {
+            smart_open = { match_algorithm = "fzf" },
+          })
+        end,
+      },
+    },
+    keys = { { "<Leader>ff", "<Cmd>Telescope smart_open cwd_only=true filename_first=false<CR>", desc = "Files" } },
   },
 }

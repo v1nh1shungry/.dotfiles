@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   group = augroup,
 })
 
-map({ "<Leader>fp", toggle_pin, desc = "Pin" })
+map({ "<Leader>fp", toggle_pin, desc = "Pin this" })
 map({
   "<Leader>fd",
   function()
@@ -73,5 +73,5 @@ map({
       close(bufnr)
     end
   end,
-  desc = "Close all unpinned buffers",
+  desc = "Close unpinned buffers",
 })

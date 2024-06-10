@@ -50,8 +50,11 @@ return {
 ]]
       dashboard.section.header.val = vim.split(logo, "\n")
       dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", "<Cmd>Telescope find_files<CR>"),
-        dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope oldfiles cwd_only=true<CR>"),
+        dashboard.button(
+          "f",
+          " " .. " Find file",
+          "<Cmd>Telescope smart_open cwd_only=true filename_first=false<CR>"
+        ),
         dashboard.button("/", " " .. " Find text", "<Cmd>Telescope live_grep<CR>"),
         dashboard.button("c", " " .. " Config", "<Cmd>e ~/.nvimrc<CR>"),
         dashboard.button("s", " " .. " Restore session", "<Cmd>SessionLoad<CR>"),
@@ -141,6 +144,8 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     config = function()
+      require("lualine_require").require = require
+
       vim.opt.laststatus = 3
 
       local function is_cmake_project()
@@ -461,6 +466,11 @@ return {
           size = { height = 0.4 },
           filter = function(buf) return vim.bo[buf].buftype == "help" end,
         },
+        {
+          ft = "markdown",
+          size = { height = 0.4 },
+          filter = function(buf) return vim.bo[buf].buftype == "help" end,
+        },
         { ft = "dap-repl", title = "REPL" },
         { ft = "dapui_console", title = "Console" },
         { ft = "man", size = { height = 0.4 } },
@@ -585,5 +595,10 @@ return {
     "tiagovla/scope.nvim",
     event = "VeryLazy",
     opts = {},
+  },
+  {
+    "Bekaboo/dropbar.nvim",
+    lazy = false,
+    keys = { { "<Leader>ud", function() require("dropbar.api").pick() end, desc = "Dropbar" } },
   },
 }

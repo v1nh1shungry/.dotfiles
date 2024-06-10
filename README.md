@@ -1,5 +1,7 @@
 # .dotfiles
 
+`$HOME` sweet `$HOME`
+
 ![](https://github.com/v1nh1shungry/.dotfiles/assets/98312435/5031f191-58a9-4571-b5ae-0ca31c8e0060)
 
 ![](https://github.com/v1nh1shungry/.dotfiles/assets/98312435/f010d957-02d8-48ef-856b-ea4a95056e97)
@@ -15,11 +17,11 @@
 
 ### Linux
 
-* fish
+* [fish](https://fishshell.com)
 * [fisher](https://github.com/jorgebucaran/fisher) - fish plugin manager
-* tmux
+* [tmux](https://github.com/tmux/tmux)
 * [tpm](https://github.com/tmux-plugins/tpm) - tmux plugin manager
-* Neovim nightly
+* [Neovim](https://github.com/neovim/neovim) nightly - can't leave without
 * [eza](https://github.com/eza-community/eza)
 * [fzf](https://github.com/junegunn/fzf)
 * ncdu
@@ -35,51 +37,10 @@
 * [win32yank](https://github.com/equalsraf/win32yank)
 * [im-select](https://github.com/daipeihust/im-select)
 * [autohotkey](https://www.autohotkey.com/)
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
-## Neovim plugins
 <!-- Neovim plugins -->
+## Neovim plugins
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
+* [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [Bilal2453/luvit-meta](https://github.com/Bilal2453/luvit-meta.git)
 * [Civitasv/cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim.git)
 * [EdenEast/nightfox.nvim](https://github.com/EdenEast/nightfox.nvim.git)
@@ -103,6 +64,7 @@
 * [chrisgrieser/nvim-spider](https://github.com/chrisgrieser/nvim-spider.git)
 * [chrisgrieser/nvim-tinygit](https://github.com/chrisgrieser/nvim-tinygit.git)
 * [cshuaimin/ssr.nvim](https://github.com/cshuaimin/ssr.nvim.git)
+* [danielfalk/smart-open.nvim](https://github.com/danielfalk/smart-open.nvim.git)
 * [danymat/neogen](https://github.com/danymat/neogen.git)
 * [debugloop/telescope-undo.nvim](https://github.com/debugloop/telescope-undo.nvim.git)
 * [dhruvasagar/vim-table-mode](https://github.com/dhruvasagar/vim-table-mode.git)
@@ -136,6 +98,7 @@
 * [kawre/leetcode.nvim](https://github.com/kawre/leetcode.nvim.git)
 * [kevinhwang91/nvim-bqf](https://github.com/kevinhwang91/nvim-bqf.git)
 * [kevinhwang91/nvim-hlslens](https://github.com/kevinhwang91/nvim-hlslens.git)
+* [kkharji/sqlite.lua](https://github.com/kkharji/sqlite.lua.git)
 * [lambdalisue/suda.vim](https://github.com/lambdalisue/suda.vim.git)
 * [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim.git)
 * [lukas-reineke/cmp-rg](https://github.com/lukas-reineke/cmp-rg.git)

@@ -281,5 +281,4 @@ Set-PSReadLineKeyHandler -Key Alt+a `
 
 Import-Module scoop-completion
 
-# must in the end
 Invoke-Expression (& { (zoxide init powershell | Out-String) })

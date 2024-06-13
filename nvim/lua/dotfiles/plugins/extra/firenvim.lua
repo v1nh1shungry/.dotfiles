@@ -22,7 +22,10 @@ Config.options.defaults.cond = function(plugin) return vim.list_contains(enabled
 
 vim.g.firenvim_config = {
   localSettings = {
-    [".*"] = { cmdline = "neovim" },
+    [".*"] = {
+      cmdline = "neovim",
+      takeover = "never",
+    },
   },
 }
 

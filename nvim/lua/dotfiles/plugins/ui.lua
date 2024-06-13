@@ -19,12 +19,12 @@ return {
       {
         "[t",
         function() require("todo-comments").jump_prev() end,
-        desc = "Previous TODO",
+        desc = "Jump to the previous TODO",
       },
       {
         "]t",
         function() require("todo-comments").jump_next() end,
-        desc = "Next TODO",
+        desc = "Jump to the next TODO",
       },
       { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
       { "<Leader>xT", "<Cmd>TodoQuickFix keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
@@ -50,11 +50,8 @@ return {
 ]]
       dashboard.section.header.val = vim.split(logo, "\n")
       dashboard.section.buttons.val = {
-        dashboard.button(
-          "f",
-          " " .. " Find file",
-          "<Cmd>Telescope smart_open cwd_only=true filename_first=false<CR>"
-        ),
+        dashboard.button("f", " " .. " Find file", "<Cmd>Telescope find_files<CR>"),
+        dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope oldfiles cwd_only=true<CR>"),
         dashboard.button("/", " " .. " Find text", "<Cmd>Telescope live_grep<CR>"),
         dashboard.button("c", " " .. " Config", "<Cmd>e ~/.nvimrc<CR>"),
         dashboard.button("s", " " .. " Restore session", "<Cmd>SessionLoad<CR>"),
@@ -598,7 +595,7 @@ return {
   },
   {
     "Bekaboo/dropbar.nvim",
-    lazy = false,
+    event = events.enter_buffer,
     keys = { { "<Leader>ud", function() require("dropbar.api").pick() end, desc = "Dropbar" } },
   },
 }

@@ -37,6 +37,8 @@ return {
     keys = {
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
       { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
+      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
       { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
       { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
@@ -565,22 +567,5 @@ return {
       vim.g.VM_show_warnings = 0
     end,
     keys = { { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" } },
-  },
-  {
-    "danielfalk/smart-open.nvim",
-    branch = "0.2.x",
-    config = function() require("telescope").load_extension("smart_open") end,
-    dependencies = {
-      "kkharji/sqlite.lua",
-      {
-        "nvim-telescope/telescope.nvim",
-        opts = function(_, opts)
-          opts.extensions = vim.tbl_deep_extend("force", opts.extensions or {}, {
-            smart_open = { match_algorithm = "fzf" },
-          })
-        end,
-      },
-    },
-    keys = { { "<Leader>ff", "<Cmd>Telescope smart_open cwd_only=true filename_first=false<CR>", desc = "Files" } },
   },
 }

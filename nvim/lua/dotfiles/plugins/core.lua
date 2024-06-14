@@ -375,7 +375,12 @@ return {
   {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      lang = {
+        c = { "// %s", "/* %s */" },
+        cpp = { "// %s", "/* %s */" },
+      },
+    },
   },
   {
     "folke/flash.nvim",

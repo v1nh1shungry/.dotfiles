@@ -14,29 +14,23 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  callback = function()
-    vim.wo.number = false
-    vim.wo.relativenumber = false
-    vim.bo.buflisted = false
-    vim.wo.foldenable = false
-    vim.wo.cc = ""
-    vim.wo.stc = ""
-  end,
-  group = augroup("minimal_ui"),
-  pattern = require("dotfiles.utils.ui").excluded_filetypes,
-})
-
 vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(event)
     if vim.list_contains(require("dotfiles.utils.ui").excluded_buftypes, vim.bo.buftype) then
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+      vim.opt_local.buflisted = false
+      vim.opt_local.foldenable = false
+      vim.opt_local.cc = ""
+      vim.opt_local.stc = ""
+
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then
         require("dotfiles.utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
       end
     end
   end,
-  group = augroup("close_with_q"),
+  group = augroup("minimal_ui"),
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -76,13 +70,13 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = augroup("resize_splits"),
 })
 
-vim.api.nvim_create_autocmd("BufNew", {
+vim.api.nvim_create_autocmd("BufEnter", {
   callback = function()
     if vim.bo.buftype ~= "" then
       return
     end
     local name = vim.api.nvim_buf_get_name(0)
-    if name == "" then
+    if name == "" or name == vim.fs.joinpath(vim.env.HOME, ".nvimrc") then
       return
     end
     if vim.fn.filereadable(name) == 0 then

@@ -348,47 +348,6 @@ return {
     event = events.enter_insert,
   },
   {
-    "lewis6991/gitsigns.nvim",
-    event = events.enter_buffer,
-    opts = {
-      on_attach = function(buffer)
-        local map_local = function(opts)
-          opts.buffer = buffer
-          map(opts)
-        end
-        map_local({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview hunk" })
-        map_local({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk" })
-        map_local({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
-        map_local({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
-        map_local({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
-        map_local({ "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" })
-        map_local({
-          "]h",
-          function() require("gitsigns").nav_hunk("next", { navigation_message = false }) end,
-          desc = "Next git hunk",
-        })
-        map_local({
-          "[h",
-          function() require("gitsigns").nav_hunk("prev", { navigation_message = false }) end,
-          desc = "Previous git hunk",
-        })
-        map_local({
-          "]H",
-          function() require("gitsigns").nav_hunk("last", { navigation_message = false }) end,
-          desc = "Last git hunk",
-        })
-        map_local({
-          "[H",
-          function() require("gitsigns").nav_hunk("first", { navigation_message = false }) end,
-          desc = "First git hunk",
-        })
-        map_local({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
-        map_local({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
-        map_local({ "<Leader>xh", "<Cmd>Gitsigns setqflist<CR>", desc = "Git hunks" })
-      end,
-    },
-  },
-  {
     "rcarriga/nvim-dap-ui",
     config = function()
       local dap, dapui = require("dap"), require("dapui")
@@ -518,5 +477,77 @@ return {
         callback = M.debounce(100, M.lint),
       })
     end,
+  },
+  {
+    "Civitasv/cmake-tools.nvim",
+    ft = "cmake",
+    init = function()
+      local loaded = false
+      local function check()
+        local cwd = vim.uv.cwd()
+        if vim.fn.filereadable(cwd .. "/CMakeLists.txt") == 1 then
+          require("lazy").load({ plugins = { "cmake-tools.nvim" } })
+          loaded = true
+        end
+      end
+      check()
+      vim.api.nvim_create_autocmd("DirChanged", {
+        callback = function()
+          if not loaded then
+            check()
+          end
+        end,
+      })
+    end,
+    dependencies = {
+      "folke/which-key.nvim",
+      opts = function(_, opts)
+        opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
+          ["<Leader>m"] = { name = "+cmake" },
+        })
+      end,
+    },
+    keys = {
+      { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
+      { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },
+      { "<Leader>mx", "<Cmd>CMakeRun<CR>", desc = "Run executable" },
+      { "<Leader>md", "<Cmd>CMakeDebug<CR>", desc = "Debug" },
+      { "<Leader>ma", ":CMakeLaunchArgs ", desc = "Set launch arguments" },
+      { "<Leader>ms", "<Cmd>CMakeTargetSettings<CR>", desc = "Summary" },
+      { "<Leader>mc", "<Cmd>CMakeClean<CR>", desc = "Clean" },
+      {
+        "<Leader>mp",
+        function()
+          if vim.fn.mkdir("cmake", "p") == 0 then
+            vim.notify("CPM.cmake: can't create 'cmake' directory", vim.log.levels.ERROR)
+            return
+          end
+          vim.notify("Downloading CPM.cmake...")
+          vim.system({
+            "wget",
+            "-O",
+            "cmake/CPM.cmake",
+            "https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake",
+          }, {}, function(out)
+            if out.code == 0 then
+              vim.notify("CPM.cmake: downloaded cmake/CPM.cmake successfully")
+            else
+              vim.notify("CPM.cmake: failed to download CPM.cmake", vim.log.levels.ERROR)
+            end
+          end)
+        end,
+        desc = "Get CPM.cmake",
+      },
+    },
+    opts = {
+      cmake_generate_options = {
+        "-G",
+        "Ninja",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=On",
+        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+      },
+      cmake_soft_link_compile_commands = false,
+      cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
+    },
   },
 }

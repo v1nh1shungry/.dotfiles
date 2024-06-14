@@ -18,7 +18,7 @@ local function highlight()
   if get_match_id() then
     return
   end
-  if vim.bo.buftype ~= "" or vim.list_contains(require("dotfiles.utils.ui").excluded_filetypes, vim.bo.filetype) then
+  if vim.bo.buftype ~= "" then
     return
   end
   vim.fn.matchadd(match_group, [[\s\+$]])

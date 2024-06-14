@@ -43,34 +43,6 @@ M.icons = {
   },
 }
 
-M.excluded_filetypes = {
-  "ClangdAST",
-  "DressingInput",
-  "Glance",
-  "TelescopePrompt",
-  "checkhealth",
-  "dap-repl",
-  "dapui_breakpoints",
-  "dapui_console",
-  "dapui_scopes",
-  "dapui_stacks",
-  "dapui_watches",
-  "edgy",
-  "help",
-  "lazy",
-  "leetcode.nvim",
-  "lspinfo",
-  "man",
-  "mason",
-  "minifiles",
-  "minifiles-help",
-  "noice",
-  "notify",
-  "qf",
-  "ssr",
-  "toggleterm",
-}
-
 M.excluded_buftypes = { "nofile", "help", "prompt", "quickfix", "terminal" }
 
 return M

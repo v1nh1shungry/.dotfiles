@@ -51,7 +51,7 @@ return {
       dashboard.section.header.val = vim.split(logo, "\n")
       dashboard.section.buttons.val = {
         dashboard.button("f", " " .. " Find file", "<Cmd>Telescope find_files<CR>"),
-        dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope oldfiles cwd_only=true<CR>"),
+        dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope frecency<CR>"),
         dashboard.button("/", " " .. " Find text", "<Cmd>Telescope live_grep<CR>"),
         dashboard.button("c", " " .. " Config", "<Cmd>e ~/.nvimrc<CR>"),
         dashboard.button("s", " " .. " Restore session", "<Cmd>SessionLoad<CR>"),
@@ -136,7 +136,23 @@ return {
       end
     end,
     lazy = true,
-    opts = { input = { insert_only = false } },
+    opts = {
+      input = {
+        insert_only = false,
+        relative = "editor",
+      },
+      select = {
+        telescope = {
+          layout_strategy = "bottom_pane",
+          sorting_strategy = "ascending",
+          layout_config = {
+            bottom_pane = {
+              height = 0.4,
+            },
+          },
+        },
+      },
+    },
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -366,7 +382,6 @@ return {
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
         bt_ignore = ui.excluded_buftypes,
-        ft_ignore = ui.excluded_filetypes,
         relculright = true,
         segments = {
           { sign = { name = { "Dap" } }, click = "v:lua.ScSa" },
@@ -531,7 +546,7 @@ return {
         end
         return label
       end,
-      ignore = { filetypes = ui.excluded_filetypes },
+      ignore = { buftypes = ui.excluded_buftypes },
       window = {
         margin = {
           vertical = { top = 3, bottom = 0 },
@@ -570,7 +585,7 @@ return {
         include = { node_type = { lua = { "table_constructor" } } },
         highlight = rainbow_highlight,
       },
-      exclude = { filetypes = ui.excluded_filetypes, buftypes = ui.excluded_buftypes },
+      exclude = { buftypes = ui.excluded_buftypes },
     },
   },
   {

@@ -6,9 +6,11 @@ return {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     config = function(_, opts)
-      require("telescope").setup(opts)
-
-      require("telescope").load_extension("fzf")
+      local telescope = require("telescope")
+      telescope.setup(opts)
+      telescope.load_extension("fzf")
+      telescope.load_extension("live_grep_args")
+      telescope.load_extension("frecency")
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -16,6 +18,8 @@ return {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
       },
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      "nvim-telescope/telescope-frecency.nvim",
     },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
@@ -36,9 +40,9 @@ return {
     end,
     keys = {
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
-      { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
       { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
+      { "<Leader>fr", "<Cmd>Telescope frecency<CR>", desc = "Recent files" },
+      { "<Leader>/", "<Cmd>Telescope live_grep_args<CR>", desc = "Live grep" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
       { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
       { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
@@ -74,13 +78,17 @@ return {
           layout_config = {
             bottom_pane = {
               height = 0.4,
-              preview_cutoff = 100,
-              prompt_position = "top",
             },
           },
           mappings = {
             i = { ["<C-s>"] = flash },
             n = { s = flash },
+          },
+        },
+        extensions = {
+          frecency = {
+            default_workspace = "CWD",
+            workspace_scan_cmd = "LUA",
           },
         },
       }
@@ -108,104 +116,6 @@ return {
         mode = { "n", "x" },
         desc = "Structural replace",
       },
-    },
-  },
-  {
-    "akinsho/git-conflict.nvim",
-    config = function(_, opts)
-      require("git-conflict").setup(opts)
-      vim.api.nvim_create_autocmd("User", {
-        callback = function(args)
-          local map_local = function(key)
-            key.buffer = args.buf
-            map(key)
-          end
-          map_local({ "<Leader>gxo", "<Plug>(git-conflict-ours)", desc = "Choose ours" })
-          map_local({ "<Leader>gxt", "<Plug>(git-conflict-theirs)", desc = "Choose theirs" })
-          map_local({ "<Leader>gxb", "<Plug>(git-conflict-both)", desc = "Choose both" })
-          map_local({ "<Leader>gx0", "<Plug>(git-conflict-none)", desc = "Choose none" })
-        end,
-        pattern = "GitConflictDetected",
-      })
-    end,
-    event = events.enter_buffer,
-    opts = { default_mappings = false },
-  },
-  {
-    "sindrets/diffview.nvim",
-    cmd = "DiffviewOpen",
-    keys = { { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" } },
-  },
-  {
-    "Civitasv/cmake-tools.nvim",
-    ft = "cmake",
-    init = function()
-      local loaded = false
-      local function check()
-        local cwd = vim.uv.cwd()
-        if vim.fn.filereadable(cwd .. "/CMakeLists.txt") == 1 then
-          require("lazy").load({ plugins = { "cmake-tools.nvim" } })
-          loaded = true
-        end
-      end
-      check()
-      vim.api.nvim_create_autocmd("DirChanged", {
-        callback = function()
-          if not loaded then
-            check()
-          end
-        end,
-      })
-    end,
-    dependencies = {
-      "folke/which-key.nvim",
-      opts = function(_, opts)
-        opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
-          ["<Leader>m"] = { name = "+cmake" },
-        })
-      end,
-    },
-    keys = {
-      { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
-      { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },
-      { "<Leader>mx", "<Cmd>CMakeRun<CR>", desc = "Run executable" },
-      { "<Leader>md", "<Cmd>CMakeDebug<CR>", desc = "Debug" },
-      { "<Leader>ma", ":CMakeLaunchArgs ", desc = "Set launch arguments" },
-      { "<Leader>ms", "<Cmd>CMakeTargetSettings<CR>", desc = "Summary" },
-      { "<Leader>mc", "<Cmd>CMakeClean<CR>", desc = "Clean" },
-      {
-        "<Leader>mp",
-        function()
-          if vim.fn.mkdir("cmake", "p") == 0 then
-            vim.notify("CPM.cmake: can't create 'cmake' directory", vim.log.levels.ERROR)
-            return
-          end
-          vim.notify("Downloading CPM.cmake...")
-          vim.system({
-            "wget",
-            "-O",
-            "cmake/CPM.cmake",
-            "https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake",
-          }, {}, function(out)
-            if out.code == 0 then
-              vim.notify("CPM.cmake: downloaded cmake/CPM.cmake successfully")
-            else
-              vim.notify("CPM.cmake: failed to download CPM.cmake", vim.log.levels.ERROR)
-            end
-          end)
-        end,
-        desc = "Get CPM.cmake",
-      },
-    },
-    opts = {
-      cmake_generate_options = {
-        "-G",
-        "Ninja",
-        "-DCMAKE_EXPORT_COMPILE_COMMANDS=On",
-        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
-      },
-      cmake_soft_link_compile_commands = false,
-      cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
     },
   },
   {
@@ -292,7 +202,7 @@ return {
       {
         "<Leader>bt",
         function() require("biquge").toc() end,
-        desc = "TOC",
+        desc = "Table of contents",
       },
       {
         "<Leader>bn",
@@ -331,20 +241,6 @@ return {
     "nvim-telescope/telescope-symbols.nvim",
     dependencies = "nvim-telescope/telescope.nvim",
     keys = { { "<Leader>se", "<Cmd>Telescope symbols<CR>", desc = "Emoji" } },
-  },
-  {
-    "chrisgrieser/nvim-tinygit",
-    dependencies = { "stevearc/dressing.nvim", "nvim-telescope/telescope.nvim", "rcarriga/nvim-notify" },
-    ft = { "gitcommit", "git_rebase" },
-    keys = {
-      { "<Leader>gc", function() require("tinygit").smartCommit() end, desc = "Commit" },
-      { "<Leader>gP", function() require("tinygit").push({}) end, desc = "Push" },
-      { "<Leader>ga", function() require("tinygit").amendNoEdit() end, desc = "Amend" },
-      { "<Leader>gU", function() require("tinygit").undoLastCommitOrAmend() end, desc = "Undo last commit" },
-      { "<Leader>gs", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
-      { "<Leader>gS", function() require("tinygit").functionHistory() end, desc = "Search function history" },
-      { "<Leader>gf", function() require("tinygit").githubUrl() end, desc = "Open in Github" },
-    },
   },
   {
     "debugloop/telescope-undo.nvim",

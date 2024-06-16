@@ -27,8 +27,5 @@
 [diff]
   colorMoved = default
 
-[http]
-  sslverify = false
-
 [pull]
   rebase = true

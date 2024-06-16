@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(event)
     if vim.list_contains(require("dotfiles.utils.ui").excluded_buftypes, vim.bo.buftype) then
       vim.opt_local.number = false
@@ -70,7 +70,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = augroup("resize_splits"),
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
     if vim.bo.buftype ~= "" then
       return

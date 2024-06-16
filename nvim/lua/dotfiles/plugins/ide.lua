@@ -234,7 +234,7 @@ return {
       end)
     end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    opts = { ensure_installed = { "stylua", "codelldb" } },
+    opts = { ensure_installed = { "stylua" } },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -362,13 +362,11 @@ return {
         "mfussenegger/nvim-dap",
         config = function()
           local dap = require("dap")
-          dap.adapters.codelldb = {
-            type = "server",
-            port = "${port}",
-            executable = {
-              command = vim.fn.exepath("codelldb"),
-              args = { "--port", "${port}" },
-            },
+
+          dap.adapters.gdb = {
+            type = "executable",
+            command = "gdb",
+            args = { "-i", "dap" },
           }
         end,
       },
@@ -548,6 +546,12 @@ return {
       },
       cmake_soft_link_compile_commands = false,
       cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
+      cmake_dap_configuration = {
+        name = "cpp",
+        type = "gdb",
+        request = "launch",
+        stopAtBeginningOfMainSubprogram = false,
+      },
     },
   },
 }

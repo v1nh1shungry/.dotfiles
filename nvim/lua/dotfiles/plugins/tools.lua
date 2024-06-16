@@ -3,6 +3,10 @@ local map = require("dotfiles.utils.keymap")
 
 return {
   {
+    "nvim-lua/plenary.nvim",
+    lazy = true,
+  },
+  {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     config = function(_, opts)
@@ -89,40 +93,11 @@ return {
           frecency = {
             default_workspace = "CWD",
             workspace_scan_cmd = "LUA",
+            show_unindexed = false,
           },
         },
       }
     end,
-  },
-  {
-    "danymat/neogen",
-    opts = { snippet_engine = "nvim" },
-    keys = { { "<Leader>cg", "<Cmd>Neogen<CR>", desc = "Generate document comment" } },
-  },
-  {
-    "echasnovski/mini.align",
-    keys = {
-      { "ga", mode = { "n", "x" }, desc = "Align" },
-      { "gA", mode = { "n", "x" }, desc = "Align with preview" },
-    },
-    opts = {},
-  },
-  {
-    "cshuaimin/ssr.nvim",
-    keys = {
-      {
-        "<Leader>sr",
-        function() require("ssr").open() end,
-        mode = { "n", "x" },
-        desc = "Structural replace",
-      },
-    },
-  },
-  {
-    "johmsalas/text-case.nvim",
-    dependencies = "nvim-telescope/telescope.nvim",
-    keys = "<Leader>cc",
-    opts = { prefix = "<Leader>cc" },
   },
   {
     "kawre/leetcode.nvim",
@@ -151,14 +126,6 @@ return {
       },
     },
     opts = {},
-  },
-  {
-    "dhruvasagar/vim-table-mode",
-    config = function()
-      vim.g.table_mode_corner = "|"
-      vim.g.table_mode_disable_mappings = 1
-    end,
-    keys = { { "<Leader>ct", "<Cmd>TableModeToggle<CR>", desc = "Table mode" } },
   },
   {
     "v1nh1shungry/cppman.nvim",
@@ -324,42 +291,6 @@ return {
     },
   },
   {
-    "willothy/flatten.nvim",
-    opts = function()
-      local saved_terminal
-      return {
-        window = { open = "alternate" },
-        nest_if_no_args = true,
-        callbacks = {
-          should_block = function(argv) return vim.tbl_contains(argv, "-b") end,
-          pre_open = function()
-            local term = require("toggleterm.terminal")
-            local termid = term.get_focused_id()
-            saved_terminal = term.get(termid)
-          end,
-          post_open = function(bufnr, _, ft, _)
-            saved_terminal:close()
-            if ft == "gitcommit" or ft == "gitrebase" then
-              vim.api.nvim_create_autocmd("BufWritePost", {
-                buffer = bufnr,
-                once = true,
-                callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
-              })
-            end
-          end,
-          block_end = function()
-            vim.schedule(function()
-              if saved_terminal then
-                saved_terminal:open()
-                saved_terminal = nil
-              end
-            end)
-          end,
-        },
-      }
-    end,
-  },
-  {
     "gbprod/yanky.nvim",
     keys = {
       {
@@ -386,82 +317,5 @@ return {
       { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
     },
     opts = {},
-  },
-  {
-    "akinsho/toggleterm.nvim",
-    cmd = "TermExec",
-    keys = { { "<M-=>", desc = "Toggle terminal" } },
-    opts = {
-      open_mapping = "<M-=>",
-      size = 10,
-      float_opts = { title_pos = "center", border = "curved" },
-    },
-  },
-  {
-    "echasnovski/mini.files",
-    config = function()
-      require("mini.files").setup()
-
-      local function map_split(bufnr, lhs, direction, close_on_file)
-        map({
-          lhs,
-          function()
-            local new_target_window
-            local cur_target_window = MiniFiles.get_target_window()
-            if cur_target_window then
-              vim.api.nvim_win_call(cur_target_window, function()
-                vim.cmd("belowright " .. direction .. " split")
-                new_target_window = vim.api.nvim_get_current_win()
-              end)
-              MiniFiles.set_target_window(new_target_window)
-              MiniFiles.go_in({ close_on_file = close_on_file })
-            end
-          end,
-          buffer = bufnr,
-          desc = "Open in " .. direction .. " split" .. (close_on_file and " and close" or ""),
-        })
-      end
-
-      local function cwd()
-        local cur_entry_path = MiniFiles.get_fs_entry().path
-        local cur_directory = vim.fs.dirname(cur_entry_path)
-        if cur_entry_path then
-          vim.fn.chdir(cur_directory)
-        end
-      end
-
-      vim.api.nvim_create_autocmd("User", {
-        callback = function(event)
-          local bufnr = event.data.buf_id
-          map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
-          map_split(bufnr, "<C-w>s", "horizontal", false)
-          map_split(bufnr, "<C-w>v", "vertical", false)
-          map_split(bufnr, "<C-w>S", "horizontal", true)
-          map_split(bufnr, "<C-w>V", "vertical", true)
-        end,
-        pattern = "MiniFilesBufferCreate",
-      })
-    end,
-    keys = {
-      {
-        "<Leader>e",
-        function()
-          if not MiniFiles.close() then
-            MiniFiles.open()
-          end
-        end,
-        desc = "Explorer",
-      },
-    },
-  },
-  {
-    "mg979/vim-visual-multi",
-    config = function()
-      vim.g.VM_silent_exit = true
-      vim.g.VM_set_statusline = 0
-      vim.g.VM_quit_after_leaving_insert_mode = true
-      vim.g.VM_show_warnings = 0
-    end,
-    keys = { { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" } },
   },
 }

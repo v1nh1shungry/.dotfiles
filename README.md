@@ -21,7 +21,7 @@
 * [fisher](https://github.com/jorgebucaran/fisher) - fish plugin manager
 * [tmux](https://github.com/tmux/tmux)
 * [tpm](https://github.com/tmux-plugins/tpm) - tmux plugin manager
-* [Neovim](https://github.com/neovim/neovim) nightly - can't leave without
+* [Neovim nightly](https://github.com/neovim/neovim) - can't leave without
 * [eza](https://github.com/eza-community/eza)
 * [fzf](https://github.com/junegunn/fzf)
 * ncdu
@@ -52,10 +52,10 @@
 * [ThePrimeagen/refactoring.nvim](https://github.com/ThePrimeagen/refactoring.nvim.git)
 * [Wansmer/sibling-swap.nvim](https://github.com/Wansmer/sibling-swap.nvim.git)
 * [Wansmer/treesj](https://github.com/Wansmer/treesj.git)
+* [abecodes/tabout.nvim](https://github.com/abecodes/tabout.nvim.git)
 * [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)
 * [akinsho/git-conflict.nvim](https://github.com/akinsho/git-conflict.nvim.git)
 * [akinsho/toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim.git)
-* [altermo/ultimate-autopair.nvim](https://github.com/altermo/ultimate-autopair.nvim.git)
 * [andymass/vim-matchup](https://github.com/andymass/vim-matchup.git)
 * [b0o/SchemaStore.nvim](https://github.com/b0o/SchemaStore.nvim.git)
 * [b0o/incline.nvim](https://github.com/b0o/incline.nvim.git)
@@ -73,6 +73,7 @@
 * [echasnovski/mini.bufremove](https://github.com/echasnovski/mini.bufremove.git)
 * [echasnovski/mini.files](https://github.com/echasnovski/mini.files.git)
 * [echasnovski/mini.operators](https://github.com/echasnovski/mini.operators.git)
+* [echasnovski/mini.pairs](https://github.com/echasnovski/mini.pairs.git)
 * [echasnovski/mini.surround](https://github.com/echasnovski/mini.surround.git)
 * [ellisonleao/gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim.git)
 * [folke/edgy.nvim](https://github.com/folke/edgy.nvim.git)
@@ -107,6 +108,7 @@
 * [mfussenegger/nvim-dap](https://github.com/mfussenegger/nvim-dap.git)
 * [mfussenegger/nvim-lint](https://github.com/mfussenegger/nvim-lint.git)
 * [mg979/vim-visual-multi](https://github.com/mg979/vim-visual-multi.git)
+* [monaqa/dial.nvim](https://github.com/monaqa/dial.nvim.git)
 * [neovim/nvim-lspconfig](https://github.com/neovim/nvim-lspconfig.git)
 * [numToStr/Navigator.nvim](https://github.com/numToStr/Navigator.nvim.git)
 * [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim.git)

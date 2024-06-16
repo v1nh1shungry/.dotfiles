@@ -217,75 +217,6 @@ return {
     },
   },
   {
-    "Wansmer/treesj",
-    keys = {
-      { "S", "<Cmd>TSJSplit<CR>", desc = "Split line" },
-      { "J", "<Cmd>TSJJoin<CR>", desc = "Join line" },
-    },
-    opts = { use_default_keymaps = false },
-  },
-  {
-    "RRethy/vim-illuminate",
-    config = function() require("illuminate").configure({ providers = { "lsp", "treesitter" } }) end,
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    event = events.enter_buffer,
-    keys = {
-      {
-        "[[",
-        function()
-          for _ = 1, vim.v.count1 do
-            require("illuminate").goto_prev_reference(false)
-          end
-        end,
-        desc = "Jump to the previous reference",
-      },
-      {
-        "]]",
-        function()
-          for _ = 1, vim.v.count1 do
-            require("illuminate").goto_next_reference(false)
-          end
-        end,
-        desc = "Jump to the next reference",
-      },
-    },
-  },
-  {
-    "echasnovski/mini.surround",
-    config = function(_, opts)
-      require("mini.surround").setup(opts)
-      vim.keymap.del("x", "ys")
-    end,
-    keys = function(_, keys)
-      local mappings = {
-        { "ys", desc = "Add surrounding" },
-        { "ds", desc = "Delete surrounding" },
-        { "cs", desc = "Replace surrounding" },
-        { "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = "x", desc = "Add surrounding" },
-        { "yss", "ys_", remap = true, desc = "Add surrounding for line" },
-      }
-      mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
-      return vim.list_extend(mappings, keys)
-    end,
-    opts = {
-      mappings = {
-        add = "ys",
-        delete = "ds",
-        find = "",
-        find_left = "",
-        highlight = "",
-        replace = "cs",
-        update_n_lines = "",
-      },
-      search_method = "cover_or_next",
-    },
-  },
-  {
-    "altermo/ultimate-autopair.nvim",
-    event = events.enter_insert,
-    opts = {},
-  },
-  {
     "LunarVim/bigfile.nvim",
     event = events.enter_buffer,
   },
@@ -318,13 +249,6 @@ return {
     opts = {},
   },
   {
-    "RRethy/nvim-treesitter-endwise",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    event = "InsertEnter",
-    main = "nvim-treesitter.configs",
-    opts = { endwise = { enable = true } },
-  },
-  {
     "chrisgrieser/nvim-recorder",
     opts = { mapping = { switchSlot = "<M-q>" } },
     keys = {
@@ -334,28 +258,6 @@ return {
       { "cq", desc = "Edit macro" },
       { "dq", desc = "Delete all macros" },
       { "yq", desc = "Yank macro" },
-    },
-  },
-  {
-    "Wansmer/sibling-swap.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    opts = {
-      keymaps = {
-        ["<C-l>"] = "swap_with_right",
-        ["<C-h>"] = "swap_with_left",
-      },
-    },
-    keys = {
-      { "<C-l>", desc = "Swap with right" },
-      { "<C-h>", desc = "Swap with left" },
-    },
-  },
-  {
-    "tzachar/highlight-undo.nvim",
-    keys = { "u", "<C-r>" },
-    opts = {
-      undo = { hlgroup = "IncSearch" },
-      redo = { hlgroup = "IncSearch" },
     },
   },
   {
@@ -371,16 +273,6 @@ return {
       { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Go to upper window", mode = { "i", "n", "t" } },
     },
     opts = {},
-  },
-  {
-    "folke/ts-comments.nvim",
-    event = "VeryLazy",
-    opts = {
-      lang = {
-        c = { "// %s", "/* %s */" },
-        cpp = { "// %s", "/* %s */" },
-      },
-    },
   },
   {
     "folke/flash.nvim",
@@ -420,5 +312,41 @@ return {
       modes = { char = { multi_line = false, highlight = { backdrop = false } } },
       prompt = { enabled = false },
     },
+  },
+  {
+    "willothy/flatten.nvim",
+    opts = function()
+      local saved_terminal
+      return {
+        window = { open = "alternate" },
+        nest_if_no_args = true,
+        callbacks = {
+          should_block = function(argv) return vim.tbl_contains(argv, "-b") end,
+          pre_open = function()
+            local term = require("toggleterm.terminal")
+            local termid = term.get_focused_id()
+            saved_terminal = term.get(termid)
+          end,
+          post_open = function(bufnr, _, ft, _)
+            saved_terminal:close()
+            if ft == "gitcommit" or ft == "gitrebase" then
+              vim.api.nvim_create_autocmd("BufWritePost", {
+                buffer = bufnr,
+                once = true,
+                callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
+              })
+            end
+          end,
+          block_end = function()
+            vim.schedule(function()
+              if saved_terminal then
+                saved_terminal:open()
+                saved_terminal = nil
+              end
+            end)
+          end,
+        },
+      }
+    end,
   },
 }

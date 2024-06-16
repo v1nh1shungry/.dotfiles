@@ -45,4 +45,22 @@ return {
       },
     },
   },
+  {
+    "monaqa/dial.nvim",
+    opts = function(_, opts)
+      local augend = require("dial.augend")
+
+      opts = vim.tbl_deep_extend("force", opts or {}, {
+        typescript = {
+          augend.integer.alias.decimal,
+          augend.constant.alias.bool,
+          augend.constant.new({ elements = { "&&", "||" } }),
+          augend.constant.new({ elements = { "==", "!=" } }),
+          augend.constant.new({ elements = { "let", "const" } }),
+        },
+      })
+
+      opts.javascript = opts.typescript
+    end,
+  },
 }

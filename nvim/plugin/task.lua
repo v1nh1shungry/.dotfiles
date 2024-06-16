@@ -11,6 +11,7 @@ local config = {
       "${relativeFileDirname}${/}${fileBasenameNoExtension}",
       "-g",
       "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
       "-std=c17",
       "-Wall",
       "-Wextra",
@@ -23,6 +24,7 @@ local config = {
       "${relativeFileDirname}${/}${fileBasenameNoExtension}",
       "-g",
       "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
       "-std=c++17",
       "-Wall",
       "-Wextra",
@@ -41,14 +43,12 @@ local config = {
 for _, ft in ipairs({ "c", "cpp" }) do
   config.launch[ft] = {
     {
-      name = "LLDB: Launch",
-      type = "codelldb",
+      name = "Launch",
+      type = "gdb",
       request = "launch",
       program = "${relativeFileDirname}/${fileBasenameNoExtension}",
       cwd = "${workspaceFolder}",
-      stopOnEntry = false,
-      args = {},
-      console = "integratedTerminal",
+      stopAtBeginningOfMainSubprogram = false,
     },
   }
 end
@@ -108,10 +108,7 @@ for lang, cmd in pairs(config.compile) do
               end
               if res.stderr and res.stderr ~= "" then
                 local winnr = vim.fn.winnr()
-                local lines = vim.tbl_filter(
-                  function(l) return l:match("^.+:%d+:%d+:") end,
-                  vim.split(res.stderr, "\n", { trimempty = true })
-                )
+                local lines = vim.split(res.stderr, "\n", { trimempty = true })
                 vim.fn.setqflist({}, "a", { lines = lines })
                 vim.cmd("copen")
                 vim.cmd(winnr .. " wincmd w")

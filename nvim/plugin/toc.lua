@@ -16,8 +16,12 @@ local function toc(start_linenr, end_linenr)
     local level = tonumber(node:child(0):type():match("atx_h(%d)_marker")) - 2
     if level >= 0 then
       local title = vim.treesitter.get_node_text(node:field("heading_content")[1], 0)
-      local link = title:gsub("%s+", "-"):lower()
-      lines[#lines + 1] = ("  "):rep(level) .. ("* [%s](#%s)"):format(title, link)
+      local anchor = title:gsub("%s+", "-"):lower()
+      if anchor:find("[\u{FE0F}]") then
+        anchor = anchor:gsub("[\u{FE0F}]", ""):gsub("[\u{1F600}-\u{1F64F}]", function() return "%EF%B8%8F" end, 1)
+      end
+      anchor = anchor:gsub("[\u{1F600}-\u{1F64F}]", "")
+      lines[#lines + 1] = ("  "):rep(level) .. ("* [%s](#%s)"):format(title, anchor)
     end
   end
   lines[#lines + 1] = marker

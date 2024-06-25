@@ -167,6 +167,7 @@ return {
             "--header-insertion=never",
             "--include-cleaner-stdlib",
           },
+          mason = false,
           on_new_config = function(new_config, _)
             if package.loaded["cmake-tools"] then
               require("cmake-tools").clangd_on_new_config(new_config)

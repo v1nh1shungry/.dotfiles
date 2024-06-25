@@ -101,9 +101,6 @@ map({
   desc = "Snapshot",
 })
 
-map({ "gco", "o<Esc>Vcx<Esc><Cmd>normal gcc<Cr>fxa<Bs>", desc = "Add Comment Below" })
-map({ "gcO", "O<Esc>Vcx<Esc><Cmd>normal gcc<Cr>fxa<Bs>", desc = "Add Comment Above" })
-
 map({ "<Leader>um", toggle.maximize, desc = "Maximize current window" })
 
 map({

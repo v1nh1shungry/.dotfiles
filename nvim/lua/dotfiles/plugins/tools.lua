@@ -318,4 +318,8 @@ return {
     },
     opts = {},
   },
+  {
+    "NStefan002/screenkey.nvim",
+    keys = { { "<Leader>uk", "<Cmd>Screenkey<CR>", desc = "Screen key" } },
+  },
 }

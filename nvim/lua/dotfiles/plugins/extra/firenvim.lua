@@ -11,7 +11,7 @@ if not vim.g.started_by_firenvim then
 end
 
 local enabled = vim.tbl_map(function(spec) return spec[1] end, specs)
-for _, module in ipairs({ "core" }) do
+for _, module in ipairs({ "core", "themes" }) do
   vim.list_extend(enabled, vim.tbl_map(function(spec) return spec[1] end, require("dotfiles.plugins." .. module)))
 end
 

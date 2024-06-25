@@ -1,19 +1,13 @@
-local map = require("dotfiles.utils.keymap")
 local close = function(bufnr) require("mini.bufremove").delete(bufnr) end
 
 local augroup = vim.api.nvim_create_augroup("dotfiles_six_buffers_autocmds", {})
 
 local threshold = 6
 
-local function is_pinned(bufnr) return vim.b[bufnr].pinned end
-
-local function toggle_pin() vim.b.pinned = not vim.b.pinned end
-
 local function should_close(bufnr)
   return not (
     bufnr == vim.api.nvim_get_current_buf()
     or vim.bo[bufnr].modified
-    or is_pinned(bufnr)
     or #vim.fn.win_findbuf(bufnr) > 0
   )
 end
@@ -34,9 +28,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
       end
       if vim.bo[lhs].modified ~= vim.bo[rhs].modified then
         return vim.bo[rhs].modified
-      end
-      if is_pinned(lhs) ~= is_pinned(rhs) then
-        return is_pinned(rhs)
       end
       local lhs_in_window = #(vim.fn.win_findbuf(lhs)) > 0
       local rhs_in_window = #(vim.fn.win_findbuf(rhs)) > 0
@@ -59,19 +50,4 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
   end,
   group = augroup,
-})
-
-map({ "<Leader>fp", toggle_pin, desc = "Pin this" })
-map({
-  "<Leader>fd",
-  function()
-    local buffers = vim.tbl_filter(
-      function(b) return vim.bo[b].buflisted and not is_pinned(b) end,
-      vim.api.nvim_list_bufs()
-    )
-    for _, bufnr in ipairs(buffers) do
-      close(bufnr)
-    end
-  end,
-  desc = "Close unpinned buffers",
 })

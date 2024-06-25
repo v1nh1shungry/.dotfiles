@@ -23,7 +23,7 @@ vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
 vim.opt.fileencodings = "utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1"
 vim.opt.fillchars = { eob = " ", fold = " ", foldclose = "", foldopen = "", foldsep = " " }
-vim.opt.foldenable = false
+vim.opt.foldcolumn = "auto"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.formatoptions = "jcroqlnt"
@@ -32,6 +32,7 @@ vim.opt.grepprg = "rg --vimgrep"
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.infercase = true
+vim.opt.jumpoptions = { "stack", "view" }
 vim.opt.laststatus = 0
 vim.opt.linebreak = true
 vim.opt.list = true

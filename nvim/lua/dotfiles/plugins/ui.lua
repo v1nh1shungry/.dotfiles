@@ -1,6 +1,6 @@
 local events = require("dotfiles.utils.events")
-local ui = require("dotfiles.utils.ui")
 local map = require("dotfiles.utils.keymap")
+local ui = require("dotfiles.utils.ui")
 
 local rainbow_highlight = {
   "RainbowDelimiterRed",
@@ -139,10 +139,7 @@ return {
     end,
     lazy = true,
     opts = {
-      input = {
-        insert_only = false,
-        relative = "editor",
-      },
+      input = { relative = "editor" },
       select = {
         telescope = {
           layout_strategy = "bottom_pane",
@@ -389,6 +386,7 @@ return {
           { sign = { name = { "Dap" } }, click = "v:lua.ScSa" },
           { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
           { sign = { namespace = { "gitsigns" } }, click = "v:lua.ScSa" },
+          { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
         },
       })
     end,

@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
 })
 
-vim.api.nvim_create_autocmd("BufReadPost", {
+vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(event)
     if vim.list_contains(require("dotfiles.utils.ui").excluded_buftypes, vim.bo.buftype) then
       vim.opt_local.number = false
@@ -76,10 +76,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
       return
     end
     local name = vim.api.nvim_buf_get_name(0)
-    if name == "" or name == vim.fs.joinpath(vim.env.HOME, ".nvimrc") then
-      return
-    end
-    if vim.fn.filereadable(name) == 0 then
+    local whitelist = { vim.fs.joinpath(vim.env.HOME, ".nvimrc") }
+    if vim.list_contains(whitelist, name) then
       return
     end
     for p in vim.fs.parents(name) do

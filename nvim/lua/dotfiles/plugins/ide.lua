@@ -553,6 +553,7 @@ return {
         request = "launch",
         stopAtBeginningOfMainSubprogram = false,
       },
+      cmake_virtual_text_support = false,
     },
   },
 }

@@ -5,7 +5,6 @@ vim.diagnostic.config({
   virtual_text = { spacing = 4, source = "if_many" },
   severity_sort = true,
   signs = false,
-  update_in_insert = true,
   float = { border = "rounded" },
   jump = { float = true },
 })

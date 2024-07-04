@@ -3,7 +3,7 @@ if not vim.g.vscode then
 end
 
 local enabled = {}
-for _, module in ipairs({ "core", "editor" }) do
+for _, module in ipairs({ "core", "editor", "themes" }) do
   vim.list_extend(enabled, vim.tbl_map(function(spec) return spec[1] end, require("dotfiles.plugins." .. module)))
 end
 

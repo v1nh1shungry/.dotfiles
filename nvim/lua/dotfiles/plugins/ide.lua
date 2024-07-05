@@ -165,7 +165,7 @@ return {
           cmd = {
             "clangd",
             "--header-insertion=never",
-            "--include-cleaner-stdlib",
+            -- "--include-cleaner-stdlib",
           },
           mason = false,
           on_new_config = function(new_config, _)

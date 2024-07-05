@@ -88,7 +88,6 @@
 * [folke/ts-comments.nvim](https://github.com/folke/ts-comments.nvim.git)
 * [folke/which-key.nvim](https://github.com/folke/which-key.nvim.git)
 * [gbprod/yanky.nvim](https://github.com/gbprod/yanky.nvim.git)
-* [glacambre/firenvim](https://github.com/glacambre/firenvim.git)
 * [goolord/alpha-nvim](https://github.com/goolord/alpha-nvim.git)
 * [hiphish/rainbow-delimiters.nvim](https://github.com/hiphish/rainbow-delimiters.nvim.git)
 * [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)

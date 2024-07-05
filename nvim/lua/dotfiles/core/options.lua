@@ -16,7 +16,7 @@ end
 vim.opt.autowrite = true
 vim.opt.breakindent = true
 vim.opt.clipboard = "unnamedplus"
-vim.opt.colorcolumn = "120"
+vim.opt.colorcolumn = "80"
 vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true

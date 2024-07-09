@@ -561,11 +561,9 @@ return {
     lazy = true,
   },
   {
-    "MeanderingProgrammer/markdown.nvim",
-    main = "render-markdown",
+    "OXY2DEV/markview.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
     ft = "markdown",
-    opts = { win_options = { conceallevel = { rendered = 0 } } },
   },
   {
     "mcauley-penney/visual-whitespace.nvim",

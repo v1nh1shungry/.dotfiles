@@ -4,10 +4,7 @@ local M = {
     extra = {},
   },
   ui = {
-    background = {
-      light = 8,
-      dark = 18,
-    },
+    background = "dark",
     blend = 10,
     colorscheme = "tokyonight",
   },

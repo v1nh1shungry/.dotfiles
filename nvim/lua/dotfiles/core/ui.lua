@@ -7,6 +7,7 @@ vim.diagnostic.config({
   signs = false,
   float = { border = "rounded" },
   jump = { float = true },
+  update_in_insert = true,
 })
 
 for name, icon in pairs(icons.diagnostic) do

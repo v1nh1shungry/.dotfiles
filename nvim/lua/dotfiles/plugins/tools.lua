@@ -106,26 +106,12 @@ return {
       "MunifTanjim/nui.nvim",
       "nvim-treesitter/nvim-treesitter",
       "rcarriga/nvim-notify",
-      "nvim-tree/nvim-web-devicons",
     },
     lazy = vim.fn.argv()[1] ~= "leetcode.nvim",
     opts = {
       cn = { enabled = true },
       injector = { cpp = { before = { "#include <bits/stdc++.h>", "using namespace std;" } } },
     },
-  },
-  {
-    "ThePrimeagen/refactoring.nvim",
-    dependencies = "nvim-telescope/telescope.nvim",
-    keys = {
-      {
-        "<Leader>sg",
-        function() require("telescope").extensions.refactoring.refactors() end,
-        desc = "Refactoring",
-        mode = { "n", "x" },
-      },
-    },
-    opts = {},
   },
   {
     "v1nh1shungry/cppman.nvim",
@@ -227,11 +213,6 @@ return {
     },
   },
   {
-    "v1nh1shungry/lyricify.nvim",
-    keys = { { "<Leader>us", function() require("lyricify").toggle() end, desc = "Spotify" } },
-    opts = {},
-  },
-  {
     "olimorris/persisted.nvim",
     cmd = "SessionLoad",
     config = function()
@@ -321,5 +302,38 @@ return {
   {
     "NStefan002/screenkey.nvim",
     keys = { { "<Leader>uk", "<Cmd>Screenkey<CR>", desc = "Screen key" } },
+  },
+  {
+    "stevearc/profile.nvim",
+    config = function()
+      local should_profile = os.getenv("NVIM_PROFILE")
+      if should_profile then
+        require("profile").instrument_autocmds()
+        if should_profile:lower():match("^start") then
+          require("profile").start("*")
+        else
+          require("profile").instrument("*")
+        end
+      end
+      local function toggle_profile()
+        local prof = require("profile")
+        if prof.is_recording() then
+          prof.stop()
+          vim.ui.input(
+            { prompt = "Save profile to:", completion = "file", default = "profile.json" },
+            function(filename)
+              if filename then
+                prof.export(filename)
+                vim.notify(string.format("Wrote %s", filename))
+              end
+            end
+          )
+        else
+          prof.start("*")
+        end
+      end
+      map({ "<Leader>up", toggle_profile, desc = "Toggle profile" })
+    end,
+    lazy = not os.getenv("NVIM_PROFILE"),
   },
 }

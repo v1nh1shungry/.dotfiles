@@ -32,6 +32,9 @@ if status is-interactive
     if command -q exa
         alias ls 'exa --icons'
         alias tree 'exa -T --icons'
+    else if command -q eza
+        alias ls 'eza --icons'
+        alias tree 'eza -T --icons'
     end
 
     alias l ls

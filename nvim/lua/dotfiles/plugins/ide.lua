@@ -165,9 +165,8 @@ return {
           cmd = {
             "clangd",
             "--header-insertion=never",
-            -- "--include-cleaner-stdlib",
+            "--include-cleaner-stdlib",
           },
-          mason = false,
           on_new_config = function(new_config, _)
             if package.loaded["cmake-tools"] then
               require("cmake-tools").clangd_on_new_config(new_config)
@@ -253,12 +252,13 @@ return {
         formatting = {
           fields = { "kind", "abbr", "menu" },
           format = function(_, item)
+            local mini_icons = require("mini.icons")
             item.abbr = vim.trim(item.abbr)
             if #item.abbr > 50 then
               item.abbr = item.abbr:sub(1, 50) .. "…"
             end
             item.menu = item.kind
-            item.kind = require("dotfiles.utils.ui").icons.lspkind[item.kind]
+            item.kind, item.kind_hl_group = mini_icons.get("lsp", item.kind, item.kind_hl_group)
             return item
           end,
           expandable_indicator = true,

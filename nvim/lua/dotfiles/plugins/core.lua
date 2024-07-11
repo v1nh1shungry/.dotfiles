@@ -4,10 +4,11 @@ return {
   {
     "andymass/vim-matchup",
     config = function()
-      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+      vim.g.matchup_matchparen_offscreen = { method = "" }
       vim.g.matchup_transmute_enabled = true
       vim.g.matchup_matchparen_deferred = true
       vim.g.matchup_matchparen_hi_surround_always = true
+      vim.g.matchup_matchparen_nomode = "i"
     end,
     event = events.enter_buffer,
   },

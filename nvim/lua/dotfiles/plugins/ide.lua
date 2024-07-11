@@ -188,7 +188,6 @@ return {
                 semicolon = "Disable",
                 arrayIndex = "Disable",
               },
-              window = { progressBar = false },
             },
           },
         },

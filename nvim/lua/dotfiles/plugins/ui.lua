@@ -90,7 +90,6 @@ return {
         options = {
           numbers = "ordinal",
           diagnostics = "nvim_lsp",
-          diagnostics_update_in_insert = true,
           themable = true,
         },
       })
@@ -173,6 +172,12 @@ return {
           lualine_z = {},
           lualine_c = {
             { "branch", icon = "" },
+            {
+              "diagnostics",
+              sections = { "error", "warn" },
+              colored = false,
+              always_visible = true,
+            },
             {
               function() return "CMake: [" .. (require("cmake-tools").get_configure_preset() or "X") .. "]" end,
               cond = function() return is_cmake_project() and require("cmake-tools").has_cmake_preset() end,
@@ -522,35 +527,6 @@ return {
     },
   },
   {
-    "b0o/incline.nvim",
-    event = "LspAttach",
-    opts = {
-      render = function(props)
-        local label = {}
-        if #vim.lsp.get_clients({ bufnr = props.buf }) > 0 then
-          local icons = require("dotfiles.utils.ui").icons.diagnostic
-          for severity, icon in pairs(icons) do
-            local n = #vim.diagnostic.get(props.buf, { severity = vim.diagnostic.severity[string.upper(severity)] })
-            if n > 0 then
-              if #label ~= 0 then
-                table.insert(label, { " ", group = "Normal" })
-              end
-              table.insert(label, { icon .. " " .. n, group = "DiagnosticSign" .. severity })
-            end
-          end
-        end
-        return label
-      end,
-      ignore = { buftypes = ui.excluded_buftypes },
-      window = {
-        margin = {
-          vertical = { top = 3, bottom = 0 },
-          horizontal = { left = 1, right = 5 },
-        },
-      },
-    },
-  },
-  {
     "echasnovski/mini.icons",
     init = function()
       package.preload["nvim-web-devicons"] = function()
@@ -609,11 +585,6 @@ return {
     "tiagovla/scope.nvim",
     event = "VeryLazy",
     opts = {},
-  },
-  {
-    "Bekaboo/dropbar.nvim",
-    event = events.enter_buffer,
-    keys = { { "<Leader>ud", function() require("dropbar.api").pick() end, desc = "Dropbar" } },
   },
   {
     "RRethy/vim-illuminate",
@@ -715,5 +686,10 @@ return {
       undo = { hlgroup = "IncSearch" },
       redo = { hlgroup = "IncSearch" },
     },
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = events.enter_buffer,
+    opts = {},
   },
 }

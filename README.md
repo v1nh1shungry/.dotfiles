@@ -8,27 +8,39 @@
 
 ## Requirements
 
-* [JetBriansMono Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts)
-* [starship](https://github.com/starship/starship)
-* [ripgrep](https://github.com/BurntSushi/ripgrep)
-* [bat](https://github.com/sharkdp/bat)
-* [fd](https://github.com/sharkdp/fd)
-* [zoxide](https://github.com/ajeetdsouza/zoxide)
+| Requirement                                                             |        Installation       |
+|-------------------------------------------------------------------------|:-------------------------:|
+| [JetBriansMono Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) |                           |
+| [starship](https://github.com/starship/starship)                        | `cargo binstall starship` |
+| [ripgrep](https://github.com/BurntSushi/ripgrep)                        |  `cargo binstall ripgrep` |
+| [bat](https://github.com/sharkdp/bat)                                   |    `cargo binstall bat`   |
+| [fd](https://github.com/sharkdp/fd)                                     |  `cargo binstall fd-find` |
+| [zoxide](https://github.com/ajeetdsouza/zoxide)                         |  `cargo binstall zoxide`  |
+| [spicetify](https://spicetify.app/)                                     |                           |
 
 ### Linux
 
-* [fish](https://fishshell.com)
-* [fisher](https://github.com/jorgebucaran/fisher) - fish plugin manager
-* [tmux](https://github.com/tmux/tmux)
-* [tpm](https://github.com/tmux-plugins/tpm) - tmux plugin manager
-* [Neovim nightly](https://github.com/neovim/neovim) - can't leave without
-* [eza](https://github.com/eza-community/eza)
-* [fzf](https://github.com/junegunn/fzf)
-* ncdu
-* [btop](https://github.com/aristocratos/btop)
-* [fnm](https://github.com/Schniz/fnm) - Node.js version manager
-* [bob](https://github.com/MordechaiHadad/bob) - Neovim version manager
-* [delta](https://github.com/dandavison/delta)
+| Requirement                                                    |          Installation         |
+|----------------------------------------------------------------|:-----------------------------:|
+| [fish](https://fishshell.com)                                  |                               |
+| [fisher](https://github.com/jorgebucaran/fisher)               |                               |
+| [tmux](https://github.com/tmux/tmux)                           |                               |
+| [tpm](https://github.com/tmux-plugins/tpm)                     |                               |
+| [Neovim nightly](https://github.com/neovim/neovim)             |                               |
+| [cargo](https://www.rust-lang.org/)                            |                               |
+| [cargo-binstall](https://github.com/cargo-bins/cargo-binstall) |                               |
+| [cargo-cache](https://github.com/matthiaskrgr/cargo-cache)     |  `cargo binstall cargo-cache` |
+| [cargo-update](https://github.com/nabijaczleweli/cargo-update) | `cargo binstall cargo-update` |
+| [pipx](https://pipx.pypa.io/stable/)                           |                               |
+| [eza](https://github.com/eza-community/eza)                    |      `cargo binstall eza`     |
+| [fzf](https://github.com/junegunn/fzf)                         |                               |
+| ncdu                                                           |                               |
+| [btop](https://github.com/aristocratos/btop)                   |      `snap install btop`      |
+| [fnm](https://github.com/Schniz/fnm)                           |      `cargo binstall fnm`     |
+| [bob](https://github.com/MordechaiHadad/bob)                   |   `cargo binstall bob-nvim`   |
+| [delta](https://github.com/dandavison/delta)                   |   `cargo binstall git-delta`  |
+| [tldr](https://github.com/dbrgn/tealdeer)                      |   `cargo binstall tealdeer`   |
+| [cppman](https://github.com/aitjcize/cppman)                   |                               |
 
 ### Windows
 
@@ -40,7 +52,6 @@
 <!-- Neovim plugins -->
 ## Neovim plugins
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
-* [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [Bilal2453/luvit-meta](https://github.com/Bilal2453/luvit-meta.git)
 * [Civitasv/cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim.git)
 * [EdenEast/nightfox.nvim](https://github.com/EdenEast/nightfox.nvim.git)
@@ -59,7 +70,6 @@
 * [altermo/ultimate-autopair.nvim](https://github.com/altermo/ultimate-autopair.nvim.git)
 * [andymass/vim-matchup](https://github.com/andymass/vim-matchup.git)
 * [b0o/SchemaStore.nvim](https://github.com/b0o/SchemaStore.nvim.git)
-* [b0o/incline.nvim](https://github.com/b0o/incline.nvim.git)
 * [catppuccin/nvim](https://github.com/catppuccin/nvim.git)
 * [chrisgrieser/nvim-recorder](https://github.com/chrisgrieser/nvim-recorder.git)
 * [chrisgrieser/nvim-spider](https://github.com/chrisgrieser/nvim-spider.git)
@@ -123,6 +133,7 @@
 * [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git)
 * [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)
 * [olimorris/persisted.nvim](https://github.com/olimorris/persisted.nvim.git)
+* [rachartier/tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim.git)
 * [rafcamlet/nvim-luapad](https://github.com/rafcamlet/nvim-luapad.git)
 * [rcarriga/nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)
 * [rcarriga/nvim-notify](https://github.com/rcarriga/nvim-notify.git)

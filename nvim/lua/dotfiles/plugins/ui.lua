@@ -2,16 +2,6 @@ local events = require("dotfiles.utils.events")
 local map = require("dotfiles.utils.keymap")
 local ui = require("dotfiles.utils.ui")
 
-local rainbow_highlight = {
-  "RainbowDelimiterRed",
-  "RainbowDelimiterYellow",
-  "RainbowDelimiterBlue",
-  "RainbowDelimiterOrange",
-  "RainbowDelimiterGreen",
-  "RainbowDelimiterViolet",
-  "RainbowDelimiterCyan",
-}
-
 return {
   {
     "folke/todo-comments.nvim",
@@ -291,7 +281,7 @@ return {
         ["<Leader>p"] = { name = "+package" },
         ["<Leader>q"] = { name = "+quit/sessions" },
         ["<Leader>s"] = { name = "+search" },
-        ["<Leader>u"] = { name = "+ui" },
+        ["<Leader>u"] = { name = "+ui/utils" },
         ["<Leader>x"] = { name = "+diagnostics/quickfix" },
       },
     },
@@ -548,32 +538,14 @@ return {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    config = function(_, opts)
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-      require("ibl").setup(opts)
-    end,
-    dependencies = { "nvim-treesitter/nvim-treesitter", "hiphish/rainbow-delimiters.nvim" },
-    event = events.enter_buffer,
-    opts = {
-      indent = { char = "│", tab_char = "│" },
-      scope = {
-        show_start = false,
-        show_end = false,
-        include = { node_type = { lua = { "table_constructor" } } },
-        highlight = rainbow_highlight,
-      },
-      exclude = { buftypes = ui.excluded_buftypes },
-    },
-  },
-  {
-    "hiphish/rainbow-delimiters.nvim",
-    main = "rainbow-delimiters.setup",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
+    main = "ibl",
     opts = {
-      highlight = rainbow_highlight,
-      query = { lua = "rainbow-blocks", query = "rainbow-blocks" },
+      debounce = 500,
+      indent = { char = "│", tab_char = "│" },
+      scope = { show_start = false, show_end = false },
+      exclude = { buftypes = ui.excluded_buftypes },
     },
   },
   {

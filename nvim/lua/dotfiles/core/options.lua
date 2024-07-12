@@ -13,8 +13,6 @@ if vim.fn.has("wsl") == 1 then
   }
 end
 
-vim.opt.autowrite = true
-vim.opt.breakindent = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.colorcolumn = "80"
 vim.opt.confirm = true
@@ -26,18 +24,13 @@ vim.opt.fillchars = { eob = " ", fold = " ", foldclose = "", foldopen = ""
 vim.opt.foldcolumn = "auto"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
-vim.opt.formatoptions = "jcroqlnt"
-vim.opt.grepformat = "%f:%l:%c:%m"
-vim.opt.grepprg = "rg --vimgrep"
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.infercase = true
 vim.opt.jumpoptions = { "stack", "view" }
 vim.opt.laststatus = 0
-vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "→ " }
-vim.opt.mousemoveevent = true
 vim.opt.number = true
 vim.opt.pumblend = require("dotfiles.user").ui.blend
 vim.opt.pumheight = 10
@@ -66,7 +59,6 @@ vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 300
 vim.opt.updatetime = 200
-vim.opt.virtualedit = "block"
 vim.opt.winblend = require("dotfiles.user").ui.blend
 vim.opt.winminwidth = 5
 vim.opt.wrap = false

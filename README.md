@@ -17,6 +17,7 @@
 | [fd](https://github.com/sharkdp/fd)                                     |  `cargo binstall fd-find` |
 | [zoxide](https://github.com/ajeetdsouza/zoxide)                         |  `cargo binstall zoxide`  |
 | [spicetify](https://spicetify.app/)                                     |                           |
+| [tokei](https://github.com/XAMPPRocky/tokei)                            |   `cargo binstall tokei`  |
 
 ### Linux
 
@@ -41,6 +42,7 @@
 | [delta](https://github.com/dandavison/delta)                   |   `cargo binstall git-delta`  |
 | [tldr](https://github.com/dbrgn/tealdeer)                      |   `cargo binstall tealdeer`   |
 | [cppman](https://github.com/aitjcize/cppman)                   |                               |
+| [jq](https://github.com/jqlang/jq)                             |                               |
 
 ### Windows
 
@@ -68,7 +70,6 @@
 * [akinsho/git-conflict.nvim](https://github.com/akinsho/git-conflict.nvim.git)
 * [akinsho/toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim.git)
 * [altermo/ultimate-autopair.nvim](https://github.com/altermo/ultimate-autopair.nvim.git)
-* [andymass/vim-matchup](https://github.com/andymass/vim-matchup.git)
 * [b0o/SchemaStore.nvim](https://github.com/b0o/SchemaStore.nvim.git)
 * [catppuccin/nvim](https://github.com/catppuccin/nvim.git)
 * [chrisgrieser/nvim-recorder](https://github.com/chrisgrieser/nvim-recorder.git)
@@ -99,7 +100,6 @@
 * [folke/which-key.nvim](https://github.com/folke/which-key.nvim.git)
 * [gbprod/yanky.nvim](https://github.com/gbprod/yanky.nvim.git)
 * [goolord/alpha-nvim](https://github.com/goolord/alpha-nvim.git)
-* [hiphish/rainbow-delimiters.nvim](https://github.com/hiphish/rainbow-delimiters.nvim.git)
 * [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)
 * [hrsh7th/cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline.git)
 * [hrsh7th/cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp.git)
@@ -152,3 +152,11 @@
 * [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim.git)
 * [willothy/flatten.nvim](https://github.com/willothy/flatten.nvim.git)
 <!-- Neovim plugins -->
+<!-- vscode extensions -->
+## vscode extensions
+* [eamodio.gitlens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+* [llvm-vs-code-extensions.vscode-clangd](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd)
+* [ms-ceintl.vscode-language-pack-zh-hans](https://marketplace.visualstudio.com/items?itemName=ms-ceintl.vscode-language-pack-zh-hans)
+* [usernamehw.errorlens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
+* [vscodevim.vim](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim)
+<!-- vscode extensions -->

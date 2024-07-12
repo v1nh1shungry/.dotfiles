@@ -22,5 +22,9 @@
     "vim.visualstar": true,
     "clangd.arguments": [
         "--header-insertion=never"
-    ]
+    ],
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true
 }

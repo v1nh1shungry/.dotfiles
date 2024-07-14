@@ -7,7 +7,7 @@ vim.keymap.del("n", "gra")
 vim.keymap.del("i", "<C-s>")
 
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = "\\"
 
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
 

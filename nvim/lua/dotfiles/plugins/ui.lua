@@ -258,31 +258,30 @@ return {
   },
   {
     "folke/which-key.nvim",
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.setup(opts)
-      wk.register(opts.defaults)
-    end,
     event = "VeryLazy",
     opts = {
       window = { winblend = require("dotfiles.user").ui.blend },
       layout = { height = { max = 10 } },
-      defaults = {
-        mode = { "n", "v" },
-        ["g"] = { name = "+goto" },
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+prev" },
-        ["z"] = { name = "+fold" },
-        ["<Leader><Tab>"] = { name = "+tab" },
-        ["<Leader>c"] = { name = "+code" },
-        ["<Leader>d"] = { name = "+debug" },
-        ["<Leader>f"] = { name = "+file" },
-        ["<Leader>g"] = { name = "+git" },
-        ["<Leader>p"] = { name = "+package" },
-        ["<Leader>q"] = { name = "+quit/sessions" },
-        ["<Leader>s"] = { name = "+search" },
-        ["<Leader>u"] = { name = "+ui/utils" },
-        ["<Leader>x"] = { name = "+diagnostics/quickfix" },
+      spec = {
+        {
+          mode = { "n", "v" },
+          { "g", group = "goto" },
+          { "]", group = "next" },
+          { "[", group = "prev" },
+          { "z", group = "fold" },
+          { "<Leader><Tab>", group = "tab" },
+          { "<Leader>b", group = "biquge" },
+          { "<Leader>c", group = "code" },
+          { "<Leader>d", group = "debug" },
+          { "<Leader>f", group = "file" },
+          { "<Leader>g", group = "git" },
+          { "<Leader>m", group = "cmake" },
+          { "<Leader>p", group = "package" },
+          { "<Leader>q", group = "quit/sessions" },
+          { "<Leader>s", group = "search" },
+          { "<Leader>u", group = "ui/utils" },
+          { "<Leader>x", group = "diagnostic/quickfix" },
+        },
       },
     },
   },

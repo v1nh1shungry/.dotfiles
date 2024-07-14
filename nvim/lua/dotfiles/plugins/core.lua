@@ -14,49 +14,50 @@ return {
       if not ok then
         return
       end
-      local i = {
-        [" "] = "Whitespace",
-        ['"'] = 'Balanced "',
-        ["'"] = "Balanced '",
-        ["`"] = "Balanced `",
-        ["("] = "Balanced (",
-        [")"] = "Balanced ) including white-space",
-        [">"] = "Balanced > including white-space",
-        ["<lt>"] = "Balanced <",
-        ["]"] = "Balanced ] including white-space",
-        ["["] = "Balanced [",
-        ["}"] = "Balanced } including white-space",
-        ["{"] = "Balanced {",
-        ["?"] = "User Prompt",
-        _ = "Underscore",
-        a = "Argument",
-        b = "Balanced ), ], }",
-        c = "Class",
-        d = "Digit(s)",
-        f = "Function",
-        g = "Entire file",
-        i = "Indent",
-        o = "Block, conditional, loop",
-        q = "Quote `, \", '",
-        t = "Tag",
-        u = "Use/call function & method",
-        U = "Use/call without dot in name",
+      local objects = {
+        { " ", desc = "whitespace" },
+        { '"', desc = 'balanced "' },
+        { "'", desc = "balanced '" },
+        { "(", desc = "balanced (" },
+        { ")", desc = "balanced ) including white-space" },
+        { "<", desc = "balanced <" },
+        { ">", desc = "balanced > including white-space" },
+        { "?", desc = "user prompt" },
+        { "U", desc = "use/call without dot in name" },
+        { "[", desc = "balanced [" },
+        { "]", desc = "balanced ] including white-space" },
+        { "_", desc = "underscore" },
+        { "`", desc = "balanced `" },
+        { "a", desc = "argument" },
+        { "b", desc = "balanced )]}" },
+        { "c", desc = "class" },
+        { "d", desc = "digit(s)" },
+        { "f", desc = "function" },
+        { "g", desc = "entire file" },
+        { "i", desc = "indent" },
+        { "o", desc = "block, conditional, loop" },
+        { "q", desc = "quote `\"'" },
+        { "t", desc = "tag" },
+        { "u", desc = "use/call function & method" },
+        { "{", desc = "balanced {" },
+        { "}", desc = "balanced } including white-space" },
       }
-      local a = vim.deepcopy(i)
-      for k, v in pairs(a) do
-        a[k] = v:gsub(" including.*", "")
+
+      local ret = { mode = { "o", "x" } }
+      for prefix, name in pairs({
+        i = "inside",
+        a = "around",
+        il = "last",
+        ["in"] = "next",
+        al = "last",
+        an = "next",
+      }) do
+        ret[#ret + 1] = { prefix, group = name }
+        for _, obj in ipairs(objects) do
+          ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
+        end
       end
-      local ic = vim.deepcopy(i)
-      local ac = vim.deepcopy(a)
-      for key, name in pairs({ n = "Next", l = "Last" }) do
-        i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
-        a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
-      end
-      wk.register({
-        mode = { "o", "x" },
-        i = i,
-        a = a,
-      })
+      wk.add(ret, { notify = false })
     end,
     dependencies = {
       {
@@ -183,6 +184,7 @@ return {
         "vimdoc",
       },
       highlight = { enable = true, additional_vim_regex_highlighting = true },
+      indent = { enable = true },
       incremental_selection = {
         enable = true,
         keymaps = {

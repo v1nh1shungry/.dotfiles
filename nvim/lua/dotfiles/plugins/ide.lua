@@ -300,7 +300,7 @@ return {
           { name = "buffer" },
           { name = "path" },
         }, {
-          { name = "rg" },
+          { name = "rg", keyword_length = 5, option = { debounce = 500 } },
         }),
       })
 
@@ -497,14 +497,6 @@ return {
         end,
       })
     end,
-    dependencies = {
-      "folke/which-key.nvim",
-      opts = function(_, opts)
-        opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
-          ["<Leader>m"] = { name = "+cmake" },
-        })
-      end,
-    },
     keys = {
       { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
       { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },

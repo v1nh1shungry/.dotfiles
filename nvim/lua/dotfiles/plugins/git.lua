@@ -42,6 +42,7 @@ return {
         map_local({ "<Leader>xh", "<Cmd>Gitsigns setqflist<CR>", desc = "Git hunks" })
       end,
       attach_to_untracked = true,
+      current_line_blame = true,
     },
   },
   {

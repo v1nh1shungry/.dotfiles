@@ -260,8 +260,6 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      window = { winblend = require("dotfiles.user").ui.blend },
-      layout = { height = { max = 10 } },
       spec = {
         {
           mode = { "n", "v" },
@@ -273,8 +271,10 @@ return {
           { "<Leader>b", group = "biquge" },
           { "<Leader>c", group = "code" },
           { "<Leader>d", group = "debug" },
+          { "<Leader>dp", group = "print" },
           { "<Leader>f", group = "file" },
           { "<Leader>g", group = "git" },
+          { "<Leader>gx", group = "conflict" },
           { "<Leader>m", group = "cmake" },
           { "<Leader>p", group = "package" },
           { "<Leader>q", group = "quit/sessions" },

@@ -46,29 +46,81 @@ return {
     },
   },
   {
-    "akinsho/git-conflict.nvim",
-    config = function(_, opts)
-      require("git-conflict").setup(opts)
-      vim.api.nvim_create_autocmd("User", {
-        callback = function(args)
-          local map_local = function(key)
-            key.buffer = args.buf
-            map(key)
-          end
-          map_local({ "<Leader>gxo", "<Plug>(git-conflict-ours)", desc = "Choose ours" })
-          map_local({ "<Leader>gxt", "<Plug>(git-conflict-theirs)", desc = "Choose theirs" })
-          map_local({ "<Leader>gxb", "<Plug>(git-conflict-both)", desc = "Choose both" })
-          map_local({ "<Leader>gx0", "<Plug>(git-conflict-none)", desc = "Choose none" })
-        end,
-        pattern = "GitConflictDetected",
-      })
-    end,
-    event = events.enter_buffer,
-    opts = { default_mappings = false },
-  },
-  {
     "sindrets/diffview.nvim",
     cmd = "DiffviewOpen",
+    config = function()
+      local actions = require("diffview.actions")
+      require("diffview").setup({
+        enhanced_diff_hl = true,
+        view = { merge_tool = { layout = "diff3_mixed" } },
+        keymaps = {
+          view = {
+            { "n", "<leader>e", actions.toggle_files, { desc = "Bring focus to the file panel" } },
+            ["<leader>b"] = false,
+            ["<leader>co"] = false,
+            ["<leader>ct"] = false,
+            ["<leader>cb"] = false,
+            ["<leader>ca"] = false,
+            ["<leader>cO"] = false,
+            ["<leader>cT"] = false,
+            ["<leader>cB"] = false,
+            ["<leader>cA"] = false,
+            {
+              "n",
+              "<Leader>gxo",
+              actions.conflict_choose("ours"),
+              { desc = "Choose the OURS version of a conflict" },
+            },
+            {
+              "n",
+              "<Leader>gxt",
+              actions.conflict_choose("theirs"),
+              { desc = "Choose the THEIRS version of a conflict" },
+            },
+            {
+              "n",
+              "<Leader>gxb",
+              actions.conflict_choose("base"),
+              { desc = "Choose the BASE version of a conflict" },
+            },
+            {
+              "n",
+              "<Leader>gxa",
+              actions.conflict_choose("all"),
+              { desc = "Choose all the versions of a conflict" },
+            },
+            {
+              "n",
+              "<Leader>gxO",
+              actions.conflict_choose_all("ours"),
+              { desc = "Choose the OURS version of a conflict for the whole file" },
+            },
+            {
+              "n",
+              "<Leader>gxT",
+              actions.conflict_choose_all("theirs"),
+              { desc = "Choose the THEIRS version of a conflict for the whole file" },
+            },
+            {
+              "n",
+              "<Leader>gxB",
+              actions.conflict_choose_all("base"),
+              { desc = "Choose the BASE version of a conflict for the whole file" },
+            },
+            {
+              "n",
+              "<Leader>gxA",
+              actions.conflict_choose_all("all"),
+              { desc = "Choose all the versions of a conflict for the whole file" },
+            },
+          },
+          file_panel = {
+            { "n", "<leader>e", actions.toggle_files, { desc = "Bring focus to the file panel" } },
+            ["<leader>b"] = false,
+          },
+        },
+      })
+    end,
     keys = { { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" } },
   },
   {

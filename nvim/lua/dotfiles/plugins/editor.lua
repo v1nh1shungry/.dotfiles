@@ -283,7 +283,6 @@ return {
 
       opts.lua = vim.list_extend(vim.deepcopy(opts.default), { and_or_alias })
 
-      opts.cuda = opts.cpp
       opts.jsonc = opts.json
 
       return opts

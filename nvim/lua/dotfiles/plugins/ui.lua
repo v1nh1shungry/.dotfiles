@@ -511,6 +511,10 @@ return {
           size = { width = 0.4 },
           wo = { number = false, relativenumber = false, stc = "" },
         },
+        {
+          ft = "Outline",
+          size = { width = 0.3 },
+        },
       },
       exit_when_last = true,
     },
@@ -662,5 +666,21 @@ return {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = events.enter_buffer,
     opts = {},
+  },
+  {
+    "hedyhli/outline.nvim",
+    keys = { { "<Leader>cs", "<Cmd>Outline<CR>", desc = "Symbol outline" } },
+    opts = {
+      outline_window = { auto_close = true, hide_cursor = true },
+      preview_window = { border = "rounded", winblend = require("dotfiles.user").ui.blend },
+      keymaps = {
+        goto_location = { "o", "<CR>" },
+        peek_location = {},
+        goto_and_close = {},
+        up_and_jump = "<C-p>",
+        down_and_jump = "<C-n>",
+      },
+      symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
+    },
   },
 }

@@ -29,10 +29,7 @@ if status is-interactive
         alias vim nvim
     end
 
-    if command -q exa
-        alias ls 'exa --icons'
-        alias tree 'exa -T --icons'
-    else if command -q eza
+    if command -q eza
         alias ls 'eza --icons'
         alias tree 'eza -T --icons'
     end

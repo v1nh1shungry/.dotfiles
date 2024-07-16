@@ -99,6 +99,7 @@
 * [folke/which-key.nvim](https://github.com/folke/which-key.nvim.git)
 * [gbprod/yanky.nvim](https://github.com/gbprod/yanky.nvim.git)
 * [goolord/alpha-nvim](https://github.com/goolord/alpha-nvim.git)
+* [hedyhli/outline.nvim](https://github.com/hedyhli/outline.nvim.git)
 * [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)
 * [hrsh7th/cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline.git)
 * [hrsh7th/cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp.git)

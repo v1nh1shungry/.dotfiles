@@ -124,7 +124,6 @@
 * [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim.git)
 * [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim.git)
 * [nvim-neotest/nvim-nio](https://github.com/nvim-neotest/nvim-nio.git)
-* [nvim-telescope/telescope-frecency.nvim](https://github.com/nvim-telescope/telescope-frecency.nvim.git)
 * [nvim-telescope/telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim.git)
 * [nvim-telescope/telescope-live-grep-args.nvim](https://github.com/nvim-telescope/telescope-live-grep-args.nvim.git)
 * [nvim-telescope/telescope-symbols.nvim](https://github.com/nvim-telescope/telescope-symbols.nvim.git)

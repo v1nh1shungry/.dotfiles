@@ -43,7 +43,7 @@ return {
       dashboard.section.header.val = vim.split(logo, "\n")
       dashboard.section.buttons.val = {
         dashboard.button("f", " " .. " Find file", "<Cmd>Telescope find_files<CR>"),
-        dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope frecency<CR>"),
+        dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope oldfiles cwd_only=true<CR>"),
         dashboard.button("/", " " .. " Find text", "<Cmd>Telescope live_grep<CR>"),
         dashboard.button("c", " " .. " Config", "<Cmd>e ~/.nvimrc<CR>"),
         dashboard.button("s", " " .. " Restore session", "<Cmd>SessionLoad<CR>"),

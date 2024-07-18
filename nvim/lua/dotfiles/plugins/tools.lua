@@ -14,7 +14,6 @@ return {
       telescope.setup(opts)
       telescope.load_extension("fzf")
       telescope.load_extension("live_grep_args")
-      telescope.load_extension("frecency")
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -23,7 +22,6 @@ return {
         build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
       },
       "nvim-telescope/telescope-live-grep-args.nvim",
-      "nvim-telescope/telescope-frecency.nvim",
     },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
@@ -45,7 +43,7 @@ return {
     keys = {
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
       { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<Leader>fr", "<Cmd>Telescope frecency<CR>", desc = "Recent files" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
       { "<Leader>/", "<Cmd>Telescope live_grep_args<CR>", desc = "Live grep" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
       { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
@@ -87,13 +85,6 @@ return {
           mappings = {
             i = { ["<C-s>"] = flash },
             n = { s = flash },
-          },
-        },
-        extensions = {
-          frecency = {
-            default_workspace = "CWD",
-            workspace_scan_cmd = "LUA",
-            show_unindexed = false,
           },
         },
       }

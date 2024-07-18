@@ -233,7 +233,7 @@ return {
       end)
     end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    opts = { ensure_installed = { "stylua" } },
+    opts = { ensure_installed = { "cspell", "stylua" } },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -420,7 +420,7 @@ return {
     opts = {
       events = { "BufWritePost", "BufReadPost" },
       linters_by_ft = { fish = { "fish" } },
-      linters = {},
+      linters = { ["*"] = { "cspell" } },
     },
     config = function(_, opts)
       local M = {}

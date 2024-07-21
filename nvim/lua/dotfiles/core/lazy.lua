@@ -18,13 +18,14 @@ require("lazy").setup({
   spec = vim.list_extend(
     { { import = "dotfiles.plugins" } },
     vim
-      .iter(require("dotfiles.user").plugins.extra)
+      .iter(require("dotfiles.user").extra)
       :map(function(m) return { import = "dotfiles.plugins.extra." .. m } end)
       :totable()
   ),
   install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },
   checker = { enabled = true },
-  dev = { path = "~/repos" },
+  dev = { path = "~/repos", patterns = { "v1nh1shungry" } },
+  diff = { cmd = "diffview.nvim" },
   performance = {
     rtp = {
       disabled_plugins = {
@@ -44,4 +45,5 @@ require("lazy").setup({
       },
     },
   },
+  profiling = { loader = true, require = true },
 })

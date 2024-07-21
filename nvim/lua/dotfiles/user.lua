@@ -1,8 +1,5 @@
 local M = {
-  plugins = {
-    user = {},
-    extra = {},
-  },
+  extra = {},
   ui = {
     background = "dark",
     blend = 10,

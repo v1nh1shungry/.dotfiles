@@ -13,7 +13,6 @@ return {
       local telescope = require("telescope")
       telescope.setup(opts)
       telescope.load_extension("fzf")
-      telescope.load_extension("live_grep_args")
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -21,7 +20,6 @@ return {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
       },
-      "nvim-telescope/telescope-live-grep-args.nvim",
     },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
@@ -44,7 +42,7 @@ return {
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
       { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
       { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
-      { "<Leader>/", "<Cmd>Telescope live_grep_args<CR>", desc = "Live grep" },
+      { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
       { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
       { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
       { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
@@ -114,64 +112,6 @@ return {
       },
     },
     opts = {},
-  },
-  {
-    "v1nh1shungry/biquge.nvim",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-      {
-        "nvim-treesitter/nvim-treesitter",
-        opts = function(_, opts) vim.list_extend(opts.ensure_installed, { "html" }) end,
-      },
-    },
-    keys = {
-      {
-        "<Leader>b/",
-        function() require("biquge").search() end,
-        desc = "Search",
-      },
-      {
-        "<Leader>bb",
-        function() require("biquge").toggle() end,
-        desc = "Toggle",
-      },
-      {
-        "<Leader>bt",
-        function() require("biquge").toc() end,
-        desc = "Table of contents",
-      },
-      {
-        "<Leader>bn",
-        function() require("biquge").next_chap() end,
-        desc = "Next chapter",
-      },
-      {
-        "<Leader>bp",
-        function() require("biquge").prev_chap() end,
-        desc = "Previous chapter",
-      },
-      {
-        "<Leader>bs",
-        function() require("biquge").star() end,
-        desc = "Star current book",
-      },
-      {
-        "<Leader>bl",
-        function() require("biquge").bookshelf() end,
-        desc = "Bookshelf",
-      },
-      {
-        "<M-d>",
-        function() require("biquge").scroll(1) end,
-        desc = "Scroll down",
-      },
-      {
-        "<M-u>",
-        function() require("biquge").scroll(-1) end,
-        desc = "Scroll up",
-      },
-    },
-    opts = { height = 5 },
   },
   {
     "nvim-telescope/telescope-symbols.nvim",
@@ -318,5 +258,11 @@ return {
       map({ "<Leader>up", toggle_profile, desc = "Toggle profile" })
     end,
     lazy = not os.getenv("NVIM_PROFILE"),
+  },
+  {
+    "MagicDuck/grug-far.nvim",
+    cmd = "GrugFar",
+    keys = { { "<Leader>s/", "<Cmd>GrugFar<CR>", desc = "Grep" } },
+    opts = {},
   },
 }

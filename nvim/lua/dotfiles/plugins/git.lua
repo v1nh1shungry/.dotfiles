@@ -15,6 +15,7 @@ return {
         map_local({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk" })
         map_local({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
         map_local({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
+        map_local({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })
         map_local({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
         map_local({ "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" })
         map_local({
@@ -128,13 +129,14 @@ return {
     dependencies = { "stevearc/dressing.nvim", "nvim-telescope/telescope.nvim", "rcarriga/nvim-notify" },
     ft = { "gitcommit", "git_rebase" },
     keys = {
-      { "<Leader>gc", function() require("tinygit").smartCommit() end, desc = "Commit" },
+      { "<Leader>gC", function() require("tinygit").smartCommit() end, desc = "Commit" },
       { "<Leader>gP", function() require("tinygit").push({}) end, desc = "Push" },
-      { "<Leader>ga", function() require("tinygit").amendNoEdit() end, desc = "Amend" },
+      { "<Leader>gA", function() require("tinygit").amendNoEdit() end, desc = "Amend" },
       { "<Leader>gU", function() require("tinygit").undoLastCommitOrAmend() end, desc = "Undo last commit" },
-      { "<Leader>gs", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
-      { "<Leader>gS", function() require("tinygit").functionHistory() end, desc = "Search function history" },
+      { "<Leader>g/", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
+      { "<Leader>gs", function() require("tinygit").lineHistory() end, desc = "Search line history" },
       { "<Leader>gf", function() require("tinygit").githubUrl() end, desc = "Open in Github" },
+      { "<Leader>gx", function() require("tinygit").openIssueUnderCursor() end, desc = "Open issue" },
     },
   },
   {

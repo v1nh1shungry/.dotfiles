@@ -102,6 +102,10 @@ return {
       )
 
       local function setup(server)
+        if lsp_opts.servers[server] == nil then
+          vim.notify("Unused LSP server: " .. server, vim.log.levels.WARN)
+          return
+        end
         local opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
           single_file_support = true,

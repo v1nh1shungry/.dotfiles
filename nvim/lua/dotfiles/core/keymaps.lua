@@ -9,8 +9,6 @@ vim.keymap.del("i", "<C-s>")
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
-
 map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = "Save", mode = { "i", "x", "n", "s" } })
 
 map({ "<Esc><Esc>", "<C-\\><C-n>", mode = "t" })
@@ -89,7 +87,7 @@ map({
     local current_winnr = vim.api.nvim_win_get_number(vim.api.nvim_get_current_win())
     local lines = vim.api.nvim_buf_get_lines(current_bufnr, start_pos[2] - 1, end_pos[2], true)
     vim.api.nvim_buf_set_lines(current_bufnr, start_pos[2] - 1, end_pos[2], true, {})
-    local bufnr = vim.api.nvim_create_buf(false, true)
+    local bufnr = vim.api.nvim_create_buf(false, false)
     vim.bo[bufnr].filetype = vim.bo[current_bufnr].filetype
     vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, lines)
     vim.api.nvim_open_win(bufnr, true, { split = "right" })
@@ -201,3 +199,32 @@ map({
 })
 map({ "]B", "<Cmd>blast<CR>", desc = "Go to the first buffer" })
 map({ "[B", "<Cmd>bfrist<CR>", desc = "Go to the last buffer" })
+
+map({
+  "<C-q>",
+  function()
+    local current_win = vim.api.nvim_get_current_win()
+    if
+      vim.api.nvim_win_get_config(current_win).relative ~= ""
+      or #vim
+          .iter(vim.api.nvim_list_wins())
+          :filter(function(win) return vim.api.nvim_win_get_config(win).relative == "" end)
+          :totable()
+        > 1
+    then
+      vim.api.nvim_win_close(current_win, false)
+      return
+    end
+    if
+      #vim
+        .iter(vim.api.nvim_list_bufs())
+        :filter(function(buf) return vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted end)
+        :totable() > 1
+    then
+      require("mini.bufremove").delete()
+    else
+      vim.cmd("qa!")
+    end
+  end,
+  desc = "Close",
+})

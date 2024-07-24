@@ -50,6 +50,13 @@ return {
         dashboard.button("l", "󰒲 " .. " Lazy", "<Cmd>Lazy<CR>"),
         dashboard.button("q", " " .. " Quit", "<Cmd>qa<CR>"),
       }
+      for _, button in ipairs(dashboard.section.buttons.val) do
+        button.opts.hl = "AlphaButtons"
+        button.opts.hl_shortcut = "AlphaShortcut"
+      end
+      dashboard.section.header.opts.hl = "AlphaHeader"
+      dashboard.section.buttons.opts.hl = "AlphaButtons"
+      dashboard.section.footer.opts.hl = "AlphaFooter"
       dashboard.opts.layout[1].val = 8
       require("alpha").setup(dashboard.opts)
 
@@ -268,7 +275,6 @@ return {
           { "[", group = "prev" },
           { "z", group = "fold" },
           { "<Leader><Tab>", group = "tab" },
-          { "<Leader>b", group = "biquge" },
           { "<Leader>c", group = "code" },
           { "<Leader>d", group = "debug" },
           { "<Leader>dp", group = "print" },
@@ -515,6 +521,11 @@ return {
           ft = "Outline",
           size = { width = 0.3 },
         },
+        {
+          title = "Grug Far",
+          ft = "grug-far",
+          size = { width = 0.4 },
+        },
       },
       exit_when_last = true,
     },
@@ -530,9 +541,11 @@ return {
     lazy = true,
   },
   {
-    "OXY2DEV/markview.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
+    "MeanderingProgrammer/markdown.nvim",
+    main = "render-markdown",
+    name = "render-markdown",
     ft = "markdown",
+    opts = {},
   },
   {
     "mcauley-penney/visual-whitespace.nvim",

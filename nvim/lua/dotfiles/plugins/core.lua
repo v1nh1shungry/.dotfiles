@@ -234,7 +234,7 @@ return {
   },
   {
     "echasnovski/mini.bufremove",
-    keys = { { "<C-q>", function() require("mini.bufremove").delete() end, desc = "Close buffer" } },
+    lazy = true,
     opts = {},
   },
   {

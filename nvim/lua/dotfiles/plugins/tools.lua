@@ -73,13 +73,7 @@ return {
         defaults = {
           prompt_prefix = "🔎 ",
           selection_caret = "➤ ",
-          layout_strategy = "bottom_pane",
-          sorting_strategy = "ascending",
-          layout_config = {
-            bottom_pane = {
-              height = 0.4,
-            },
-          },
+          layout_config = { bottom_pane = { height = 0.4 } },
           mappings = {
             i = { ["<C-s>"] = flash },
             n = { s = flash },
@@ -264,5 +258,13 @@ return {
     cmd = "GrugFar",
     keys = { { "<Leader>s/", "<Cmd>GrugFar<CR>", desc = "Grep" } },
     opts = {},
+  },
+  {
+    "AndrewRadev/linediff.vim",
+    cmd = "Linediff",
+    config = function()
+      vim.g.linediff_buffer_type = "scratch"
+      vim.g.linediff_modify_statusline = 0
+    end,
   },
 }

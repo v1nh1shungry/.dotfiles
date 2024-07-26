@@ -117,7 +117,7 @@ return {
         desc = "Jump to the previous buffer",
       },
       { "[B", function() require("bufferline").go_to(1, true) end, desc = "Jump to the first buffer" },
-      { "]B", function() require("bufferline").got_to(-1, true) end, desc = "Jump to the last buffer" },
+      { "]B", function() require("bufferline").go_to(-1, true) end, desc = "Jump to the last buffer" },
       { "gb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
     },
   },
@@ -267,6 +267,7 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
+      preset = "modern",
       spec = {
         {
           mode = { "n", "v" },
@@ -274,8 +275,10 @@ return {
           { "]", group = "next" },
           { "[", group = "prev" },
           { "z", group = "fold" },
+          { "<Space>", group = "leader" },
           { "<Leader><Tab>", group = "tab" },
           { "<Leader>c", group = "code" },
+          { "<Leader>cc", group = "text-case" },
           { "<Leader>d", group = "debug" },
           { "<Leader>dp", group = "print" },
           { "<Leader>f", group = "file" },
@@ -669,7 +672,10 @@ return {
   },
   {
     "tzachar/highlight-undo.nvim",
-    keys = { "u", "<C-r>" },
+    keys = {
+      { "u", desc = "Undo" },
+      { "<C-r>", desc = "Redo" },
+    },
     opts = {
       undo = { hlgroup = "IncSearch" },
       redo = { hlgroup = "IncSearch" },
@@ -678,6 +684,16 @@ return {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = events.enter_buffer,
+    keys = {
+      {
+        "<Leader>ux",
+        function()
+          require("tiny-inline-diagnostic").toggle()
+          require("dotfiles.utils.toggle").diagnostic()
+        end,
+        desc = "Toggle diagnostic",
+      },
+    },
     opts = {},
   },
   {
@@ -695,5 +711,30 @@ return {
       },
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
+  },
+  {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+    lazy = true,
+    opts = { backend = "delta" },
+  },
+  {
+    "dnlhc/glance.nvim",
+    cmd = "Glance",
+    opts = function()
+      local actions = require("glance").actions
+      return {
+        mappings = {
+          list = {
+            ["<leader>l"] = false,
+            ["H"] = actions.enter_win("preview"),
+          },
+          preview = {
+            ["<leader>l"] = false,
+            ["L"] = actions.enter_win("list"),
+          },
+        },
+      }
+    end,
   },
 }

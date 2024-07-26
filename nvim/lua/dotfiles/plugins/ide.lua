@@ -16,26 +16,26 @@ return {
             { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
           },
           ["textDocument/codeAction"] = {
-            { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
+            { "<Leader>ca", function() require("tiny-code-action").code_action() end, desc = "Code action" },
           },
           ["textDocument/documentSymbol"] = {
             { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "LSP symbols (Document)" },
             { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "LSP symbols (Workspace)" },
           },
           ["textDocument/references"] = {
-            { "gR", vim.lsp.buf.references, desc = "Go to references" },
+            { "gR", "<Cmd>Glance references<CR>", desc = "Go to references" },
             { "<Leader>sR", "<Cmd>Telescope lsp_references<CR>", desc = "LSP references" },
           },
           ["textDocument/definition"] = {
-            { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
+            { "gd", "<Cmd>Glance definitions<CR>", desc = "Go to definition" },
             { "<Leader>sd", "<Cmd>Telescope lsp_definitions<CR>", desc = "LSP definitions" },
           },
           ["textDocument/typeDefinition*"] = {
-            { "gy", vim.lsp.buf.type_definition, desc = "Go to type definition" },
+            { "gy", "<Cmd>Glance type_definitions<CR>", desc = "Go to type definition" },
             { "<Leader>sy", "<Cmd>Telescope lsp_type_definitions<CR>", desc = "LSP type definitions" },
           },
           ["textDocument/implementation*"] = {
-            { "gI", vim.lsp.buf.implementation, desc = "Go to implementation" },
+            { "gI", "<Cmd>Glance implementations<CR>", desc = "Go to implementation" },
             { "<Leader>sI", "<Cmd>Telescope lsp_implementations<CR>", desc = "LSP implementations" },
           },
           ["callHierarchy/incomingCalls"] = {
@@ -257,11 +257,8 @@ return {
           format = function(_, item)
             local mini_icons = require("mini.icons")
             item.abbr = vim.trim(item.abbr)
-            if #item.abbr > 50 then
-              item.abbr = item.abbr:sub(1, 50) .. "…"
-            end
             item.menu = item.kind
-            item.kind, item.kind_hl_group = mini_icons.get("lsp", item.kind, item.kind_hl_group)
+            item.kind = mini_icons.get("lsp", item.kind)
             return item
           end,
           expandable_indicator = true,

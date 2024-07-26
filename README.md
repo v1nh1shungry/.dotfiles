@@ -53,6 +53,7 @@
 * [autohotkey](https://www.autohotkey.com/)
 <!-- Neovim plugins -->
 ## Neovim plugins
+* [AndrewRadev/linediff.vim](https://github.com/AndrewRadev/linediff.vim.git)
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
 * [Bilal2453/luvit-meta](https://github.com/Bilal2453/luvit-meta.git)
 * [Civitasv/cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim.git)
@@ -66,7 +67,6 @@
 * [RRethy/vim-illuminate](https://github.com/RRethy/vim-illuminate.git)
 * [Wansmer/sibling-swap.nvim](https://github.com/Wansmer/sibling-swap.nvim.git)
 * [Wansmer/treesj](https://github.com/Wansmer/treesj.git)
-* [abecodes/tabout.nvim](https://github.com/abecodes/tabout.nvim.git)
 * [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)
 * [akinsho/toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim.git)
 * [b0o/SchemaStore.nvim](https://github.com/b0o/SchemaStore.nvim.git)
@@ -78,6 +78,7 @@
 * [danymat/neogen](https://github.com/danymat/neogen.git)
 * [debugloop/telescope-undo.nvim](https://github.com/debugloop/telescope-undo.nvim.git)
 * [dhruvasagar/vim-table-mode](https://github.com/dhruvasagar/vim-table-mode.git)
+* [dnlhc/glance.nvim](https://github.com/dnlhc/glance.nvim.git)
 * [echasnovski/mini-git](https://github.com/echasnovski/mini-git.git)
 * [echasnovski/mini.ai](https://github.com/echasnovski/mini.ai.git)
 * [echasnovski/mini.align](https://github.com/echasnovski/mini.align.git)
@@ -132,6 +133,7 @@
 * [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git)
 * [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)
 * [olimorris/persisted.nvim](https://github.com/olimorris/persisted.nvim.git)
+* [rachartier/tiny-code-action.nvim](https://github.com/rachartier/tiny-code-action.nvim.git)
 * [rachartier/tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim.git)
 * [rafcamlet/nvim-luapad](https://github.com/rafcamlet/nvim-luapad.git)
 * [rcarriga/nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)

@@ -234,16 +234,16 @@ return {
   },
   {
     "echasnovski/mini.bufremove",
-    lazy = true,
+    keys = { { "<C-q>", function() require("mini.bufremove").delete() end, desc = "Close buffer" } },
     opts = {},
   },
   {
     "chrisgrieser/nvim-recorder",
     opts = { mapping = { switchSlot = "<M-q>" } },
     keys = {
-      "q",
-      "Q",
-      "<M-q>",
+      { "q", desc = "Record macro" },
+      { "Q", desc = "Replay macro" },
+      { "<M-q>", desc = "Change register slot" },
       { "cq", desc = "Edit macro" },
       { "dq", desc = "Delete all macros" },
       { "yq", desc = "Yank macro" },
@@ -298,7 +298,7 @@ return {
       },
     },
     opts = {
-      modes = { char = { multi_line = false, highlight = { backdrop = false } } },
+      modes = { char = { highlight = { backdrop = false } } },
       prompt = { enabled = false },
     },
   },

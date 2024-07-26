@@ -89,12 +89,6 @@ return {
     },
   },
   {
-    "abecodes/tabout.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "hrsh7th/nvim-cmp" },
-    event = events.enter_insert,
-    opts = {},
-  },
-  {
     "RRethy/nvim-treesitter-endwise",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = "InsertEnter",
@@ -161,7 +155,7 @@ return {
   },
   {
     "johmsalas/text-case.nvim",
-    dependencies = "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim" },
     keys = "<Leader>cc",
     opts = { prefix = "<Leader>cc" },
   },

@@ -267,7 +267,7 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      preset = "modern",
+      preset = "helix",
       spec = {
         {
           mode = { "n", "v" },

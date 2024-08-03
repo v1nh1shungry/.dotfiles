@@ -712,29 +712,4 @@ return {
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
   },
-  {
-    "rachartier/tiny-code-action.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
-    lazy = true,
-    opts = { backend = "delta" },
-  },
-  {
-    "dnlhc/glance.nvim",
-    cmd = "Glance",
-    opts = function()
-      local actions = require("glance").actions
-      return {
-        mappings = {
-          list = {
-            ["<leader>l"] = false,
-            ["H"] = actions.enter_win("preview"),
-          },
-          preview = {
-            ["<leader>l"] = false,
-            ["L"] = actions.enter_win("list"),
-          },
-        },
-      }
-    end,
-  },
 }

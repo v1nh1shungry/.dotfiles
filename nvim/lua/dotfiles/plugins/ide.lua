@@ -16,26 +16,29 @@ return {
             { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
           },
           ["textDocument/codeAction"] = {
-            { "<Leader>ca", function() require("tiny-code-action").code_action() end, desc = "Code action" },
+            { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
           },
           ["textDocument/documentSymbol"] = {
             { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "LSP symbols (Document)" },
+            { "<Leader>us", "<Cmd>Outline<CR>", desc = "Symbol outline" },
+          },
+          ["workspace/symbol"] = {
             { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "LSP symbols (Workspace)" },
           },
           ["textDocument/references"] = {
-            { "gR", "<Cmd>Glance references<CR>", desc = "Go to references" },
+            { "gR", vim.lsp.buf.references, desc = "Go to references" },
             { "<Leader>sR", "<Cmd>Telescope lsp_references<CR>", desc = "LSP references" },
           },
           ["textDocument/definition"] = {
-            { "gd", "<Cmd>Glance definitions<CR>", desc = "Go to definition" },
+            { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
             { "<Leader>sd", "<Cmd>Telescope lsp_definitions<CR>", desc = "LSP definitions" },
           },
           ["textDocument/typeDefinition*"] = {
-            { "gy", "<Cmd>Glance type_definitions<CR>", desc = "Go to type definition" },
+            { "gy", vim.lsp.buf.type_definition, desc = "Go to type definition" },
             { "<Leader>sy", "<Cmd>Telescope lsp_type_definitions<CR>", desc = "LSP type definitions" },
           },
           ["textDocument/implementation*"] = {
-            { "gI", "<Cmd>Glance implementations<CR>", desc = "Go to implementation" },
+            { "gI", vim.lsp.buf.implementation, desc = "Go to implementation" },
             { "<Leader>sI", "<Cmd>Telescope lsp_implementations<CR>", desc = "LSP implementations" },
           },
           ["callHierarchy/incomingCalls"] = {
@@ -51,6 +54,12 @@ return {
           },
           ["textDocument/signatureHelp"] = {
             { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
+          },
+          ["typeHierarchy/subtypes"] = {
+            { "<Leader>cs", function() vim.lsp.buf.typehierarchy("subtypes") end, desc = "LSP subtypes" },
+          },
+          ["typeHierarchy/supertypes"] = {
+            { "<Leader>cS", function() vim.lsp.buf.typehierarchy("supertypes") end, desc = "LSP supertypes" },
           },
         }
 
@@ -416,13 +425,6 @@ return {
   },
   {
     "mfussenegger/nvim-lint",
-    dependencies = "williamboman/mason.nvim",
-    event = events.enter_buffer,
-    opts = {
-      events = { "BufWritePost", "BufReadPost" },
-      linters_by_ft = { fish = { "fish" } },
-      linters = { ["*"] = { "cspell" } },
-    },
     config = function(_, opts)
       local M = {}
 
@@ -476,6 +478,16 @@ return {
         callback = M.debounce(100, M.lint),
       })
     end,
+    dependencies = "williamboman/mason.nvim",
+    event = events.enter_buffer,
+    opts = {
+      events = { "BufWritePost", "BufReadPost" },
+      linters_by_ft = {
+        fish = { "fish" },
+        ["*"] = { "cspell" },
+      },
+      linters = {},
+    },
   },
   {
     "Civitasv/cmake-tools.nvim",

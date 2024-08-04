@@ -484,7 +484,7 @@ return {
       events = { "BufWritePost", "BufReadPost" },
       linters_by_ft = {
         fish = { "fish" },
-        ["*"] = { "cspell" },
+        cpp = { "cspell" },
       },
       linters = {},
     },

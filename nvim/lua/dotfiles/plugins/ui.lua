@@ -563,7 +563,11 @@ return {
     opts = {
       debounce = 500,
       indent = { char = "│", tab_char = "│" },
-      scope = { show_start = false, show_end = false },
+      scope = {
+        show_start = false,
+        show_end = false,
+        include = { node_type = { lua = { "table_constructor" } } },
+      },
       exclude = { buftypes = ui.excluded_buftypes },
     },
   },
@@ -680,21 +684,6 @@ return {
       undo = { hlgroup = "IncSearch" },
       redo = { hlgroup = "IncSearch" },
     },
-  },
-  {
-    "rachartier/tiny-inline-diagnostic.nvim",
-    event = events.enter_buffer,
-    keys = {
-      {
-        "<Leader>ux",
-        function()
-          require("tiny-inline-diagnostic").toggle()
-          require("dotfiles.utils.toggle").diagnostic()
-        end,
-        desc = "Toggle diagnostic",
-      },
-    },
-    opts = {},
   },
   {
     "hedyhli/outline.nvim",

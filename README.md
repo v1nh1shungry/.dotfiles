@@ -132,7 +132,6 @@
 * [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git)
 * [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)
 * [olimorris/persisted.nvim](https://github.com/olimorris/persisted.nvim.git)
-* [rachartier/tiny-inline-diagnostic.nvim](https://github.com/rachartier/tiny-inline-diagnostic.nvim.git)
 * [rafcamlet/nvim-luapad](https://github.com/rafcamlet/nvim-luapad.git)
 * [rcarriga/nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)
 * [rcarriga/nvim-notify](https://github.com/rcarriga/nvim-notify.git)

@@ -2,7 +2,6 @@ local icons = require("dotfiles.utils.ui").icons
 local config = require("dotfiles.user")
 
 vim.diagnostic.config({
-  virtual_text = false,
   severity_sort = true,
   signs = false,
   float = { border = "rounded" },

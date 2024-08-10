@@ -1,7 +1,12 @@
 if status is-interactive
-    fish_add_path ~/.local/bin
+    set -gx LANG "en_US.UTF-8"
+    set -gx LANGUAGE "en_US.UTF-8"
 
     set fish_greeting
+
+    if test -d ~/.local/bin
+        fish_add_path ~/.local/bin
+    end
 
     if test -d ~/.cargo
         fish_add_path ~/.cargo/bin

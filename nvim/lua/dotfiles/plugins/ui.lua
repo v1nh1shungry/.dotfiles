@@ -545,9 +545,8 @@ return {
   },
   {
     "MeanderingProgrammer/markdown.nvim",
-    main = "render-markdown",
-    name = "render-markdown",
     ft = "markdown",
+    main = "render-markdown",
     opts = {},
   },
   {
@@ -687,7 +686,7 @@ return {
   },
   {
     "hedyhli/outline.nvim",
-    keys = { { "<Leader>cs", "<Cmd>Outline<CR>", desc = "Symbol outline" } },
+    cmd = "Outline",
     opts = {
       outline_window = { auto_close = true, hide_cursor = true },
       preview_window = { border = "rounded", winblend = require("dotfiles.user").ui.blend },

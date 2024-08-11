@@ -214,10 +214,24 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    opts = { library = { { path = "luvit-meta/library", words = { "vim%.uv" } } } },
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "wezterm-types", mods = { "wezterm" } },
+        { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
+      },
+    },
   },
   {
     "Bilal2453/luvit-meta",
+    lazy = true,
+  },
+  {
+    "justinsgithub/wezterm-types",
+    lazy = true,
+  },
+  {
+    "LelouchHe/xmake-luals-addon",
     lazy = true,
   },
   {

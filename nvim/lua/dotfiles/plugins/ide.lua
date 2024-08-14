@@ -480,6 +480,11 @@ return {
           if not linter then
             vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
           end
+          if type(linter.enabled) == "boolean" and not linter.enabled then
+            return
+          elseif type(linter.enabled) == "function" and not linter.enabled() then
+            return
+          end
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
         if #names > 0 then
@@ -498,9 +503,13 @@ return {
       events = { "BufWritePost", "BufReadPost" },
       linters_by_ft = {
         fish = { "fish" },
-        cpp = { "cspell" },
+        ["*"] = { "cspell" },
       },
-      linters = {},
+      linters = {
+        cspell = {
+          enabled = function() return vim.fs.root(0, ".cspell-words.txt") end,
+        },
+      },
     },
   },
   {

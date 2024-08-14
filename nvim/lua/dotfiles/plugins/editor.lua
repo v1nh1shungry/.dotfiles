@@ -133,16 +133,6 @@ return {
     opts = {},
   },
   {
-    "mg979/vim-visual-multi",
-    config = function()
-      vim.g.VM_silent_exit = true
-      vim.g.VM_set_statusline = 0
-      vim.g.VM_quit_after_leaving_insert_mode = true
-      vim.g.VM_show_warnings = 0
-    end,
-    keys = { { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" } },
-  },
-  {
     "cshuaimin/ssr.nvim",
     keys = {
       {

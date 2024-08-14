@@ -396,17 +396,6 @@ return {
   },
   {
     "kevinhwang91/nvim-hlslens",
-    config = function()
-      require("hlslens").setup({ calm_down = true })
-      vim.api.nvim_create_autocmd("User", {
-        callback = require("hlslens").start,
-        pattern = "visual_multi_start",
-      })
-      vim.api.nvim_create_autocmd("User", {
-        callback = require("hlslens").stop,
-        pattern = "visual_multi_exit",
-      })
-    end,
     keys = {
       { "/", desc = "Forward search" },
       { "?", desc = "Backward search" },
@@ -424,6 +413,7 @@ return {
       { "*", [[*<Cmd>lua require('hlslens').start()<CR>]], desc = "Forward search current word" },
       { "#", [[#<Cmd>lua require('hlslens').start()<CR>]], desc = "Backward search current word" },
     },
+    opts = { calm_down = true },
   },
   {
     "Bekaboo/deadcolumn.nvim",

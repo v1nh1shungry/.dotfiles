@@ -120,7 +120,6 @@
 * [mcauley-penney/visual-whitespace.nvim](https://github.com/mcauley-penney/visual-whitespace.nvim.git)
 * [mfussenegger/nvim-dap](https://github.com/mfussenegger/nvim-dap.git)
 * [mfussenegger/nvim-lint](https://github.com/mfussenegger/nvim-lint.git)
-* [mg979/vim-visual-multi](https://github.com/mg979/vim-visual-multi.git)
 * [monaqa/dial.nvim](https://github.com/monaqa/dial.nvim.git)
 * [neovim/nvim-lspconfig](https://github.com/neovim/nvim-lspconfig.git)
 * [numToStr/Navigator.nvim](https://github.com/numToStr/Navigator.nvim.git)

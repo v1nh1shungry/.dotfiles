@@ -324,7 +324,7 @@ return {
           { name = "buffer" },
           { name = "path" },
         }, {
-          { name = "rg", keyword_length = 5, option = { debounce = 500 } },
+          { name = "rg", option = { debounce = 500 } },
         }),
       })
 

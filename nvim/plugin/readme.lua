@@ -1,4 +1,5 @@
 local File = require("dotfiles.utils.file")
+
 local filename = vim.fs.joinpath(vim.env.HOME, ".dotfiles", "README.md")
 local contents = File.read(filename)
 if not contents then
@@ -32,15 +33,15 @@ end
 
 local function update_nvim_plugins()
   local marker = "<!-- Neovim plugins -->"
-  local plugins_section = {}
+  local section = {}
   for _, spec in ipairs(require("lazy").plugins()) do
-    table.insert(plugins_section, ("* [%s](%s)"):format(spec[1], spec.url))
+    table.insert(section, ("* [%s](%s)"):format(spec[1], spec.url))
   end
-  table.sort(plugins_section)
-  table.insert(plugins_section, 1, "## Neovim plugins")
-  table.insert(plugins_section, 1, marker)
-  table.insert(plugins_section, marker)
-  insert_section(plugins_section, marker)
+  table.sort(section)
+  table.insert(section, 1, "## Neovim plugins")
+  table.insert(section, 1, marker)
+  table.insert(section, marker)
+  insert_section(section, marker)
 end
 
 local function update_vscode_extensions()
@@ -49,26 +50,24 @@ local function update_vscode_extensions()
     return
   end
   local marker = "<!-- vscode extensions -->"
-  local extensions_section = {}
+  local section = {}
   for _, spec in ipairs(vim.json.decode(table.concat(extensions, "\n"))) do
     local id = spec.identifier.id
-    table.insert(extensions_section, ("* [%s](https://marketplace.visualstudio.com/items?itemName=%s)"):format(id, id))
+    table.insert(section, ("* [%s](https://marketplace.visualstudio.com/items?itemName=%s)"):format(id, id))
   end
-  table.sort(extensions_section)
-  table.insert(extensions_section, 1, "## vscode extensions")
-  table.insert(extensions_section, 1, marker)
-  table.insert(extensions_section, marker)
-  insert_section(extensions_section, marker)
-end
-
-local function update()
-  update_nvim_plugins()
-  update_vscode_extensions()
-  File.write(contents, filename)
+  table.sort(section)
+  table.insert(section, 1, "## vscode extensions")
+  table.insert(section, 1, marker)
+  table.insert(section, marker)
+  insert_section(section, marker)
 end
 
 vim.api.nvim_create_autocmd("User", {
-  callback = update,
+  callback = function()
+    update_nvim_plugins()
+    update_vscode_extensions()
+    File.write(contents, filename)
+  end,
   group = vim.api.nvim_create_augroup("dotfiles_auto_update_readme_autocmds", {}),
   pattern = "LazyReload",
 })

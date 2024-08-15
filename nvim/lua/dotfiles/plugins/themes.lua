@@ -1,6 +1,5 @@
 return {
   { "folke/tokyonight.nvim", lazy = true },
-  { "EdenEast/nightfox.nvim", lazy = true },
   {
     "catppuccin/nvim",
     lazy = true,
@@ -22,20 +21,5 @@ return {
         which_key = true,
       },
     },
-  },
-  {
-    "ellisonleao/gruvbox.nvim",
-    lazy = true,
-    opts = {
-      overrides = {
-        SignColumn = { link = "LineNr" },
-        FoldColumn = { link = "LineNr" },
-      },
-    },
-  },
-  {
-    "rose-pine/neovim",
-    name = "rose-pine",
-    lazy = true,
   },
 }

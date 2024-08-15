@@ -8,49 +8,50 @@
 
 ## Requirements
 
-| Requirement                                                             |        Installation       |
-|-------------------------------------------------------------------------|:-------------------------:|
-| [JetBriansMono Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts) |                           |
-| [starship](https://github.com/starship/starship)                        | `cargo binstall starship` |
-| [ripgrep](https://github.com/BurntSushi/ripgrep)                        |  `cargo binstall ripgrep` |
-| [bat](https://github.com/sharkdp/bat)                                   |    `cargo binstall bat`   |
-| [fd](https://github.com/sharkdp/fd)                                     |  `cargo binstall fd-find` |
-| [zoxide](https://github.com/ajeetdsouza/zoxide)                         |  `cargo binstall zoxide`  |
-| [spicetify](https://spicetify.app/)                                     |                           |
-| [tokei](https://github.com/XAMPPRocky/tokei)                            |   `cargo binstall tokei`  |
+* [JetBriansMono Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts)
+* [starship](https://github.com/starship/starship)
+* [ripgrep](https://github.com/BurntSushi/ripgrep)
+* [bat](https://github.com/sharkdp/bat)
+* [fd](https://github.com/sharkdp/fd)
+* [zoxide](https://github.com/ajeetdsouza/zoxide)
+* [spicetify](https://spicetify.app/)
+* [tokei](https://github.com/XAMPPRocky/tokei)
+* [motrix](https://motrix.app/)
+* [WeChat](https://weixin.qq.com/)
+* [Spotify](https://open.spotify.com/)
+* [flameshot](https://github.com/flameshot-org/flameshot)
+* [vscode](https://code.visualstudio.com/)
 
 ### Linux
 
-| Requirement                                                    |          Installation         |
-|----------------------------------------------------------------|:-----------------------------:|
-| [fish](https://fishshell.com)                                  |                               |
-| [fisher](https://github.com/jorgebucaran/fisher)               |                               |
-| [tmux](https://github.com/tmux/tmux)                           |                               |
-| [tpm](https://github.com/tmux-plugins/tpm)                     |                               |
-| [Neovim nightly](https://github.com/neovim/neovim)             |                               |
-| [cargo](https://www.rust-lang.org/)                            |                               |
-| [cargo-binstall](https://github.com/cargo-bins/cargo-binstall) |                               |
-| [cargo-cache](https://github.com/matthiaskrgr/cargo-cache)     |  `cargo binstall cargo-cache` |
-| [cargo-update](https://github.com/nabijaczleweli/cargo-update) | `cargo binstall cargo-update` |
-| [pipx](https://pipx.pypa.io/stable/)                           |                               |
-| [eza](https://github.com/eza-community/eza)                    |      `cargo binstall eza`     |
-| [fzf](https://github.com/junegunn/fzf)                         |                               |
-| ncdu                                                           |                               |
-| [btop](https://github.com/aristocratos/btop)                   |      `snap install btop`      |
-| [fnm](https://github.com/Schniz/fnm)                           |      `cargo binstall fnm`     |
-| [bob](https://github.com/MordechaiHadad/bob)                   |   `cargo binstall bob-nvim`   |
-| [delta](https://github.com/dandavison/delta)                   |   `cargo binstall git-delta`  |
-| [tldr](https://github.com/dbrgn/tealdeer)                      |   `cargo binstall tealdeer`   |
-| [cppman](https://github.com/aitjcize/cppman)                   |                               |
-| [jq](https://github.com/jqlang/jq)                             |                               |
+* [fish](https://fishshell.com)
+* [fisher](https://github.com/jorgebucaran/fisher)
+* [tmux](https://github.com/tmux/tmux)
+* [tpm](https://github.com/tmux-plugins/tpm)
+* [Neovim nightly](https://github.com/neovim/neovim)
+* [cargo](https://www.rust-lang.org/)
+* [cargo-binstall](https://github.com/cargo-bins/cargo-binstall)
+* [cargo-cache](https://github.com/matthiaskrgr/cargo-cache)
+* [cargo-update](https://github.com/nabijaczleweli/cargo-update)
+* [pipx](https://pipx.pypa.io/stable/)
+* [eza](https://github.com/eza-community/eza)
+* [fzf](https://github.com/junegunn/fzf)
+* ncdu
+* [btop](https://github.com/aristocratos/btop)
+* [fnm](https://github.com/Schniz/fnm)
+* [bob](https://github.com/MordechaiHadad/bob)
+* [delta](https://github.com/dandavison/delta)
+* [tldr](https://github.com/dbrgn/tealdeer)
+* [cppman](https://github.com/aitjcize/cppman)
+* [jq](https://github.com/jqlang/jq)
+* [wine](https://www.winehq.org/)
 
 ### Windows
 
 * [Scoop](https://github.com/ScoopInstaller/Scoop)
 * [scoop-completion](https://github.com/Moeologist/scoop-completion)
-* [win32yank](https://github.com/equalsraf/win32yank)
-* [im-select](https://github.com/daipeihust/im-select)
 * [autohotkey](https://www.autohotkey.com/)
+* [helix](https://helix-editor.com/)
 <!-- Neovim plugins -->
 ## Neovim plugins
 * [AndrewRadev/linediff.vim](https://github.com/AndrewRadev/linediff.vim.git)

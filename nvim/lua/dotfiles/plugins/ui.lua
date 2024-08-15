@@ -541,7 +541,7 @@ return {
   },
   {
     "mcauley-penney/visual-whitespace.nvim",
-    event = "ModeChanged *:[vV\x16]*",
+    event = "VeryLazy",
     opts = {},
   },
   {

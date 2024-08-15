@@ -49,3 +49,9 @@ vim.api.nvim_create_autocmd("OptionSet", {
 vim.api.nvim_set_hl(0, match_group, { bg = "LightGreen" })
 
 vim.defer_fn(highlight, 0)
+
+vim.api.nvim_create_user_command("TrailSpace", function()
+  local curpos = vim.api.nvim_win_get_cursor(0)
+  vim.cmd([[keeppatterns %s/\s\+$//e]])
+  vim.api.nvim_win_set_cursor(0, curpos)
+end, {})

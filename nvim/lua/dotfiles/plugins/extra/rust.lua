@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "rust" } },
+    opts = { ensure_installed = { "rust", "toml" } },
   },
   {
     "neovim/nvim-lspconfig",
@@ -27,6 +27,18 @@ return {
             },
           },
         },
+      },
+    },
+  },
+  {
+    "Saecki/crates.nvim",
+    event = "BufRead Cargo.toml",
+    opts = {
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
       },
     },
   },

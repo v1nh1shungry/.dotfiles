@@ -64,6 +64,7 @@
 * [MunifTanjim/nui.nvim](https://github.com/MunifTanjim/nui.nvim.git)
 * [RRethy/nvim-treesitter-endwise](https://github.com/RRethy/nvim-treesitter-endwise.git)
 * [RRethy/vim-illuminate](https://github.com/RRethy/vim-illuminate.git)
+* [Saecki/crates.nvim](https://github.com/Saecki/crates.nvim.git)
 * [Wansmer/sibling-swap.nvim](https://github.com/Wansmer/sibling-swap.nvim.git)
 * [Wansmer/treesj](https://github.com/Wansmer/treesj.git)
 * [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)

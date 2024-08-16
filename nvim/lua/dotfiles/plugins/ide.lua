@@ -4,11 +4,11 @@ local map = require("dotfiles.utils.keymap")
 return {
   {
     "neovim/nvim-lspconfig",
-    config = function(_, lsp_opts)
+    config = function(_, opts)
       local on_attach = function(client, bufnr)
-        local map_local = function(opts)
-          opts.buffer = bufnr
-          map(opts)
+        local map_local = function(key)
+          key.buffer = bufnr
+          map(key)
         end
 
         local mappings = {
@@ -71,6 +71,10 @@ return {
           end
         end
 
+        for _, key in ipairs(opts.servers[client.name] and opts.servers[client.name].keys or {}) do
+          map_local(key)
+        end
+
         if client.server_capabilities.inlayHintProvider then
           vim.lsp.inlay_hint.enable(true)
         end
@@ -111,32 +115,32 @@ return {
       )
 
       local function setup(server)
-        if lsp_opts.servers[server] == nil then
+        if opts.servers[server] == nil then
           vim.notify("Unused LSP server: " .. server, vim.log.levels.WARN)
           return
         end
-        local opts = vim.tbl_deep_extend("force", {
+        local setup_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
           single_file_support = true,
-        }, lsp_opts.servers[server])
-        if lsp_opts.setup then
-          if lsp_opts.setup[server] then
-            if lsp_opts.setup[server](server, opts) then
+        }, opts.servers[server])
+        if opts.setup then
+          if opts.setup[server] then
+            if opts.setup[server](server, setup_opts) then
               return
             end
-          elseif lsp_opts.setup["*"] then
-            if lsp_opts.setup["*"](server, opts) then
+          elseif opts.setup["*"] then
+            if opts.setup["*"](server, setup_opts) then
               return
             end
           end
         end
-        require("lspconfig")[server].setup(opts)
+        require("lspconfig")[server].setup(setup_opts)
       end
 
       local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
       local ensure_installed = {}
-      for server, opts in pairs(lsp_opts.servers) do
-        if opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+      for server, server_opts in pairs(opts.servers) do
+        if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
           setup(server)
         else
           ensure_installed[#ensure_installed + 1] = server
@@ -213,6 +217,10 @@ return {
   },
   {
     "folke/lazydev.nvim",
+    dependencies = {
+      "hrsh7th/nvim-cmp",
+      opts = function(_, opts) table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 }) end,
+    },
     ft = "lua",
     opts = {
       library = {
@@ -264,10 +272,57 @@ return {
   },
   {
     "hrsh7th/nvim-cmp",
-    config = function()
+    config = function(_, opts)
       local cmp = require("cmp")
 
-      cmp.setup({
+      cmp.setup(opts)
+
+      local cmdline_mapping = {
+        ["<Tab>"] = {
+          c = function()
+            if cmp.visible() then
+              cmp.select_next_item()
+            else
+              cmp.complete()
+            end
+          end,
+        },
+        ["<S-Tab>"] = {
+          c = function()
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              cmp.complete()
+            end
+          end,
+        },
+        ["<C-e>"] = { c = cmp.mapping.abort() },
+      }
+
+      cmp.setup.cmdline(":", {
+        mapping = cmdline_mapping,
+        sources = cmp.config.sources({
+          { name = "cmdline" },
+          { name = "path" },
+        }),
+      })
+
+      cmp.setup.cmdline({ "/", "?" }, {
+        mapping = cmdline_mapping,
+        sources = cmp.config.sources({ { name = "buffer" } }),
+      })
+    end,
+    dependencies = {
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-path",
+      "lukas-reineke/cmp-rg",
+    },
+    event = events.enter_insert,
+    opts = function()
+      local cmp = require("cmp")
+
+      return {
         window = {
           completion = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
@@ -316,8 +371,6 @@ return {
           end, { "i", "s" }),
         },
         sources = cmp.config.sources({
-          { name = "lazydev" },
-        }, {
           { name = "nvim_lsp" },
           { name = "snippets" },
         }, {
@@ -326,50 +379,8 @@ return {
         }, {
           { name = "rg", option = { debounce = 500 } },
         }),
-      })
-
-      local cmdline_mapping = {
-        ["<Tab>"] = {
-          c = function()
-            if cmp.visible() then
-              cmp.select_next_item()
-            else
-              cmp.complete()
-            end
-          end,
-        },
-        ["<S-Tab>"] = {
-          c = function()
-            if cmp.visible() then
-              cmp.select_prev_item()
-            else
-              cmp.complete()
-            end
-          end,
-        },
-        ["<C-e>"] = { c = cmp.mapping.abort() },
       }
-
-      cmp.setup.cmdline(":", {
-        mapping = cmdline_mapping,
-        sources = cmp.config.sources({
-          { name = "cmdline" },
-          { name = "path" },
-        }),
-      })
-
-      cmp.setup.cmdline({ "/", "?" }, {
-        mapping = cmdline_mapping,
-        sources = cmp.config.sources({ { name = "buffer" } }),
-      })
     end,
-    dependencies = {
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-path",
-      "lukas-reineke/cmp-rg",
-    },
-    event = events.enter_insert,
   },
   {
     "rcarriga/nvim-dap-ui",
@@ -481,9 +492,9 @@ return {
             vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
           end
           if type(linter.enabled) == "boolean" and not linter.enabled then
-            return
+            return false
           elseif type(linter.enabled) == "function" and not linter.enabled() then
-            return
+            return false
           end
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)

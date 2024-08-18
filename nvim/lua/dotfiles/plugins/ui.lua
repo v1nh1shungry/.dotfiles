@@ -57,7 +57,7 @@ return {
       dashboard.section.header.opts.hl = "AlphaHeader"
       dashboard.section.buttons.opts.hl = "AlphaButtons"
       dashboard.section.footer.opts.hl = "AlphaFooter"
-      dashboard.opts.layout[1].val = 8
+      dashboard.opts.layout[1].val = (vim.o.lines <= 40) and 2 or 8
       require("alpha").setup(dashboard.opts)
 
       if vim.o.filetype == "lazy" then

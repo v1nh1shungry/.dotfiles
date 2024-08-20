@@ -52,6 +52,7 @@ return {
       { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
     },
     opts = function()
+      -- https://www.lazyvim.org/extras/editor/telescope#telescopenvim-1 {{{
       local function flash(prompt_bufnr)
         require("flash").jump({
           pattern = "^",
@@ -68,6 +69,7 @@ return {
           end,
         })
       end
+      -- }}}
 
       return {
         defaults = {
@@ -98,13 +100,7 @@ return {
   },
   {
     "v1nh1shungry/cppman.nvim",
-    keys = {
-      {
-        "<Leader>sc",
-        function() require("cppman").search() end,
-        desc = "Cppman",
-      },
-    },
+    keys = { { "<Leader>sc", function() require("cppman").search() end, desc = "Cppman" } },
     opts = {},
   },
   {
@@ -124,6 +120,7 @@ return {
     config = function()
       require("persisted").setup({
         use_git_branch = true,
+        -- https://github.com/folke/persistence.nvim/blob/main/lua/persistence/init.lua {{{
         should_autosave = function()
           local bufs = vim.tbl_filter(function(b)
             if vim.bo[b].buftype ~= "" then
@@ -139,6 +136,7 @@ return {
           end, vim.api.nvim_list_bufs())
           return #bufs ~= 0
         end,
+        -- }}}
       })
 
       require("telescope").load_extension("persisted")

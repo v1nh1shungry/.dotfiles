@@ -5,6 +5,8 @@ return {
     "tpope/vim-sleuth",
     event = events.enter_buffer,
   },
+  -- https://www.lazyvim.org/plugins/coding#miniai {{{
+  -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter-textobjects
   {
     "echasnovski/mini.ai",
     config = function(_, opts)
@@ -151,6 +153,7 @@ return {
       }
     end,
   },
+  -- }}}
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -274,16 +277,8 @@ return {
       "T",
       ",",
       ";",
-      {
-        "gs",
-        function() require("flash").jump() end,
-        desc = "Flash",
-      },
-      {
-        "gt",
-        function() require("flash").treesitter() end,
-        desc = "Flash Treesitter",
-      },
+      { "gs", function() require("flash").jump() end, desc = "Flash" },
+      { "gt", function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       {
         "r",
         function() require("flash").remote() end,

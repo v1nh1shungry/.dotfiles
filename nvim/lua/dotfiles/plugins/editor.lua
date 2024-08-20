@@ -42,6 +42,7 @@ return {
   },
   {
     "echasnovski/mini.pairs",
+    -- https://www.lazyvim.org/plugins/coding#minipairs {{{
     config = function(_, opts)
       local pairs = require("mini.pairs")
       pairs.setup(opts)
@@ -79,8 +80,10 @@ return {
         return open(pair, neigh_pattern)
       end
     end,
+    -- }}}
     event = events.enter_insert,
     opts = {
+      mappings = { [" "] = { action = "open", pair = "  ", neigh_pattern = "[%({][%)}]" } },
       modes = { insert = true, command = true, terminal = false },
       skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
       skip_ts = { "string" },
@@ -157,6 +160,7 @@ return {
     end,
     keys = { { "<Leader>ct", "<Cmd>TableModeToggle<CR>", desc = "Table mode" } },
   },
+  -- https://www.lazyvim.org/extras/editor/dial {{{
   {
     "monaqa/dial.nvim",
     config = function(_, opts)
@@ -272,4 +276,5 @@ return {
       return opts
     end,
   },
+  -- }}}
 }

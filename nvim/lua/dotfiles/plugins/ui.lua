@@ -25,6 +25,7 @@ return {
     },
     opts = { signs = false },
   },
+  -- https://www.lazyvim.org/extras/ui/alpha {{{
   {
     "goolord/alpha-nvim",
     config = function()
@@ -59,10 +60,10 @@ return {
       dashboard.section.footer.opts.hl = "AlphaFooter"
       dashboard.opts.layout[1].val = (
         vim.o.lines
-        - #dashboard.section.header.val      -- header
-        - dashboard.opts.layout[3].val       -- padding between header and buttons
+        - #dashboard.section.header.val -- header
+        - dashboard.opts.layout[3].val -- padding between header and buttons
         - #dashboard.section.buttons.val * 2 -- buttons
-        - 1                                  -- rooter
+        - 1 -- rooter
       ) / 2
       require("alpha").setup(dashboard.opts)
 
@@ -86,21 +87,26 @@ return {
       })
     end,
   },
+  -- }}}
   {
     "akinsho/bufferline.nvim",
     config = function()
       require("bufferline").setup({
         options = {
+          close_command = function(b) require("mini.bufremove").delete(b) end,
+          right_mouse_command = function(b) require("mini.bufremove").delete(b) end,
           numbers = "ordinal",
           diagnostics = "nvim_lsp",
           themable = true,
         },
       })
+      -- https://www.lazyvim.org/plugins/ui#bufferlinenvim {{{
       vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
           vim.schedule(function() pcall(nvim_bufferline) end)
         end,
       })
+      -- }}}
     end,
     event = "VeryLazy",
     keys = {
@@ -129,6 +135,7 @@ return {
   },
   {
     "stevearc/dressing.nvim",
+    -- https://www.lazyvim.org/extras/editor/telescope#dressingnvim {{{
     init = function()
       vim.ui.select = function(...)
         require("lazy").load({ plugins = { "dressing.nvim" } })
@@ -139,6 +146,7 @@ return {
         return vim.ui.input(...)
       end
     end,
+    -- }}}
     lazy = true,
     opts = {
       input = { relative = "editor" },
@@ -166,6 +174,51 @@ return {
         return package.loaded["cmake-tools"] and require("cmake-tools").is_cmake_project()
       end
 
+      -- https://github.com/chrisgrieser/nvim-tinygit/blob/main/lua/tinygit/statusline/branch-state.lua {{{
+      local function get_git_branch_state()
+        local cwd = vim.uv.cwd()
+        if not cwd then
+          return ""
+        end
+        local allBranchInfo = vim.system({ "git", "-C", cwd, "branch", "--verbose" }):wait()
+        if allBranchInfo.code ~= 0 then
+          return ""
+        end
+        local branches = vim.split(allBranchInfo.stdout, "\n")
+        local currentBranchInfo
+        for _, line in pairs(branches) do
+          currentBranchInfo = line:match("^%* .*")
+          if currentBranchInfo then
+            break
+          end
+        end
+        if not currentBranchInfo then
+          return ""
+        end
+        local ahead = currentBranchInfo:match("ahead (%d+)")
+        local behind = currentBranchInfo:match("behind (%d+)")
+        if ahead and behind then
+          return ("󰃻" .. " %s/%s"):format(ahead, behind)
+        elseif ahead then
+          return "󰶣" .. ahead
+        elseif behind then
+          return "󰶡" .. behind
+        end
+        return ""
+      end
+
+      local function refresh_git_branch_state()
+        vim.b.dotfiles_git_branch_state = get_git_branch_state()
+      end
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
+        callback = refresh_git_branch_state,
+        group = vim.api.nvim_create_augroup("dotfiles_lualine_git_branch_state", {}),
+      })
+
+      refresh_git_branch_state()
+      -- }}}
+
       require("lualine").setup({
         options = { component_separators = "", section_separators = "" },
         sections = {
@@ -175,9 +228,10 @@ return {
           lualine_z = {},
           lualine_c = {
             { "branch", icon = "" },
+            { function() return vim.b.dotfiles_git_branch_state or "" end },
             {
               "diagnostics",
-              sections = { "error", "warn" },
+              sections = { "error", "warn", "info" },
               colored = false,
               always_visible = true,
             },
@@ -540,9 +594,8 @@ return {
     lazy = true,
   },
   {
-    "MeanderingProgrammer/markdown.nvim",
+    "OXY2DEV/markview.nvim",
     ft = "markdown",
-    main = "render-markdown",
     opts = {},
   },
   {
@@ -617,6 +670,7 @@ return {
     config = function()
       require("mini.files").setup()
 
+      -- https://www.lazyvim.org/extras/editor/mini-files {{{
       local function map_split(bufnr, lhs, direction, close_on_file)
         map({
           lhs,
@@ -656,6 +710,7 @@ return {
         end,
         pattern = "MiniFilesBufferCreate",
       })
+      -- }}}
     end,
     keys = {
       {

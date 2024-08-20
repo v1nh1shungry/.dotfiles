@@ -1,5 +1,6 @@
 local augroup = function(name) return vim.api.nvim_create_augroup("dotfiles_" .. name, {}) end
 
+-- https://www.lazyvim.org/configuration/general#auto-commands {{{
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   callback = function()
     if vim.o.buftype ~= "nofile" then
@@ -12,25 +13,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.highlight.on_yank({ timeout = 500 }) end,
   group = augroup("highlight_yank"),
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  callback = function(event)
-    if vim.list_contains(require("dotfiles.utils.ui").excluded_buftypes, vim.bo.buftype) then
-      vim.opt_local.number = false
-      vim.opt_local.relativenumber = false
-      vim.opt_local.buflisted = false
-      vim.opt_local.foldenable = false
-      vim.opt_local.cc = ""
-      vim.opt_local.stc = ""
-
-      local ret = vim.fn.maparg("q", "n", false, true)
-      if ret.buffer ~= 1 then
-        require("dotfiles.utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
-      end
-    end
-  end,
-  group = augroup("minimal_ui"),
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -69,23 +51,23 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   end,
   group = augroup("resize_splits"),
 })
+-- }}}
 
-vim.api.nvim_create_autocmd("BufReadPost", {
-  callback = function()
-    if vim.bo.buftype ~= "" then
-      return
-    end
-    local name = vim.api.nvim_buf_get_name(0)
-    local whitelist = { vim.fs.joinpath(vim.env.HOME, ".nvimrc") }
-    if vim.list_contains(whitelist, name) then
-      return
-    end
-    for p in vim.fs.parents(name) do
-      if p == vim.fn.getcwd() then
-        return
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function(event)
+    if vim.list_contains(require("dotfiles.utils.ui").excluded_buftypes, vim.bo.buftype) then
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+      vim.opt_local.buflisted = false
+      vim.opt_local.foldenable = false
+      vim.opt_local.cc = ""
+      vim.opt_local.stc = ""
+
+      local ret = vim.fn.maparg("q", "n", false, true)
+      if ret.buffer ~= 1 then
+        require("dotfiles.utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
       end
     end
-    vim.bo.modifiable = false
   end,
-  group = augroup("non_cwd_files_unmodifiable"),
+  group = augroup("minimal_ui"),
 })

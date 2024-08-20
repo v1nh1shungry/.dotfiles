@@ -1,3 +1,4 @@
+-- https://www.lazyvim.org/extras/vscode {{{
 if not vim.g.vscode then
   return {}
 end
@@ -27,3 +28,4 @@ return {
     opts = { highlight = { enable = false } },
   },
 }
+-- }}}

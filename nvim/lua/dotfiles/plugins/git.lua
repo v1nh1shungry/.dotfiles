@@ -125,21 +125,6 @@ return {
     keys = { { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" } },
   },
   {
-    "chrisgrieser/nvim-tinygit",
-    dependencies = { "stevearc/dressing.nvim", "nvim-telescope/telescope.nvim", "rcarriga/nvim-notify" },
-    ft = { "gitcommit", "git_rebase" },
-    keys = {
-      { "<Leader>gC", function() require("tinygit").smartCommit() end, desc = "Commit" },
-      { "<Leader>gP", function() require("tinygit").push({}) end, desc = "Push" },
-      { "<Leader>gA", function() require("tinygit").amendNoEdit() end, desc = "Amend" },
-      { "<Leader>gU", function() require("tinygit").undoLastCommitOrAmend() end, desc = "Undo last commit" },
-      { "<Leader>g/", function() require("tinygit").searchFileHistory() end, desc = "Search file history" },
-      { "<Leader>gs", function() require("tinygit").lineHistory() end, desc = "Search line history" },
-      { "<Leader>gf", function() require("tinygit").githubUrl() end, desc = "Open in Github" },
-      { "<Leader>gx", function() require("tinygit").openIssueUnderCursor() end, desc = "Open issue" },
-    },
-  },
-  {
     "echasnovski/mini-git",
     main = "mini.git",
     cmd = "Git",

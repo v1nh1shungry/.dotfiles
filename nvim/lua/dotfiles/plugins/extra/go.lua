@@ -1,3 +1,4 @@
+-- https://www.lazyvim.org/extras/lang/go {{{
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -49,3 +50,4 @@ return {
     },
   },
 }
+-- }}}

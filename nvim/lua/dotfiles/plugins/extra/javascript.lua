@@ -1,4 +1,5 @@
 return {
+  -- https://www.lazyvim.org/extras/lang/typescript {{{
   {
     "nvim-treesitter/nvim-treesitter",
     opts = { ensure_installed = { "javascript", "jsdoc", "tsx", "typescript" } },
@@ -38,6 +39,7 @@ return {
       },
     },
   },
+  -- }}}
   {
     "monaqa/dial.nvim",
     opts = function(_, opts)

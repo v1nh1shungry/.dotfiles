@@ -1,3 +1,4 @@
+-- https://www.lazyvim.org/extras/lang/rust {{{
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -43,3 +44,4 @@ return {
     },
   },
 }
+-- }}}

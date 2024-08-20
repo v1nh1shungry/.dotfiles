@@ -89,6 +89,7 @@ return {
         end,
       })
 
+      -- https://www.lazyvim.org/plugins/lsp {{{
       local register_capability = vim.lsp.handlers["client/registerCapability"]
       vim.lsp.handlers["client/registerCapability"] = function(err, res, ctx)
         local ret = register_capability(err, res, ctx)
@@ -150,16 +151,13 @@ return {
         ensure_installed = ensure_installed,
         handlers = { setup },
       })
+      -- }}}
     end,
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",
-      },
-      {
-        "folke/neoconf.nvim",
-        opts = {},
       },
     },
     event = events.enter_buffer,
@@ -242,6 +240,7 @@ return {
     "LelouchHe/xmake-luals-addon",
     lazy = true,
   },
+  -- https://www.lazyvim.org/plugins/lsp#masonnvim-1 {{{
   {
     "williamboman/mason.nvim",
     config = function(_, opts)
@@ -270,6 +269,7 @@ return {
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = { ensure_installed = { "cspell", "stylua" } },
   },
+  -- }}}
   {
     "hrsh7th/nvim-cmp",
     config = function(_, opts)
@@ -330,6 +330,7 @@ return {
         snippet = {
           expand = function(item) vim.snippet.expand(item.body) end,
         },
+        -- https://github.com/tranzystorekk/cmp-minikind.nvim/blob/main/lua/cmp-minikind/init.lua {{{
         formatting = {
           fields = { "kind", "abbr", "menu" },
           format = function(_, item)
@@ -341,6 +342,7 @@ return {
           end,
           expandable_indicator = true,
         },
+        -- }}}
         mapping = {
           ["<C-n>"] = cmp.mapping.select_next_item(),
           ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -448,6 +450,7 @@ return {
       formatters = { injected = { options = { ignore_errors = true } } },
     },
   },
+  -- https://www.lazyvim.org/plugins/linting {{{
   {
     "mfussenegger/nvim-lint",
     config = function(_, opts)
@@ -523,9 +526,11 @@ return {
       },
     },
   },
+  -- }}}
   {
     "Civitasv/cmake-tools.nvim",
     ft = "cmake",
+    -- https://www.lazyvim.org/extras/lang/cmake#cmake-toolsnvim {{{
     init = function()
       local loaded = false
       local function check()
@@ -543,6 +548,7 @@ return {
         end,
       })
     end,
+    -- }}}
     keys = {
       { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
       { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },

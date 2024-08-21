@@ -41,7 +41,7 @@ return {
 | ▓▓  \▓▓▓   \▓▓▓  |   ▓▓ \ ▓▓  \▓ | ▓▓    | ▓▓  | ▓▓ ▓▓     \ ▓▓  | ▓▓\▓▓    ▓▓
  \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓
 ]]
-      dashboard.section.header.val = vim.split(logo, "\n")
+      dashboard.section.header.val = vim.split(logo, "\n", { trimempty = true })
       dashboard.section.buttons.val = {
         dashboard.button("f", " " .. " Find file", "<Cmd>Telescope find_files<CR>"),
         dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope oldfiles cwd_only=true<CR>"),
@@ -58,13 +58,15 @@ return {
       dashboard.section.header.opts.hl = "AlphaHeader"
       dashboard.section.buttons.opts.hl = "AlphaButtons"
       dashboard.section.footer.opts.hl = "AlphaFooter"
-      dashboard.opts.layout[1].val = (
-        vim.o.lines
-        - #dashboard.section.header.val -- header
-        - dashboard.opts.layout[3].val -- padding between header and buttons
-        - #dashboard.section.buttons.val * 2 -- buttons
-        - 1 -- rooter
-      ) / 2
+      dashboard.opts.layout[1].val = math.floor(
+        (
+          vim.o.lines
+          - #dashboard.section.header.val -- header
+          - dashboard.opts.layout[3].val -- padding between header and buttons
+          - #dashboard.section.buttons.val * 2 -- buttons
+          - 1 -- rooter
+        ) / 2
+      )
       require("alpha").setup(dashboard.opts)
 
       if vim.o.filetype == "lazy" then
@@ -207,9 +209,7 @@ return {
         return ""
       end
 
-      local function refresh_git_branch_state()
-        vim.b.dotfiles_git_branch_state = get_git_branch_state()
-      end
+      local function refresh_git_branch_state() vim.b.dotfiles_git_branch_state = get_git_branch_state() end
 
       vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
         callback = refresh_git_branch_state,

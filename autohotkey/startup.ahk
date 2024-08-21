@@ -1,3 +1,5 @@
+#SingleInstance Force
+
 *CapsLock::Send "{Blind}{LCtrl Down}"
 *CapsLock Up::
 {

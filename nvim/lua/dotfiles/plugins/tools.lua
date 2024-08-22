@@ -219,7 +219,7 @@ return {
       end
       return true
     end,
-    ft = "neorg",
+    ft = "norg",
     opts = {
       load = {
         ["core.defaults"] = {},

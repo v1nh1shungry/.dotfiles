@@ -387,11 +387,41 @@ return {
   {
     "rcarriga/nvim-dap-ui",
     config = function()
-      local dap, dapui = require("dap"), require("dapui")
+      local dap = require("dap")
+      local dapui = require("dapui")
+
       dapui.setup()
-      dap.listeners.after.event_initialized.dapui_config = dapui.open
+
+      dap.listeners.before.attach.dapui_config = dapui.open
+      dap.listeners.before.launch.dapui_config = dapui.open
       dap.listeners.before.event_terminated.dapui_config = dapui.close
       dap.listeners.before.event_exited.dapui_config = dapui.close
+
+      local debug_mode = Layers.mode.new()
+      debug_mode:auto_show_help()
+      dap.listeners.after.event_initialized.debug_mode = function()
+        debug_mode:activate()
+      end
+      dap.listeners.before.event_terminated.debug_mode = function()
+        debug_mode:deactivate()
+      end
+      dap.listeners.before.event_exited.debug_mode = function()
+        debug_mode:deactivate()
+      end
+      debug_mode:keymaps({
+        n = {
+          { "c", "<Cmd>DapContinue<CR>", { desc = "Continue" } },
+          { "C", function() dap.run_to_cursor() end, { desc = "Run to cursor" } },
+          { "s", "<Cmd>DapStepInto<CR>", { desc = "Step into" } },
+          { "o", "<Cmd>DapStepOut<CR>", { desc = "Step out" } },
+          { "n", "<Cmd>DapStepOver<CR>", { desc = "Step over" } },
+          { "d", function() dap.down() end, { desc = "Go down in current stacktrace" } },
+          { "u", function() dap.up() end, { desc = "Go up in current stacktrace" } },
+          { "K", function() dapui.eval() end, { desc = "Eval" } },
+          { "q", "<Cmd>DapTerminate<CR>", { desc = "Terminate" } },
+          { "<Esc>", function() debug_mode:deactivate() end, { desc = "Exit" } }
+        },
+      })
     end,
     dependencies = {
       "nvim-neotest/nvim-nio",
@@ -411,20 +441,14 @@ return {
         "theHamsta/nvim-dap-virtual-text",
         opts = {},
       },
+      {
+        "debugloop/layers.nvim",
+        opts = {},
+      },
     },
     keys = {
       { "<Leader>db", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
       { "<Leader>dc", "<Cmd>DapContinue<CR>", desc = "Continue" },
-      { "<Leader>d,", function() require("dap").run_last() end, desc = "Run last" },
-      { "<Leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to cursor" },
-      { "<Leader>dn", "<Cmd>DapStepOver<CR>", desc = "Step over" },
-      { "<Leader>ds", "<Cmd>DapStepInto<CR>", desc = "Step into" },
-      { "<Leader>do", "<Cmd>DapStepOut<CR>", desc = "Step out" },
-      { "<Leader>dj", function() require("dap").down() end, desc = "Go down in current stacktrace" },
-      { "<Leader>dk", function() require("dap").up() end, desc = "Go up in current stacktrace" },
-      { "<Leader>dt", "<Cmd>DapTerminate<CR>", desc = "Terminate" },
-      { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval" },
-      { "<Leader>du", function() require("dapui").toggle() end, desc = "Toggle UI" },
     },
   },
   {

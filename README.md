@@ -45,6 +45,7 @@
 * [cppman](https://github.com/aitjcize/cppman)
 * [jq](https://github.com/jqlang/jq)
 * [wine](https://www.winehq.org/)
+* luarocks
 
 ### Windows
 
@@ -75,6 +76,7 @@
 * [chrisgrieser/nvim-spider](https://github.com/chrisgrieser/nvim-spider.git)
 * [cshuaimin/ssr.nvim](https://github.com/cshuaimin/ssr.nvim.git)
 * [danymat/neogen](https://github.com/danymat/neogen.git)
+* [debugloop/layers.nvim](https://github.com/debugloop/layers.nvim.git)
 * [debugloop/telescope-undo.nvim](https://github.com/debugloop/telescope-undo.nvim.git)
 * [dhruvasagar/vim-table-mode](https://github.com/dhruvasagar/vim-table-mode.git)
 * [echasnovski/mini-git](https://github.com/echasnovski/mini-git.git)

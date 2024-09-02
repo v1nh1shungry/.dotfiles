@@ -24,7 +24,7 @@ require("lazy").setup({
   ),
   install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },
   checker = { enabled = true },
-  dev = { path = "~/repos", patterns = { "v1nh1shungry" }, fallback = true },
+  dev = { path = "~/Documents/repos", patterns = { "v1nh1shungry" }, fallback = true },
   diff = { cmd = "diffview.nvim" },
   performance = {
     rtp = {

@@ -209,28 +209,4 @@ return {
     keys = { { "<Leader>s/", "<Cmd>GrugFar<CR>", desc = "Grep" } },
     opts = {},
   },
-  {
-    "nvim-neorg/neorg",
-    cmd = "Neorg",
-    enabled = function()
-      if vim.fn.executable("luarocks") == 0 then
-        vim.notify("luarocks is not instlled", vim.log.levels.WARN, { title = "Neorg" })
-        return false
-      end
-      return true
-    end,
-    ft = "norg",
-    opts = {
-      load = {
-        ["core.defaults"] = {},
-        ["core.concealer"] = {},
-        ["core.dirman"] = {
-          config = {
-            workspaces = { notes = "~/Documents/notes" },
-            default_workspace = "notes",
-          },
-        },
-      },
-    },
-  },
 }

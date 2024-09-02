@@ -419,7 +419,6 @@ return {
           { "u", function() dap.up() end, { desc = "Go up in current stacktrace" } },
           { "K", function() dapui.eval() end, { desc = "Eval" } },
           { "q", "<Cmd>DapTerminate<CR>", { desc = "Terminate" } },
-          { "<Esc>", function() debug_mode:deactivate() end, { desc = "Exit" } }
         },
       })
     end,

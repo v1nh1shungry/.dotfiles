@@ -595,6 +595,7 @@ return {
       end
     end,
     lazy = true,
+    opts = {},
   },
   {
     "OXY2DEV/markview.nvim",
@@ -753,5 +754,10 @@ return {
       },
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
+  },
+  {
+    "OXY2DEV/helpview.nvim",
+    ft = "help",
+    dependencies = "nvim-treesitter/nvim-treesitter",
   },
 }

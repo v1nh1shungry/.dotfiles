@@ -175,6 +175,7 @@ return {
         "gitignore",
         "json",
         "jsonc",
+        "just",
         "lua",
         "luadoc",
         "make",

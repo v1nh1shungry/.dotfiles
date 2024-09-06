@@ -21,9 +21,6 @@
 * [Spotify](https://open.spotify.com/)
 * [flameshot](https://github.com/flameshot-org/flameshot)
 * [vscode](https://code.visualstudio.com/)
-
-### Linux
-
 * [fish](https://fishshell.com)
 * [fisher](https://github.com/jorgebucaran/fisher)
 * [tmux](https://github.com/tmux/tmux)
@@ -45,14 +42,8 @@
 * [cppman](https://github.com/aitjcize/cppman)
 * [jq](https://github.com/jqlang/jq)
 * [wine](https://www.winehq.org/)
-* luarocks
+* [just](https://github.com/casey/just)
 
-### Windows
-
-* [Scoop](https://github.com/ScoopInstaller/Scoop)
-* [scoop-completion](https://github.com/Moeologist/scoop-completion)
-* [autohotkey](https://www.autohotkey.com/)
-* [helix](https://helix-editor.com/)
 <!-- Neovim plugins -->
 ## Neovim plugins
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
@@ -62,6 +53,7 @@
 * [LunarVim/bigfile.nvim](https://github.com/LunarVim/bigfile.nvim.git)
 * [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)
 * [MunifTanjim/nui.nvim](https://github.com/MunifTanjim/nui.nvim.git)
+* [OXY2DEV/helpview.nvim](https://github.com/OXY2DEV/helpview.nvim.git)
 * [OXY2DEV/markview.nvim](https://github.com/OXY2DEV/markview.nvim.git)
 * [RRethy/nvim-treesitter-endwise](https://github.com/RRethy/nvim-treesitter-endwise.git)
 * [RRethy/vim-illuminate](https://github.com/RRethy/vim-illuminate.git)
@@ -76,7 +68,6 @@
 * [chrisgrieser/nvim-spider](https://github.com/chrisgrieser/nvim-spider.git)
 * [cshuaimin/ssr.nvim](https://github.com/cshuaimin/ssr.nvim.git)
 * [danymat/neogen](https://github.com/danymat/neogen.git)
-* [debugloop/layers.nvim](https://github.com/debugloop/layers.nvim.git)
 * [debugloop/telescope-undo.nvim](https://github.com/debugloop/telescope-undo.nvim.git)
 * [dhruvasagar/vim-table-mode](https://github.com/dhruvasagar/vim-table-mode.git)
 * [echasnovski/mini-git](https://github.com/echasnovski/mini-git.git)
@@ -101,7 +92,6 @@
 * [goolord/alpha-nvim](https://github.com/goolord/alpha-nvim.git)
 * [hedyhli/outline.nvim](https://github.com/hedyhli/outline.nvim.git)
 * [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)
-* [hrsh7th/cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline.git)
 * [hrsh7th/cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp.git)
 * [hrsh7th/cmp-path](https://github.com/hrsh7th/cmp-path.git)
 * [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp.git)

@@ -6,7 +6,7 @@ vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
-vim.opt.fileencodings = "utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1"
+vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }
 vim.opt.fillchars = { eob = " ", fold = " ", foldclose = "", foldopen = "", foldsep = " " }
 vim.opt.foldcolumn = "1"
 vim.opt.foldlevel = 99
@@ -21,6 +21,7 @@ vim.opt.laststatus = 0
 vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "→ " }
+vim.opt.mousemodel = "extend"
 vim.opt.number = true
 vim.opt.pumblend = require("dotfiles.user").ui.blend
 vim.opt.pumheight = 10
@@ -40,7 +41,7 @@ vim.opt.smartcase = true
 vim.opt.smartindent = true
 vim.opt.smoothscroll = true
 vim.opt.softtabstop = 2
-vim.opt.spelllang = { "en" }
+vim.opt.spelllang = { "en", "cjk" }
 vim.opt.splitbelow = true
 vim.opt.splitkeep = "screen"
 vim.opt.splitright = true

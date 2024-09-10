@@ -157,6 +157,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    cmd = { "TSInstall", "TSUpdate" },
     event = events.enter_buffer,
     main = "nvim-treesitter.configs",
     opts = {
@@ -186,7 +187,7 @@ return {
         "vim",
         "vimdoc",
       },
-      highlight = { enable = true, additional_vim_regex_highlighting = true },
+      highlight = { enable = true },
       indent = { enable = true },
       incremental_selection = {
         enable = true,

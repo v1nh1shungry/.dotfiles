@@ -272,7 +272,6 @@ return {
           },
           lualine_x = {
             { function() return "%S" end },
-            { "progress" },
             {
               function()
                 local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -759,5 +758,9 @@ return {
     "OXY2DEV/helpview.nvim",
     ft = "help",
     dependencies = "nvim-treesitter/nvim-treesitter",
+  },
+  {
+    "lewis6991/satellite.nvim",
+    event = events.enter_buffer,
   },
 }

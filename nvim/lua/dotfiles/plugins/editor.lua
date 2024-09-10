@@ -92,13 +92,6 @@ return {
     },
   },
   {
-    "RRethy/nvim-treesitter-endwise",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    event = "InsertEnter",
-    main = "nvim-treesitter.configs",
-    opts = { endwise = { enable = true } },
-  },
-  {
     "Wansmer/sibling-swap.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
     opts = {

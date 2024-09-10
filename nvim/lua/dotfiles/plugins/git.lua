@@ -130,4 +130,8 @@ return {
     cmd = "Git",
     opts = {},
   },
+  {
+    "rhysd/committia.vim",
+    event = "BufReadPre COMMIT_EDITMSG",
+  },
 }

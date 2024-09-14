@@ -123,7 +123,6 @@
 * [olimorris/persisted.nvim](https://github.com/olimorris/persisted.nvim.git)
 * [rcarriga/nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui.git)
 * [rcarriga/nvim-notify](https://github.com/rcarriga/nvim-notify.git)
-* [rhysd/committia.vim](https://github.com/rhysd/committia.vim.git)
 * [sindrets/diffview.nvim](https://github.com/sindrets/diffview.nvim.git)
 * [stevearc/conform.nvim](https://github.com/stevearc/conform.nvim.git)
 * [stevearc/dressing.nvim](https://github.com/stevearc/dressing.nvim.git)

@@ -179,8 +179,12 @@ return {
         clangd = {
           cmd = {
             "clangd",
+            "--background-index",
+            "--clang-tidy",
+            "--completion-style=detailed",
+            "--fallback-style=llvm",
+            "--function-arg-placeholders",
             "--header-insertion=never",
-            "--include-cleaner-stdlib",
           },
           on_new_config = function(new_config, _)
             if package.loaded["cmake-tools"] then
@@ -295,8 +299,7 @@ return {
           format = function(_, item)
             local mini_icons = require("mini.icons")
             item.abbr = vim.trim(item.abbr)
-            item.menu = item.kind
-            item.kind = mini_icons.get("lsp", item.kind)
+            item.kind, item.kind_hlgroup = mini_icons.get("lsp", item.kind)
             return item
           end,
           expandable_indicator = true,

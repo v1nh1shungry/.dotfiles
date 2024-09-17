@@ -186,6 +186,13 @@ return {
             "--function-arg-placeholders",
             "--header-insertion=never",
           },
+          keys = {
+            {
+              "<Leader>;",
+              "<Cmd>ClangdSwitchSourceHeader<CR>",
+              desc = "Switch between header and source",
+            },
+          },
           on_new_config = function(new_config, _)
             if package.loaded["cmake-tools"] then
               require("cmake-tools").clangd_on_new_config(new_config)
@@ -545,6 +552,7 @@ return {
       },
     },
     opts = {
+      cmake_regenerate_on_save = false,
       cmake_generate_options = {
         "-G",
         "Ninja",
@@ -552,6 +560,7 @@ return {
         "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
       },
       cmake_soft_link_compile_commands = false,
+      cmake_compile_commands_from_lsp = true,
       cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
       cmake_dap_configuration = {
         name = "cpp",

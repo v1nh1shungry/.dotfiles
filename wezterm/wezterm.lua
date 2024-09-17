@@ -7,7 +7,10 @@ end)
 
 return {
   color_scheme = "Tokyo Night Storm",
-  font = wezterm.font("JetBrainsMono Nerd Font Mono"),
+  font = wezterm.font_with_fallback({
+    "JetBrainsMono Nerd Font Mono",
+    "Noto Sans CJK SC",
+  }),
   font_size = 14,
   default_prog = { "tmux" },
   disable_default_key_bindings = true,

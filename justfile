@@ -16,6 +16,5 @@ install:
   ln -s ~/.dotfiles/git/.gitconfig ~/.gitconfig
   ln -s ~/.dotfiles/nvim ~/.config/nvim
   ln -s ~/.dotfiles/starship/starship.toml ~/.config/starship.toml
-  mkdir -p ~/.config/tmux
-  ln -s ~/.dotfiles/tmux/tmux.conf ~/.config/tmux/tmux.conf
+  ln -s ~/.dotfiles/tmux ~/.config/tmux
   ln -s ~/.dotfiles/wezterm ~/.config/wezterm

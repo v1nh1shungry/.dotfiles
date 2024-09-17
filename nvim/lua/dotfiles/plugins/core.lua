@@ -174,6 +174,7 @@ return {
         "gitattributes",
         "gitcommit",
         "gitignore",
+        "html",
         "json",
         "jsonc",
         "just",

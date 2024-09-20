@@ -47,4 +47,9 @@ return {
     end,
     lazy = not os.getenv("NVIM_PROFILE"),
   },
+  {
+    "echasnovski/mini.doc",
+    lazy = true,
+    opts = {},
+  },
 }

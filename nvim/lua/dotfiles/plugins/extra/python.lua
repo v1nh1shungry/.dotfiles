@@ -5,11 +5,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        basedpyright = {},
-      },
-    },
+    opts = { servers = { basedpyright = {} } },
   },
   {
     "williamboman/mason.nvim",
@@ -20,11 +16,7 @@ return {
   },
   {
     "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        python = { "black" },
-      },
-    },
+    opts = { formatters_by_ft = { python = { "black" } } },
   },
   {
     "monaqa/dial.nvim",

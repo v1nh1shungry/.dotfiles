@@ -23,7 +23,6 @@ require("lazy").setup({
       :totable()
   ),
   install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },
-  checker = { enabled = true },
   dev = { path = "~/Documents/repos", patterns = { "v1nh1shungry" }, fallback = true },
   diff = { cmd = "diffview.nvim" },
   performance = {

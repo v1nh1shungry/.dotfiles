@@ -374,14 +374,12 @@ return {
     "folke/noice.nvim",
     event = "VeryLazy",
     config = function(_, opts)
+      -- {{{ https://www.lazyvim.org/plugins/ui#noicenvim
+      if vim.o.filetype == "lazy" then
+        vim.cmd("messages clear")
+      end
+      -- }}}
       require("noice").setup(opts)
-
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(event)
-          vim.schedule(function() require("noice.text.markdown").keys(event.buf) end)
-        end,
-        pattern = "markdown",
-      })
     end,
     keys = {
       { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" },
@@ -432,7 +430,11 @@ return {
         {
           filter = {
             event = "msg_show",
-            any = { { find = "%d+L, %d+B" }, { find = "; after #%d+" }, { find = "; before #%d+" } },
+            any = {
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+            },
           },
           view = "mini",
         },

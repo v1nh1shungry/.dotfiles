@@ -6,7 +6,7 @@
   defaultBranch = main
 
 [core]
-  pager = delta -s
+  pager = delta
   editor = nvim
 
 [interactive]

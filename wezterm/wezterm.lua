@@ -6,6 +6,7 @@ wezterm.on("gui-startup", function()
 end)
 
 return {
+  audible_bell = "Disabled",
   color_scheme = "Tokyo Night Storm",
   default_prog = { "tmux" },
   disable_default_key_bindings = true,

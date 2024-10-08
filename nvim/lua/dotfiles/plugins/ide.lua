@@ -100,20 +100,14 @@ return {
         return ret
       end
 
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        require("cmp_nvim_lsp").default_capabilities(),
-        {
-          workspace = {
-            fileOperations = {
-              didRename = true,
-              willRename = true,
-            },
+      local capabilities = vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), {
+        workspace = {
+          fileOperations = {
+            didRename = true,
+            willRename = true,
           },
-        }
-      )
+        },
+      })
 
       local function setup(server)
         if opts.servers[server] == nil then
@@ -154,7 +148,6 @@ return {
       -- }}}
     end,
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
       {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",
@@ -226,10 +219,6 @@ return {
   },
   {
     "folke/lazydev.nvim",
-    dependencies = {
-      "hrsh7th/nvim-cmp",
-      opts = function(_, opts) table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 }) end,
-    },
     ft = "lua",
     opts = {
       library = {
@@ -281,122 +270,6 @@ return {
     opts = { ensure_installed = { "cspell", "stylua" } },
   },
   -- }}}
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "lukas-reineke/cmp-rg",
-    },
-    event = events.enter_insert,
-    opts = function()
-      local cmp = require("cmp")
-
-      return {
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        snippet = {
-          expand = function(item) vim.snippet.expand(item.body) end,
-        },
-        -- https://github.com/tranzystorekk/cmp-minikind.nvim/blob/main/lua/cmp-minikind/init.lua {{{
-        formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = function(_, item)
-            local mini_icons = require("mini.icons")
-            item.abbr = vim.trim(item.abbr)
-            item.kind, item.kind_hlgroup = mini_icons.get("lsp", item.kind)
-            return item
-          end,
-          expandable_indicator = true,
-        },
-        -- }}}
-        mapping = {
-          ["<C-n>"] = cmp.mapping.select_next_item(),
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              if not cmp.get_selected_entry() then
-                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-              else
-                cmp.confirm()
-              end
-            elseif vim.snippet.active({ direction = 1 }) then
-              vim.snippet.jump(1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif vim.snippet.active({ direction = -1 }) then
-              vim.snippet.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        },
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "snippets" },
-        }, {
-          { name = "buffer" },
-          { name = "path" },
-        }, {
-          { name = "rg", keyword_length = 5, option = { debounce = 500 } },
-        }),
-      }
-    end,
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    config = function()
-      local dap = require("dap")
-      local dapui = require("dapui")
-
-      dapui.setup()
-
-      dap.listeners.after.event_initialized.dapui_config = dapui.open
-      dap.listeners.before.event_terminated.dapui_config = dapui.close
-      dap.listeners.before.event_exited.dapui_config = dapui.close
-    end,
-    dependencies = {
-      "nvim-neotest/nvim-nio",
-      {
-        "mfussenegger/nvim-dap",
-        config = function()
-          local dap = require("dap")
-
-          dap.adapters.gdb = {
-            type = "executable",
-            command = "gdb",
-            args = { "-i", "dap" },
-          }
-        end,
-      },
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {},
-      },
-    },
-    keys = {
-      { "<Leader>db", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
-      { "<Leader>dc", "<Cmd>DapContinue<CR>", desc = "Continue" },
-      { "<Leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to cursor" },
-      { "<Leader>dn", "<Cmd>DapStepOver<CR>", desc = "Step over" },
-      { "<Leader>ds", "<Cmd>DapStepInto<CR>", desc = "Step into" },
-      { "<Leader>do", "<Cmd>DapStepOut<CR>", desc = "Step out" },
-      { "<Leader>dd", function() require("dap").down() end, desc = "Go down in current stacktrace" },
-      { "<Leader>du", function() require("dap").up() end, desc = "Go up in current stacktrace" },
-      { "<Leader>dt", "<Cmd>DapTerminate<CR>", desc = "Terminate" },
-      { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval" },
-    },
-  },
   {
     "stevearc/conform.nvim",
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
@@ -569,6 +442,23 @@ return {
         stopAtBeginningOfMainSubprogram = false,
       },
       cmake_virtual_text_support = false,
+    },
+  },
+  {
+    "saghen/blink.cmp",
+    build = "cargo build --release",
+    event = events.enter_insert,
+    opts = {
+      highlight = { use_nvim_cmp_as_default = true },
+      nerd_font_variant = "mono",
+      keymap = {
+        select_prev = { "<C-p>" },
+        select_next = { "<C-n>" },
+      },
+      windows = {
+        autocomplete = { border = "rounded" },
+        documentation = { border = "rounded" },
+      },
     },
   },
 }

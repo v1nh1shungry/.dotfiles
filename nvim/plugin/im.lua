@@ -1,3 +1,4 @@
+-- Inspired by https://github.com/keaising/im-select.nvim
 if vim.fn.has("wsl") == 0 and vim.uv.os_uname().sysname ~= "Linux" then
   return
 end

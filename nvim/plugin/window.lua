@@ -1,3 +1,4 @@
+-- Inspired by https://github.com/simeji/winresizer
 local map = require("dotfiles.utils.keymap")
 
 local config = {

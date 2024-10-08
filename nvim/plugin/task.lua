@@ -39,21 +39,7 @@ local config = {
     lua = { "nvim", "-l", "${relativeFile}" },
     javascript = { "node", "${relativeFile}" },
   },
-  launch = {},
 }
-
-for _, ft in ipairs({ "c", "cpp" }) do
-  config.launch[ft] = {
-    {
-      name = "Launch",
-      type = "gdb",
-      request = "launch",
-      program = "${relativeFileDirname}/${fileBasenameNoExtension}",
-      cwd = "${workspaceFolder}",
-      stopAtBeginningOfMainSubprogram = false,
-    },
-  }
-end
 
 config = vim.tbl_deep_extend("force", config, require("dotfiles.user").task)
 
@@ -156,27 +142,6 @@ for ft, cmd in pairs(config.execute) do
         end,
         buffer = event.buf,
         desc = "Execute",
-      })
-    end,
-    group = augroup,
-    pattern = ft,
-  })
-end
-
-for ft, conf in pairs(config.launch) do
-  vim.api.nvim_create_autocmd("FileType", {
-    callback = function(event)
-      map({
-        "<Leader>dc",
-        function()
-          local dap = require("dap")
-          if not dap.configurations[ft] then
-            dap.configurations[ft] = conf
-          end
-          vim.cmd("DapContinue")
-        end,
-        buffer = event.buf,
-        desc = "Continue",
       })
     end,
     group = augroup,

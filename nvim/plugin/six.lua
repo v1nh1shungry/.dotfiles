@@ -1,3 +1,4 @@
+-- Inspired by http://github.com/axkirillov/hbac.nvim
 local close = function(bufnr) require("mini.bufremove").delete(bufnr) end
 
 local augroup = vim.api.nvim_create_augroup("dotfiles_six_buffers_autocmds", {})
@@ -5,11 +6,7 @@ local augroup = vim.api.nvim_create_augroup("dotfiles_six_buffers_autocmds", {})
 local threshold = 6
 
 local function should_close(bufnr)
-  return not (
-    bufnr == vim.api.nvim_get_current_buf()
-    or vim.bo[bufnr].modified
-    or #vim.fn.win_findbuf(bufnr) > 0
-  )
+  return not (bufnr == vim.api.nvim_get_current_buf() or vim.bo[bufnr].modified or #vim.fn.win_findbuf(bufnr) > 0)
 end
 
 vim.api.nvim_create_autocmd("BufEnter", {

@@ -415,7 +415,6 @@ return {
         long_message_to_split = true,
         bottom_search = true,
         command_palette = true,
-        lsp_doc_border = true,
       },
       messages = { view_search = false },
       lsp = {

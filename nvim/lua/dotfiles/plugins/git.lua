@@ -16,7 +16,6 @@ return {
         map_local({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
         map_local({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
         map_local({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })
-        map_local({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
         map_local({ "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" })
         map_local({
           "]h",
@@ -125,9 +124,11 @@ return {
     keys = { { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" } },
   },
   {
-    "echasnovski/mini-git",
-    main = "mini.git",
-    cmd = "Git",
-    opts = {},
+    "tpope/vim-fugitive",
+    cmd = { "Git", "Gedit", "Gvdiffsplit", "Gread", "Gwrite", "GMove", "GDelete", "GBrowse" },
+    keys = {
+      { "<Leader>gg", "<Cmd>tab Git<CR>", desc = "Fugitive" },
+      { "<Leader>gd", "<Cmd>Gvdiffsplit<CR>", desc = "Diff this" },
+    },
   },
 }

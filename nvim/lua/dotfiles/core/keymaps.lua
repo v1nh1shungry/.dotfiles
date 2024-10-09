@@ -103,35 +103,10 @@ map({
 
 map({ "<Leader>um", toggle.maximize, desc = "Maximize current window" })
 
-map({
-  "]q",
-  function() return "<Cmd>" .. vim.v.count1 .. "cnext<CR>" end,
-  expr = true,
-  desc = "Jump to the next quickfix",
-})
-map({
-  "[q",
-  function() return "<Cmd>" .. vim.v.count1 .. "cprevious<CR>" end,
-  expr = true,
-  desc = "Jump to the previous quickfix",
-})
-map({ "[Q", "<Cmd>cfirst<CR>", desc = "Jump to the first quickfix" })
-map({ "]Q", "<Cmd>clast<CR>", desc = "Jump to the last quickfix" })
-
 map({ "<Leader>fs", "<Cmd>luafile %<CR>", desc = "Souce" })
 
 map({ "<Leader>cd", vim.diagnostic.open_float, desc = "Show diagnostics" })
 
-map({
-  "]d",
-  function() vim.diagnostic.jump({ count = vim.v.count1 }) end,
-  desc = "Jump to the next diagnostic",
-})
-map({
-  "[d",
-  function() vim.diagnostic.jump({ count = -vim.v.count1 }) end,
-  desc = "Jump to the next diagnostic",
-})
 map({
   "]w",
   function() vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.WARN }) end,
@@ -151,16 +126,6 @@ map({
   "[e",
   function() vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR }) end,
   desc = "Jump to the previous error",
-})
-map({
-  "]D",
-  function() vim.diagnostic.jump({ count = math.huge, wrap = false }) end,
-  desc = "Jump to the last diagnostic",
-})
-map({
-  "[D",
-  function() vim.diagnostic.jump({ count = -math.huge, wrap = false }) end,
-  desc = "Jump to the first diagnostic",
 })
 map({
   "]W",
@@ -189,15 +154,7 @@ map({ "<BS>", "<C-o>s", mode = "s" })
 
 map({ "<C-f>", "<Right>", mode = { "i", "c" }, desc = "Move a character forward" })
 map({ "<C-b>", "<Left>", mode = { "i", "c" }, desc = "Move a character backward" })
+map({ "<M-f>", "<S-Right>", mode = { "i", "c" }, desc = "Move a word forward" })
+map({ "<M-b>", "<S-Left>", mode = { "i", "c" }, desc = "Move a word backward" })
 map({ "<C-a>", "<Home>", mode = { "i", "c" }, desc = "Begin of line" })
 map({ "<C-e>", "<End>", mode = { "i", "c" }, desc = "End of line" })
-
-map({ "]b", function() return "<Cmd>" .. vim.v.count1 .. "bnext<CR>" end, expr = true, desc = "Go to the next buffer" })
-map({
-  "[b",
-  function() return "<Cmd>" .. vim.v.count1 .. "bprevious<CR>" end,
-  expr = true,
-  desc = "Go to the previous buffer",
-})
-map({ "]B", "<Cmd>blast<CR>", desc = "Go to the first buffer" })
-map({ "[B", "<Cmd>bfrist<CR>", desc = "Go to the last buffer" })

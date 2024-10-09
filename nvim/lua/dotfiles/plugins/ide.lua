@@ -75,8 +75,20 @@ return {
           map_local(key)
         end
 
-        if client.server_capabilities.inlayHintProvider then
-          vim.lsp.inlay_hint.enable(true)
+        if
+          client.supports_method("textDocument/inlayHint")
+          and vim.api.nvim_buf_is_valid(bufnr)
+          and vim.bo[bufnr].buftype == ""
+        then
+          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        end
+
+        if client.supports_method("textDocument/codeLens") then
+          vim.lsp.codelens.refresh()
+          vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+            buffer = bufnr,
+            callback = vim.lsp.codelens.refresh,
+          })
         end
       end
 
@@ -90,24 +102,12 @@ return {
       })
 
       -- https://www.lazyvim.org/plugins/lsp {{{
-      local register_capability = vim.lsp.handlers["client/registerCapability"]
-      vim.lsp.handlers["client/registerCapability"] = function(err, res, ctx)
-        local ret = register_capability(err, res, ctx)
-        local client_id = ctx.client_id
-        local client = vim.lsp.get_client_by_id(client_id)
-        local buffer = vim.api.nvim_get_current_buf()
-        on_attach(client, buffer)
-        return ret
-      end
-
-      local capabilities = vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), {
-        workspace = {
-          fileOperations = {
-            didRename = true,
-            willRename = true,
-          },
-        },
-      })
+      local capabilities = vim.tbl_deep_extend(
+        "force",
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        require("cmp_nvim_lsp").default_capabilities()
+      )
 
       local function setup(server)
         if opts.servers[server] == nil then
@@ -148,6 +148,7 @@ return {
       -- }}}
     end,
     dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
       {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",
@@ -220,6 +221,10 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
+    dependencies = {
+      "iguanacucumber/magazine.nvim",
+      opts = function(_, opts) table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 }) end,
+    },
     opts = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
@@ -270,6 +275,84 @@ return {
     opts = { ensure_installed = { "cspell", "stylua" } },
   },
   -- }}}
+  {
+    "iguanacucumber/magazine.nvim",
+    dependencies = {
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "lukas-reineke/cmp-rg",
+    },
+    event = events.enter_insert,
+    name = "nvim-cmp",
+    opts = function()
+      local cmp = require("cmp")
+
+      return {
+        snippet = { expand = function(item) vim.snippet.expand(item.body) end },
+        -- https://github.com/tranzystorekk/cmp-minikind.nvim/blob/main/lua/cmp-minikind/init.lua {{{
+        formatting = {
+          fields = { "kind", "abbr", "menu" },
+          format = function(_, item)
+            local mini_icons = require("mini.icons")
+            item.kind, item.kind_hlgroup = mini_icons.get("lsp", item.kind)
+
+            local widths = { abbr = 40, menu = 30 }
+            for k, w in pairs(widths) do
+              if item[k] then
+                item[k] = vim.trim(item[k])
+                if vim.fn.strdisplaywidth(item[k]) > w then
+                  item[k] = vim.fn.strcharpart(item[k], 0, w - 1) .. "…"
+                end
+              end
+            end
+
+            return item
+          end,
+          expandable_indicator = true,
+        },
+        -- }}}
+        mapping = {
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              if not cmp.get_selected_entry() then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+              else
+                cmp.confirm()
+              end
+            elseif vim.snippet.active({ direction = 1 }) then
+              vim.snippet.jump(1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif vim.snippet.active({ direction = -1 }) then
+              vim.snippet.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+        },
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "snippets" },
+        }, {
+          { name = "buffer" },
+          { name = "path" },
+        }, {
+          { name = "rg", keyword_length = 5, option = { debounce = 500 } },
+        }),
+        sorting = require("cmp.config.default")().sorting,
+      }
+    end,
+  },
   {
     "stevearc/conform.nvim",
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
@@ -432,6 +515,7 @@ return {
         "-DCMAKE_EXPORT_COMPILE_COMMANDS=On",
         "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
       },
+      cmake_build_directory = "build/${variant:buildType}",
       cmake_soft_link_compile_commands = false,
       cmake_compile_commands_from_lsp = true,
       cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
@@ -442,23 +526,6 @@ return {
         stopAtBeginningOfMainSubprogram = false,
       },
       cmake_virtual_text_support = false,
-    },
-  },
-  {
-    "saghen/blink.cmp",
-    build = "cargo build --release",
-    event = events.enter_insert,
-    opts = {
-      highlight = { use_nvim_cmp_as_default = true },
-      nerd_font_variant = "mono",
-      keymap = {
-        select_prev = { "<C-p>" },
-        select_next = { "<C-n>" },
-      },
-      windows = {
-        autocomplete = { border = "rounded" },
-        documentation = { border = "rounded" },
-      },
     },
   },
 }

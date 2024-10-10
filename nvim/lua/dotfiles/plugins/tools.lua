@@ -1,4 +1,3 @@
-local events = require("dotfiles.utils.events")
 local map = require("dotfiles.utils.keymap")
 
 return {
@@ -50,6 +49,7 @@ return {
       { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
       { "<Leader>sx", "<Cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
       { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
+      { "<Leader>sb", "<Cmd>Telescope buffers<CR>", desc = "Buffers" },
     },
     opts = function()
       -- https://www.lazyvim.org/extras/editor/telescope#telescopenvim-1 {{{
@@ -83,11 +83,6 @@ return {
         },
       }
     end,
-  },
-  {
-    "v1nh1shungry/cppman.nvim",
-    keys = { { "<Leader>sc", function() require("cppman").search() end, desc = "Cppman" } },
-    opts = {},
   },
   {
     "debugloop/telescope-undo.nvim",

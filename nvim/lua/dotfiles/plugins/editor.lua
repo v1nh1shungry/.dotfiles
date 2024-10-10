@@ -43,16 +43,10 @@ return {
   {
     "Wansmer/sibling-swap.nvim",
     dependencies = "nvim-treesitter/nvim-treesitter",
-    opts = {
-      use_default_keymaps = false,
-      keymaps = {
-        ["<C-l>"] = "swap_with_right",
-        ["<C-h>"] = "swap_with_left",
-      },
-    },
+    opts = { use_default_keymaps = false },
     keys = {
-      { "<C-l>", desc = "Swap with right" },
-      { "<C-h>", desc = "Swap with left" },
+      { "<C-l>", function() require("sibling-swap").swap_with_right() end, desc = "Swap with right" },
+      { "<C-h>", function() require("sibling-swap").swap_with_left() end, desc = "Swap with left" },
     },
   },
   {
@@ -225,10 +219,12 @@ return {
   },
   {
     "RRethy/nvim-treesitter-endwise",
+    -- TODO: remove pin after #42 is merged
+    build = "git pull origin refs/pull/42/head",
+    commit = "8b34305ffc28bd75a22f5a0a9928ee726a85c9a6",
     event = events.enter_insert,
     main = "nvim-treesitter.configs",
     opts = { endwise = { enable = true } },
-    -- TODO: remove pin after #42 is merged
     pin = true,
   },
 }

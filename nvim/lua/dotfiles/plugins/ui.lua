@@ -173,8 +173,6 @@ return {
     config = function()
       require("lualine_require").require = require
 
-      vim.opt.laststatus = 3
-
       local function is_cmake_project()
         return package.loaded["cmake-tools"] and require("cmake-tools").is_cmake_project()
       end
@@ -223,7 +221,11 @@ return {
       -- }}}
 
       require("lualine").setup({
-        options = { component_separators = "", section_separators = "" },
+        options = {
+          globalstatus = true,
+          component_separators = "",
+          section_separators = "",
+        },
         sections = {
           lualine_a = {},
           lualine_b = {},
@@ -308,6 +310,7 @@ return {
           lualine_x = {},
         },
         extensions = {
+          "fugitive",
           "lazy",
           "man",
           "mason",
@@ -329,7 +332,7 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      preset = "helix",
+      preset = "modern",
       spec = {
         {
           mode = { "n", "v" },

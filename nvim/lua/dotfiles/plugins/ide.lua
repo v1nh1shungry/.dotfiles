@@ -106,7 +106,15 @@ return {
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        require("cmp_nvim_lsp").default_capabilities()
+        require("cmp_nvim_lsp").default_capabilities(),
+        {
+          workspace = {
+            fileOperations = {
+              didRename = true,
+              willRename = true,
+            },
+          },
+        }
       )
 
       local function setup(server)
@@ -211,6 +219,7 @@ return {
             },
           },
         },
+        bashls = {},
       },
     },
   },
@@ -272,7 +281,7 @@ return {
       end)
     end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    opts = { ensure_installed = { "cspell", "stylua" } },
+    opts = { ensure_installed = { "cspell", "shfmt", "stylua" } },
   },
   -- }}}
   {
@@ -289,6 +298,7 @@ return {
 
       return {
         snippet = { expand = function(item) vim.snippet.expand(item.body) end },
+        completion = { completeopt = "menu,menuone,noinsert" },
         -- https://github.com/tranzystorekk/cmp-minikind.nvim/blob/main/lua/cmp-minikind/init.lua {{{
         formatting = {
           fields = { "kind", "abbr", "menu" },
@@ -369,9 +379,9 @@ return {
       formatters_by_ft = {
         fish = { "fish_indent" },
         lua = { "stylua" },
-        query = { "format-queries" },
         markdown = { "injected" },
-        ["_"] = { "trim_whitespace" },
+        query = { "format-queries" },
+        sh = { "shfmt" },
       },
       formatters = { injected = { options = { ignore_errors = true } } },
     },
@@ -420,11 +430,6 @@ return {
           if not linter then
             vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
           end
-          if type(linter.enabled) == "boolean" and not linter.enabled then
-            return false
-          elseif type(linter.enabled) == "function" and not linter.enabled() then
-            return false
-          end
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
         if #names > 0 then
@@ -447,7 +452,11 @@ return {
       },
       linters = {
         cspell = {
-          enabled = function() return vim.fs.root(0, ".cspell-words.txt") end,
+          condition = function(ctx)
+            return vim.bo.buftype == ""
+              and vim.tbl_contains({ "cpp" }, vim.bo.filetype)
+              and vim.fs.find({ ".cspell-words.txt" }, { path = ctx.filename, upward = true })[1]
+          end,
         },
       },
     },

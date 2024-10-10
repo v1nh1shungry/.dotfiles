@@ -9,16 +9,17 @@ vim.opt.fileencoding = "utf-8"
 vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }
 vim.opt.fillchars = { eob = " ", fold = " ", foldclose = "", foldopen = "", foldsep = " " }
 vim.opt.foldcolumn = "1"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldexpr = "v:lua.require'dotfiles.utils.ui'.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
+vim.opt.foldtext = ""
 vim.opt.formatoptions = "jcroqlnt"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.jumpoptions = "view"
-vim.opt.laststatus = 0
+vim.opt.laststatus = 3
 vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "→ " }

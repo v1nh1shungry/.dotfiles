@@ -210,10 +210,6 @@ return {
     },
   },
   {
-    "LunarVim/bigfile.nvim",
-    event = events.enter_buffer,
-  },
-  {
     "chrisgrieser/nvim-spider",
     keys = {
       { "w", "<Cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" }, desc = "Next word" },

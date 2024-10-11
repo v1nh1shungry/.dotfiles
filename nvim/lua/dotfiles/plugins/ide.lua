@@ -1,6 +1,10 @@
 local events = require("dotfiles.utils.events")
 local map = require("dotfiles.utils.keymap")
 
+-- FIXME: this should be removed after switching to blink.cmp completely
+--        or deciding to abandon blink.cmp
+local use_blink = vim.tbl_contains(require("dotfiles.user").extra, "blink")
+
 return {
   {
     "neovim/nvim-lspconfig",
@@ -106,7 +110,7 @@ return {
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        require("cmp_nvim_lsp").default_capabilities(),
+        use_blink and require("cmp_nvim_lsp").default_capabilities() or {},
         {
           workspace = {
             fileOperations = {
@@ -156,7 +160,10 @@ return {
       -- }}}
     end,
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
+      {
+        "hrsh7th/cmp-nvim-lsp",
+        enabled = not use_blink,
+      },
       {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",

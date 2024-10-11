@@ -69,19 +69,3 @@ vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave" }, {
   callback = restore_default_im,
   group = augroup,
 })
-vim.api.nvim_create_autocmd("FocusGained", {
-  callback = function()
-    if not vim.api.nvim_get_mode().mode:match("i") then
-      restore_default_im()
-    end
-  end,
-  group = augroup,
-})
-vim.api.nvim_create_autocmd("FocusLost", {
-  callback = function()
-    if vim.api.nvim_get_mode().mode:match("i") then
-      restore_previous_im()
-    end
-  end,
-  group = augroup,
-})

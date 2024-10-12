@@ -50,26 +50,20 @@ return {
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     config = function()
       local actions = require("diffview.actions")
-      require("diffview").setup({
+
+      local opts = {
         enhanced_diff_hl = true,
         view = {
           default = { disable_diagnostics = true },
           merge_tool = { layout = "diff3_mixed" },
           file_history = { disable_diagnostics = true },
         },
-        -- TODO: refactor
         keymaps = {
           view = {
-            { "n", "<leader>e", actions.toggle_files, { desc = "Bring focus to the file panel" } },
-            ["<leader>b"] = false,
             ["<leader>co"] = false,
             ["<leader>ct"] = false,
             ["<leader>cb"] = false,
             ["<leader>ca"] = false,
-            ["<leader>cO"] = false,
-            ["<leader>cT"] = false,
-            ["<leader>cB"] = false,
-            ["<leader>cA"] = false,
             {
               "n",
               "<Leader>gxo",
@@ -94,33 +88,9 @@ return {
               actions.conflict_choose("all"),
               { desc = "Choose all the versions of a conflict" },
             },
-            {
-              "n",
-              "<Leader>gxO",
-              actions.conflict_choose_all("ours"),
-              { desc = "Choose the OURS version of a conflict for the whole file" },
-            },
-            {
-              "n",
-              "<Leader>gxT",
-              actions.conflict_choose_all("theirs"),
-              { desc = "Choose the THEIRS version of a conflict for the whole file" },
-            },
-            {
-              "n",
-              "<Leader>gxB",
-              actions.conflict_choose_all("base"),
-              { desc = "Choose the BASE version of a conflict for the whole file" },
-            },
-            {
-              "n",
-              "<Leader>gxA",
-              actions.conflict_choose_all("all"),
-              { desc = "Choose all the versions of a conflict for the whole file" },
-            },
           },
           file_panel = {
-            { "n", "<leader>e", actions.toggle_files, { desc = "Bring focus to the file panel" } },
+            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle file panel" } },
             ["<leader>b"] = false,
             ["<leader>cO"] = false,
             ["<leader>cT"] = false,
@@ -152,7 +122,10 @@ return {
             },
           },
         },
-      })
+      }
+      opts.keymaps.view = vim.tbl_extend("force", opts.keymaps.view, opts.keymaps.file_panel)
+
+      require("diffview").setup(opts)
     end,
     keys = { { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" } },
   },

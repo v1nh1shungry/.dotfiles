@@ -326,13 +326,12 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
-    opts = { max_lines = 4, multiline_threshold = 1 },
+    opts = { max_lines = 3 },
   },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      preset = "modern",
       spec = {
         {
           mode = { "n", "v" },
@@ -638,28 +637,41 @@ return {
   },
   {
     "RRethy/vim-illuminate",
-    config = function() require("illuminate").configure({ providers = { "lsp", "treesitter" } }) end,
+    config = function()
+      -- LazyVim {{{
+      require("illuminate").configure({
+        delay = 200,
+        large_file_cutoff = 2000,
+        large_file_overrides = { providers = { "lsp" } },
+      })
+
+      local function map_local(key, dir, buffer)
+        map({
+          key,
+          function() require("illuminate")["goto_" .. dir .. "_reference"](false) end,
+          desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference",
+          buffer = buffer,
+        })
+      end
+
+      map_local("]]", "next")
+      map_local("[[", "prev")
+
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map_local("]]", "next", buffer)
+          map_local("[[", "prev", buffer)
+        end,
+      })
+      -- }}}
+    end,
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = events.enter_buffer,
     keys = {
-      {
-        "[[",
-        function()
-          for _ = 1, vim.v.count1 do
-            require("illuminate").goto_prev_reference(false)
-          end
-        end,
-        desc = "Jump to the previous reference",
-      },
-      {
-        "]]",
-        function()
-          for _ = 1, vim.v.count1 do
-            require("illuminate").goto_next_reference(false)
-          end
-        end,
-        desc = "Jump to the next reference",
-      },
+      { "[[", desc = "Prev Reference" },
+      { "]]", desc = "Next Reference" },
     },
   },
   {

@@ -110,15 +110,7 @@ return {
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        use_blink and require("cmp_nvim_lsp").default_capabilities() or {},
-        {
-          workspace = {
-            fileOperations = {
-              didRename = true,
-              willRename = true,
-            },
-          },
-        }
+        use_blink and require("cmp_nvim_lsp").default_capabilities() or {}
       )
 
       local function setup(server)

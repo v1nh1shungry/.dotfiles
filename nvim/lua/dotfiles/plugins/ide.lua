@@ -110,7 +110,7 @@ return {
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        use_blink and require("cmp_nvim_lsp").default_capabilities() or {}
+        use_blink and {} or require("cmp_nvim_lsp").default_capabilities()
       )
 
       local function setup(server)

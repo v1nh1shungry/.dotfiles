@@ -153,13 +153,10 @@ return {
     end,
     dependencies = {
       {
-        "hrsh7th/cmp-nvim-lsp",
-        enabled = not use_blink,
-      },
-      {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",
       },
+      (not use_blink) and "hrsh7th/cmp-nvim-lsp" or nil,
     },
     event = events.enter_buffer,
     opts = {
@@ -290,6 +287,7 @@ return {
       "hrsh7th/cmp-path",
       "lukas-reineke/cmp-rg",
     },
+    enabled = not use_blink,
     event = events.enter_insert,
     name = "nvim-cmp",
     opts = function()

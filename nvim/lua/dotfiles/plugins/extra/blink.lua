@@ -4,12 +4,6 @@ return {
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
-    dependencies = {
-      {
-        "iguanacucumber/magazine.nvim",
-        enabled = false,
-      },
-    },
     -- FIXME: somehow lazy-load will lead to no keymaps
     event = "VeryLazy",
     opts = {

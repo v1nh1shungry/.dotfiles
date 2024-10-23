@@ -43,9 +43,9 @@ function M.location()
   end
 end
 
-function M.diagnostic() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end
+function M.diagnostic() vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = 0 })) end
 
-function M.inlay_hint() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
+function M.inlay_hint() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })) end
 
 local maximized = nil
 function M.maximize()

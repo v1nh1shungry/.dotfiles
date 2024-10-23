@@ -124,4 +124,36 @@ return {
     keys = { { "<Leader>s/", "<Cmd>GrugFar<CR>", desc = "Grep" } },
     opts = {},
   },
+  {
+    "mistweaverco/kulala.nvim",
+    ft = "http",
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(arg)
+          map({ "<CR>", function() require("kulala").run() end, buffer = arg.buf, desc = "Run the request" })
+          map({
+            "]r",
+            function() require("kulala").jump_next() end,
+            buffer = arg.buf,
+            desc = "Jump to the next request",
+          })
+          map({
+            "[r",
+            function() require("kulala").jump_prev() end,
+            buffer = arg.buf,
+            desc = "Jump to the prev request",
+          })
+          map({ "yr", function() require("kulala").copy() end, buffer = arg.buf, desc = "Copy as curl command" })
+          map({
+            "<Tab>",
+            function() require("kulala").toggle_view() end,
+            buffer = arg.buf,
+            desc = "Toggle between body and headers",
+          })
+        end,
+        pattern = "http",
+      })
+    end,
+    opts = {},
+  },
 }

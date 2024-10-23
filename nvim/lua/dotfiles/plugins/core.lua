@@ -174,6 +174,7 @@ return {
         "gitcommit",
         "gitignore",
         "html",
+        "http",
         "json",
         "just",
         "lua",

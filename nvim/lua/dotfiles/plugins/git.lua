@@ -123,7 +123,8 @@ return {
           },
         },
       }
-      opts.keymaps.view = vim.tbl_extend("force", opts.keymaps.view, opts.keymaps.file_panel)
+
+      opts.keymaps.view = vim.tbl_deep_extend("force", opts.keymaps.file_panel, opts.keymaps.view)
 
       require("diffview").setup(opts)
     end,

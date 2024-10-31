@@ -7,6 +7,7 @@ return {
     -- FIXME: somehow lazy-load will lead to no keymaps
     event = "VeryLazy",
     opts = {
+      keymap = "super-tab",
       nerd_font_variant = "mono",
       fuzzy = { prebuiltBinaries = { download = false } },
     },

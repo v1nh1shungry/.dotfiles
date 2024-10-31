@@ -11,8 +11,9 @@ return {
     },
   },
   {
-    "NStefan002/screenkey.nvim",
-    keys = { { "<Leader>uk", "<Cmd>Screenkey<CR>", desc = "Screen key" } },
+    "nvchad/showkeys",
+    cmd = "ShowkeysToggle",
+    keys = { { "<Leader>uk", "<Cmd>ShowkeysToggle<CR>", desc = "Screen key" } },
   },
   {
     "stevearc/profile.nvim",

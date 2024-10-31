@@ -186,6 +186,7 @@ return {
         "regex",
         "vim",
         "vimdoc",
+        "yaml",
       },
       highlight = { enable = true },
       indent = { enable = true },

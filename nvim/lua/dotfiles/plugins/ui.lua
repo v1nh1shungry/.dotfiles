@@ -75,20 +75,20 @@ return {
       if vim.o.filetype == "lazy" then
         vim.cmd.close()
         vim.api.nvim_create_autocmd("User", {
+          callback = function() require("lazy").show() end,
           once = true,
           pattern = "AlphaReady",
-          callback = function() require("lazy").show() end,
         })
       end
       vim.api.nvim_create_autocmd("User", {
-        once = true,
-        pattern = "LazyVimStarted",
         callback = function()
           local stats = require("lazy").stats()
           local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
           dashboard.section.footer.val = "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
           pcall(vim.cmd.AlphaRedraw)
         end,
+        once = true,
+        pattern = "LazyVimStarted",
       })
     end,
   },
@@ -110,6 +110,7 @@ return {
         callback = function()
           vim.schedule(function() pcall(nvim_bufferline) end)
         end,
+        group = vim.api.nvim_create_augroup("dotfiles_bufferline", {}),
       })
       -- }}}
     end,
@@ -159,11 +160,7 @@ return {
         telescope = {
           layout_strategy = "bottom_pane",
           sorting_strategy = "ascending",
-          layout_config = {
-            bottom_pane = {
-              height = 0.4,
-            },
-          },
+          layout_config = { bottom_pane = { height = 0.4 } },
         },
       },
     },
@@ -664,6 +661,7 @@ return {
           map_local("]]", "next", buffer)
           map_local("[[", "prev", buffer)
         end,
+        group = vim.api.nvim_create_augroup("dotfiles_illuminate_keymaps", {}),
       })
       -- }}}
     end,
@@ -727,6 +725,7 @@ return {
           map_split(bufnr, "<C-w>S", "horizontal", true)
           map_split(bufnr, "<C-w>V", "vertical", true)
         end,
+        group = vim.api.nvim_create_augroup("dotfiles_mini_files_keymaps", {}),
         pattern = "MiniFilesBufferCreate",
       })
       -- }}}

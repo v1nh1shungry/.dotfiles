@@ -85,6 +85,29 @@ return {
           and vim.bo[bufnr].buftype == ""
         then
           vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
+          local is_enabled = true
+          local augroup = vim.api.nvim_create_augroup("dotfiles_inlayhint", {})
+
+          vim.api.nvim_create_autocmd("InsertEnter", {
+            buffer = bufnr,
+            callback = function()
+              is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+              if is_enabled then
+                vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+              end
+            end,
+            group = augroup,
+          })
+          vim.api.nvim_create_autocmd("InsertLeave", {
+            buffer = bufnr,
+            callback = function()
+              if is_enabled then
+                vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+              end
+            end,
+            group = augroup,
+          })
         end
 
         if client.supports_method("textDocument/codeLens") then
@@ -92,6 +115,7 @@ return {
           vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
             buffer = bufnr,
             callback = vim.lsp.codelens.refresh,
+            group = vim.api.nvim_create_augroup("dotfiles_codelens", {}),
           })
         end
       end
@@ -103,6 +127,7 @@ return {
             on_attach(client, args.buf)
           end
         end,
+        group = vim.api.nvim_create_augroup("dotfiles_lsp_on_attach", {}),
       })
 
       -- https://www.lazyvim.org/plugins/lsp {{{
@@ -453,8 +478,8 @@ return {
       end
 
       vim.api.nvim_create_autocmd(opts.events, {
-        group = vim.api.nvim_create_augroup("nvim-lint", {}),
         callback = M.debounce(100, M.lint),
+        group = vim.api.nvim_create_augroup("dotfiles_nvim_lint", {}),
       })
     end,
     dependencies = "williamboman/mason.nvim",
@@ -496,6 +521,7 @@ return {
             check()
           end
         end,
+        group = vim.api.nvim_create_augroup("dotfiles_cmake_tools", {}),
       })
     end,
     -- }}}

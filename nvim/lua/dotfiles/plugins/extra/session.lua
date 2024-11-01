@@ -26,21 +26,26 @@ return {
 
       require("telescope").load_extension("persisted")
 
+      local augroup = vim.api.nvim_create_augroup("dotfiles_persisted", {})
+
       vim.api.nvim_create_autocmd("User", {
         command = "ScopeSaveState",
+        group = augroup,
         pattern = "PersistedSavePre",
       })
       vim.api.nvim_create_autocmd("User", {
         command = "ScopeLoadState",
+        group = augroup,
         pattern = "PersistedLoadPost",
       })
 
       vim.api.nvim_create_autocmd("User", {
-        pattern = "PersistedTelescopeLoadPre",
         callback = function(_)
           require("persisted").save({ session = vim.g.persisted_loaded_session })
           vim.api.nvim_input("<ESC>:%bd!<CR>")
         end,
+        group = augroup,
+        pattern = "PersistedTelescopeLoadPre",
       })
     end,
     dependencies = "nvim-telescope/telescope.nvim",

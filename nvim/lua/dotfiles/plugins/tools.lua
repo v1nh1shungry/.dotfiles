@@ -75,7 +75,9 @@ return {
         defaults = {
           prompt_prefix = "🔎 ",
           selection_caret = "➤ ",
+          layout_strategy = "bottom_pane",
           layout_config = { bottom_pane = { height = 0.4 } },
+          sorting_strategy = "ascending",
           mappings = {
             i = { ["<C-s>"] = flash },
             n = { s = flash },
@@ -151,6 +153,7 @@ return {
             desc = "Toggle between body and headers",
           })
         end,
+        group = vim.api.nvim_create_augroup("dotfiles_kulala_keymaps", {}),
         pattern = "http",
       })
     end,

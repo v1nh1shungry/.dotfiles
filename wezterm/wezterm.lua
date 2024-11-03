@@ -1,9 +1,13 @@
 local wezterm = require("wezterm")
 
-wezterm.on("gui-startup", function()
-  local _, _, window = wezterm.mux.spawn_window({})
-  window:gui_window():maximize()
-end)
+local function maximize()
+  for _, window in ipairs(wezterm.mux.all_windows()) do
+    window:gui_window():maximize()
+  end
+end
+
+wezterm.on("gui-startup", maximize)
+wezterm.on("gui-attached", maximize)
 
 return {
   audible_bell = "Disabled",
@@ -26,5 +30,14 @@ return {
     { key = "w", mods = "CTRL|SHIFT", action = wezterm.action.CloseCurrentTab({ confirm = true }) },
     { key = "Tab", mods = "CTRL", action = wezterm.action.ActivateTabRelative(1) },
     { key = "Tab", mods = "CTRL|SHIFT", action = wezterm.action.ActivateTabRelative(-1) },
+  },
+  ssh_domains = {
+    {
+      name = "scutech",
+      remote_address = "172.28.2.205",
+      username = "scutech",
+      multiplexing = "None",
+      default_prog = { "tmux", "new", "-A", "-s", "0" },
+    },
   },
 }

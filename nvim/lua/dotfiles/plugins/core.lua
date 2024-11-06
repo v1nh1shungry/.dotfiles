@@ -184,6 +184,7 @@ return {
         "markdown_inline",
         "query",
         "regex",
+        "sql",
         "vim",
         "vimdoc",
         "yaml",

@@ -85,29 +85,6 @@ return {
           and vim.bo[bufnr].buftype == ""
         then
           vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-
-          local is_enabled = true
-          local augroup = vim.api.nvim_create_augroup("dotfiles_inlayhint", {})
-
-          vim.api.nvim_create_autocmd("InsertEnter", {
-            buffer = bufnr,
-            callback = function()
-              is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
-              if is_enabled then
-                vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
-              end
-            end,
-            group = augroup,
-          })
-          vim.api.nvim_create_autocmd("InsertLeave", {
-            buffer = bufnr,
-            callback = function()
-              if is_enabled then
-                vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-              end
-            end,
-            group = augroup,
-          })
         end
 
         if client.supports_method("textDocument/codeLens") then

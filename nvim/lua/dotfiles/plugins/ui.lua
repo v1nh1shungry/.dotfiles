@@ -448,7 +448,11 @@ return {
         bt_ignore = ui.excluded_buftypes,
         relculright = true,
         segments = {
-          { sign = { name = { "Dap" } }, click = "v:lua.ScSa" },
+          {
+            sign = { name = { "Dap" } },
+            condition = { vim.tbl_contains(require("dotfiles.user").extra, "dap") },
+            click = "v:lua.ScSa",
+          },
           { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
           { sign = { namespace = { "gitsigns" } }, click = "v:lua.ScSa" },
           { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
@@ -776,6 +780,10 @@ return {
   },
   {
     "lewis6991/satellite.nvim",
+    event = events.enter_buffer,
+  },
+  {
+    "Bekaboo/dropbar.nvim",
     event = events.enter_buffer,
   },
 }

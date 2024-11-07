@@ -47,6 +47,7 @@
 <!-- Neovim plugins -->
 ## Neovim plugins
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
+* [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [Bilal2453/luvit-meta](https://github.com/Bilal2453/luvit-meta.git)
 * [Civitasv/cmake-tools.nvim](https://github.com/Civitasv/cmake-tools.nvim.git)
 * [LelouchHe/xmake-luals-addon](https://github.com/LelouchHe/xmake-luals-addon.git)

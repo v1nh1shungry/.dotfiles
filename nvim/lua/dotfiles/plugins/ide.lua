@@ -24,7 +24,7 @@ return {
           },
           ["textDocument/documentSymbol"] = {
             { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "LSP symbols (Document)" },
-            { "<Leader>us", "<Cmd>Outline<CR>", desc = "Symbol outline" },
+            { "gO", "<Cmd>Outline<CR>", desc = "Symbol outline" },
           },
           ["workspace/symbol"] = {
             { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "LSP symbols (Workspace)" },

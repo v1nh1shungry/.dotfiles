@@ -18,19 +18,4 @@ return {
     "stevearc/conform.nvim",
     opts = { formatters_by_ft = { python = { "black" } } },
   },
-  {
-    "monaqa/dial.nvim",
-    opts = function(_, opts)
-      local augend = require("dial.augend")
-
-      opts = vim.tbl_deep_extend("force", opts or {}, {
-        python = {
-          augend.integer.alias.decimal,
-          augend.constant.new({ elements = { "True", "False" } }),
-          augend.constant.new({ elements = { "&&", "||" } }),
-          augend.constant.new({ elements = { "==", "!=" } }),
-        },
-      })
-    end,
-  },
 }

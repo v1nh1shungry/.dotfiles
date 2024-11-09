@@ -125,88 +125,171 @@ return {
     opts = function()
       local augend = require("dial.augend")
 
-      local and_or_alias = augend.constant.new({ elements = { "and", "or" } })
+      local and_or_alias = augend.constant.new({
+        elements = { "and", "or" },
+        word = true,
+        cyclic = true,
+      })
+      local logical_alias = augend.constant.new({
+        elements = { "&&", "||" },
+        word = false,
+        cyclic = true,
+      })
+      local equal_alias = augend.constant.new({
+        elements = { "==", "!=" },
+        word = false,
+        cyclic = true,
+      })
+      local ordinal_numbers = augend.constant.new({
+        elements = {
+          "first",
+          "second",
+          "third",
+          "fourth",
+          "fifth",
+          "sixth",
+          "seventh",
+          "eighth",
+          "ninth",
+          "tenth",
+        },
+        word = false,
+        cyclic = true,
+        preserve_case = true,
+      })
+      local weekdays = augend.constant.new({
+        elements = {
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        },
+        word = true,
+        cyclic = true,
+        preserve_case = true,
+      })
+      local months = augend.constant.new({
+        elements = {
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        },
+        word = true,
+        cyclic = true,
+        preserve_case = true,
+      })
 
       local opts = {
         default = {
           augend.integer.alias.decimal,
+          augend.date.alias["%Y/%m/%d"],
+          ordinal_numbers,
+          weekdays,
+          months,
+        },
+        yaml = {
+          augend.integer.alias.decimal_int,
           augend.constant.alias.bool,
         },
         markdown = {
           augend.misc.alias.markdown_header,
-          augend.constant.new({
-            elements = {
-              "first",
-              "second",
-              "third",
-              "fourth",
-              "fifth",
-              "sixth",
-              "seventh",
-              "eighth",
-              "ninth",
-              "tenth",
-            },
-            preserve_case = true,
-          }),
-          augend.constant.new({
-            elements = {
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday",
-            },
-          }),
-          augend.constant.new({
-            elements = {
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-            },
-          }),
         },
         json = {
           augend.integer.alias.decimal,
           augend.semver.alias.semver,
+        },
+        lua = {
+          augend.integer.alias.decimal_int,
+          augend.constant.alias.bool,
+          and_or_alias,
+          equal_alias,
+        },
+        c = {
+          augend.integer.alias.decimal_int,
+          augend.integer.alias.hex,
+          logical_alias,
+          and_or_alias,
+          equal_alias,
+        },
+        cpp = {
+          augend.integer.alias.decimal_int,
+          augend.integer.alias.hex,
+          augend.constant.alias.bool,
+          logical_alias,
+          and_or_alias,
+          equal_alias,
+          augend.constant.new({
+            elements = { "first", "second" },
+            word = false,
+            cyclic = true,
+          }),
+          augend.constant.new({
+            elements = { "public", "protected", "private" },
+            word = false,
+            cyclic = true,
+          }),
+          augend.constant.new({
+            elements = { "static_cast", "dynamic_cast", "reinterpret_cast", "const_cast" },
+            word = false,
+            cyclic = true,
+          }),
+          augend.constant.new({
+            elements = { "int8_t", "int16_t", "int32_t", "int64_t" },
+            word = false,
+            cyclic = true,
+          }),
+          augend.constant.new({
+            elements = { "uint8_t", "uint16_t", "uint32_t", "uint64_t" },
+            word = false,
+            cyclic = true,
+          }),
         },
         cmake = {
           augend.integer.alias.decimal,
           augend.semver.alias.semver,
           augend.constant.new({
             elements = { "ON", "OFF" },
+            word = true,
+            cyclic = false,
             preserve_case = true,
           }),
         },
+        javascript = {
+          augend.integer.alias.decimal_int,
+          augend.constant.alias.bool,
+          logical_alias,
+          equal_alias,
+          augend.constant.new({
+            elements = { "let", "const" },
+            word = true,
+            cyclic = true,
+          }),
+        },
+        python = {
+          augend.integer.alias.decimal_int,
+          logical_alias,
+          equal_alias,
+          augend.constant.new({
+            elements = { "True", "False" },
+            word = true,
+            cyclic = true,
+          }),
+        }
       }
 
-      opts.c = vim.list_extend(vim.deepcopy(opts.default), {
-        augend.integer.alias.hex,
-        augend.constant.new({ elements = { "&&", "||" } }),
-        augend.constant.new({ elements = { "==", "!=" } }),
-        and_or_alias,
-      })
-
-      opts.cpp = vim.list_extend(vim.deepcopy(opts.c), {
-        augend.constant.new({ elements = { "first", "second" } }),
-        augend.constant.new({ elements = { "public", "protected", "private" } }),
-        augend.constant.new({ elements = { "static_cast", "dynamic_cast", "reinterpret_cast", "const_cast" } }),
-        augend.constant.new({ elements = { "int8_t", "int16_t", "int32_t", "int64_t" } }),
-        augend.constant.new({ elements = { "uint8_t", "uint16_t", "uint32_t", "uint64_t" } }),
-      })
-
-      opts.lua = vim.list_extend(vim.deepcopy(opts.default), { and_or_alias })
+      opts.typescript = opts.javascript
 
       return opts
     end,

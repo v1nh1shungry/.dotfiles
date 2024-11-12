@@ -22,8 +22,6 @@ map({ ">", ">gv", mode = "v" })
 map({ "<Leader>xq", toggle.quickfix, desc = "Toggle quickfix" })
 map({ "<Leader>xl", toggle.location, desc = "Toggle location list" })
 
-map({ "<Leader>ux", require("dotfiles.utils.toggle").diagnostic, desc = "Toggle diagnostic" })
-
 map({ ",", ",<c-g>u", mode = "i" })
 map({ ".", ".<c-g>u", mode = "i" })
 map({ ";", ";<c-g>u", mode = "i" })
@@ -43,10 +41,6 @@ map({ "]<Tab>", function() return "<Cmd>+" .. vim.v.count1 .. "tabnext<CR>" end,
 map({ "[<Tab>", function() return "<Cmd>-" .. vim.v.count1 .. "tabnext<CR>" end, desc = "Previous tab", expr = true })
 
 map({ "<Leader>,", "<Cmd>e #<CR>", desc = "Last buffer" })
-
-map({ "<Leader>uc", toggle.option("conceallevel", false, { 0, 3 }), desc = "Toggle conceal" })
-map({ "<Leader>uw", toggle.option("wrap"), desc = "Toggle wrap" })
-map({ "<Leader>ug", toggle.option("background", false, { "light", "dark" }), desc = "Change background" })
 
 map({ "<Leader>fc", "<Cmd>e ~/.nvimrc<CR>", desc = "Open preferences" })
 

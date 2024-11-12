@@ -54,7 +54,7 @@ return {
             { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "LSP outgoing calls" },
           },
           ["textDocument/inlayHint"] = {
-            { "<Leader>uh", require("dotfiles.utils.toggle").inlay_hint, desc = "Toggle inlay hint" },
+            Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr }),
           },
           ["textDocument/signatureHelp"] = {
             { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
@@ -110,7 +110,14 @@ return {
       -- https://www.lazyvim.org/plugins/lsp {{{
       local capabilities = vim.tbl_deep_extend(
         "force",
-        {},
+        {
+          workspace = {
+            fileOperations = {
+              didRename = true,
+              willRename = true,
+            },
+          },
+        },
         vim.lsp.protocol.make_client_capabilities(),
         use_blink and {} or require("cmp_nvim_lsp").default_capabilities()
       )
@@ -253,6 +260,7 @@ return {
     opts = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "snacks.nvim", words = { "Snacks" } },
         { path = "wezterm-types", mods = { "wezterm" } },
         { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
       },

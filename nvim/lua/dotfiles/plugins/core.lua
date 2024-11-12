@@ -236,11 +236,6 @@ return {
     },
   },
   {
-    "echasnovski/mini.bufremove",
-    keys = { { "<C-q>", function() require("mini.bufremove").delete() end, desc = "Close buffer" } },
-    opts = {},
-  },
-  {
     "chrisgrieser/nvim-recorder",
     opts = { mapping = { switchSlot = "<M-q>" } },
     keys = {
@@ -332,5 +327,40 @@ return {
         },
       }
     end,
+  },
+  {
+    "folke/snacks.nvim",
+    init = function()
+      vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
+
+      vim.api.nvim_create_autocmd("User", {
+        callback = function()
+          vim.print = function(...) Snacks.debug.inspect(...) end
+
+          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
+          Snacks.toggle.diagnostics():map("<leader>ux")
+          Snacks.toggle
+            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+            :map("<leader>uc")
+          Snacks.toggle.treesitter():map("<leader>uT")
+          Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ug")
+        end,
+        pattern = "VeryLazy",
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniFilesActionRename",
+        callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
+      })
+    end,
+    lazy = false,
+    opts = {},
+    keys = {
+      { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss all notifications" },
+      { "<C-q>", function() Snacks.bufdelete() end, desc = "Delete buffer" },
+      { "<Leader>gf", function() Snacks.gitbrowse() end, desc = "Git browse" },
+      { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next reference" },
+      { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous reference" },
+    },
   },
 }

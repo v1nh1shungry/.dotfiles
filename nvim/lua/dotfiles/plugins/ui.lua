@@ -98,8 +98,8 @@ return {
     config = function()
       require("bufferline").setup({
         options = {
-          close_command = function(b) require("mini.bufremove").delete(b) end,
-          right_mouse_command = function(b) require("mini.bufremove").delete(b) end,
+          close_command = function(b) Snacks.bufdelete(b) end,
+          right_mouse_command = function(b) Snacks.bufdelete(b) end,
           numbers = "ordinal",
           diagnostics = "nvim_lsp",
           themable = true,
@@ -360,16 +360,6 @@ return {
     lazy = true,
   },
   {
-    "rcarriga/nvim-notify",
-    lazy = true,
-    opts = {
-      timeout = 3000,
-      max_height = function() return math.floor(vim.o.lines * 0.75) end,
-      max_width = function() return math.floor(vim.o.columns * 0.75) end,
-      on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
-    },
-  },
-  {
     "folke/noice.nvim",
     event = "VeryLazy",
     config = function(_, opts)
@@ -438,27 +428,6 @@ return {
         },
       },
     },
-  },
-  {
-    "luukvbaal/statuscol.nvim",
-    branch = "0.10",
-    config = function()
-      local builtin = require("statuscol.builtin")
-      require("statuscol").setup({
-        bt_ignore = ui.excluded_buftypes,
-        relculright = true,
-        segments = {
-          {
-            sign = { name = { "Dap" } },
-            condition = { vim.tbl_contains(require("dotfiles.user").extra, "dap") },
-            click = "v:lua.ScSa",
-          },
-          { text = { builtin.lnumfunc }, click = "v:lua.ScLa" },
-          { sign = { namespace = { "gitsigns" } }, click = "v:lua.ScSa" },
-          { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-        },
-      })
-    end,
   },
   {
     "kevinhwang91/nvim-hlslens",
@@ -635,46 +604,6 @@ return {
     "tiagovla/scope.nvim",
     event = "VeryLazy",
     opts = {},
-  },
-  {
-    "RRethy/vim-illuminate",
-    config = function()
-      -- LazyVim {{{
-      require("illuminate").configure({
-        delay = 200,
-        large_file_cutoff = 2000,
-        large_file_overrides = { providers = { "lsp" } },
-      })
-
-      local function map_local(key, dir, buffer)
-        map({
-          key,
-          function() require("illuminate")["goto_" .. dir .. "_reference"](false) end,
-          desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference",
-          buffer = buffer,
-        })
-      end
-
-      map_local("]]", "next")
-      map_local("[[", "prev")
-
-      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function()
-          local buffer = vim.api.nvim_get_current_buf()
-          map_local("]]", "next", buffer)
-          map_local("[[", "prev", buffer)
-        end,
-        group = vim.api.nvim_create_augroup("dotfiles_illuminate_keymaps", {}),
-      })
-      -- }}}
-    end,
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    event = events.enter_buffer,
-    keys = {
-      { "[[", desc = "Prev Reference" },
-      { "]]", desc = "Next Reference" },
-    },
   },
   {
     "akinsho/toggleterm.nvim",

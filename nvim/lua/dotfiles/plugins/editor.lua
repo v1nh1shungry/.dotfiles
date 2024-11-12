@@ -286,7 +286,7 @@ return {
             word = true,
             cyclic = true,
           }),
-        }
+        },
       }
 
       opts.typescript = opts.javascript

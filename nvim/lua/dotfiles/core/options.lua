@@ -52,7 +52,6 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = vim.g.vscode and 1000 or 300
-vim.opt.undofile = true
 vim.opt.updatetime = 200
 vim.opt.virtualedit = "block"
 vim.opt.wildmode = "longest:full,full"

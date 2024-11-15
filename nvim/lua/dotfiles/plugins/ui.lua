@@ -320,12 +320,6 @@ return {
     event = "VeryLazy",
   },
   {
-    "nvim-treesitter/nvim-treesitter-context",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    event = events.enter_buffer,
-    opts = { max_lines = 3 },
-  },
-  {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {

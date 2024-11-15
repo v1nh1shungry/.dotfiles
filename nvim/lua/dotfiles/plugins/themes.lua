@@ -6,6 +6,11 @@ return {
     name = "catppuccin",
     opts = {
       integrations = {
+        blink_cmp = true,
+        dadbod_ui = true,
+        diffview = true,
+        dropbar = { enabled = true },
+        grug_far = true,
         mason = true,
         native_lsp = {
           underlines = {
@@ -16,8 +21,6 @@ return {
           },
         },
         noice = true,
-        notify = true,
-        treesitter_context = true,
         which_key = true,
       },
     },

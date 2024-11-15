@@ -113,7 +113,6 @@
 * [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim.git)
 * [nvim-telescope/telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim.git)
 * [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim.git)
-* [nvim-treesitter/nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context.git)
 * [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git)
 * [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)
 * [sindrets/diffview.nvim](https://github.com/sindrets/diffview.nvim.git)

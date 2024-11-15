@@ -19,18 +19,23 @@ end
 local maximized = nil
 function M.maximize()
   if maximized then
-    vim.o.winwidth = maximized.width
-    vim.o.winheight = maximized.height
+    for _, opt in ipairs(maximized) do
+      vim.o[opt.k] = opt.v
+    end
     maximized = nil
-    vim.cmd("wincmd =")
   else
-    maximized = {
-      width = vim.o.winwidth,
-      height = vim.o.winheight,
-    }
-    vim.o.winwidth = 999
-    vim.o.winheight = 999
+    maximized = {}
+    local function set(k, v)
+      table.insert(maximized, 1, { k = k, v = vim.o[k] })
+      vim.o[k] = v
+    end
+    set("winwidth", 999)
+    set("winheight", 999)
+    set("winminwidth", 10)
+    set("winminheight", 4)
   end
+
+  vim.cmd("wincmd =")
 end
 
 return M

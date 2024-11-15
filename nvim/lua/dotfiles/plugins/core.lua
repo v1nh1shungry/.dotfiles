@@ -331,11 +331,9 @@ return {
   {
     "folke/snacks.nvim",
     init = function()
-      vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
-
       vim.api.nvim_create_autocmd("User", {
         callback = function()
-          vim.print = function(...) Snacks.debug.inspect(...) end
+          vim.print = Snacks.debug.inspect
 
           Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
           Snacks.toggle.diagnostics():map("<leader>ux")
@@ -354,13 +352,17 @@ return {
       })
     end,
     lazy = false,
-    opts = {},
+    opts = {
+      bigfile = { enabled = true },
+      notifier = { enabled = true },
+      quickfile = { enabled = true },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
+    },
     keys = {
       { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss all notifications" },
       { "<C-q>", function() Snacks.bufdelete() end, desc = "Delete buffer" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, desc = "Git browse" },
-      { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next reference" },
-      { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous reference" },
     },
   },
 }

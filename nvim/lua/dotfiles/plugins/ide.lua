@@ -65,6 +65,10 @@ return {
           ["typeHierarchy/supertypes"] = {
             { "<Leader>cS", function() vim.lsp.buf.typehierarchy("supertypes") end, desc = "LSP supertypes" },
           },
+          ["textDocument/documentHighlight"] = {
+            { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next reference" },
+            { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous reference" },
+          }
         }
 
         for method, keys in pairs(mappings) do

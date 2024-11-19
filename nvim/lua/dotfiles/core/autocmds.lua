@@ -62,6 +62,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
       vim.opt_local.foldenable = false
       vim.opt_local.cc = ""
       vim.opt_local.stc = ""
+      vim.opt_local.signcolumn = "no"
 
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then

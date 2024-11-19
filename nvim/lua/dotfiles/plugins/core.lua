@@ -330,6 +330,7 @@ return {
       words = { enabled = true },
       -- FIXME: a little buggy for me for now
       dashboard = {
+        enabled = false,
         preset = {
           header = [[
  __    __ __     __ ______ __       __      __    __ ________ _______   ______

@@ -1,10 +1,6 @@
 local events = require("dotfiles.utils.events")
 local map = require("dotfiles.utils.keymap")
 
--- FIXME: this should be removed after switching to blink.cmp completely
---        or deciding to abandon blink.cmp
-local use_blink = vim.tbl_contains(require("dotfiles.user").extra, "blink")
-
 return {
   {
     "neovim/nvim-lspconfig",
@@ -68,7 +64,7 @@ return {
           ["textDocument/documentHighlight"] = {
             { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next reference" },
             { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous reference" },
-          }
+          },
         }
 
         for method, keys in pairs(mappings) do
@@ -112,8 +108,14 @@ return {
       })
 
       -- https://www.lazyvim.org/plugins/lsp {{{
+      local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      local has_blink, blink = pcall(require, "blink.cmp")
       local capabilities = vim.tbl_deep_extend(
         "force",
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+        has_blink and blink.get_lsp_capabilities() or {},
         {
           workspace = {
             fileOperations = {
@@ -121,9 +123,7 @@ return {
               willRename = true,
             },
           },
-        },
-        vim.lsp.protocol.make_client_capabilities(),
-        use_blink and {} or require("cmp_nvim_lsp").default_capabilities()
+        }
       )
 
       local function setup(server)
@@ -169,7 +169,6 @@ return {
         "williamboman/mason-lspconfig.nvim",
         dependencies = "williamboman/mason.nvim",
       },
-      (not use_blink) and "hrsh7th/cmp-nvim-lsp" or nil,
     },
     event = events.enter_buffer,
     opts = {
@@ -204,11 +203,6 @@ return {
               desc = "Switch between header and source",
             },
           },
-          on_new_config = function(new_config, _)
-            if package.loaded["cmake-tools"] then
-              require("cmake-tools").clangd_on_new_config(new_config)
-            end
-          end,
         },
         lua_ls = {
           settings = {
@@ -315,11 +309,14 @@ return {
   {
     "iguanacucumber/magazine.nvim",
     dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "lukas-reineke/cmp-rg",
     },
-    enabled = not use_blink,
+    -- FIXME: this should be removed after switching to blink.cmp completely
+    --        or deciding to abandon blink.cmp
+    enabled = not vim.tbl_contains(require("dotfiles.user").extra, "blink"),
     event = events.enter_insert,
     name = "nvim-cmp",
     opts = function()
@@ -491,80 +488,4 @@ return {
     },
   },
   -- }}}
-  {
-    "Civitasv/cmake-tools.nvim",
-    ft = "cmake",
-    -- https://www.lazyvim.org/extras/lang/cmake#cmake-toolsnvim {{{
-    init = function()
-      local loaded = false
-      local function check()
-        if vim.fn.filereadable(vim.fs.joinpath(vim.uv.cwd(), "CMakeLists.txt")) == 1 then
-          require("lazy").load({ plugins = { "cmake-tools.nvim" } })
-          loaded = true
-        end
-      end
-      check()
-      vim.api.nvim_create_autocmd("DirChanged", {
-        callback = function()
-          if not loaded then
-            check()
-          end
-        end,
-        group = vim.api.nvim_create_augroup("dotfiles_cmake_tools", {}),
-      })
-    end,
-    -- }}}
-    keys = {
-      { "<Leader>mg", "<Cmd>CMakeGenerate<CR>", desc = "Configure" },
-      { "<Leader>mb", "<Cmd>CMakeBuild<CR>", desc = "Build" },
-      { "<Leader>mx", "<Cmd>CMakeRun<CR>", desc = "Run executable" },
-      { "<Leader>md", "<Cmd>CMakeDebug<CR>", desc = "Debug" },
-      { "<Leader>ma", ":CMakeLaunchArgs ", desc = "Set launch arguments" },
-      { "<Leader>ms", "<Cmd>CMakeTargetSettings<CR>", desc = "Summary" },
-      { "<Leader>mc", "<Cmd>CMakeClean<CR>", desc = "Clean" },
-      {
-        "<Leader>mp",
-        function()
-          if vim.fn.mkdir("cmake", "p") == 0 then
-            vim.notify("CPM.cmake: can't create 'cmake' directory", vim.log.levels.ERROR)
-            return
-          end
-          vim.notify("Downloading CPM.cmake...")
-          vim.system({
-            "wget",
-            "-O",
-            "cmake/CPM.cmake",
-            "https://github.com/cpm-cmake/CPM.cmake/releases/latest/download/get_cpm.cmake",
-          }, {}, function(out)
-            if out.code == 0 then
-              vim.notify("CPM.cmake: downloaded cmake/CPM.cmake successfully")
-            else
-              vim.notify("CPM.cmake: failed to download CPM.cmake", vim.log.levels.ERROR)
-            end
-          end)
-        end,
-        desc = "Get CPM.cmake",
-      },
-    },
-    opts = {
-      cmake_regenerate_on_save = false,
-      cmake_generate_options = {
-        "-G",
-        "Ninja",
-        "-DCMAKE_EXPORT_COMPILE_COMMANDS=On",
-        "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
-      },
-      cmake_build_directory = "build/${variant:buildType}",
-      cmake_soft_link_compile_commands = false,
-      cmake_compile_commands_from_lsp = true,
-      cmake_runner = { name = "toggleterm", opts = { direction = "horizontal" } },
-      cmake_dap_configuration = {
-        name = "cpp",
-        type = "gdb",
-        request = "launch",
-        stopAtBeginningOfMainSubprogram = false,
-      },
-      cmake_virtual_text_support = false,
-    },
-  },
 }

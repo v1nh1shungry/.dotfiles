@@ -121,12 +121,11 @@ local function execute(cmd)
   if term then
     term:close()
   end
-  term = require("toggleterm.terminal").Terminal:new({
-    cmd = cmd,
-    direction = "horizontal",
-    close_on_exit = false,
+  term = Snacks.terminal.open(cmd, {
+    win = { position = "bottom" },
+    interactive = false,
   })
-  term:toggle()
+  return term
 end
 
 for ft, cmd in pairs(config.execute) do
@@ -138,7 +137,7 @@ for ft, cmd in pairs(config.execute) do
           if config.save then
             vim.cmd("w")
           end
-          execute(table.concat(cook_command(cmd), " "))
+          execute(cook_command(cmd))
         end,
         buffer = event.buf,
         desc = "Execute",

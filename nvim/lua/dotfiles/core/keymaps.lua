@@ -14,8 +14,6 @@ map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
 
 map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = "Save", mode = { "i", "x", "n", "s" } })
 
-map({ "<Esc><Esc>", "<C-\\><C-n>", mode = "t" })
-
 map({ "<", "<gv", mode = "v" })
 map({ ">", ">gv", mode = "v" })
 
@@ -73,28 +71,6 @@ map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
 
 map({ "<C-n>", "<Down>", desc = "Next command in history", mode = "c" })
 map({ "<C-p>", "<Up>", desc = "Previous command in history", mode = "c" })
-
-map({
-  "<Leader>cx",
-  function()
-    vim.cmd([[execute "normal! \<ESC>"]])
-    local start_pos = vim.fn.getpos("'<")
-    local end_pos = vim.fn.getpos("'>")
-    local current_bufnr = vim.api.nvim_get_current_buf()
-    local current_winnr = vim.api.nvim_win_get_number(vim.api.nvim_get_current_win())
-    local lines = vim.api.nvim_buf_get_lines(current_bufnr, start_pos[2] - 1, end_pos[2], true)
-    vim.api.nvim_buf_set_lines(current_bufnr, start_pos[2] - 1, end_pos[2], true, {})
-    local bufnr = vim.api.nvim_create_buf(false, false)
-    vim.bo[bufnr].filetype = vim.bo[current_bufnr].filetype
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, lines)
-    vim.api.nvim_open_win(bufnr, true, { split = "right" })
-    vim.cmd([[execute "normal! =G"]])
-    vim.bo[bufnr].modifiable = false
-    vim.cmd(current_winnr .. " wincmd w")
-  end,
-  mode = "x",
-  desc = "Snapshot",
-})
 
 map({ "<Leader>um", toggle.maximize, desc = "Maximize current window" })
 

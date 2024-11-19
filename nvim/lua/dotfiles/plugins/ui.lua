@@ -47,7 +47,6 @@ return {
         dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope oldfiles cwd_only=true<CR>"),
         dashboard.button("/", " " .. " Find text", "<Cmd>Telescope live_grep<CR>"),
         dashboard.button("c", " " .. " Config", "<Cmd>e ~/.nvimrc<CR>"),
-        dashboard.button("s", " " .. " Restore session", "<Cmd>SessionLoad<CR>"),
         dashboard.button("l", "󰒲 " .. " Lazy", "<Cmd>Lazy<CR>"),
         dashboard.button("q", " " .. " Quit", "<Cmd>qa<CR>"),
       }
@@ -170,10 +169,6 @@ return {
     config = function()
       require("lualine_require").require = require
 
-      local function is_cmake_project()
-        return package.loaded["cmake-tools"] and require("cmake-tools").is_cmake_project()
-      end
-
       -- https://github.com/chrisgrieser/nvim-tinygit/blob/main/lua/tinygit/statusline/branch-state.lua {{{
       local function get_git_branch_state()
         local cwd = vim.uv.cwd()
@@ -238,33 +233,6 @@ return {
               always_visible = true,
             },
             {
-              function() return "CMake: [" .. (require("cmake-tools").get_configure_preset() or "X") .. "]" end,
-              cond = function() return is_cmake_project() and require("cmake-tools").has_cmake_preset() end,
-            },
-            {
-              function() return "CMake: [" .. (require("cmake-tools").get_build_type() or "X") .. "]" end,
-              cond = function() return is_cmake_project() and not require("cmake-tools").has_cmake_preset() end,
-            },
-            {
-              function() return "[" .. (require("cmake-tools").get_kit() or "X") .. "]" end,
-              cond = function() return is_cmake_project() and require("cmake-tools").has_cmake_preset() end,
-              icon = "󱌣",
-            },
-            {
-              function() return "[" .. (require("cmake-tools").get_build_preset() or "X") .. "]" end,
-              cond = function() return is_cmake_project() and require("cmake-tools").has_cmake_preset() end,
-            },
-            {
-              function() return "[" .. (require("cmake-tools").get_build_target() or "X") .. "]" end,
-              cond = is_cmake_project,
-              icon = "",
-            },
-            {
-              function() return "[" .. (require("cmake-tools").get_launch_target() or "X") .. "]" end,
-              cond = is_cmake_project,
-              icon = "",
-            },
-            {
               "mode",
               fmt = function(str) return "-- " .. str .. " --" end,
             },
@@ -313,7 +281,6 @@ return {
           "mason",
           "nvim-dap-ui",
           "quickfix",
-          "toggleterm",
         },
       })
     end,
@@ -339,7 +306,6 @@ return {
           { "<Leader>f", group = "file" },
           { "<Leader>g", group = "git" },
           { "<Leader>gx", group = "conflict" },
-          { "<Leader>m", group = "cmake" },
           { "<Leader>p", group = "package" },
           { "<Leader>q", group = "quit/sessions" },
           { "<Leader>s", group = "search" },
@@ -485,11 +451,6 @@ return {
     opts = {
       bottom = {
         {
-          ft = "toggleterm",
-          size = { height = 0.4 },
-          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
-        },
-        {
           ft = "noice",
           size = { height = 0.4 },
           filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
@@ -508,6 +469,16 @@ return {
         { ft = "dap-repl", title = "REPL" },
         { ft = "dapui_console", title = "Console" },
         { ft = "man", size = { height = 0.4 } },
+        {
+          ft = "snacks_terminal",
+          size = { height = 0.4 },
+          title = "%{b:snacks_terminal.id}: %{b:term_title}",
+          filter = function(_, win)
+            return vim.w[win].snacks_win
+              and vim.w[win].snacks_win.position == "bottom"
+              and vim.w[win].snacks_win.relative == "editor"
+          end,
+        },
       },
       left = {
         {
@@ -598,16 +569,6 @@ return {
     "tiagovla/scope.nvim",
     event = "VeryLazy",
     opts = {},
-  },
-  {
-    "akinsho/toggleterm.nvim",
-    cmd = "TermExec",
-    keys = { { "<M-=>", desc = "Toggle terminal" } },
-    opts = {
-      open_mapping = "<M-=>",
-      size = 10,
-      float_opts = { title_pos = "center", border = "curved" },
-    },
   },
   {
     "echasnovski/mini.files",

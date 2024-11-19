@@ -293,42 +293,6 @@ return {
     },
   },
   {
-    "willothy/flatten.nvim",
-    opts = function()
-      local saved_terminal
-      return {
-        window = { open = "alternate" },
-        nest_if_no_args = true,
-        callbacks = {
-          should_block = function(argv) return vim.tbl_contains(argv, "-b") end,
-          pre_open = function()
-            local term = require("toggleterm.terminal")
-            local termid = term.get_focused_id()
-            saved_terminal = term.get(termid)
-          end,
-          post_open = function(bufnr, _, ft, _)
-            saved_terminal:close()
-            if ft == "gitcommit" or ft == "gitrebase" then
-              vim.api.nvim_create_autocmd("BufWritePost", {
-                buffer = bufnr,
-                callback = vim.schedule_wrap(function() vim.api.nvim_buf_delete(bufnr, {}) end),
-                once = true,
-              })
-            end
-          end,
-          block_end = function()
-            vim.schedule(function()
-              if saved_terminal then
-                saved_terminal:open()
-                saved_terminal = nil
-              end
-            end)
-          end,
-        },
-      }
-    end,
-  },
-  {
     "folke/snacks.nvim",
     init = function()
       vim.api.nvim_create_autocmd("User", {
@@ -352,17 +316,47 @@ return {
       })
     end,
     lazy = false,
+    keys = {
+      { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss all notifications" },
+      { "<C-q>", function() Snacks.bufdelete() end, desc = "Delete buffer" },
+      { "<Leader>gf", function() Snacks.gitbrowse() end, desc = "Git browse" },
+      { "<M-=>", function() Snacks.terminal.toggle() end, mode = { "n", "t" }, desc = "Terminal" },
+    },
     opts = {
       bigfile = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
-    },
-    keys = {
-      { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss all notifications" },
-      { "<C-q>", function() Snacks.bufdelete() end, desc = "Delete buffer" },
-      { "<Leader>gf", function() Snacks.gitbrowse() end, desc = "Git browse" },
+      -- FIXME: a little buggy for me for now
+      dashboard = {
+        preset = {
+          header = [[
+ __    __ __     __ ______ __       __      __    __ ________ _______   ______
+|  \  |  \  \   |  \      \  \     /  \    |  \  |  \        \       \ /      \
+| ▓▓\ | ▓▓ ▓▓   | ▓▓\▓▓▓▓▓▓ ▓▓\   /  ▓▓    | ▓▓  | ▓▓ ▓▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓\  ▓▓▓▓▓▓\
+| ▓▓▓\| ▓▓ ▓▓   | ▓▓ | ▓▓ | ▓▓▓\ /  ▓▓▓    | ▓▓__| ▓▓ ▓▓__   | ▓▓__| ▓▓ ▓▓  | ▓▓
+| ▓▓▓▓\ ▓▓\▓▓\ /  ▓▓ | ▓▓ | ▓▓▓▓\  ▓▓▓▓    | ▓▓    ▓▓ ▓▓  \  | ▓▓    ▓▓ ▓▓  | ▓▓
+| ▓▓\▓▓ ▓▓ \▓▓\  ▓▓  | ▓▓ | ▓▓\▓▓ ▓▓ ▓▓    | ▓▓▓▓▓▓▓▓ ▓▓▓▓▓  | ▓▓▓▓▓▓▓\ ▓▓  | ▓▓
+| ▓▓ \▓▓▓▓  \▓▓ ▓▓  _| ▓▓_| ▓▓ \▓▓▓| ▓▓    | ▓▓  | ▓▓ ▓▓_____| ▓▓  | ▓▓ ▓▓__/ ▓▓
+| ▓▓  \▓▓▓   \▓▓▓  |   ▓▓ \ ▓▓  \▓ | ▓▓    | ▓▓  | ▓▓ ▓▓     \ ▓▓  | ▓▓\▓▓    ▓▓
+ \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓
+          ]],
+          keys = {
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            {
+              icon = " ",
+              key = "r",
+              desc = "Recent Files",
+              action = ":lua Snacks.dashboard.pick('oldfiles', { only_cwd = true })",
+            },
+            { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "c", desc = "Config", action = ":e ~/.nvimrc" },
+            { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy },
+            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          },
+        },
+      },
     },
   },
 }

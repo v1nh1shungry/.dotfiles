@@ -192,9 +192,10 @@ return {
             "--background-index",
             "--clang-tidy",
             "--completion-style=detailed",
+            "--experimental-modules-support",
             "--fallback-style=llvm",
-            "--function-arg-placeholders",
             "--header-insertion=never",
+            "-j=" .. #vim.uv.cpu_info(),
           },
           keys = {
             {

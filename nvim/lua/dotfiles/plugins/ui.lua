@@ -520,7 +520,6 @@ return {
           size = { width = 0.4 },
         },
       },
-      exit_when_last = true,
     },
   },
   {
@@ -541,7 +540,7 @@ return {
   },
   {
     "mcauley-penney/visual-whitespace.nvim",
-    event = "VeryLazy",
+    event = "ModeChanged *:[vV\x16]*",
     opts = {},
   },
   {

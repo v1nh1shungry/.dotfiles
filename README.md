@@ -91,7 +91,6 @@
 * [hrsh7th/cmp-path](https://github.com/hrsh7th/cmp-path.git)
 * [iguanacucumber/magazine.nvim](https://github.com/iguanacucumber/magazine.nvim.git)
 * [johmsalas/text-case.nvim](https://github.com/johmsalas/text-case.nvim.git)
-* [justinsgithub/wezterm-types](https://github.com/justinsgithub/wezterm-types.git)
 * [kevinhwang91/nvim-bqf](https://github.com/kevinhwang91/nvim-bqf.git)
 * [kevinhwang91/nvim-hlslens](https://github.com/kevinhwang91/nvim-hlslens.git)
 * [kristijanhusak/vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui.git)

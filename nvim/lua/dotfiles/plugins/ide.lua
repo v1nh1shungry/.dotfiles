@@ -133,7 +133,6 @@ return {
         end
         local setup_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
-          single_file_support = true,
         }, opts.servers[server])
         if opts.setup then
           if opts.setup[server] then
@@ -187,6 +186,14 @@ return {
         },
         neocmake = {},
         clangd = {
+          capabilities = {
+            offsetEncoding = { "utf-8", "utf-16" },
+            textDocument = {
+              completion = {
+                editsNearCursor = true,
+              },
+            },
+          },
           cmd = {
             "clangd",
             "--background-index",
@@ -260,17 +267,12 @@ return {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
         { path = "snacks.nvim", words = { "Snacks" } },
-        { path = "wezterm-types", mods = { "wezterm" } },
         { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
       },
     },
   },
   {
     "Bilal2453/luvit-meta",
-    lazy = true,
-  },
-  {
-    "justinsgithub/wezterm-types",
     lazy = true,
   },
   {

@@ -25,73 +25,6 @@ return {
     },
     opts = { signs = false },
   },
-  -- https://www.lazyvim.org/extras/ui/alpha {{{
-  {
-    "goolord/alpha-nvim",
-    config = function()
-      local dashboard = require("alpha.themes.dashboard")
-      local logo = [[
- __    __ __     __ ______ __       __      __    __ ________ _______   ______
-|  \  |  \  \   |  \      \  \     /  \    |  \  |  \        \       \ /      \
-| ▓▓\ | ▓▓ ▓▓   | ▓▓\▓▓▓▓▓▓ ▓▓\   /  ▓▓    | ▓▓  | ▓▓ ▓▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓\  ▓▓▓▓▓▓\
-| ▓▓▓\| ▓▓ ▓▓   | ▓▓ | ▓▓ | ▓▓▓\ /  ▓▓▓    | ▓▓__| ▓▓ ▓▓__   | ▓▓__| ▓▓ ▓▓  | ▓▓
-| ▓▓▓▓\ ▓▓\▓▓\ /  ▓▓ | ▓▓ | ▓▓▓▓\  ▓▓▓▓    | ▓▓    ▓▓ ▓▓  \  | ▓▓    ▓▓ ▓▓  | ▓▓
-| ▓▓\▓▓ ▓▓ \▓▓\  ▓▓  | ▓▓ | ▓▓\▓▓ ▓▓ ▓▓    | ▓▓▓▓▓▓▓▓ ▓▓▓▓▓  | ▓▓▓▓▓▓▓\ ▓▓  | ▓▓
-| ▓▓ \▓▓▓▓  \▓▓ ▓▓  _| ▓▓_| ▓▓ \▓▓▓| ▓▓    | ▓▓  | ▓▓ ▓▓_____| ▓▓  | ▓▓ ▓▓__/ ▓▓
-| ▓▓  \▓▓▓   \▓▓▓  |   ▓▓ \ ▓▓  \▓ | ▓▓    | ▓▓  | ▓▓ ▓▓     \ ▓▓  | ▓▓\▓▓    ▓▓
- \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓
-]]
-      dashboard.section.header.val = vim.split(logo, "\n", { trimempty = true })
-      dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file", "<Cmd>Telescope find_files<CR>"),
-        dashboard.button("r", " " .. " Recent files", "<Cmd>Telescope oldfiles cwd_only=true<CR>"),
-        dashboard.button("/", " " .. " Find text", "<Cmd>Telescope live_grep<CR>"),
-        dashboard.button("c", " " .. " Config", "<Cmd>e ~/.nvimrc<CR>"),
-        dashboard.button("l", "󰒲 " .. " Lazy", "<Cmd>Lazy<CR>"),
-        dashboard.button("q", " " .. " Quit", "<Cmd>qa<CR>"),
-      }
-      for _, button in ipairs(dashboard.section.buttons.val) do
-        button.opts.hl = "AlphaButtons"
-        button.opts.hl_shortcut = "AlphaShortcut"
-      end
-      dashboard.section.header.opts.hl = "AlphaHeader"
-      dashboard.section.buttons.opts.hl = "AlphaButtons"
-      dashboard.section.footer.opts.hl = "AlphaFooter"
-      dashboard.opts.layout[1].val = math.max(
-        0,
-        math.floor(
-          (
-            vim.o.lines
-            - #dashboard.section.header.val -- header
-            - dashboard.opts.layout[3].val -- padding between header and buttons
-            - #dashboard.section.buttons.val * 2 -- buttons
-            - 1 -- rooter
-          ) / 2
-        )
-      )
-      require("alpha").setup(dashboard.opts)
-
-      if vim.o.filetype == "lazy" then
-        vim.cmd.close()
-        vim.api.nvim_create_autocmd("User", {
-          callback = function() require("lazy").show() end,
-          once = true,
-          pattern = "AlphaReady",
-        })
-      end
-      vim.api.nvim_create_autocmd("User", {
-        callback = function()
-          local stats = require("lazy").stats()
-          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          dashboard.section.footer.val = "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
-          pcall(vim.cmd.AlphaRedraw)
-        end,
-        once = true,
-        pattern = "LazyVimStarted",
-      })
-    end,
-  },
-  -- }}}
   {
     "akinsho/bufferline.nvim",
     config = function()
@@ -324,6 +257,9 @@ return {
     event = "VeryLazy",
     config = function(_, opts)
       -- {{{ https://www.lazyvim.org/plugins/ui#noicenvim
+      -- HACK: noice shows messages from before it was enabled,
+      -- but this is not ideal when Lazy is installing plugins,
+      -- so clear the messages in this case.
       if vim.o.filetype == "lazy" then
         vim.cmd("messages clear")
       end
@@ -685,6 +621,19 @@ return {
   },
   {
     "Bekaboo/dropbar.nvim",
+    event = events.enter_buffer,
+  },
+  {
+    "fei6409/log-highlight.nvim",
+    ft = "log",
+    opts = {},
+  },
+  {
+    "echasnovski/mini.trailspace",
+    config = function()
+      require("mini.trailspace").setup()
+      vim.cmd("highlight MiniTrailspace guibg=LightGreen")
+    end,
     event = events.enter_buffer,
   },
 }

@@ -202,7 +202,7 @@ return {
             "--experimental-modules-support",
             "--fallback-style=llvm",
             "--header-insertion=never",
-            "-j=" .. #vim.uv.cpu_info(),
+            "-j=" .. vim.uv.available_parallelism(),
           },
           keys = {
             {
@@ -265,19 +265,10 @@ return {
     },
     opts = {
       library = {
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
         { path = "snacks.nvim", words = { "Snacks" } },
-        { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
       },
     },
-  },
-  {
-    "Bilal2453/luvit-meta",
-    lazy = true,
-  },
-  {
-    "LelouchHe/xmake-luals-addon",
-    lazy = true,
   },
   -- https://www.lazyvim.org/plugins/lsp#masonnvim-1 {{{
   {

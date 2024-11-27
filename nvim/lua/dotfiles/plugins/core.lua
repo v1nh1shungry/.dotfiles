@@ -294,6 +294,15 @@ return {
   },
   {
     "folke/snacks.nvim",
+    -- https://www.lazyvim.org/ {{{
+    config = function(_, opts)
+      local notify = vim.notify
+      require("snacks").setup(opts)
+      -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
+      -- this is needed to have early notifications show up in noice history
+      vim.notify = notify
+    end,
+    -- }}}
     init = function()
       vim.api.nvim_create_autocmd("User", {
         callback = function()
@@ -311,8 +320,8 @@ return {
       })
 
       vim.api.nvim_create_autocmd("User", {
-        pattern = "MiniFilesActionRename",
         callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
+        pattern = "MiniFilesActionRename",
       })
     end,
     lazy = false,
@@ -328,20 +337,18 @@ return {
       quickfile = { enabled = true },
       statuscolumn = { enabled = true },
       words = { enabled = true },
-      -- FIXME: a little buggy for me for now
       dashboard = {
-        enabled = false,
         preset = {
           header = [[
- __    __ __     __ ______ __       __      __    __ ________ _______   ______
-|  \  |  \  \   |  \      \  \     /  \    |  \  |  \        \       \ /      \
+ __    __ __     __ ______ __       __      __    __ ________ _______   ______  
+|  \  |  \  \   |  \      \  \     /  \    |  \  |  \        \       \ /      \ 
 | ▓▓\ | ▓▓ ▓▓   | ▓▓\▓▓▓▓▓▓ ▓▓\   /  ▓▓    | ▓▓  | ▓▓ ▓▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓\  ▓▓▓▓▓▓\
 | ▓▓▓\| ▓▓ ▓▓   | ▓▓ | ▓▓ | ▓▓▓\ /  ▓▓▓    | ▓▓__| ▓▓ ▓▓__   | ▓▓__| ▓▓ ▓▓  | ▓▓
 | ▓▓▓▓\ ▓▓\▓▓\ /  ▓▓ | ▓▓ | ▓▓▓▓\  ▓▓▓▓    | ▓▓    ▓▓ ▓▓  \  | ▓▓    ▓▓ ▓▓  | ▓▓
 | ▓▓\▓▓ ▓▓ \▓▓\  ▓▓  | ▓▓ | ▓▓\▓▓ ▓▓ ▓▓    | ▓▓▓▓▓▓▓▓ ▓▓▓▓▓  | ▓▓▓▓▓▓▓\ ▓▓  | ▓▓
 | ▓▓ \▓▓▓▓  \▓▓ ▓▓  _| ▓▓_| ▓▓ \▓▓▓| ▓▓    | ▓▓  | ▓▓ ▓▓_____| ▓▓  | ▓▓ ▓▓__/ ▓▓
 | ▓▓  \▓▓▓   \▓▓▓  |   ▓▓ \ ▓▓  \▓ | ▓▓    | ▓▓  | ▓▓ ▓▓     \ ▓▓  | ▓▓\▓▓    ▓▓
- \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓
+ \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓ 
           ]],
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },

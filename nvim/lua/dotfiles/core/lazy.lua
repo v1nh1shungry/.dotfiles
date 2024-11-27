@@ -15,6 +15,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  checker = { enabled = true },
   spec = vim.list_extend(
     { { import = "dotfiles.plugins" } },
     vim
@@ -29,20 +30,13 @@ require("lazy").setup({
     rtp = {
       disabled_plugins = {
         "editorconfig",
-        "gzip",
-        "matchit",
-        "matchparen",
         "netrwPlugin",
-        "osc52",
         "rplugin",
         "shada",
         "spellfile",
-        "tarPlugin",
         "tohtml",
         "tutor",
-        "zipPlugin",
       },
     },
   },
-  profiling = { loader = true, require = true },
 })

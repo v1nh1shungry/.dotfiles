@@ -17,6 +17,18 @@ local config = {
       "-Wall",
       "-Wextra",
     },
+    cmake = {
+      "cmake",
+      "-S",
+      ".",
+      "-B",
+      "build",
+      "-G",
+      "Ninja",
+      "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
+      "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+    },
     cpp = {
       "ccache",
       "g++",
@@ -34,6 +46,7 @@ local config = {
   },
   execute = {
     c = { "${relativeFileDirname}${/}${fileBasenameNoExtension}" },
+    cmake = { "cmake", "--build", "build" },
     cpp = { "${relativeFileDirname}${/}${fileBasenameNoExtension}" },
     python = { "python", "${relativeFile}" },
     lua = { "nvim", "-l", "${relativeFile}" },

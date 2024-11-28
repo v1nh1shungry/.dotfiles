@@ -526,8 +526,6 @@ return {
   {
     "echasnovski/mini.files",
     config = function()
-      require("mini.files").setup()
-
       -- https://www.lazyvim.org/extras/editor/mini-files {{{
       local function map_split(bufnr, lhs, direction, close_on_file)
         map({
@@ -557,10 +555,28 @@ return {
         end
       end
 
+      local show_hidden = false
+
+      local function filter_show(_) return true end
+
+      local function filter_hide(fs_entry)
+        return not vim.tbl_contains({
+          ".git",
+          "build",
+          "node_modules",
+        }, fs_entry.name)
+      end
+
+      local function toggle_hidden()
+        show_hidden = not show_hidden
+        require("mini.files").refresh({ content = { filter = show_hidden and filter_show or filter_hide } })
+      end
+
       vim.api.nvim_create_autocmd("User", {
         callback = function(event)
           local bufnr = event.data.buf_id
           map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
+          map({ "g.", toggle_hidden, buffer = bufnr, desc = "Toggle hidden files" })
           map_split(bufnr, "<C-w>s", "horizontal", false)
           map_split(bufnr, "<C-w>v", "vertical", false)
           map_split(bufnr, "<C-w>S", "horizontal", true)
@@ -570,7 +586,20 @@ return {
         pattern = "MiniFilesBufferCreate",
       })
       -- }}}
+
+      require("mini.files").setup({
+        content = {
+          filter = function(fs_entry) return show_hidden and filter_show(fs_entry) or filter_hide(fs_entry) end,
+        },
+      })
     end,
+    dependencies = {
+      "v1nh1shungry/mini-files-status.nvim",
+      config = function()
+        vim.cmd("highlight link MiniFilesGitIndex GitSignsAdd")
+        vim.cmd("highlight link MiniFilesGitWorkspace GitSignsChange")
+      end,
+    },
     keys = {
       {
         "<Leader>e",

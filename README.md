@@ -88,7 +88,7 @@
 * [hrsh7th/cmp-buffer](https://github.com/hrsh7th/cmp-buffer.git)
 * [hrsh7th/cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp.git)
 * [hrsh7th/cmp-path](https://github.com/hrsh7th/cmp-path.git)
-* [iguanacucumber/magazine.nvim](https://github.com/iguanacucumber/magazine.nvim.git)
+* [hrsh7th/nvim-cmp](https://github.com/hrsh7th/nvim-cmp.git)
 * [johmsalas/text-case.nvim](https://github.com/johmsalas/text-case.nvim.git)
 * [kevinhwang91/nvim-bqf](https://github.com/kevinhwang91/nvim-bqf.git)
 * [kevinhwang91/nvim-hlslens](https://github.com/kevinhwang91/nvim-hlslens.git)

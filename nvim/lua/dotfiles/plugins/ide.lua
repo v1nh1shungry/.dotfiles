@@ -260,7 +260,7 @@ return {
     "folke/lazydev.nvim",
     ft = "lua",
     dependencies = {
-      "iguanacucumber/magazine.nvim",
+      "hrsh7th/nvim-cmp",
       opts = function(_, opts) table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 }) end,
     },
     opts = {
@@ -301,7 +301,7 @@ return {
   },
   -- }}}
   {
-    "iguanacucumber/magazine.nvim",
+    "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -312,7 +312,6 @@ return {
     --        or deciding to abandon blink.cmp
     enabled = not vim.tbl_contains(require("dotfiles.user").extra, "blink"),
     event = events.enter_insert,
-    name = "nvim-cmp",
     opts = function()
       local cmp = require("cmp")
 

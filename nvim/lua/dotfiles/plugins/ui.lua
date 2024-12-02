@@ -235,11 +235,10 @@ return {
           { "<Leader>c", group = "code" },
           { "<Leader>cc", group = "text-case" },
           { "<Leader>d", group = "debug" },
-          { "<Leader>dp", group = "print" },
           { "<Leader>f", group = "file" },
           { "<Leader>g", group = "git" },
           { "<Leader>gx", group = "conflict" },
-          { "<Leader>p", group = "package" },
+          { "<Leader>p", group = "package/profile" },
           { "<Leader>q", group = "quit/sessions" },
           { "<Leader>s", group = "search" },
           { "<Leader>u", group = "ui/utils" },
@@ -561,6 +560,7 @@ return {
 
       local function filter_hide(fs_entry)
         return not vim.tbl_contains({
+          ".cache",
           ".git",
           "build",
           "node_modules",
@@ -628,7 +628,7 @@ return {
     cmd = "Outline",
     opts = {
       outline_window = { auto_close = true, hide_cursor = true },
-      preview_window = { border = "rounded", winblend = require("dotfiles.user").ui.blend },
+      preview_window = { border = "rounded", winblend = vim.opt.winblend },
       keymaps = {
         goto_location = { "o", "<CR>" },
         peek_location = {},

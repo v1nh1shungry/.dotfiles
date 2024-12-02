@@ -308,13 +308,16 @@ return {
         callback = function()
           vim.print = Snacks.debug.inspect
 
-          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
-          Snacks.toggle.diagnostics():map("<leader>ux")
+          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<Leader>uw")
+          Snacks.toggle.diagnostics():map("<Leader>ux")
           Snacks.toggle
             .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-            :map("<leader>uc")
-          Snacks.toggle.treesitter():map("<leader>uT")
-          Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ug")
+            :map("<Leader>uc")
+          Snacks.toggle.treesitter():map("<Leader>uT")
+          Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<Leader>ug")
+
+          Snacks.toggle.profiler():map("<Leader>pp")
+          Snacks.toggle.profiler_highlights():map("<Leader>ph")
         end,
         pattern = "VeryLazy",
       })
@@ -330,12 +333,13 @@ return {
       { "<C-q>", function() Snacks.bufdelete() end, desc = "Delete buffer" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, desc = "Git browse" },
       { "<M-=>", function() Snacks.terminal.toggle() end, mode = { "n", "t" }, desc = "Terminal" },
+      { "<Leader>.", function() Snacks.scratch() end, desc = "Toggle scratch buffer" },
     },
     opts = {
       bigfile = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },
-      statuscolumn = { enabled = true },
+      statuscolumn = { folds = { open = true, git_hl = true } },
       words = { enabled = true },
       dashboard = {
         preset = {
@@ -365,6 +369,7 @@ return {
           },
         },
       },
+      scratch = { autowrite = false },
     },
   },
 }

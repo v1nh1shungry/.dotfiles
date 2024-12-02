@@ -27,7 +27,7 @@ return {
         },
       },
       windows = {
-        autocomplete = { winblend = require("dotfiles.user").ui.blend },
+        autocomplete = { winblend = vim.opt.winblend },
         documentation = { auto_show = true },
       },
     },

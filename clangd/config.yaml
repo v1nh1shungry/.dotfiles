@@ -1,0 +1,53 @@
+Diagnostics:
+  ClangTidy:
+    Add: '*'
+    Remove: [
+      abseil-*,
+      altera-*,
+      android-*,
+      boost-use-ranges, # buggy for current release
+      bugprone-assignment-in-if-condition,
+      bugprone-easily-swappable-parameters, # no solution
+      cppcoreguidelines-avoid-c-arrays,
+      cppcoreguidelines-avoid-do-while,
+      cppcoreguidelines-avoid-magic-numbers, # too much false-positive
+      cppcoreguidelines-macro-usage,
+      cppcoreguidelines-non-private-member-variables-in-classes,
+      cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+      cppcoreguidelines-pro-type-vararg,
+      cppcoreguidelines-pro-type-union-access,
+      fuchsia-*,
+      google-*,
+      hicpp-avoid-c-arrays,
+      hicpp-braces-around-statements,
+      hicpp-no-array-decay,
+      hicpp-use-emplace,
+      hicpp-uppercase-literal-suffix,
+      hicpp-vararg,
+      llvm*,
+      misc-non-private-member-variables-in-classes,
+      misc-use-anonymous-namespace,
+      modernize-avoid-c-arrays,
+      modernize-type-traits, # not friendly to multiple c++ standard
+      modernize-use-emplace, # false-positive
+      modernize-use-trailing-return-type,
+      objc-*,
+      readability-braces-around-statements,
+      readability-function-cognitive-complexity,
+      readability-identifier-length,
+      readability-implicit-bool-conversion,
+      readability-magic-numbers,
+      readability-named-parameter,
+      readability-qualified-auto,
+      readability-redundant-access-specifiers,
+      readability-static-accessed-through-instance,
+      readability-uppercase-literal-suffix,
+      zircon-*,
+    ]
+    FastCheckFilter: Strict
+  Includes:
+    AnalyzeAngledIncludes: true
+  Suppress: ["-Wunqualified-std-cast-call"]
+
+Index:
+  StandardLibrary: Yes

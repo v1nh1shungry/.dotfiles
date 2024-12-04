@@ -161,7 +161,6 @@ return {
             { function() return vim.b.dotfiles_git_branch_state or "" end },
             {
               "diagnostics",
-              sections = { "error", "warn", "info" },
               colored = false,
               always_visible = true,
             },
@@ -475,7 +474,7 @@ return {
   },
   {
     "mcauley-penney/visual-whitespace.nvim",
-    event = "ModeChanged *:[vV\x16]*",
+    lazy = true,
     opts = {},
   },
   {

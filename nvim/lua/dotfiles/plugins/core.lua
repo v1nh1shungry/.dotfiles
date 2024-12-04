@@ -211,6 +211,7 @@ return {
         },
       },
     },
+    opts_extend = { "ensure_installed" },
   },
   {
     "chrisgrieser/nvim-spider",

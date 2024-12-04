@@ -1,5 +1,5 @@
--- TODO: blink.cmp is impressively fast, but TOO BUGGY to use for now.
---       when it is stable enough we'll switch to blink eventually.
+-- TODO: Almost ready to use, but still unstable.
+--       I'd say as the code base grows, blink is not so impressive now :(
 return {
   {
     "saghen/blink.cmp",
@@ -8,28 +8,24 @@ return {
     opts = {
       accept = { auto_brackets = { enabled = true } },
       fuzzy = { prebuiltBinaries = { download = false } },
-      highlight = { use_nvim_cmp_as_default = false },
       keymap = { preset = "super-tab" },
       nerd_font_variant = "mono",
+      completion = {
+        menu = { winblend = vim.o.pumblend },
+        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+        list = { selection = "auto_insert" },
+      },
       sources = {
         completion = {
           enabled_providers = {
             "lsp",
-            "lazydev",
-            "path",
             "snippets",
+            "path",
             "buffer",
           },
         },
-        providers = {
-          lsp = { fallback_for = { "lazydev" } },
-          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
-        },
-      },
-      windows = {
-        autocomplete = { winblend = vim.opt.winblend },
-        documentation = { auto_show = true },
       },
     },
+    opts_extend = { "sources.completion.enabled_providers" },
   },
 }

@@ -196,13 +196,14 @@ return {
           },
           cmd = {
             "clangd",
+            "--all-scopes-completion",
             "--background-index",
             "--clang-tidy",
             "--completion-style=detailed",
             "--experimental-modules-support",
             "--fallback-style=llvm",
             "--header-insertion=never",
-            "-j=" .. vim.uv.available_parallelism(),
+            "--use-dirty-headers",
           },
           keys = {
             {
@@ -260,8 +261,24 @@ return {
     "folke/lazydev.nvim",
     ft = "lua",
     dependencies = {
-      "hrsh7th/nvim-cmp",
-      opts = function(_, opts) table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 }) end,
+      {
+        "hrsh7th/nvim-cmp",
+        optional = true,
+        opts = function(_, opts) table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 }) end,
+      },
+      {
+        "saghen/blink.cmp",
+        optional = true,
+        opts = {
+          sources = {
+            completion = { enabled_providers = { "lazydev" } },
+            providers = {
+              lsp = { fallback_for = { "lazydev" } },
+              lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+            },
+          },
+        },
+      },
     },
     opts = {
       library = {
@@ -298,6 +315,7 @@ return {
     end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = { ensure_installed = { "cspell", "shfmt", "stylua" } },
+    opts_extend = { "ensure_installed" },
   },
   -- }}}
   {
@@ -442,14 +460,12 @@ return {
           vim.list_extend(names, lint.linters_by_ft["_"] or {})
         end
         vim.list_extend(names, lint.linters_by_ft["*"] or {})
-        local ctx = { filename = vim.api.nvim_buf_get_name(0) }
-        ctx.dirname = vim.fn.fnamemodify(ctx.filename, ":h")
         names = vim.tbl_filter(function(name)
           local linter = lint.linters[name]
           if not linter then
             vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
           end
-          return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
+          return linter and not (type(linter) == "table" and linter.condition and not linter.condition())
         end, names)
         if #names > 0 then
           lint.try_lint(names)
@@ -466,16 +482,12 @@ return {
     opts = {
       events = { "BufWritePost", "BufReadPost" },
       linters_by_ft = {
+        cpp = { "cspell" },
         fish = { "fish" },
-        ["*"] = { "cspell" },
       },
       linters = {
         cspell = {
-          condition = function(ctx)
-            return vim.bo.buftype == ""
-              and vim.tbl_contains({ "cpp" }, vim.bo.filetype)
-              and vim.fs.find({ ".cspell-words.txt" }, { path = ctx.filename, upward = true })[1]
-          end,
+          condition = function() return vim.bo.buftype == "" and vim.fs.root(vim.uv.cwd() or 0, ".cspell-words.txt") end,
         },
       },
     },

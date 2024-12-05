@@ -61,8 +61,32 @@ return {
   },
   {
     "danymat/neogen",
-    opts = { snippet_engine = "nvim" },
     keys = { { "<Leader>cg", "<Cmd>Neogen<CR>", desc = "Generate document comment" } },
+    opts = function()
+      local i = require("neogen.types.template").item
+      local another_doxygen = {
+        template = {
+          annotation_convention = "another_doxygen",
+          another_doxygen = {
+            { nil, "/// \\file", { no_results = true, type = { "file" } } },
+            { nil, "/// \\brief $1", { no_results = true, type = { "func", "file", "class" } } },
+            { nil, "", { no_results = true, type = { "file" } } },
+
+            { i.ClassName, "/// \\class %s", { type = { "class" } } },
+            { i.Type, "/// \\typedef %s", { type = { "type" } } },
+            { nil, "/// \\brief $1", { type = { "func", "class", "type" } } },
+            { nil, "///", { type = { "func", "class", "type" } } },
+            { i.Tparam, "/// \\tparam %s $1" },
+            { i.Parameter, "/// \\param %s $1" },
+            { i.Return, "/// \\return $1" },
+          },
+        },
+      }
+      return {
+        snippet_engine = "nvim",
+        languages = { c = another_doxygen, cpp = another_doxygen },
+      }
+    end,
   },
   {
     "echasnovski/mini.align",

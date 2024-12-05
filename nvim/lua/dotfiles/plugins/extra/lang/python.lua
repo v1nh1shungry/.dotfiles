@@ -5,14 +5,17 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    opts = { servers = { basedpyright = {} } },
+    opts = {
+      servers = {
+        basedpyright = {},
+        ruff = {
+          on_attach = function(client) client.server_capabilities.hoverProvider = false end,
+        },
+      },
+    },
   },
   {
     "williamboman/mason.nvim",
-    opts = { ensure_installed = { "black" } },
-  },
-  {
-    "stevearc/conform.nvim",
-    opts = { formatters_by_ft = { python = { "black" } } },
+    opts = { ensure_installed = { "ruff" } },
   },
 }

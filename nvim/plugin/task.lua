@@ -48,7 +48,10 @@ local config = {
     c = { "${relativeFileDirname}${/}${fileBasenameNoExtension}" },
     cmake = { "cmake", "--build", "build" },
     cpp = { "${relativeFileDirname}${/}${fileBasenameNoExtension}" },
-    python = { "python", "${relativeFile}" },
+    python = {
+      vim.fn.executable("python") == 1 and "python" or "python3",
+      "${relativeFile}",
+    },
     lua = { "nvim", "-l", "${relativeFile}" },
     javascript = { "node", "${relativeFile}" },
   },

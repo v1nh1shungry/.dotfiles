@@ -158,8 +158,18 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     cmd = { "TSInstall", "TSUpdate" },
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
+
+      -- clean unused parsers
+      local ensure_installed_parsers = require("nvim-treesitter.configs").get_ensure_installed_parsers()
+      for _, parser in ipairs(require("nvim-treesitter.info").installed_parsers()) do
+        if not vim.list_contains(ensure_installed_parsers, parser) then
+          vim.cmd("TSUninstall " .. parser)
+        end
+      end
+    end,
     event = events.enter_buffer,
-    main = "nvim-treesitter.configs",
     opts = {
       ensure_installed = {
         "bash",
@@ -169,10 +179,8 @@ return {
         "diff",
         "doxygen",
         "fish",
-        "git_config",
         "git_rebase",
         "gitcommit",
-        "gitignore",
         "html",
         "http",
         "json",

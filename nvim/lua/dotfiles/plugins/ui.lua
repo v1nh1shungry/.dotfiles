@@ -179,11 +179,10 @@ return {
             },
             {
               function()
-                if vim.bo.shiftwidth == 0 then
-                  return "Tab: " .. vim.bo.tabstop
-                else
+                if vim.bo.expandtab then
                   return "Spaces: " .. vim.bo.shiftwidth
                 end
+                return "Tab: " .. vim.bo.tabstop
               end,
             },
             {

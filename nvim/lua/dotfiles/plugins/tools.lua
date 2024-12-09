@@ -20,23 +20,6 @@ return {
         build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
       },
     },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(event)
-          map({
-            "zf",
-            function()
-              vim.cmd("cclose")
-              vim.cmd("Telescope quickfix")
-            end,
-            buffer = event.buf,
-            desc = "Enter fzf mode",
-          })
-        end,
-        pattern = "qf",
-        group = vim.api.nvim_create_augroup("quickfix_to_telescope_keymap", {}),
-      })
-    end,
     keys = {
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
       { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
@@ -82,6 +65,10 @@ return {
             i = { ["<C-s>"] = flash },
             n = { s = flash },
           },
+          get_selection_window = function()
+            require("edgy").goto_main()
+            return 0
+          end,
         },
       }
     end,

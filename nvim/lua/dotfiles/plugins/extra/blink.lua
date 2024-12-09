@@ -6,14 +6,15 @@ return {
     build = "cargo build --release",
     event = "InsertEnter",
     opts = {
-      accept = { auto_brackets = { enabled = true } },
+      appearance = { nerd_font_variant = "mono" },
       fuzzy = { prebuiltBinaries = { download = false } },
       keymap = { preset = "super-tab" },
-      nerd_font_variant = "mono",
       completion = {
-        menu = { winblend = vim.o.pumblend },
+        accept = { auto_brackets = { enabled = true } },
+        menu = { draw = { treesitter = true } },
         documentation = { auto_show = true, auto_show_delay_ms = 200 },
         list = { selection = "auto_insert" },
+        trigger = { show_in_snippet = false },
       },
       sources = {
         completion = {

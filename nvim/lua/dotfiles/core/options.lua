@@ -24,7 +24,6 @@ vim.opt.laststatus = 3
 vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "→ " }
-vim.opt.mousemodel = "extend"
 vim.opt.number = true
 vim.opt.pumblend = require("dotfiles.user").ui.blend
 vim.opt.pumheight = 10

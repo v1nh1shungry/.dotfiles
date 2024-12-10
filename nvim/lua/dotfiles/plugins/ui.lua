@@ -72,32 +72,6 @@ return {
     },
   },
   {
-    "stevearc/dressing.nvim",
-    -- https://www.lazyvim.org/extras/editor/telescope#dressingnvim {{{
-    init = function()
-      vim.ui.select = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.select(...)
-      end
-      vim.ui.input = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.input(...)
-      end
-    end,
-    -- }}}
-    lazy = true,
-    opts = {
-      input = { relative = "editor" },
-      select = {
-        telescope = {
-          layout_strategy = "bottom_pane",
-          sorting_strategy = "ascending",
-          layout_config = { bottom_pane = { height = 0.4 } },
-        },
-      },
-    },
-  },
-  {
     "nvim-lualine/lualine.nvim",
     config = function()
       require("lualine_require").require = require
@@ -475,22 +449,6 @@ return {
     "mcauley-penney/visual-whitespace.nvim",
     lazy = true,
     opts = {},
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    event = events.enter_buffer,
-    main = "ibl",
-    opts = {
-      debounce = 500,
-      indent = { char = "│", tab_char = "│" },
-      scope = {
-        show_start = false,
-        show_end = false,
-        include = { node_type = { lua = { "table_constructor" } } },
-      },
-      exclude = { buftypes = ui.excluded_buftypes },
-    },
   },
   {
     "kevinhwang91/nvim-bqf",

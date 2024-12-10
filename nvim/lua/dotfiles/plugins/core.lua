@@ -343,25 +343,22 @@ return {
       { "<Leader>gf", function() Snacks.gitbrowse() end, desc = "Git browse" },
       { "<M-=>", function() Snacks.terminal.toggle() end, mode = { "n", "t" }, desc = "Terminal" },
       { "<Leader>.", function() Snacks.scratch() end, desc = "Toggle scratch buffer" },
+      { "<Leader>uz", function() Snacks.zen.zoom() end, desc = "Zoom" },
     },
     opts = {
       bigfile = { enabled = true },
-      notifier = { enabled = true },
-      quickfile = { enabled = true },
-      statuscolumn = { folds = { open = true, git_hl = true } },
-      words = { enabled = true },
       dashboard = {
         preset = {
           header = [[
- __    __ __     __ ______ __       __      __    __ ________ _______   ______  
-|  \  |  \  \   |  \      \  \     /  \    |  \  |  \        \       \ /      \ 
+ __    __ __     __ ______ __       __      __    __ ________ _______   ______
+|  \  |  \  \   |  \      \  \     /  \    |  \  |  \        \       \ /      \
 | ▓▓\ | ▓▓ ▓▓   | ▓▓\▓▓▓▓▓▓ ▓▓\   /  ▓▓    | ▓▓  | ▓▓ ▓▓▓▓▓▓▓▓ ▓▓▓▓▓▓▓\  ▓▓▓▓▓▓\
 | ▓▓▓\| ▓▓ ▓▓   | ▓▓ | ▓▓ | ▓▓▓\ /  ▓▓▓    | ▓▓__| ▓▓ ▓▓__   | ▓▓__| ▓▓ ▓▓  | ▓▓
 | ▓▓▓▓\ ▓▓\▓▓\ /  ▓▓ | ▓▓ | ▓▓▓▓\  ▓▓▓▓    | ▓▓    ▓▓ ▓▓  \  | ▓▓    ▓▓ ▓▓  | ▓▓
 | ▓▓\▓▓ ▓▓ \▓▓\  ▓▓  | ▓▓ | ▓▓\▓▓ ▓▓ ▓▓    | ▓▓▓▓▓▓▓▓ ▓▓▓▓▓  | ▓▓▓▓▓▓▓\ ▓▓  | ▓▓
 | ▓▓ \▓▓▓▓  \▓▓ ▓▓  _| ▓▓_| ▓▓ \▓▓▓| ▓▓    | ▓▓  | ▓▓ ▓▓_____| ▓▓  | ▓▓ ▓▓__/ ▓▓
 | ▓▓  \▓▓▓   \▓▓▓  |   ▓▓ \ ▓▓  \▓ | ▓▓    | ▓▓  | ▓▓ ▓▓     \ ▓▓  | ▓▓\▓▓    ▓▓
- \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓ 
+ \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓
           ]],
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
@@ -378,7 +375,14 @@ return {
           },
         },
       },
+      indent = { scope = { animate = { enabled = false } } },
+      input = { enabled = true },
+      notifier = { enabled = true },
+      quickfile = { enabled = true },
       scratch = { autowrite = false },
+      statuscolumn = { folds = { open = true, git_hl = true } },
+      words = { enabled = true },
     },
+    priority = 1000,
   },
 }

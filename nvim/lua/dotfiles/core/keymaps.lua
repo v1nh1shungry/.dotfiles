@@ -49,17 +49,6 @@ map({ "<C-k>", "<Esc><Cmd>m .-2<Cr>==gi", mode = "i", desc = "Move Up" })
 map({ "<C-j>", ":m '>+1<CR>gv=gv", mode = "v", desc = "Move down" })
 map({ "<C-k>", ":m '<-2<CR>gv=gv", mode = "v", desc = "Move up" })
 
-map({
-  "[<Space>",
-  "<Cmd>call append(line('.') - 1, repeat([''], v:count1))<CR>",
-  desc = "Put empty line above",
-})
-map({
-  "]<Space>",
-  "<Cmd>call append(line('.'), repeat([''], v:count1))<CR>",
-  desc = "Put empty line below",
-})
-
 map({ "<Leader>pl", "<Cmd>Lazy home<CR>", desc = "Lazy" })
 
 map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Give up modifications" })
@@ -69,12 +58,7 @@ map({ "$", "g_", mode = "x", desc = "End of line" })
 map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = "Inspect position under the cursor" })
 map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
 
-map({ "<C-n>", "<Down>", desc = "Next command in history", mode = "c" })
-map({ "<C-p>", "<Up>", desc = "Previous command in history", mode = "c" })
-
-map({ "<Leader>um", toggle.maximize, desc = "Maximize current window" })
-
-map({ "<Leader>fs", "<Cmd>luafile %<CR>", desc = "Souce" })
+map({ "<Leader>uz", toggle.maximize, desc = "Zoom" })
 
 map({ "<Leader>cd", vim.diagnostic.open_float, desc = "Show diagnostics" })
 

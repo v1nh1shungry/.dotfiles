@@ -203,7 +203,6 @@ return {
             "--experimental-modules-support",
             "--fallback-style=llvm",
             "--header-insertion=never",
-            "--use-dirty-headers",
           },
           keys = {
             {
@@ -415,10 +414,12 @@ return {
     opts = {
       formatters_by_ft = {
         fish = { "fish_indent" },
+        just = { "just" },
         lua = { "stylua" },
         markdown = { "injected" },
         query = { "format-queries" },
         sh = { "shfmt" },
+        ["*"] = { "trim_newlines", "trim_whitespace" },
       },
       formatters = { injected = { options = { ignore_errors = true } } },
     },

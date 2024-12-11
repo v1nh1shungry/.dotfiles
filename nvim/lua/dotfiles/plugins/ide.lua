@@ -56,14 +56,38 @@ return {
             { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
           },
           ["typeHierarchy/subtypes"] = {
-            { "<Leader>cs", function() vim.lsp.buf.typehierarchy("subtypes") end, desc = "LSP subtypes" },
+            {
+              "<Leader>cs",
+              function()
+                vim.lsp.buf.typehierarchy("subtypes")
+              end,
+              desc = "LSP subtypes",
+            },
           },
           ["typeHierarchy/supertypes"] = {
-            { "<Leader>cS", function() vim.lsp.buf.typehierarchy("supertypes") end, desc = "LSP supertypes" },
+            {
+              "<Leader>cS",
+              function()
+                vim.lsp.buf.typehierarchy("supertypes")
+              end,
+              desc = "LSP supertypes",
+            },
           },
           ["textDocument/documentHighlight"] = {
-            { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next reference" },
-            { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous reference" },
+            {
+              "]]",
+              function()
+                Snacks.words.jump(vim.v.count1)
+              end,
+              desc = "Next reference",
+            },
+            {
+              "[[",
+              function()
+                Snacks.words.jump(-vim.v.count1)
+              end,
+              desc = "Previous reference",
+            },
           },
         }
 
@@ -218,7 +242,9 @@ return {
                 local detail_pos = {}
                 local ns = vim.api.nvim_get_namespaces()["clangd_ast"] or vim.api.nvim_create_namespace("clangd_ast")
 
-                local function clear_highlight(source_buf) vim.api.nvim_buf_clear_namespace(source_buf, ns, 0, -1) end
+                local function clear_highlight(source_buf)
+                  vim.api.nvim_buf_clear_namespace(source_buf, ns, 0, -1)
+                end
 
                 local function update_highlight(source_buf, ast_buf)
                   clear_highlight(source_buf)
@@ -241,12 +267,16 @@ return {
                   vim.api.nvim_create_autocmd("CursorMoved", {
                     group = group,
                     buffer = ast_buf,
-                    callback = function() update_highlight(source_buf, ast_buf) end,
+                    callback = function()
+                      update_highlight(source_buf, ast_buf)
+                    end,
                   })
                   vim.api.nvim_create_autocmd("BufLeave", {
                     group = group,
                     buffer = ast_buf,
-                    callback = function() clear_highlight(source_buf) end,
+                    callback = function()
+                      clear_highlight(source_buf)
+                    end,
                   })
                 end
 
@@ -433,7 +463,9 @@ return {
       {
         "hrsh7th/nvim-cmp",
         optional = true,
-        opts = function(_, opts) table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 }) end,
+        opts = function(_, opts)
+          table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 })
+        end,
       },
       {
         "saghen/blink.cmp",
@@ -466,15 +498,12 @@ return {
       require("mason").setup(opts)
       local mr = require("mason-registry")
       mr:on("package:install:success", function()
-        vim.defer_fn(
-          function()
-            require("lazy.core.handler.event").trigger({
-              event = "FileType",
-              buf = vim.api.nvim_get_current_buf(),
-            })
-          end,
-          100
-        )
+        vim.defer_fn(function()
+          require("lazy.core.handler.event").trigger({
+            event = "FileType",
+            buf = vim.api.nvim_get_current_buf(),
+          })
+        end, 100)
       end)
       mr.refresh(function()
         for _, tool in ipairs(opts.ensure_installed) do
@@ -514,12 +543,13 @@ return {
       ---@param snippet string
       ---@return string
       local function snippet_preview(snippet)
-        local ok, parsed = pcall(function() return vim.lsp._snippet_grammar.parse(snippet) end)
+        local ok, parsed = pcall(function()
+          return vim.lsp._snippet_grammar.parse(snippet)
+        end)
         return ok and tostring(parsed)
-          or snippet_replace(snippet, function(placeholder) return snippet_preview(placeholder.text) end):gsub(
-            "%$0",
-            ""
-          )
+          or snippet_replace(snippet, function(placeholder)
+            return snippet_preview(placeholder.text)
+          end):gsub("%$0", "")
       end
 
       -- This function replaces nested placeholders in a snippet with LSP placeholders.
@@ -595,7 +625,9 @@ return {
 
       local cmp = require("cmp")
       cmp.setup(opts)
-      cmp.event:on("menu_opened", function(event) add_missing_snippet_docs(event.window) end)
+      cmp.event:on("menu_opened", function(event)
+        add_missing_snippet_docs(event.window)
+      end)
     end,
     -- }}}
     dependencies = {
@@ -655,7 +687,9 @@ return {
                 })
               end
             elseif vim.snippet.active({ direction = 1 }) then
-              vim.schedule(function() vim.snippet.jump(1) end)
+              vim.schedule(function()
+                vim.snippet.jump(1)
+              end)
             else
               fallback()
             end
@@ -664,7 +698,9 @@ return {
             if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
               cmp.select_prev_item()
             elseif vim.snippet.active({ direction = -1 }) then
-              vim.schedule(function() vim.snippet.jump(-1) end)
+              vim.schedule(function()
+                vim.snippet.jump(-1)
+              end)
             else
               fallback()
             end
@@ -685,12 +721,16 @@ return {
   },
   {
     "stevearc/conform.nvim",
-    init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
+    init = function()
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
     dependencies = "williamboman/mason.nvim",
     keys = {
       {
         "<Leader>cf",
-        function() require("conform").format({ timeout_ms = 3000, async = false, quiet = false, lsp_fallback = true }) end,
+        function()
+          require("conform").format({ timeout_ms = 3000, async = false, quiet = false, lsp_fallback = true })
+        end,
         desc = "Format document",
         mode = { "n", "v" },
       },
@@ -771,7 +811,9 @@ return {
       },
       linters = {
         cspell = {
-          condition = function() return vim.bo.buftype == "" and vim.fs.root(vim.uv.cwd() or 0, ".cspell-words.txt") end,
+          condition = function()
+            return vim.bo.buftype == "" and vim.fs.root(vim.uv.cwd() or 0, ".cspell-words.txt")
+          end,
         },
       },
     },

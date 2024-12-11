@@ -53,7 +53,31 @@ local function resize(direction)
   vim.cmd(commands[direction])
 end
 
-map({ "<C-Left>", function() resize("h") end, desc = "Left shift" })
-map({ "<C-Right>", function() resize("l") end, desc = "Right shift" })
-map({ "<C-Up>", function() resize("k") end, desc = "Up shift" })
-map({ "<C-Down>", function() resize("j") end, desc = "Down shift" })
+map({
+  "<C-Left>",
+  function()
+    resize("h")
+  end,
+  desc = "Left shift",
+})
+map({
+  "<C-Right>",
+  function()
+    resize("l")
+  end,
+  desc = "Right shift",
+})
+map({
+  "<C-Up>",
+  function()
+    resize("k")
+  end,
+  desc = "Up shift",
+})
+map({
+  "<C-Down>",
+  function()
+    resize("j")
+  end,
+  desc = "Down shift",
+})

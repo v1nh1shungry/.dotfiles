@@ -33,14 +33,38 @@ return {
     keys = {
       { "<Leader>db", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
       { "<Leader>dc", "<Cmd>DapContinue<CR>", desc = "Continue" },
-      { "<Leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to cursor" },
+      {
+        "<Leader>dC",
+        function()
+          require("dap").run_to_cursor()
+        end,
+        desc = "Run to cursor",
+      },
       { "<Leader>dn", "<Cmd>DapStepOver<CR>", desc = "Step over" },
       { "<Leader>ds", "<Cmd>DapStepInto<CR>", desc = "Step into" },
       { "<Leader>do", "<Cmd>DapStepOut<CR>", desc = "Step out" },
-      { "<Leader>dd", function() require("dap").down() end, desc = "Go down in current stacktrace" },
-      { "<Leader>du", function() require("dap").up() end, desc = "Go up in current stacktrace" },
+      {
+        "<Leader>dd",
+        function()
+          require("dap").down()
+        end,
+        desc = "Go down in current stacktrace",
+      },
+      {
+        "<Leader>du",
+        function()
+          require("dap").up()
+        end,
+        desc = "Go up in current stacktrace",
+      },
       { "<Leader>dt", "<Cmd>DapTerminate<CR>", desc = "Terminate" },
-      { "<Leader>dK", function() require("dapui").eval() end, desc = "Eval" },
+      {
+        "<Leader>dK",
+        function()
+          require("dapui").eval()
+        end,
+        desc = "Eval",
+      },
     },
   },
 }

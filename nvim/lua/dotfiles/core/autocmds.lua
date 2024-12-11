@@ -1,4 +1,6 @@
-local augroup = function(name) return vim.api.nvim_create_augroup("dotfiles_" .. name, {}) end
+local augroup = function(name)
+  return vim.api.nvim_create_augroup("dotfiles_" .. name, {})
+end
 
 -- https://www.lazyvim.org/configuration/general#auto-commands {{{
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
@@ -11,7 +13,9 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function() vim.highlight.on_yank({ timeout = 500 }) end,
+  callback = function()
+    vim.highlight.on_yank({ timeout = 500 })
+  end,
   group = augroup("highlight_yank"),
 })
 

@@ -9,12 +9,16 @@ return {
     keys = {
       {
         "[t",
-        function() require("todo-comments").jump_prev() end,
+        function()
+          require("todo-comments").jump_prev()
+        end,
         desc = "Jump to the previous TODO",
       },
       {
         "]t",
-        function() require("todo-comments").jump_next() end,
+        function()
+          require("todo-comments").jump_next()
+        end,
         desc = "Jump to the next TODO",
       },
       { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
@@ -29,8 +33,12 @@ return {
     config = function()
       require("bufferline").setup({
         options = {
-          close_command = function(b) Snacks.bufdelete(b) end,
-          right_mouse_command = function(b) Snacks.bufdelete(b) end,
+          close_command = function(b)
+            Snacks.bufdelete(b)
+          end,
+          right_mouse_command = function(b)
+            Snacks.bufdelete(b)
+          end,
           numbers = "ordinal",
           diagnostics = "nvim_lsp",
           themable = true,
@@ -39,7 +47,9 @@ return {
       -- https://www.lazyvim.org/plugins/ui#bufferlinenvim {{{
       vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
-          vim.schedule(function() pcall(nvim_bufferline) end)
+          vim.schedule(function()
+            pcall(nvim_bufferline)
+          end)
         end,
         group = vim.api.nvim_create_augroup("dotfiles_bufferline", {}),
       })
@@ -65,8 +75,20 @@ return {
         end,
         desc = "Jump to the previous buffer",
       },
-      { "[B", function() require("bufferline").go_to(1, true) end, desc = "Jump to the first buffer" },
-      { "]B", function() require("bufferline").go_to(-1, true) end, desc = "Jump to the last buffer" },
+      {
+        "[B",
+        function()
+          require("bufferline").go_to(1, true)
+        end,
+        desc = "Jump to the first buffer",
+      },
+      {
+        "]B",
+        function()
+          require("bufferline").go_to(-1, true)
+        end,
+        desc = "Jump to the last buffer",
+      },
       { "gb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
     },
   },
@@ -108,7 +130,9 @@ return {
         return ""
       end
 
-      local function refresh_git_branch_state() vim.b.dotfiles_git_branch_state = get_git_branch_state() end
+      local function refresh_git_branch_state()
+        vim.b.dotfiles_git_branch_state = get_git_branch_state()
+      end
 
       vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
         callback = refresh_git_branch_state,
@@ -131,7 +155,11 @@ return {
           lualine_z = {},
           lualine_c = {
             { "branch", icon = "" },
-            { function() return vim.b.dotfiles_git_branch_state or "" end },
+            {
+              function()
+                return vim.b.dotfiles_git_branch_state or ""
+              end,
+            },
             {
               "diagnostics",
               colored = false,
@@ -139,11 +167,17 @@ return {
             },
             {
               "mode",
-              fmt = function(str) return "-- " .. str .. " --" end,
+              fmt = function(str)
+                return "-- " .. str .. " --"
+              end,
             },
           },
           lualine_x = {
-            { function() return "%S" end },
+            {
+              function()
+                return "%S"
+              end,
+            },
             {
               function()
                 local row, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -160,7 +194,9 @@ return {
             },
             {
               "encoding",
-              fmt = function(str) return string.upper(str) end,
+              fmt = function(str)
+                return string.upper(str)
+              end,
             },
             {
               "fileformat",
@@ -359,18 +395,24 @@ return {
         {
           ft = "noice",
           size = { height = 0.4 },
-          filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
+          filter = function(_, win)
+            return vim.api.nvim_win_get_config(win).relative == ""
+          end,
         },
         { ft = "qf", title = "QuickFix" },
         {
           ft = "help",
           size = { height = 0.4 },
-          filter = function(buf) return vim.bo[buf].buftype == "help" end,
+          filter = function(buf)
+            return vim.bo[buf].buftype == "help"
+          end,
         },
         {
           ft = "markdown",
           size = { height = 0.4 },
-          filter = function(buf) return vim.bo[buf].buftype == "help" end,
+          filter = function(buf)
+            return vim.bo[buf].buftype == "help"
+          end,
         },
         { ft = "dap-repl", title = "REPL" },
         { ft = "dapui_console", title = "Console" },
@@ -412,7 +454,9 @@ return {
         {
           title = "Treesitter",
           ft = "query",
-          filter = function(buf, _) return vim.bo[buf].buftype ~= "" end,
+          filter = function(buf, _)
+            return vim.bo[buf].buftype ~= ""
+          end,
           size = { width = 0.4 },
           wo = { number = false, relativenumber = false, stc = "" },
         },
@@ -465,12 +509,16 @@ return {
       keys = {
         {
           ">",
-          function() require("quicker").expand({ before = 2, after = 2, add_to_existing = true }) end,
+          function()
+            require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+          end,
           desc = "Expand quickfix context",
         },
         {
           "<",
-          function() require("quicker").collapse() end,
+          function()
+            require("quicker").collapse()
+          end,
           desc = "Collapse quickfix context",
         },
       },
@@ -515,7 +563,9 @@ return {
 
       local show_hidden = false
 
-      local function filter_show(_) return true end
+      local function filter_show(_)
+        return true
+      end
 
       local function filter_hide(fs_entry)
         return not vim.tbl_contains({
@@ -548,7 +598,9 @@ return {
 
       require("mini.files").setup({
         content = {
-          filter = function(fs_entry) return show_hidden and filter_show(fs_entry) or filter_hide(fs_entry) end,
+          filter = function(fs_entry)
+            return show_hidden and filter_show(fs_entry) or filter_hide(fs_entry)
+          end,
         },
       })
     end,
@@ -595,7 +647,11 @@ return {
         up_and_jump = "<C-p>",
         down_and_jump = "<C-n>",
       },
-      symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
+      symbols = {
+        icon_fetcher = function(kind, _)
+          return require("mini.icons").get("lsp", kind)
+        end,
+      },
     },
   },
   {

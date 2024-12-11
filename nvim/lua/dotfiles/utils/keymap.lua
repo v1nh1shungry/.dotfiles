@@ -4,7 +4,9 @@ return function(opts)
   opts[1], opts[2], opts.mode = nil, nil, nil
   mode = type(mode) == "table" and mode or { mode }
   if vim.list_contains(mode, "c") then
-    mode = vim.tbl_filter(function(m) return m ~= "c" end, mode)
+    mode = vim.tbl_filter(function(m)
+      return m ~= "c"
+    end, mode)
     vim.keymap.set("c", lhs, rhs, vim.tbl_extend("force", opts, { silent = false }))
   end
   opts.silent = opts.silent ~= false

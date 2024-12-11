@@ -35,8 +35,22 @@ map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close tab" })
 map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New tab" })
 map({ "<Leader><Tab>0", "<Cmd>tabfirst<CR>", desc = "First tab" })
 map({ "<Leader><Tab>$", "<Cmd>tablast<CR>", desc = "Last tab" })
-map({ "]<Tab>", function() return "<Cmd>+" .. vim.v.count1 .. "tabnext<CR>" end, desc = "Next tab", expr = true })
-map({ "[<Tab>", function() return "<Cmd>-" .. vim.v.count1 .. "tabnext<CR>" end, desc = "Previous tab", expr = true })
+map({
+  "]<Tab>",
+  function()
+    return "<Cmd>+" .. vim.v.count1 .. "tabnext<CR>"
+  end,
+  desc = "Next tab",
+  expr = true,
+})
+map({
+  "[<Tab>",
+  function()
+    return "<Cmd>-" .. vim.v.count1 .. "tabnext<CR>"
+  end,
+  desc = "Previous tab",
+  expr = true,
+})
 
 map({ "<Leader>,", "<Cmd>e #<CR>", desc = "Last buffer" })
 
@@ -64,42 +78,58 @@ map({ "<Leader>cd", vim.diagnostic.open_float, desc = "Show diagnostics" })
 
 map({
   "]w",
-  function() vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.WARN }) end,
+  function()
+    vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.WARN })
+  end,
   desc = "Jump to the next warning",
 })
 map({
   "[w",
-  function() vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.WARN }) end,
+  function()
+    vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.WARN })
+  end,
   desc = "Jump to the previous warning",
 })
 map({
   "]e",
-  function() vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR }) end,
+  function()
+    vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR })
+  end,
   desc = "Jump to the next error",
 })
 map({
   "[e",
-  function() vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR }) end,
+  function()
+    vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR })
+  end,
   desc = "Jump to the previous error",
 })
 map({
   "]W",
-  function() vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.WARN, wrap = false }) end,
+  function()
+    vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.WARN, wrap = false })
+  end,
   desc = "Jump to the last warning",
 })
 map({
   "[W",
-  function() vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.WARN, wrap = false }) end,
+  function()
+    vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.WARN, wrap = false })
+  end,
   desc = "Jump to the first warning",
 })
 map({
   "]E",
-  function() vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false }) end,
+  function()
+    vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false })
+  end,
   desc = "Jump to the last error",
 })
 map({
   "[E",
-  function() vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false }) end,
+  function()
+    vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false })
+  end,
   desc = "Jump to the first error",
 })
 

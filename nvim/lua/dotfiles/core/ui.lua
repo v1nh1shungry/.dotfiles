@@ -36,7 +36,9 @@ vim.cmd("colorscheme " .. config.ui.colorscheme)
 
 -- https://www.lazyvim.org/ {{{
 local notifs = {}
-local function temp(...) table.insert(notifs, vim.F.pack_len(...)) end
+local function temp(...)
+  table.insert(notifs, vim.F.pack_len(...))
+end
 
 local orig = vim.notify
 vim.notify = temp

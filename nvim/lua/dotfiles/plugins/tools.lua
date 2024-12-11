@@ -43,7 +43,9 @@ return {
           search = {
             mode = "search",
             exclude = {
-              function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults" end,
+              function(win)
+                return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
+              end,
             },
           },
           action = function(match)
@@ -75,7 +77,9 @@ return {
   },
   {
     "debugloop/telescope-undo.nvim",
-    config = function() require("telescope").load_extension("undo") end,
+    config = function()
+      require("telescope").load_extension("undo")
+    end,
     dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
     keys = { { "<Leader>fu", "<Cmd>Telescope undo<CR>", desc = "Undotree" } },
   },
@@ -84,7 +88,9 @@ return {
     keys = {
       {
         "<leader>sY",
-        function() require("telescope").extensions.yank_history.yank_history({}) end,
+        function()
+          require("telescope").extensions.yank_history.yank_history({})
+        end,
         desc = "Open Yank History",
       },
       { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
@@ -119,23 +125,43 @@ return {
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(arg)
-          map({ "<CR>", function() require("kulala").run() end, buffer = arg.buf, desc = "Run the request" })
+          map({
+            "<CR>",
+            function()
+              require("kulala").run()
+            end,
+            buffer = arg.buf,
+            desc = "Run the request",
+          })
           map({
             "]r",
-            function() require("kulala").jump_next() end,
+            function()
+              require("kulala").jump_next()
+            end,
             buffer = arg.buf,
             desc = "Jump to the next request",
           })
           map({
             "[r",
-            function() require("kulala").jump_prev() end,
+            function()
+              require("kulala").jump_prev()
+            end,
             buffer = arg.buf,
             desc = "Jump to the prev request",
           })
-          map({ "yr", function() require("kulala").copy() end, buffer = arg.buf, desc = "Copy as curl command" })
+          map({
+            "yr",
+            function()
+              require("kulala").copy()
+            end,
+            buffer = arg.buf,
+            desc = "Copy as curl command",
+          })
           map({
             "<Tab>",
-            function() require("kulala").toggle_view() end,
+            function()
+              require("kulala").toggle_view()
+            end,
             buffer = arg.buf,
             desc = "Toggle between body and headers",
           })
@@ -150,6 +176,8 @@ return {
     "kristijanhusak/vim-dadbod-ui",
     cmd = "DBUI",
     dependencies = "tpope/vim-dadbod",
-    init = function() vim.g.db_ui_use_nerd_fonts = 1 end,
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
   },
 }

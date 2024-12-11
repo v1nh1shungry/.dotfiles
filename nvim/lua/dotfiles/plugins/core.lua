@@ -281,17 +281,33 @@ return {
       "T",
       ",",
       ";",
-      { "gs", function() require("flash").jump() end, desc = "Flash" },
-      { "gt", function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      {
+        "gs",
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "gt",
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
       {
         "r",
-        function() require("flash").remote() end,
+        function()
+          require("flash").remote()
+        end,
         mode = "o",
         desc = "Remote Flash",
       },
       {
         "R",
-        function() require("flash").treesitter_search() end,
+        function()
+          require("flash").treesitter_search()
+        end,
         mode = { "o", "x" },
         desc = "Treesitter search",
       },
@@ -332,18 +348,57 @@ return {
       })
 
       vim.api.nvim_create_autocmd("User", {
-        callback = function(event) Snacks.rename.on_rename_file(event.data.from, event.data.to) end,
+        callback = function(event)
+          Snacks.rename.on_rename_file(event.data.from, event.data.to)
+        end,
         pattern = "MiniFilesActionRename",
       })
     end,
     lazy = false,
     keys = {
-      { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss all notifications" },
-      { "<C-q>", function() Snacks.bufdelete() end, desc = "Delete buffer" },
-      { "<Leader>gf", function() Snacks.gitbrowse() end, desc = "Git browse" },
-      { "<M-=>", function() Snacks.terminal.toggle() end, mode = { "n", "t" }, desc = "Terminal" },
-      { "<Leader>.", function() Snacks.scratch() end, desc = "Toggle scratch buffer" },
-      { "<Leader>uz", function() Snacks.zen.zoom() end, desc = "Zoom" },
+      {
+        "<Leader>un",
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = "Dismiss all notifications",
+      },
+      {
+        "<C-q>",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Delete buffer",
+      },
+      {
+        "<Leader>gf",
+        function()
+          Snacks.gitbrowse()
+        end,
+        desc = "Git browse",
+      },
+      {
+        "<M-=>",
+        function()
+          Snacks.terminal.toggle()
+        end,
+        mode = { "n", "t" },
+        desc = "Terminal",
+      },
+      {
+        "<Leader>.",
+        function()
+          Snacks.scratch()
+        end,
+        desc = "Toggle scratch buffer",
+      },
+      {
+        "<Leader>uz",
+        function()
+          Snacks.zen.zoom()
+        end,
+        desc = "Zoom",
+      },
     },
     opts = {
       bigfile = { enabled = true },

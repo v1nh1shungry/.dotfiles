@@ -20,7 +20,9 @@ require("lazy").setup({
     { { import = "dotfiles.plugins" } },
     vim
       .iter(require("dotfiles.user").extra)
-      :map(function(m) return { import = "dotfiles.plugins.extra." .. m } end)
+      :map(function(m)
+        return { import = "dotfiles.plugins.extra." .. m }
+      end)
       :totable()
   ),
   install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },

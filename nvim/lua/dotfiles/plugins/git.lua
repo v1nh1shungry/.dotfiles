@@ -22,22 +22,30 @@ return {
         map_local({ "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" })
         map_local({
           "]h",
-          function() require("gitsigns").nav_hunk("next", { navigation_message = false }) end,
+          function()
+            require("gitsigns").nav_hunk("next", { navigation_message = false })
+          end,
           desc = "Next git hunk",
         })
         map_local({
           "[h",
-          function() require("gitsigns").nav_hunk("prev", { navigation_message = false }) end,
+          function()
+            require("gitsigns").nav_hunk("prev", { navigation_message = false })
+          end,
           desc = "Previous git hunk",
         })
         map_local({
           "]H",
-          function() require("gitsigns").nav_hunk("last", { navigation_message = false }) end,
+          function()
+            require("gitsigns").nav_hunk("last", { navigation_message = false })
+          end,
           desc = "Last git hunk",
         })
         map_local({
           "[H",
-          function() require("gitsigns").nav_hunk("first", { navigation_message = false }) end,
+          function()
+            require("gitsigns").nav_hunk("first", { navigation_message = false })
+          end,
           desc = "First git hunk",
         })
         map_local({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })

@@ -24,7 +24,9 @@ return {
         { "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = "x", desc = "Add surrounding" },
         { "yss", "ys_", remap = true, desc = "Add surrounding for line" },
       }
-      mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
+      mappings = vim.tbl_filter(function(m)
+        return m[1] and #m[1] > 0
+      end, mappings)
       return vim.list_extend(mappings, keys)
     end,
     opts = {
@@ -45,8 +47,20 @@ return {
     dependencies = "nvim-treesitter/nvim-treesitter",
     opts = { use_default_keymaps = false },
     keys = {
-      { "<C-l>", function() require("sibling-swap").swap_with_right() end, desc = "Swap with right" },
-      { "<C-h>", function() require("sibling-swap").swap_with_left() end, desc = "Swap with left" },
+      {
+        "<C-l>",
+        function()
+          require("sibling-swap").swap_with_right()
+        end,
+        desc = "Swap with right",
+      },
+      {
+        "<C-h>",
+        function()
+          require("sibling-swap").swap_with_left()
+        end,
+        desc = "Swap with left",
+      },
     },
   },
   {
@@ -101,7 +115,9 @@ return {
     keys = {
       {
         "<Leader>sr",
-        function() require("ssr").open() end,
+        function()
+          require("ssr").open()
+        end,
         mode = { "n", "x" },
         desc = "Structural replace",
       },
@@ -135,10 +151,38 @@ return {
 
       require("dial.config").augends:register_group(opts)
 
-      map({ "<C-a>", function() return dial(true) end, expr = true, mode = { "n", "v" } })
-      map({ "<C-x>", function() return dial(false) end, expr = true, mode = { "n", "v" } })
-      map({ "g<C-a>", function() return dial(true, true) end, expr = true, mode = { "n", "v" } })
-      map({ "g<C-x>", function() return dial(false, true) end, expr = true, mode = { "n", "v" } })
+      map({
+        "<C-a>",
+        function()
+          return dial(true)
+        end,
+        expr = true,
+        mode = { "n", "v" },
+      })
+      map({
+        "<C-x>",
+        function()
+          return dial(false)
+        end,
+        expr = true,
+        mode = { "n", "v" },
+      })
+      map({
+        "g<C-a>",
+        function()
+          return dial(true, true)
+        end,
+        expr = true,
+        mode = { "n", "v" },
+      })
+      map({
+        "g<C-x>",
+        function()
+          return dial(false, true)
+        end,
+        expr = true,
+        mode = { "n", "v" },
+      })
     end,
     keys = {
       { "<C-a>", expr = true, mode = { "n", "v" } },

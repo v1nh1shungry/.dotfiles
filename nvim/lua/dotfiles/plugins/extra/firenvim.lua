@@ -2,7 +2,9 @@ local specs = {
   {
     "glacambre/firenvim",
     lazy = not vim.g.started_by_firenvim,
-    build = function() vim.fn["firenvim#install"](0) end,
+    build = function()
+      vim.fn["firenvim#install"](0)
+    end,
   },
 }
 
@@ -10,15 +12,24 @@ if not vim.g.started_by_firenvim then
   return specs
 end
 
-local enabled = vim.tbl_map(function(spec) return spec[1] end, specs)
+local enabled = vim.tbl_map(function(spec)
+  return spec[1]
+end, specs)
 for _, module in ipairs({ "core", "editor", "themes" }) do
-  vim.list_extend(enabled, vim.tbl_map(function(spec) return spec[1] end, require("dotfiles.plugins." .. module)))
+  vim.list_extend(
+    enabled,
+    vim.tbl_map(function(spec)
+      return spec[1]
+    end, require("dotfiles.plugins." .. module))
+  )
 end
 
 local Config = require("lazy.core.config")
 Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
-Config.options.defaults.cond = function(plugin) return vim.list_contains(enabled, plugin[1]) end
+Config.options.defaults.cond = function(plugin)
+  return vim.list_contains(enabled, plugin[1])
+end
 
 vim.g.firenvim_config = {
   localSettings = {

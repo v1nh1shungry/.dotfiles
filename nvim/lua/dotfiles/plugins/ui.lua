@@ -1,6 +1,5 @@
 local events = require("dotfiles.utils.events")
 local map = require("dotfiles.utils.keymap")
-local ui = require("dotfiles.utils.ui")
 
 return {
   {
@@ -424,6 +423,10 @@ return {
         {
           title = "Grug Far",
           ft = "grug-far",
+          size = { width = 0.4 },
+        },
+        {
+          ft = "ClangdAST",
           size = { width = 0.4 },
         },
       },

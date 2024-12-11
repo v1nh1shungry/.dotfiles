@@ -15,17 +15,8 @@ return {
         list = { selection = "auto_insert" },
         trigger = { show_in_snippet = false },
       },
-      sources = {
-        completion = {
-          enabled_providers = {
-            "lsp",
-            "snippets",
-            "path",
-            "buffer",
-          },
-        },
-      },
+      sources = { default = { "lsp", "snippets", "path", "buffer" } },
     },
-    opts_extend = { "sources.completion.enabled_providers" },
+    opts_extend = { "sources.default" },
   },
 }

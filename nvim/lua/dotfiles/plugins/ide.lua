@@ -210,6 +210,176 @@ return {
               "<Cmd>ClangdSwitchSourceHeader<CR>",
               desc = "Switch between header and source",
             },
+            {
+              "<Leader>uI",
+              -- https://github.com/p00f/clangd_extensions.nvim/blob/main/lua/clangd_extensions/ast.lua {{{
+              function()
+                local node_pos = {}
+                local detail_pos = {}
+                local ns = vim.api.nvim_get_namespaces()["clangd_ast"] or vim.api.nvim_create_namespace("clangd_ast")
+
+                local function clear_highlight(source_buf) vim.api.nvim_buf_clear_namespace(source_buf, ns, 0, -1) end
+
+                local function update_highlight(source_buf, ast_buf)
+                  clear_highlight(source_buf)
+                  if vim.api.nvim_get_current_buf() ~= ast_buf then
+                    return
+                  end
+                  local curline = vim.fn.getcurpos()[2]
+                  local curline_ranges = node_pos[source_buf][ast_buf][curline]
+                  if curline_ranges then
+                    vim.highlight.range(source_buf, ns, "Search", curline_ranges.start, curline_ranges["end"], {
+                      regtype = "v",
+                      inclusive = false,
+                      priority = 110,
+                    })
+                  end
+                end
+
+                local function setup_hl_autocmd(source_buf, ast_buf)
+                  local group = vim.api.nvim_create_augroup("clangd_ast_autocmds", {})
+                  vim.api.nvim_create_autocmd("CursorMoved", {
+                    group = group,
+                    buffer = ast_buf,
+                    callback = function() update_highlight(source_buf, ast_buf) end,
+                  })
+                  vim.api.nvim_create_autocmd("BufLeave", {
+                    group = group,
+                    buffer = ast_buf,
+                    callback = function() clear_highlight(source_buf) end,
+                  })
+                end
+
+                local function icon_prefix(role, kind)
+                  local conf = require("dotfiles.utils.ui").icons.ast
+                  if conf.kind_icons[kind] then
+                    return conf.kind_icons[kind] .. "  "
+                  elseif conf.role_icons[role] then
+                    return conf.role_icons[role] .. "  "
+                  else
+                    return "   "
+                  end
+                end
+
+                local function describe(role, kind, detail)
+                  local str = ""
+                  local icon = icon_prefix(role, kind)
+                  local detailpos = nil
+                  str = str .. kind
+                  if
+                    not (
+                      role == "expression"
+                      or role == "statement"
+                      or role == "declaration"
+                      or role == "template name"
+                    )
+                  then
+                    str = str .. " " .. role
+                  end
+                  if detail then
+                    detailpos = {
+                      start = string.len(str) + vim.fn.strlen(icon) + 1,
+                      ["end"] = string.len(str) + vim.fn.strlen(icon) + string.len(detail) + 1,
+                    }
+                    str = str .. " " .. detail
+                  end
+                  return (icon .. str), detailpos
+                end
+
+                local function walk_tree(node, visited, result, padding, hl_bufs)
+                  visited[node] = true
+                  local str, detpos = describe(node.role, node.kind, node.detail)
+                  table.insert(result, padding .. str)
+
+                  if node.detail and detpos then
+                    detail_pos[hl_bufs.ast_buf][#result] = {
+                      start = string.len(padding) + detpos.start,
+                      ["end"] = string.len(padding) + detpos["end"],
+                    }
+                  end
+
+                  if node.range then
+                    node_pos[hl_bufs.source_buf][hl_bufs.ast_buf][#result] = {
+                      start = { node.range.start.line, node.range.start.character },
+                      ["end"] = { node.range["end"].line, node.range["end"].character },
+                    }
+                  end
+
+                  if node.children then
+                    for _, child in pairs(node.children) do
+                      if not visited[child] then
+                        walk_tree(child, visited, result, padding .. "  ", hl_bufs)
+                      end
+                    end
+                  end
+
+                  return result
+                end
+
+                local function highlight_detail(ast_buf)
+                  for linenum, range in pairs(detail_pos[ast_buf]) do
+                    vim.highlight.range(
+                      ast_buf,
+                      ns,
+                      "Comment",
+                      { linenum - 1, range.start },
+                      { linenum - 1, range["end"] },
+                      {
+                        regtype = "v",
+                        inclusive = false,
+                        priority = 110,
+                      }
+                    )
+                  end
+                end
+
+                local function handler(err, node)
+                  if err or not node then
+                    return
+                  else
+                    local source_buf = vim.api.nvim_get_current_buf()
+                    local b = vim.b[source_buf]
+                    if not b.clangd_ast_buf or not vim.api.nvim_buf_is_valid(b.clangd_ast_buf) then
+                      b.clangd_ast_buf = vim.api.nvim_create_buf(false, true)
+                    end
+                    if not b.clangd_ast_win or not vim.api.nvim_win_is_valid(b.clangd_ast_win) then
+                      b.clangd_ast_win = vim.api.nvim_open_win(b.clangd_ast_buf, true, { split = "right" })
+                    else
+                      vim.cmd(vim.api.nvim_win_get_number(b.clangd_ast_win) .. " wincmd w")
+                    end
+
+                    if not node_pos[source_buf] then
+                      node_pos[source_buf] = {}
+                    end
+                    node_pos[source_buf][b.clangd_ast_buf] = {}
+                    detail_pos[b.clangd_ast_buf] = {}
+
+                    local lines = walk_tree(node, {}, {}, "", { source_buf = source_buf, ast_buf = b.clangd_ast_buf })
+                    vim.bo.filetype = "ClangdAST"
+                    vim.bo.modifiable = true
+                    vim.api.nvim_buf_set_lines(b.clangd_ast_buf, 0, -1, true, lines)
+                    vim.bo.buftype = "nofile"
+                    vim.bo.modifiable = false
+                    vim.bo.shiftwidth = 2
+                    vim.wo.foldmethod = "indent"
+                    vim.wo.number = false
+                    vim.wo.relativenumber = false
+                    setup_hl_autocmd(source_buf, b.clangd_ast_buf)
+                    highlight_detail(b.clangd_ast_buf)
+                  end
+                end
+
+                vim.lsp.buf_request(0, "textDocument/ast", {
+                  textDocument = { uri = vim.uri_from_bufnr(0) },
+                  range = {
+                    start = { line = 0, character = 0 },
+                    ["end"] = { line = vim.api.nvim_buf_line_count(0), character = 0 },
+                  },
+                }, handler)
+              end,
+              -- }}}
+              desc = "Clangd AST",
+            },
           },
         },
         lua_ls = {
@@ -270,10 +440,13 @@ return {
         optional = true,
         opts = {
           sources = {
-            completion = { enabled_providers = { "lazydev" } },
+            default = { "lazydev" },
             providers = {
-              lsp = { fallback_for = { "lazydev" } },
-              lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+              lazydev = {
+                name = "LazyDev",
+                module = "lazydev.integrations.blink",
+                fallbacks = { "lsp" },
+              },
             },
           },
         },
@@ -319,6 +492,112 @@ return {
   -- }}}
   {
     "hrsh7th/nvim-cmp",
+    -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/cmp.lua {{{
+    config = function(_, opts)
+      for _, source in ipairs(opts.sources) do
+        source.group_index = source.group_index or 1
+      end
+
+      ---@alias Placeholder {n:number, text:string}
+      ---
+      ---@param snippet string
+      ---@param fn fun(placeholder:Placeholder):string
+      ---@return string
+      local function snippet_replace(snippet, fn)
+        return snippet:gsub("%$%b{}", function(m)
+          local n, name = m:match("^%${(%d+):(.+)}$")
+          return n and fn({ n = n, text = name }) or m
+        end) or snippet
+      end
+
+      -- This function resolves nested placeholders in a snippet.
+      ---@param snippet string
+      ---@return string
+      local function snippet_preview(snippet)
+        local ok, parsed = pcall(function() return vim.lsp._snippet_grammar.parse(snippet) end)
+        return ok and tostring(parsed)
+          or snippet_replace(snippet, function(placeholder) return snippet_preview(placeholder.text) end):gsub(
+            "%$0",
+            ""
+          )
+      end
+
+      -- This function replaces nested placeholders in a snippet with LSP placeholders.
+      local function snippet_fix(snippet)
+        local texts = {} ---@type table<number, string>
+        return snippet_replace(snippet, function(placeholder)
+          texts[placeholder.n] = texts[placeholder.n] or snippet_preview(placeholder.text)
+          return "${" .. placeholder.n .. ":" .. texts[placeholder.n] .. "}"
+        end)
+      end
+
+      -- This function adds missing documentation to snippets.
+      -- The documentation is a preview of the snippet.
+      ---@param window cmp.CustomEntriesView|cmp.NativeEntriesView
+      local function add_missing_snippet_docs(window)
+        local cmp = require("cmp")
+        local Kind = cmp.lsp.CompletionItemKind
+        local entries = window:get_entries()
+        for _, entry in ipairs(entries) do
+          if entry:get_kind() == Kind.Snippet then
+            local item = entry:get_completion_item()
+            if not item.documentation and item.insertText then
+              item.documentation = {
+                kind = cmp.lsp.MarkupKind.Markdown,
+                value = string.format("```%s\n%s\n```", vim.bo.filetype, snippet_preview(item.insertText)),
+              }
+            end
+          end
+        end
+      end
+
+      local parse = require("cmp.utils.snippet").parse
+      require("cmp.utils.snippet").parse = function(input)
+        local ok, ret = pcall(parse, input)
+        if ok then
+          return ret
+        end
+        return snippet_preview(input)
+      end
+
+      opts.snippet = {
+        expand = function(item)
+          -- Native sessions don't support nested snippet sessions.
+          -- Always use the top-level session.
+          -- Otherwise, when on the first placeholder and selecting a new completion,
+          -- the nested session will be used instead of the top-level session.
+          -- See: https://github.com/LazyVim/LazyVim/issues/3199
+          local session = vim.snippet.active() and vim.snippet._session or nil
+
+          local ok, err = pcall(vim.snippet.expand, item.body)
+          if not ok then
+            local fixed = snippet_fix(item.body)
+            ok = pcall(vim.snippet.expand, fixed)
+
+            local msg = ok and "Failed to parse snippet,\nbut was able to fix it automatically."
+              or ("Failed to parse snippet.\n" .. err)
+
+            Snacks.notify[ok and "warn" or "error"](
+              ([[%s
+```%s
+%s
+```]]):format(msg, vim.bo.filetype, item.body),
+              { title = "vim.snippet" }
+            )
+          end
+
+          -- Restore top-level session when needed
+          if session then
+            vim.snippet._session = session
+          end
+        end,
+      }
+
+      local cmp = require("cmp")
+      cmp.setup(opts)
+      cmp.event:on("menu_opened", function(event) add_missing_snippet_docs(event.window) end)
+    end,
+    -- }}}
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -333,7 +612,6 @@ return {
       local cmp = require("cmp")
 
       return {
-        snippet = { expand = function(item) vim.snippet.expand(item.body) end },
         completion = { completeopt = "menu,menuone,noinsert" },
         -- https://github.com/tranzystorekk/cmp-minikind.nvim/blob/main/lua/cmp-minikind/init.lua {{{
         formatting = {
@@ -364,23 +642,29 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
               if not cmp.get_selected_entry() then
                 cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
               else
-                cmp.confirm()
+                if vim.api.nvim_get_mode().mode == "i" then
+                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-G>u", true, true, true), "n", false)
+                end
+                cmp.confirm({
+                  select = true,
+                  behavior = cmp.ConfirmBehavior.Insert,
+                })
               end
             elseif vim.snippet.active({ direction = 1 }) then
-              vim.snippet.jump(1)
+              vim.schedule(function() vim.snippet.jump(1) end)
             else
               fallback()
             end
           end, { "i", "s" }),
           ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
               cmp.select_prev_item()
             elseif vim.snippet.active({ direction = -1 }) then
-              vim.snippet.jump(-1)
+              vim.schedule(function() vim.snippet.jump(-1) end)
             else
               fallback()
             end
@@ -419,7 +703,6 @@ return {
         markdown = { "injected" },
         query = { "format-queries" },
         sh = { "shfmt" },
-        ["*"] = { "trim_newlines", "trim_whitespace" },
       },
       formatters = { injected = { options = { ignore_errors = true } } },
     },

@@ -8,16 +8,29 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
-    config = function(_, opts)
-      local telescope = require("telescope")
-      telescope.setup(opts)
-      telescope.load_extension("fzf")
-    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+        -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/editor/telescope.lua {{{
+        config = function(plugin)
+          Snacks.util.on_module("telescope", function()
+            local ok, err = pcall(require("telescope").load_extension, "fzf")
+            if not ok then
+              local lib = plugin.dir .. "/build/libfzf.so"
+              if not vim.uv.fs_stat(lib) then
+                Snacks.notify.warn("`telescope-fzf-native.nvim` not built. Rebuilding...")
+                require("lazy").build({ plugins = { plugin }, show = false }):wait(function()
+                  Snacks.notify.info("Rebuilding `telescope-fzf-native.nvim` done.\nPlease restart Neovim.")
+                end)
+              else
+                Snacks.notify.error("Failed to load `telescope-fzf-native.nvim`:\n" .. err)
+              end
+            end
+          end)
+        end,
+        -- }}}
       },
     },
     keys = {
@@ -34,46 +47,19 @@ return {
       { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
       { "<Leader>sb", "<Cmd>Telescope buffers<CR>", desc = "Buffers" },
     },
-    opts = function()
-      -- https://www.lazyvim.org/extras/editor/telescope#telescopenvim-1 {{{
-      local function flash(prompt_bufnr)
-        require("flash").jump({
-          pattern = "^",
-          label = { after = { 0, 0 } },
-          search = {
-            mode = "search",
-            exclude = {
-              function(win)
-                return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
-              end,
-            },
-          },
-          action = function(match)
-            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-            picker:set_selection(match.pos[1] - 1)
-          end,
-        })
-      end
-      -- }}}
-
-      return {
-        defaults = {
-          prompt_prefix = "🔎 ",
-          selection_caret = "➤ ",
-          layout_strategy = "bottom_pane",
-          layout_config = { bottom_pane = { height = 0.4 } },
-          sorting_strategy = "ascending",
-          mappings = {
-            i = { ["<C-s>"] = flash },
-            n = { s = flash },
-          },
-          get_selection_window = function()
-            require("edgy").goto_main()
-            return 0
-          end,
-        },
-      }
-    end,
+    opts = {
+      defaults = {
+        prompt_prefix = "🔎 ",
+        selection_caret = "➤ ",
+        layout_strategy = "bottom_pane",
+        layout_config = { bottom_pane = { height = 0.4 } },
+        sorting_strategy = "ascending",
+        get_selection_window = function()
+          require("edgy").goto_main()
+          return 0
+        end,
+      },
+    },
   },
   {
     "debugloop/telescope-undo.nvim",

@@ -11,55 +11,6 @@ return {
     "echasnovski/mini.ai",
     config = function(_, opts)
       require("mini.ai").setup(opts)
-
-      local ok, wk = pcall(require, "which-key")
-      if not ok then
-        return
-      end
-      local objects = {
-        { " ", desc = "whitespace" },
-        { '"', desc = 'balanced "' },
-        { "'", desc = "balanced '" },
-        { "(", desc = "balanced (" },
-        { ")", desc = "balanced ) including white-space" },
-        { "<", desc = "balanced <" },
-        { ">", desc = "balanced > including white-space" },
-        { "?", desc = "user prompt" },
-        { "U", desc = "use/call without dot in name" },
-        { "[", desc = "balanced [" },
-        { "]", desc = "balanced ] including white-space" },
-        { "_", desc = "underscore" },
-        { "`", desc = "balanced `" },
-        { "a", desc = "argument" },
-        { "b", desc = "balanced )]}" },
-        { "c", desc = "class" },
-        { "d", desc = "digit(s)" },
-        { "f", desc = "function" },
-        { "g", desc = "entire file" },
-        { "i", desc = "indent" },
-        { "o", desc = "block, conditional, loop" },
-        { "q", desc = "quote `\"'" },
-        { "t", desc = "tag" },
-        { "u", desc = "use/call function & method" },
-        { "{", desc = "balanced {" },
-        { "}", desc = "balanced } including white-space" },
-      }
-
-      local ret = { mode = { "o", "x" } }
-      for prefix, name in pairs({
-        i = "inside",
-        a = "around",
-        il = "last",
-        ["in"] = "next",
-        al = "last",
-        an = "next",
-      }) do
-        ret[#ret + 1] = { prefix, group = name }
-        for _, obj in ipairs(objects) do
-          ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
-        end
-      end
-      wk.add(ret, { notify = false })
     end,
     dependencies = {
       {
@@ -90,6 +41,55 @@ return {
     event = events.enter_buffer,
     opts = function()
       local ai = require("mini.ai")
+
+      Snacks.util.on_module("which-key", function()
+        local objects = {
+          { " ", desc = "whitespace" },
+          { '"', desc = 'balanced "' },
+          { "'", desc = "balanced '" },
+          { "(", desc = "balanced (" },
+          { ")", desc = "balanced ) including white-space" },
+          { "<", desc = "balanced <" },
+          { ">", desc = "balanced > including white-space" },
+          { "?", desc = "user prompt" },
+          { "U", desc = "use/call without dot in name" },
+          { "[", desc = "balanced [" },
+          { "]", desc = "balanced ] including white-space" },
+          { "_", desc = "underscore" },
+          { "`", desc = "balanced `" },
+          { "a", desc = "argument" },
+          { "b", desc = "balanced )]}" },
+          { "c", desc = "class" },
+          { "d", desc = "digit(s)" },
+          { "f", desc = "function" },
+          { "g", desc = "entire file" },
+          { "i", desc = "indent" },
+          { "o", desc = "block, conditional, loop" },
+          { "q", desc = "quote `\"'" },
+          { "t", desc = "tag" },
+          { "u", desc = "use/call function & method" },
+          { "{", desc = "balanced {" },
+          { "}", desc = "balanced } including white-space" },
+        }
+
+        local ret = { mode = { "o", "x" } }
+        for prefix, name in pairs({
+          i = "inside",
+          a = "around",
+          il = "last",
+          ["in"] = "next",
+          al = "last",
+          an = "next",
+        }) do
+          ret[#ret + 1] = { prefix, group = name }
+          for _, obj in ipairs(objects) do
+            ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
+          end
+        end
+
+        require("which-key").add(ret, { notify = false })
+      end)
+
       return {
         n_lines = 500,
         custom_textobjects = {
@@ -163,10 +163,14 @@ return {
 
       -- clean unused parsers
       local ensure_installed_parsers = require("nvim-treesitter.configs").get_ensure_installed_parsers()
+      local unused_parsers = {}
       for _, parser in ipairs(require("nvim-treesitter.info").installed_parsers()) do
         if not vim.list_contains(ensure_installed_parsers, parser) then
-          vim.cmd("TSUninstall " .. parser)
+          table.insert(unused_parsers, parser)
         end
+      end
+      if #unused_parsers > 0 then
+        vim.cmd("TSUninstall " .. table.concat(unused_parsers, " "))
       end
     end,
     event = events.enter_buffer,

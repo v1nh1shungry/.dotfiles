@@ -59,12 +59,28 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 
 vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(event)
-    if vim.list_contains(require("dotfiles.utils.ui").excluded_buftypes, vim.bo.buftype) then
+    if vim.bo.buftype ~= "" then
+      vim.opt_local.buflisted = false
+      vim.opt_local.bufhidden = "wipe"
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+      vim.opt_local.cc = ""
+      vim.opt_local.stc = ""
+      vim.opt_local.scl = "no"
+
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then
-        require("dotfiles.utils.keymap")({ "q", "<Cmd>close<CR>", desc = "Close", buffer = event.buf })
+        require("dotfiles.utils.keymap")({
+          "q",
+          function()
+            vim.cmd("close")
+            pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+          end,
+          desc = "Close",
+          buffer = event.buf,
+        })
       end
     end
   end,
-  group = augroup("close_with_q"),
+  group = augroup("minimal_ui"),
 })

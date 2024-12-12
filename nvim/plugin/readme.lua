@@ -1,10 +1,8 @@
-local File = require("dotfiles.utils.file")
-
-local filename = vim.fs.joinpath(vim.env.HOME, ".dotfiles", "README.md")
-local contents = File.read(filename)
-if not contents then
+local readme = vim.fs.joinpath(vim.env.HOME, ".dotfiles", "README.md")
+if vim.fn.filereadable(readme) == 0 then
   return
 end
+local contents = vim.fn.readfile(readme)
 
 local function insert_section(section, marker)
   local function find_marker()
@@ -45,10 +43,11 @@ local function update_nvim_plugins()
 end
 
 local function update_vscode_extensions()
-  local extensions = File.read(vim.fs.joinpath(vim.env.HOME, ".vscode", "extensions", "extensions.json"))
-  if not extensions then
+  local settings = vim.fs.joinpath(vim.env.HOME, ".vscode", "extensions", "extensions.json")
+  if vim.fn.filereadable(settings) == 0 then
     return
   end
+  local extensions = vim.fn.readfile(settings)
   local marker = "<!-- vscode extensions -->"
   local section = {}
   for _, spec in ipairs(vim.json.decode(table.concat(extensions, "\n"))) do
@@ -66,7 +65,7 @@ vim.api.nvim_create_autocmd("User", {
   callback = function()
     update_nvim_plugins()
     update_vscode_extensions()
-    File.write(contents, filename)
+    vim.fn.writefile(contents, readme)
   end,
   group = vim.api.nvim_create_augroup("dotfiles_auto_update_readme_autocmds", {}),
   pattern = "LazyReload",

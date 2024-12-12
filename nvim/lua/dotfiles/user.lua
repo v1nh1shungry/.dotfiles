@@ -20,7 +20,7 @@ else
   local default_config = vim.split(vim.inspect(M), "\n")
   default_config[1] = "return " .. default_config[1]
   vim.list_extend(content, default_config)
-  require("dotfiles.utils.file").write(content, filename)
+  vim.fn.writefile(content, filename)
 end
 
 return M

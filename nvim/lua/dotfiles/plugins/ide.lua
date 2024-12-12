@@ -50,7 +50,9 @@ return {
             { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "LSP outgoing calls" },
           },
           ["textDocument/inlayHint"] = {
-            Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr }),
+            function()
+              Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
+            end,
           },
           ["textDocument/signatureHelp"] = {
             { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
@@ -93,8 +95,12 @@ return {
 
         for method, keys in pairs(mappings) do
           if client.supports_method(method) then
-            for _, key in ipairs(keys) do
-              map_local(key)
+            for _, k in ipairs(keys) do
+              if type(k) == "function" then
+                k()
+              else
+                map_local(k)
+              end
             end
           end
         end
@@ -150,8 +156,11 @@ return {
         }
       )
 
+      local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+      local ensure_installed = {}
+
       local function setup(server)
-        if opts.servers[server] == nil then
+        if not opts.servers[server] then
           vim.notify("Unused LSP server: " .. server, vim.log.levels.WARN)
           return
         end
@@ -172,8 +181,6 @@ return {
         require("lspconfig")[server].setup(setup_opts)
       end
 
-      local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-      local ensure_installed = {}
       for server, server_opts in pairs(opts.servers) do
         if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
           setup(server)
@@ -181,6 +188,7 @@ return {
           ensure_installed[#ensure_installed + 1] = server
         end
       end
+
       require("mason-lspconfig").setup({
         ensure_installed = ensure_installed,
         handlers = { setup },
@@ -371,9 +379,12 @@ return {
                     local b = vim.b[source_buf]
                     if not b.clangd_ast_buf or not vim.api.nvim_buf_is_valid(b.clangd_ast_buf) then
                       b.clangd_ast_buf = vim.api.nvim_create_buf(false, true)
+                      vim.bo[b.clangd_ast_buf].filetype = "ClangdAST"
+                      vim.bo[b.clangd_ast_buf].shiftwidth = 2
                     end
                     if not b.clangd_ast_win or not vim.api.nvim_win_is_valid(b.clangd_ast_win) then
                       b.clangd_ast_win = vim.api.nvim_open_win(b.clangd_ast_buf, true, { split = "right" })
+                      vim.wo[b.clangd_ast_win].foldmethod = "indent"
                     else
                       vim.cmd(vim.api.nvim_win_get_number(b.clangd_ast_win) .. " wincmd w")
                     end
@@ -385,15 +396,9 @@ return {
                     detail_pos[b.clangd_ast_buf] = {}
 
                     local lines = walk_tree(node, {}, {}, "", { source_buf = source_buf, ast_buf = b.clangd_ast_buf })
-                    vim.bo.filetype = "ClangdAST"
                     vim.bo.modifiable = true
                     vim.api.nvim_buf_set_lines(b.clangd_ast_buf, 0, -1, true, lines)
-                    vim.bo.buftype = "nofile"
                     vim.bo.modifiable = false
-                    vim.bo.shiftwidth = 2
-                    vim.wo.foldmethod = "indent"
-                    vim.wo.number = false
-                    vim.wo.relativenumber = false
                     setup_hl_autocmd(source_buf, b.clangd_ast_buf)
                     highlight_detail(b.clangd_ast_buf)
                   end

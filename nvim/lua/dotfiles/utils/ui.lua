@@ -35,8 +35,6 @@ M.icons = {
   },
 }
 
-M.excluded_buftypes = { "nofile", "help", "prompt", "quickfix", "terminal" }
-
 -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/ui.lua {{{
 local skip_foldexpr = {}
 local skip_check = assert(vim.uv.new_check())

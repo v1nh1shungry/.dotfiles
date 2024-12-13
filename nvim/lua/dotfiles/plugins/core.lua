@@ -276,46 +276,7 @@ return {
   },
   {
     "folke/flash.nvim",
-    keys = {
-      "/",
-      "?",
-      "f",
-      "F",
-      "t",
-      "T",
-      ",",
-      ";",
-      {
-        "gs",
-        function()
-          require("flash").jump()
-        end,
-        desc = "Flash",
-      },
-      {
-        "gt",
-        function()
-          require("flash").treesitter()
-        end,
-        desc = "Flash Treesitter",
-      },
-      {
-        "r",
-        function()
-          require("flash").remote()
-        end,
-        mode = "o",
-        desc = "Remote Flash",
-      },
-      {
-        "R",
-        function()
-          require("flash").treesitter_search()
-        end,
-        mode = { "o", "x" },
-        desc = "Treesitter search",
-      },
-    },
+    keys = { "/", "?", "f", "F", "t", "T", ",", ";" },
     opts = {
       modes = { char = { highlight = { backdrop = false } } },
       prompt = { enabled = false },
@@ -434,7 +395,7 @@ return {
           },
         },
       },
-      indent = { scope = { animate = { enabled = false } } },
+      indent = { animate = { enabled = false } },
       input = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },

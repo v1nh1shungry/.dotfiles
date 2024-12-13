@@ -230,10 +230,12 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
+      preset = "helix",
       spec = {
         {
           mode = { "n", "v" },
           { "g", group = "goto" },
+          { "gs", group = "surround" },
           { "]", group = "next" },
           { "[", group = "prev" },
           { "z", group = "fold" },

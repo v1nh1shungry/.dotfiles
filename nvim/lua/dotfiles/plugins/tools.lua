@@ -62,14 +62,6 @@ return {
     },
   },
   {
-    "debugloop/telescope-undo.nvim",
-    config = function()
-      require("telescope").load_extension("undo")
-    end,
-    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
-    keys = { { "<Leader>fu", "<Cmd>Telescope undo<CR>", desc = "Undotree" } },
-  },
-  {
     "gbprod/yanky.nvim",
     keys = {
       {

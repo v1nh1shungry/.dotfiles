@@ -12,17 +12,15 @@ return {
   },
   {
     "echasnovski/mini.surround",
-    config = function(_, opts)
-      require("mini.surround").setup(opts)
-      vim.keymap.del("x", "ys")
-    end,
     keys = function(_, keys)
       local mappings = {
-        { "ys", desc = "Add surrounding" },
-        { "ds", desc = "Delete surrounding" },
-        { "cs", desc = "Replace surrounding" },
-        { "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], mode = "x", desc = "Add surrounding" },
-        { "yss", "ys_", remap = true, desc = "Add surrounding for line" },
+        { "gsa", desc = "Add Surrounding", mode = { "n", "v" } },
+        { "gsd", desc = "Delete Surrounding" },
+        { "gsf", desc = "Find Right Surrounding" },
+        { "gsF", desc = "Find Left Surrounding" },
+        { "gsh", desc = "Highlight Surrounding" },
+        { "gsr", desc = "Replace Surrounding" },
+        { "gsn", desc = "Update `MiniSurround.config.n_lines`" },
       }
       mappings = vim.tbl_filter(function(m)
         return m[1] and #m[1] > 0
@@ -31,15 +29,14 @@ return {
     end,
     opts = {
       mappings = {
-        add = "ys",
-        delete = "ds",
-        find = "",
-        find_left = "",
-        highlight = "",
-        replace = "cs",
-        update_n_lines = "",
+        add = "gsa",
+        delete = "gsd",
+        find = "gsf",
+        find_left = "gsF",
+        highlight = "gsh",
+        replace = "gsr",
+        update_n_lines = "gsn",
       },
-      search_method = "cover_or_next",
     },
   },
   {
@@ -122,12 +119,6 @@ return {
         desc = "Structural replace",
       },
     },
-  },
-  {
-    "johmsalas/text-case.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim" },
-    keys = "<Leader>cc",
-    opts = { prefix = "<Leader>cc" },
   },
   {
     "dhruvasagar/vim-table-mode",

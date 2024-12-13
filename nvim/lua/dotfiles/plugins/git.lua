@@ -11,11 +11,11 @@ return {
           opts.buffer = buffer
           map(opts)
         end
-        map_local({ "<Leader>ga", "<Cmd>Gitsigns stage_hunk<CR>", desc = "Stage hunk" })
+        map_local({ "<Leader>ga", "<Cmd>Gitsigns stage_hunk<CR>", mode = { "n", "v" }, desc = "Stage hunk" })
         map_local({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage current buffer" })
         map_local({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo staged hunk" })
         map_local({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview hunk" })
-        map_local({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk" })
+        map_local({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "v" }, desc = "Reset hunk" })
         map_local({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
         map_local({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
         map_local({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })

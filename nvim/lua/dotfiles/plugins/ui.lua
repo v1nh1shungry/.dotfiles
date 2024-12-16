@@ -659,4 +659,17 @@ return {
     end,
     event = Dotfiles.events.enter_buffer,
   },
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    config = function()
+      require("telescope").load_extension("ui-select")
+    end,
+    init = function()
+      vim.ui.select = function(...)
+        require("lazy").load({ plugins = { "telescope-ui-select.nvim" } })
+        return vim.ui.select(...)
+      end
+    end,
+    lazy = true,
+  },
 }

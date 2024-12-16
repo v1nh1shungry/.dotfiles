@@ -34,6 +34,7 @@ return {
         replace = "gsr",
         update_n_lines = "gsn",
       },
+      search_method = "cover_or_next",
     },
   },
   {

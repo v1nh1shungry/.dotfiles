@@ -284,6 +284,8 @@ return {
     "folke/snacks.nvim",
     -- https://www.lazyvim.org/ {{{
     config = function(_, opts)
+      vim.g.snacks_animate = false
+
       local notify = vim.notify
       require("snacks").setup(opts)
       -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
@@ -393,12 +395,20 @@ return {
           },
         },
       },
-      indent = { animate = { enabled = false } },
+      indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },
       scratch = { autowrite = false },
       statuscolumn = { folds = { open = true, git_hl = true } },
+      styles = {
+        input = {
+          keys = {
+            esc = { "<Esc>", "cancel" },
+            i_esc = { "<Esc>", "stopinsert", mode = "i" },
+          },
+        },
+      },
       words = { enabled = true },
     },
     priority = 1000,

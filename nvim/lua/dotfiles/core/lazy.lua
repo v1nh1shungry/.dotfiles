@@ -21,7 +21,10 @@ require("lazy").setup({
     vim
       .iter(require("dotfiles.user").extra)
       :map(function(m)
-        return { import = "dotfiles.plugins.extra." .. m }
+        if type(m) == "string" then
+          return { import = "dotfiles.plugins.extra." .. m }
+        end
+        return m
       end)
       :totable()
   ),

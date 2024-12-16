@@ -67,6 +67,6 @@ vim.api.nvim_create_autocmd("User", {
     update_vscode_extensions()
     vim.fn.writefile(contents, readme)
   end,
-  group = vim.api.nvim_create_augroup("dotfiles_auto_update_readme_autocmds", {}),
+  group = Dotfiles.augroup("auto_update_readme"),
   pattern = "LazyReload",
 })

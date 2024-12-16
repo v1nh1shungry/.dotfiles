@@ -1,3 +1,5 @@
+_G.Dotfiles = require("dotfiles.utils")
+
 require("dotfiles.core.autocmds")
 require("dotfiles.core.keymaps")
 require("dotfiles.core.options")

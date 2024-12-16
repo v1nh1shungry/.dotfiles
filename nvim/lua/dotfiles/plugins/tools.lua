@@ -1,5 +1,3 @@
-local map = require("dotfiles.utils.keymap")
-
 return {
   {
     "nvim-lua/plenary.nvim",
@@ -49,8 +47,8 @@ return {
     },
     opts = {
       defaults = {
-        prompt_prefix = "🔎 ",
-        selection_caret = "➤ ",
+        prompt_prefix = " ",
+        selection_caret = " ",
         layout_strategy = "bottom_pane",
         layout_config = { bottom_pane = { height = 0.4 } },
         sorting_strategy = "ascending",
@@ -60,36 +58,6 @@ return {
         end,
       },
     },
-  },
-  {
-    "gbprod/yanky.nvim",
-    keys = {
-      {
-        "<leader>sY",
-        function()
-          require("telescope").extensions.yank_history.yank_history({})
-        end,
-        desc = "Open Yank History",
-      },
-      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
-      { "p", "<Plug>(YankyPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after cursor" },
-      { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before cursor" },
-      { "gp", "<Plug>(YankyGPutAfter)", mode = { "n", "x" }, desc = "Put yanked text after selection" },
-      { "gP", "<Plug>(YankyGPutBefore)", mode = { "n", "x" }, desc = "Put yanked text before selection" },
-      { "[y", "<Plug>(YankyPreviousEntry)", desc = "Select previous entry through yank history" },
-      { "]y", "<Plug>(YankyNextEntry)", desc = "Select next entry through yank history" },
-      { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
-      { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
-      { "]P", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented after cursor (linewise)" },
-      { "[P", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented before cursor (linewise)" },
-      { ">p", "<Plug>(YankyPutIndentAfterShiftRight)", desc = "Put and indent right" },
-      { "<p", "<Plug>(YankyPutIndentAfterShiftLeft)", desc = "Put and indent left" },
-      { ">P", "<Plug>(YankyPutIndentBeforeShiftRight)", desc = "Put before and indent right" },
-      { "<P", "<Plug>(YankyPutIndentBeforeShiftLeft)", desc = "Put before and indent left" },
-      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
-      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
-    },
-    opts = {},
   },
   {
     "MagicDuck/grug-far.nvim",
@@ -103,7 +71,7 @@ return {
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         callback = function(arg)
-          map({
+          Dotfiles.map({
             "<CR>",
             function()
               require("kulala").run()
@@ -111,7 +79,7 @@ return {
             buffer = arg.buf,
             desc = "Run the request",
           })
-          map({
+          Dotfiles.map({
             "]r",
             function()
               require("kulala").jump_next()
@@ -119,7 +87,7 @@ return {
             buffer = arg.buf,
             desc = "Jump to the next request",
           })
-          map({
+          Dotfiles.map({
             "[r",
             function()
               require("kulala").jump_prev()
@@ -127,7 +95,7 @@ return {
             buffer = arg.buf,
             desc = "Jump to the prev request",
           })
-          map({
+          Dotfiles.map({
             "yr",
             function()
               require("kulala").copy()
@@ -135,7 +103,7 @@ return {
             buffer = arg.buf,
             desc = "Copy as curl command",
           })
-          map({
+          Dotfiles.map({
             "<Tab>",
             function()
               require("kulala").toggle_view()
@@ -144,7 +112,7 @@ return {
             desc = "Toggle between body and headers",
           })
         end,
-        group = vim.api.nvim_create_augroup("dotfiles_kulala_keymaps", {}),
+        group = Dotfiles.augroup("kulala_keymaps"),
         pattern = "http",
       })
     end,

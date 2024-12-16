@@ -1,9 +1,7 @@
-local events = require("dotfiles.utils.events")
-
 return {
   {
     "tpope/vim-sleuth",
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
   },
   -- https://www.lazyvim.org/plugins/coding#miniai {{{
   -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter-textobjects
@@ -38,7 +36,7 @@ return {
         dependencies = "nvim-treesitter/nvim-treesitter",
       },
     },
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
     opts = function()
       local ai = require("mini.ai")
 
@@ -173,7 +171,7 @@ return {
         vim.cmd("TSUninstall " .. table.concat(unused_parsers, " "))
       end
     end,
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
     opts = {
       ensure_installed = {
         "bash",
@@ -358,7 +356,7 @@ return {
         desc = "Toggle scratch buffer",
       },
       {
-        "<Leader>uz",
+        "<C-w>z",
         function()
           Snacks.zen.zoom()
         end,

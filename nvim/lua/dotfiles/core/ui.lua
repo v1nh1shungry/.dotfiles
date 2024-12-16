@@ -1,4 +1,3 @@
-local icons = require("dotfiles.utils.ui").icons
 local config = require("dotfiles.user")
 
 vim.diagnostic.config({
@@ -9,19 +8,9 @@ vim.diagnostic.config({
   update_in_insert = true,
 })
 
-for name, icon in pairs(icons.diagnostic) do
+for name, icon in pairs(Dotfiles.ui.icons.diagnostic) do
   name = "DiagnosticSign" .. name
   vim.fn.sign_define(name, { texthl = name, text = icon, numhl = "" })
-end
-
-vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
-
-for name, sign in pairs(icons.dap) do
-  sign = type(sign) == "table" and sign or { sign }
-  vim.fn.sign_define(
-    "Dap" .. name,
-    { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
-  )
 end
 
 local background = config.ui.background

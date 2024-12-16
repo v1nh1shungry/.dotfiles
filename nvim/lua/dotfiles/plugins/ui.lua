@@ -1,11 +1,8 @@
-local events = require("dotfiles.utils.events")
-local map = require("dotfiles.utils.keymap")
-
 return {
   {
     "folke/todo-comments.nvim",
     dependencies = "nvim-lua/plenary.nvim",
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
     keys = {
       {
         "[t",
@@ -51,7 +48,7 @@ return {
             pcall(nvim_bufferline)
           end)
         end,
-        group = vim.api.nvim_create_augroup("dotfiles_bufferline", {}),
+        group = Dotfiles.augroup("bufferline"),
       })
       -- }}}
     end,
@@ -136,7 +133,7 @@ return {
 
       vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
         callback = refresh_git_branch_state,
-        group = vim.api.nvim_create_augroup("dotfiles_lualine_git_branch_state", {}),
+        group = Dotfiles.augroup("lualine_git_branch_state"),
       })
 
       refresh_git_branch_state()
@@ -356,7 +353,7 @@ return {
   },
   {
     "Bekaboo/deadcolumn.nvim",
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
   },
   {
     "folke/edgy.nvim",
@@ -496,7 +493,7 @@ return {
   },
   {
     "mcauley-penney/visual-whitespace.nvim",
-    lazy = true,
+    event = "ModeChanged *:[vV\x16]*",
     opts = {},
   },
   {
@@ -536,7 +533,7 @@ return {
     config = function()
       -- https://www.lazyvim.org/extras/editor/mini-files {{{
       local function map_split(bufnr, lhs, direction, close_on_file)
-        map({
+        Dotfiles.map({
           lhs,
           function()
             local new_target_window
@@ -586,14 +583,14 @@ return {
       vim.api.nvim_create_autocmd("User", {
         callback = function(event)
           local bufnr = event.data.buf_id
-          map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
-          map({ "g.", toggle_hidden, buffer = bufnr, desc = "Toggle hidden files" })
+          Dotfiles.map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
+          Dotfiles.map({ "g.", toggle_hidden, buffer = bufnr, desc = "Toggle hidden files" })
           map_split(bufnr, "<C-w>s", "horizontal", false)
           map_split(bufnr, "<C-w>v", "vertical", false)
           map_split(bufnr, "<C-w>S", "horizontal", true)
           map_split(bufnr, "<C-w>V", "vertical", true)
         end,
-        group = vim.api.nvim_create_augroup("dotfiles_mini_files_keymaps", {}),
+        group = Dotfiles.augroup("mini_files_keymaps"),
         pattern = "MiniFilesBufferCreate",
       })
       -- }}}
@@ -637,37 +634,17 @@ return {
     },
   },
   {
-    "hedyhli/outline.nvim",
-    cmd = "Outline",
-    opts = {
-      outline_window = { auto_close = true, hide_cursor = true },
-      preview_window = { border = "rounded", winblend = vim.opt.winblend },
-      keymaps = {
-        goto_location = { "o", "<CR>" },
-        peek_location = {},
-        goto_and_close = {},
-        up_and_jump = "<C-p>",
-        down_and_jump = "<C-n>",
-      },
-      symbols = {
-        icon_fetcher = function(kind, _)
-          return require("mini.icons").get("lsp", kind)
-        end,
-      },
-    },
-  },
-  {
     "OXY2DEV/helpview.nvim",
     ft = "help",
     dependencies = "nvim-treesitter/nvim-treesitter",
   },
   {
     "lewis6991/satellite.nvim",
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
   },
   {
     "Bekaboo/dropbar.nvim",
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
   },
   {
     "fei6409/log-highlight.nvim",
@@ -680,6 +657,6 @@ return {
       require("mini.trailspace").setup()
       vim.cmd("highlight MiniTrailspace guibg=LightGreen")
     end,
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
   },
 }

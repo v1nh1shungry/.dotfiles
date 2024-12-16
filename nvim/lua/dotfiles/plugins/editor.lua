@@ -1,6 +1,3 @@
-local events = require("dotfiles.utils.events")
-local map = require("dotfiles.utils.keymap")
-
 return {
   {
     "Wansmer/treesj",
@@ -142,7 +139,7 @@ return {
 
       require("dial.config").augends:register_group(opts)
 
-      map({
+      Dotfiles.map({
         "<C-a>",
         function()
           return dial(true)
@@ -150,7 +147,7 @@ return {
         expr = true,
         mode = { "n", "v" },
       })
-      map({
+      Dotfiles.map({
         "<C-x>",
         function()
           return dial(false)
@@ -158,7 +155,7 @@ return {
         expr = true,
         mode = { "n", "v" },
       })
-      map({
+      Dotfiles.map({
         "g<C-a>",
         function()
           return dial(true, true)
@@ -166,7 +163,7 @@ return {
         expr = true,
         mode = { "n", "v" },
       })
-      map({
+      Dotfiles.map({
         "g<C-x>",
         function()
           return dial(false, true)
@@ -359,7 +356,7 @@ return {
     -- TODO: remove pin after #42 is merged
     build = "git pull origin refs/pull/42/head",
     commit = "8b34305ffc28bd75a22f5a0a9928ee726a85c9a6",
-    event = events.enter_insert,
+    event = Dotfiles.events.enter_insert,
     main = "nvim-treesitter.configs",
     opts = { endwise = { enable = true } },
     pin = true,
@@ -404,7 +401,7 @@ return {
         return open(pair, neigh_pattern)
       end
     end,
-    event = events.enter_insert,
+    event = Dotfiles.events.enter_insert,
     opts = {
       modes = { insert = true, command = true, terminal = false },
       skip_next = [=[[%w%%%'%[%"%.%`%$]]=],

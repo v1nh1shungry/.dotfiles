@@ -1,5 +1,3 @@
-local map = require("dotfiles.utils.keymap")
-
 local config = {
   save = true,
   compile = {
@@ -106,12 +104,12 @@ local function cook_command(cmd)
   return cmd
 end
 
-local augroup = vim.api.nvim_create_augroup("dotfiles_task_autocmds", {})
+local augroup = Dotfiles.augroup("task")
 
 for lang, cmd in pairs(config.compile) do
   vim.api.nvim_create_autocmd("FileType", {
     callback = function(args)
-      map({
+      Dotfiles.map({
         "<Leader>fb",
         function()
           cmd = cook_command(cmd)
@@ -152,7 +150,7 @@ end
 local term = nil
 
 local function execute(cmd)
-  if term then
+  if term and term:valid() then
     term:close()
   end
   term = Snacks.terminal.open(cmd, {
@@ -165,7 +163,7 @@ end
 for ft, cmd in pairs(config.execute) do
   vim.api.nvim_create_autocmd("FileType", {
     callback = function(event)
-      map({
+      Dotfiles.map({
         "<Leader>fx",
         function()
           if config.save then

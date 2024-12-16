@@ -1,5 +1,4 @@
-local map = require("dotfiles.utils.keymap")
-local toggle = require("dotfiles.utils.toggle")
+local map = Dotfiles.map
 
 vim.keymap.del("n", "grn")
 vim.keymap.del("n", "grr")
@@ -17,8 +16,8 @@ map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = "Save", mode = { "i", "x", "n", "s" } }
 map({ "<", "<gv", mode = "v" })
 map({ ">", ">gv", mode = "v" })
 
-map({ "<Leader>xq", toggle.quickfix, desc = "Toggle quickfix" })
-map({ "<Leader>xl", toggle.location, desc = "Toggle location list" })
+map({ "<Leader>xq", Dotfiles.toggle.quickfix, desc = "Toggle quickfix" })
+map({ "<Leader>xl", Dotfiles.toggle.location, desc = "Toggle location list" })
 
 map({ ",", ",<c-g>u", mode = "i" })
 map({ ".", ".<c-g>u", mode = "i" })
@@ -72,7 +71,7 @@ map({ "$", "g_", mode = "x", desc = "End of line" })
 map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = "Inspect position under the cursor" })
 map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
 
-map({ "<Leader>uz", toggle.maximize, desc = "Zoom" })
+map({ "<C-w>z", Dotfiles.toggle.maximize, desc = "Zoom" })
 
 map({ "<Leader>cd", vim.diagnostic.open_float, desc = "Show diagnostics" })
 

@@ -1,15 +1,12 @@
-local events = require("dotfiles.utils.events")
-local map = require("dotfiles.utils.keymap")
-
 return {
   {
     "lewis6991/gitsigns.nvim",
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
     opts = {
       on_attach = function(buffer)
         local map_local = function(opts)
           opts.buffer = buffer
-          map(opts)
+          Dotfiles.map(opts)
         end
         map_local({ "<Leader>ga", "<Cmd>Gitsigns stage_hunk<CR>", mode = { "n", "v" }, desc = "Stage hunk" })
         map_local({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage current buffer" })
@@ -70,6 +67,10 @@ return {
           file_history = { disable_diagnostics = true },
         },
         keymaps = {
+          file_history_panel = {
+            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle file panel" } },
+            ["<leader>b"] = false,
+          },
           view = {
             ["<leader>co"] = false,
             ["<leader>ct"] = false,
@@ -101,8 +102,6 @@ return {
             },
           },
           file_panel = {
-            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle file panel" } },
-            ["<leader>b"] = false,
             ["<leader>cO"] = false,
             ["<leader>cT"] = false,
             ["<leader>cB"] = false,
@@ -135,6 +134,7 @@ return {
         },
       }
 
+      opts.keymaps.file_panel = vim.tbl_deep_extend("force", opts.keymaps.file_history_panel, opts.keymaps.file_panel)
       opts.keymaps.view = vim.tbl_deep_extend("force", opts.keymaps.file_panel, opts.keymaps.view)
 
       require("diffview").setup(opts)

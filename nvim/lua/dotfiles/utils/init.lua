@@ -1,4 +1,13 @@
-return function(opts)
+local M = {}
+
+setmetatable(M, {
+  __index = function(t, k)
+    t[k] = require("dotfiles.utils." .. k)
+    return t[k]
+  end
+})
+
+M.map = function(opts)
   opts = vim.deepcopy(opts)
   local lhs, rhs, mode = opts[1], opts[2], opts.mode or "n"
   opts[1], opts[2], opts.mode = nil, nil, nil
@@ -12,3 +21,9 @@ return function(opts)
   opts.silent = opts.silent ~= false
   vim.keymap.set(mode, lhs, rhs, opts)
 end
+
+M.augroup = function(name)
+  return vim.api.nvim_create_augroup("dotfiles_" .. name, {})
+end
+
+return M

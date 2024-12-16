@@ -1,6 +1,3 @@
-local events = require("dotfiles.utils.events")
-local map = require("dotfiles.utils.keymap")
-
 return {
   {
     "neovim/nvim-lspconfig",
@@ -8,7 +5,7 @@ return {
       local on_attach = function(client, bufnr)
         local map_local = function(key)
           key.buffer = bufnr
-          map(key)
+          Dotfiles.map(key)
         end
 
         local mappings = {
@@ -122,7 +119,7 @@ return {
           vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
             buffer = bufnr,
             callback = vim.lsp.codelens.refresh,
-            group = vim.api.nvim_create_augroup("dotfiles_codelens", {}),
+            group = Dotfiles.augroup("codelens"),
           })
         end
       end
@@ -134,7 +131,7 @@ return {
             on_attach(client, args.buf)
           end
         end,
-        group = vim.api.nvim_create_augroup("dotfiles_lsp_on_attach", {}),
+        group = Dotfiles.augroup("lsp_on_attach"),
       })
 
       -- https://www.lazyvim.org/plugins/lsp {{{
@@ -201,7 +198,7 @@ return {
         dependencies = "williamboman/mason.nvim",
       },
     },
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
     opts = {
       servers = {
         jsonls = {
@@ -271,7 +268,7 @@ return {
                 end
 
                 local function setup_hl_autocmd(source_buf, ast_buf)
-                  local group = vim.api.nvim_create_augroup("clangd_ast_autocmds", {})
+                  local group = Dotfiles.augroup("clangd_ast_autocmds")
                   vim.api.nvim_create_autocmd("CursorMoved", {
                     group = group,
                     buffer = ast_buf,
@@ -289,7 +286,7 @@ return {
                 end
 
                 local function icon_prefix(role, kind)
-                  local conf = require("dotfiles.utils.ui").icons.ast
+                  local conf = Dotfiles.ui.icons.ast
                   if conf.kind_icons[kind] then
                     return conf.kind_icons[kind] .. "  "
                   elseif conf.role_icons[role] then
@@ -644,7 +641,7 @@ return {
     -- FIXME: this should be removed after switching to blink.cmp completely
     --        or deciding to abandon blink.cmp
     enabled = not vim.tbl_contains(require("dotfiles.user").extra, "blink"),
-    event = events.enter_insert,
+    event = Dotfiles.events.enter_insert,
     opts = function()
       local cmp = require("cmp")
 
@@ -803,11 +800,11 @@ return {
 
       vim.api.nvim_create_autocmd(opts.events, {
         callback = M.debounce(100, M.lint),
-        group = vim.api.nvim_create_augroup("dotfiles_nvim_lint", {}),
+        group = Dotfiles.augroup("nvim_lint"),
       })
     end,
     dependencies = "williamboman/mason.nvim",
-    event = events.enter_buffer,
+    event = Dotfiles.events.enter_buffer,
     opts = {
       events = { "BufWritePost", "BufReadPost" },
       linters_by_ft = {
@@ -820,6 +817,26 @@ return {
             return vim.bo.buftype == "" and vim.fs.root(vim.uv.cwd() or 0, ".cspell-words.txt")
           end,
         },
+      },
+    },
+  },
+  {
+    "hedyhli/outline.nvim",
+    cmd = "Outline",
+    opts = {
+      outline_window = { auto_close = true, hide_cursor = true },
+      preview_window = { border = "rounded", winblend = vim.opt.winblend },
+      keymaps = {
+        goto_location = { "o", "<CR>" },
+        peek_location = {},
+        goto_and_close = {},
+        up_and_jump = "<C-p>",
+        down_and_jump = "<C-n>",
+      },
+      symbols = {
+        icon_fetcher = function(kind, _)
+          return require("mini.icons").get("lsp", kind)
+        end,
       },
     },
   },

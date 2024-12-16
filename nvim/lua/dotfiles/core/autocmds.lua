@@ -1,7 +1,3 @@
-local augroup = function(name)
-  return vim.api.nvim_create_augroup("dotfiles_" .. name, {})
-end
-
 -- https://www.lazyvim.org/configuration/general#auto-commands {{{
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   callback = function()
@@ -9,14 +5,14 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
       vim.cmd("checktime")
     end
   end,
-  group = augroup("checktime"),
+  group = Dotfiles.augroup("checktime"),
 })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     vim.highlight.on_yank({ timeout = 500 })
   end,
-  group = augroup("highlight_yank"),
+  group = Dotfiles.augroup("highlight_yank"),
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -33,7 +29,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
   end,
-  group = augroup("last_loc"),
+  group = Dotfiles.augroup("last_loc"),
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -44,7 +40,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     local file = vim.uv.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
-  group = augroup("auto_create_dir"),
+  group = Dotfiles.augroup("auto_create_dir"),
 })
 
 vim.api.nvim_create_autocmd({ "VimResized" }, {
@@ -53,7 +49,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
     vim.cmd("tabdo wincmd =")
     vim.cmd("tabnext " .. current_tab)
   end,
-  group = augroup("resize_splits"),
+  group = Dotfiles.augroup("resize_splits"),
 })
 -- }}}
 
@@ -70,7 +66,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then
-        require("dotfiles.utils.keymap")({
+        Dotfiles.map({
           "q",
           function()
             vim.cmd("close")
@@ -82,5 +78,5 @@ vim.api.nvim_create_autocmd("BufEnter", {
       end
     end
   end,
-  group = augroup("minimal_ui"),
+  group = Dotfiles.augroup("minimal_ui"),
 })

@@ -1,6 +1,7 @@
 local M = {}
 
 M.icons = {
+  -- clangd_extensions.nvim {{{
   ast = {
     role_icons = {
       type = "",
@@ -20,18 +21,12 @@ M.icons = {
       TemplateParamObject = "",
     },
   },
+  -- }}}
   diagnostic = {
     Error = "",
     Warn = "",
     Hint = "",
     Info = "",
-  },
-  dap = {
-    Breakpoint = { "󰝥", "DiagnosticError" },
-    BreakpointCondition = "",
-    BreakpointRejected = { "", "DiagnosticError" },
-    LogPoint = "",
-    Stopped = { "󰁕", "DiagnosticWarn", "DapStoppedLine" },
   },
 }
 

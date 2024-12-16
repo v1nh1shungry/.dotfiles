@@ -1,6 +1,4 @@
 -- Inspired by https://github.com/simeji/winresizer
-local map = require("dotfiles.utils.keymap")
-
 local config = {
   vert_resize = 10,
   hori_resize = 3,
@@ -53,28 +51,28 @@ local function resize(direction)
   vim.cmd(commands[direction])
 end
 
-map({
+Dotfiles.map({
   "<C-Left>",
   function()
     resize("h")
   end,
   desc = "Left shift",
 })
-map({
+Dotfiles.map({
   "<C-Right>",
   function()
     resize("l")
   end,
   desc = "Right shift",
 })
-map({
+Dotfiles.map({
   "<C-Up>",
   function()
     resize("k")
   end,
   desc = "Up shift",
 })
-map({
+Dotfiles.map({
   "<C-Down>",
   function()
     resize("j")

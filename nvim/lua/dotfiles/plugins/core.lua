@@ -7,9 +7,6 @@ return {
   -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter-textobjects
   {
     "echasnovski/mini.ai",
-    config = function(_, opts)
-      require("mini.ai").setup(opts)
-    end,
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -404,6 +401,7 @@ return {
       styles = {
         input = {
           keys = {
+            cr = { "<CR>", "confirm" },
             esc = { "<Esc>", "cancel" },
             i_esc = { "<Esc>", "stopinsert", mode = "i" },
           },

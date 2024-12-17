@@ -381,7 +381,6 @@ return {
                     end
                     if not b.clangd_ast_win or not vim.api.nvim_win_is_valid(b.clangd_ast_win) then
                       b.clangd_ast_win = vim.api.nvim_open_win(b.clangd_ast_buf, true, { split = "right" })
-                      vim.wo[b.clangd_ast_win].foldmethod = "indent"
                     else
                       vim.cmd(vim.api.nvim_win_get_number(b.clangd_ast_win) .. " wincmd w")
                     end

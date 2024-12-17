@@ -12,16 +12,13 @@
 [interactive]
   diffFilter = delta --color-only
 
-[add.interactive]
-  useBuiltin = false
-
 [delta]
   navigate = true
   light = false
   line-numbers = true
 
 [merge]
-  conflictstyle = diff3
+  conflictstyle = zdiff3
   tool = diffview
 
 [mergetool]
@@ -30,9 +27,6 @@
 
 [mergetool "diffview"]
   cmd = nvim -n -c "DiffviewOpen" "$MERGE"
-
-[diff]
-  colorMoved = default
 
 [pull]
   rebase = true

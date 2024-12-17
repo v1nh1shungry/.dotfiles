@@ -21,42 +21,37 @@ end
 local previous_im
 
 local function restore_default_im()
-  vim.system(
-    { command },
-    { text = true },
-    vim.schedule_wrap(function(obj)
-      previous_im = vim.trim(obj.stdout)
-      if vim.fn.has("wsl") ~= 0 then
-        vim.system({ command, default_im })
+  Dotfiles.async.run(function()
+    local ret = Dotfiles.async.system({ command }, { text = true })
+    previous_im = vim.trim(ret.stdout)
+    if vim.fn.has("wsl") == 0 then
+      if default_im == "1" then
+        vim.system({ command, "-c" })
       else
-        if default_im == "1" then
-          vim.system({ command, "-c" })
-        else
-          vim.system({ command, "-o" })
-        end
+        vim.system({ command, "-o" })
       end
-    end)
-  )
+    else
+      vim.system({ command, default_im })
+    end
+  end)
 end
 
 local function restore_previous_im()
-  vim.system(
-    { command },
-    { text = true },
-    vim.schedule_wrap(function(obj)
-      if obj.stdout ~= previous_im then
-        if vim.fn.has("wsl") ~= 0 then
-          vim.system({ command, previous_im })
-        else
-          if previous_im == "1" then
-            vim.system({ command, "-c" })
-          elseif previous_im == "2" then
-            vim.system({ command, "-o" })
-          end
-        end
+  Dotfiles.async.run(function()
+    local ret = Dotfiles.async.system({ command }, { text = true })
+    if ret.stdout == previous_im then
+      return
+    end
+    if vim.fn.has("wsl") == 0 then
+      if previous_im == "1" then
+        vim.system({ command, "-c" })
+      elseif previous_im == "2" then
+        vim.system({ command, "-o" })
       end
-    end)
-  )
+    else
+      vim.system({ command, previous_im })
+    end
+  end)
 end
 
 local augroup = Dotfiles.augroup("im_switcher")

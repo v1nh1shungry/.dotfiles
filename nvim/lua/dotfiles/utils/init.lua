@@ -4,7 +4,7 @@ setmetatable(M, {
   __index = function(t, k)
     t[k] = require("dotfiles.utils." .. k)
     return t[k]
-  end
+  end,
 })
 
 M.map = function(opts)

@@ -52,28 +52,28 @@ local function resize(direction)
 end
 
 Dotfiles.map({
-  "<C-Left>",
+  "<C-w><",
   function()
     resize("h")
   end,
   desc = "Left shift",
 })
 Dotfiles.map({
-  "<C-Right>",
+  "<C-w>>",
   function()
     resize("l")
   end,
   desc = "Right shift",
 })
 Dotfiles.map({
-  "<C-Up>",
+  "<C-w>+",
   function()
     resize("k")
   end,
   desc = "Up shift",
 })
 Dotfiles.map({
-  "<C-Down>",
+  "<C-w>-",
   function()
     resize("j")
   end,

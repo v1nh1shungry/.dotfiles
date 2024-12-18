@@ -226,6 +226,15 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    keys = {
+      {
+        "<C-w><Space>",
+        function()
+          require("which-key").show({ keys = "<C-w>", loop = true })
+        end,
+        desc = "Window Hydra Mode (which-key)",
+      },
+    },
     opts = {
       preset = "helix",
       spec = {
@@ -239,8 +248,6 @@ return {
           { "<Space>", group = "leader" },
           { "<Leader><Tab>", group = "tab" },
           { "<Leader>c", group = "code" },
-          { "<Leader>cc", group = "text-case" },
-          { "<Leader>d", group = "debug" },
           { "<Leader>f", group = "file" },
           { "<Leader>g", group = "git" },
           { "<Leader>gx", group = "conflict" },
@@ -648,16 +655,8 @@ return {
   },
   {
     "fei6409/log-highlight.nvim",
-    ft = "log",
+    event = "BufRead *.log",
     opts = {},
-  },
-  {
-    "echasnovski/mini.trailspace",
-    config = function()
-      require("mini.trailspace").setup()
-      vim.cmd("highlight MiniTrailspace guibg=LightGreen")
-    end,
-    event = Dotfiles.events.enter_buffer,
   },
   {
     "nvim-telescope/telescope-ui-select.nvim",

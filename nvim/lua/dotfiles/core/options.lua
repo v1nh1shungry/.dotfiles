@@ -17,6 +17,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldtext = ""
 vim.opt.formatoptions = "jcroqlnt"
 vim.opt.grepformat = "%f:%l:%c:%m"
+vim.opt.grepprg = "rg --vimgrep"
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.jumpoptions = "view"

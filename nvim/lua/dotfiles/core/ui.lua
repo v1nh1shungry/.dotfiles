@@ -58,3 +58,5 @@ end)
 -- or if it took more than 500ms, then something went wrong
 timer:start(500, 0, replay)
 -- }}}
+
+vim.deprecate = function() end

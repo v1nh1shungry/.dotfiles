@@ -1,32 +1,38 @@
+if not require("dotfiles.user").nightly then
+  return
+end
+
 local BUILD_DIRECTORY = vim.fs.joinpath(vim.uv.os_tmpdir(), "dotfiles_neovim_nightly")
 local INSTALL_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
 local INSTALL_METADATA_PATH = vim.fs.joinpath(INSTALL_DIRECTORY, "install-metadata.json")
 local LOCKFILE = vim.fs.joinpath(vim.uv.os_tmpdir(), "NVIM_BUILDLOCK")
-local TIMEOUT_MS = require("dotfiles.user").nightly * 60 * 60 * 1000
+local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
 
 local augroup = Dotfiles.augroup("nightly")
 
-local function build_nightly()
-  -- FIXME: implement a **real** file lock here
+-- FIXME: implement a **real** file lock here
+local function lock()
   if vim.fn.filereadable(LOCKFILE) == 1 then
+    return false
+  end
+  vim.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
+  return true
+end
+
+local function unlock()
+  vim.fs.rm(LOCKFILE, { force = true })
+end
+
+local function build_nightly()
+  if not lock() then
     return
   end
-
-  vim.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
-  -- FIXME: unlock once exit this function
-  vim.api.nvim_create_autocmd("VimLeave", {
-    callback = function()
-      if vim.fn.filereadable(LOCKFILE) == 1 then
-        vim.fs.rm(LOCKFILE, { force = true })
-      end
-    end,
-    group = augroup,
-  })
 
   local meta
   if vim.fn.filereadable(INSTALL_METADATA_PATH) == 1 then
     meta = vim.json.decode(table.concat(vim.fn.readfile(INSTALL_METADATA_PATH), "\n"))
-    if meta.date and os.time() - meta.date < TIMEOUT_MS then
+    if meta.date and os.time() - meta.date < TIMEOUT_SECS then
+      unlock()
       return
     end
   end
@@ -43,18 +49,21 @@ local function build_nightly()
   end
   if ret.code ~= 0 then
     Snacks.notify.error("Failed to get the latest neovim source: " .. ret.stderr)
+    unlock()
     return
   end
 
   ret = Dotfiles.async.system({ "git", "rev-parse", "HEAD" }, { cwd = BUILD_DIRECTORY, text = true })
   if ret.code ~= 0 then
     Snacks.notify.error("Failed to get HEAD SHA-1 of neovim repo: " .. ret.stderr)
+    unlock()
     return
   end
 
   local latest_sha1 = ret.stdout
   if meta and meta.version and meta.version == latest_sha1 then
     Snacks.notify.info("Neovim has no update")
+    unlock()
     return
   end
 
@@ -64,12 +73,14 @@ local function build_nightly()
   )
   if ret.code ~= 0 then
     Snacks.notify.error("Failed to build nightly neovim: " .. ret.stderr)
+    unlock()
     return
   end
 
   ret = Dotfiles.async.system({ "make", "install" }, { cwd = BUILD_DIRECTORY })
   if ret.code ~= 0 then
     Snacks.notify.error("Failed to install nightly neovim: " .. ret.stderr)
+    unlock()
     return
   end
 
@@ -84,6 +95,8 @@ local function build_nightly()
     version = latest_sha1,
     date = os.time(),
   }) }, INSTALL_METADATA_PATH)
+
+  unlock()
 
   -- TODO: copy icons, desktop etc
   Snacks.notify.info("Complete building nightly neovim successfully")

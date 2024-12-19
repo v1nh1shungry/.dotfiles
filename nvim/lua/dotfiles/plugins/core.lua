@@ -396,6 +396,7 @@ return {
       input = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },
+      scope = { cursor = false },
       scratch = { autowrite = false },
       statuscolumn = { folds = { open = true, git_hl = true } },
       styles = {

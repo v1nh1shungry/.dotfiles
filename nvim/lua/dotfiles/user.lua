@@ -10,7 +10,7 @@ local M = {
     compile = {},
     execute = {},
   },
-  nightly = 24,
+  nightly = false,
 }
 
 local filename = vim.fs.joinpath(os.getenv("HOME"), ".nvimrc")

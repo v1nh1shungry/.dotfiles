@@ -7,13 +7,12 @@ return {
     event = "InsertEnter",
     opts = {
       appearance = { nerd_font_variant = "mono" },
-      fuzzy = { prebuiltBinaries = { download = false } },
+      fuzzy = { prebuilt_binaries = { download = false } },
       keymap = { preset = "super-tab" },
       completion = {
         accept = { auto_brackets = { enabled = true } },
         documentation = { auto_show = true, auto_show_delay_ms = 200 },
-        list = { selection = "auto_insert" },
-        trigger = { show_in_snippet = false },
+        menu = { draw = { align_to_component = "none" } },
       },
       sources = { default = { "lsp", "snippets", "path", "buffer" } },
     },

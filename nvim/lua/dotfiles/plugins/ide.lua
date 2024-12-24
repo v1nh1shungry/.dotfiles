@@ -2,6 +2,55 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function(_, opts)
+      -- https://github.com/nvimdev/lspsaga.nvim {{{
+      local peek_list = {}
+      local peek_group = Dotfiles.augroup("peek_definition")
+      local function peek_definition()
+        local params = vim.lsp.util.make_position_params(0, "utf-8")
+        vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _)
+          if vim.islist(result) then
+            result = result[1]
+          end
+
+          local buf = vim.uri_to_bufnr(result.targetUri or result.uri)
+          vim.bo[buf].bufhidden = "wipe"
+
+          local win_opts = {
+            buf = buf,
+            border = "rounded",
+            height = math.floor(vim.api.nvim_win_get_height(0) * 0.5),
+            position = "float",
+            title = vim.api.nvim_buf_get_name(buf),
+            title_pos = "center",
+            width = math.floor(vim.api.nvim_win_get_width(0) * 0.6),
+          }
+          if #peek_list > 0 then
+            local prev_conf = vim.api.nvim_win_get_config(peek_list[#peek_list])
+            win_opts.col = prev_conf.col + 1
+            win_opts.height = prev_conf.height - 1
+            win_opts.row = prev_conf.row + 1
+            win_opts.width = prev_conf.width - 2
+          end
+
+          local winid = Snacks.win(win_opts).win
+          local range = result.targetSelectionRange or result.range
+          vim.api.nvim_win_set_cursor(winid, {
+            range.start.line + 1,
+            vim.lsp.util._get_line_byte_from_position(buf, range.start, "utf-8"),
+          })
+
+          vim.api.nvim_create_autocmd("WinClosed", {
+            callback = function()
+              table.remove(peek_list)
+            end,
+            group = peek_group,
+            pattern = tostring(winid),
+          })
+          peek_list[#peek_list + 1] = winid
+        end)
+      end
+      -- }}}
+
       local on_attach = function(client, bufnr)
         local map_local = function(key)
           key.buffer = bufnr
@@ -9,18 +58,16 @@ return {
         end
 
         local mappings = {
-          ["textDocument/rename"] = {
-            { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
-          },
-          ["textDocument/codeAction"] = {
-            { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
-          },
+          ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
+          ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
           ["textDocument/documentSymbol"] = {
             { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "LSP symbols (Document)" },
             { "gO", "<Cmd>Outline<CR>", desc = "Symbol outline" },
           },
           ["workspace/symbol"] = {
-            { "<Leader>sS", "<Cmd>Telescope lsp_workspace_symbols<CR>", desc = "LSP symbols (Workspace)" },
+            "<Leader>sS",
+            "<Cmd>Telescope lsp_workspace_symbols<CR>",
+            desc = "LSP symbols (Workspace)",
           },
           ["textDocument/references"] = {
             { "gR", vim.lsp.buf.references, desc = "Go to references" },
@@ -29,6 +76,7 @@ return {
           ["textDocument/definition"] = {
             { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
             { "<Leader>sd", "<Cmd>Telescope lsp_definitions<CR>", desc = "LSP definitions" },
+            { "<Leader>cp", peek_definition, desc = "Peek definition" },
           },
           ["textDocument/typeDefinition*"] = {
             { "gy", vim.lsp.buf.type_definition, desc = "Go to type definition" },
@@ -46,31 +94,23 @@ return {
             { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing calls" },
             { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "LSP outgoing calls" },
           },
-          ["textDocument/inlayHint"] = {
-            function()
-              Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
-            end,
-          },
-          ["textDocument/signatureHelp"] = {
-            { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
-          },
+          ["textDocument/inlayHint"] = function()
+            Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
+          end,
+          ["textDocument/signatureHelp"] = { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
           ["typeHierarchy/subtypes"] = {
-            {
-              "<Leader>cs",
-              function()
-                vim.lsp.buf.typehierarchy("subtypes")
-              end,
-              desc = "LSP subtypes",
-            },
+            "<Leader>cs",
+            function()
+              vim.lsp.buf.typehierarchy("subtypes")
+            end,
+            desc = "LSP subtypes",
           },
           ["typeHierarchy/supertypes"] = {
-            {
-              "<Leader>cS",
-              function()
-                vim.lsp.buf.typehierarchy("supertypes")
-              end,
-              desc = "LSP supertypes",
-            },
+            "<Leader>cS",
+            function()
+              vim.lsp.buf.typehierarchy("supertypes")
+            end,
+            desc = "LSP supertypes",
           },
           ["textDocument/documentHighlight"] = {
             {
@@ -92,10 +132,12 @@ return {
 
         for method, keys in pairs(mappings) do
           if client.supports_method(method) then
-            for _, k in ipairs(keys) do
-              if type(k) == "function" then
-                k()
-              else
+            if type(keys) == "function" then
+              keys()
+            elseif type(keys[1]) == "string" then
+              map_local(keys)
+            else
+              for _, k in ipairs(keys) do
                 map_local(k)
               end
             end
@@ -136,13 +178,11 @@ return {
 
       -- https://www.lazyvim.org/plugins/lsp {{{
       local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-      local has_blink, blink = pcall(require, "blink.cmp")
       local capabilities = vim.tbl_deep_extend(
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
         has_cmp and cmp_nvim_lsp.default_capabilities() or {},
-        has_blink and blink.get_lsp_capabilities() or {},
         {
           workspace = {
             fileOperations = {
@@ -468,22 +508,6 @@ return {
           table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 })
         end,
       },
-      {
-        "saghen/blink.cmp",
-        optional = true,
-        opts = {
-          sources = {
-            default = { "lazydev" },
-            providers = {
-              lazydev = {
-                name = "LazyDev",
-                module = "lazydev.integrations.blink",
-                fallbacks = { "lsp" },
-              },
-            },
-          },
-        },
-      },
     },
     opts = {
       library = {
@@ -637,9 +661,6 @@ return {
       "hrsh7th/cmp-path",
       "lukas-reineke/cmp-rg",
     },
-    -- FIXME: this should be removed after switching to blink.cmp completely
-    --        or deciding to abandon blink.cmp
-    enabled = not vim.tbl_contains(require("dotfiles.user").extra, "blink"),
     event = Dotfiles.events.enter_insert,
     opts = function()
       local cmp = require("cmp")
@@ -745,7 +766,14 @@ return {
         query = { "format-queries" },
         sh = { "shfmt" },
       },
-      formatters = { injected = { options = { ignore_errors = true } } },
+      formatters = {
+        injected = { options = { ignore_errors = true } },
+        stylua = {
+          condition = function(_, ctx)
+            return vim.fs.root(ctx.filename, "stylua.toml")
+          end,
+        },
+      },
     },
   },
   -- https://www.lazyvim.org/plugins/linting {{{
@@ -819,6 +847,7 @@ return {
       },
     },
   },
+  -- }}}
   {
     "hedyhli/outline.nvim",
     cmd = "Outline",
@@ -839,5 +868,4 @@ return {
       },
     },
   },
-  -- }}}
 }

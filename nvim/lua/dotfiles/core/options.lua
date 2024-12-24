@@ -1,3 +1,7 @@
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
 vim.opt.autowrite = true
 vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
 vim.opt.colorcolumn = "80"

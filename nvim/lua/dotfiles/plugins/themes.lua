@@ -6,7 +6,6 @@ return {
     name = "catppuccin",
     opts = {
       integrations = {
-        blink_cmp = true,
         dadbod_ui = true,
         diffview = true,
         dropbar = { enabled = true },

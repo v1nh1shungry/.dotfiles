@@ -46,6 +46,17 @@ return {
         opts = {},
       },
     },
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        callback = function()
+          Snacks.util.on_module("which-key", function()
+            require("which-key").add({ "<Leader>d", group = "debug" })
+          end)
+        end,
+        group = Dotfiles.augroup("dap_which_key"),
+        pattern = "VeryLazy",
+      })
+    end,
     keys = {
       { "<Leader>db", "<Cmd>DapToggleBreakpoint<CR>", desc = "Toggle breakpoint" },
       { "<Leader>dc", "<Cmd>DapContinue<CR>", desc = "Continue" },

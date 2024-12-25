@@ -321,7 +321,6 @@ return {
           ["cmp.entry.get_documentation"] = true,
         },
       },
-      markdown = { hover = { ["%[.-%]%((%S-)%)"] = vim.ui.open } },
       routes = {
         {
           filter = {

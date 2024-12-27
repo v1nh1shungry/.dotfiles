@@ -10,7 +10,7 @@ local function remove_lsp_mapping(mapping)
   for _, m in ipairs(mapping.mode) do
     local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
     if map_desc and string.find(map_desc, "vim%.lsp") then
-      vim.keymap.del(m, mapping[1], { buffer = mapping.buffer })
+      vim.keymap.del(m, mapping[1])
     end
   end
 end
@@ -19,13 +19,12 @@ remove_lsp_mapping({ "grn" })
 remove_lsp_mapping({ "grr" })
 remove_lsp_mapping({ "gra", mode = { "n", "x" } })
 remove_lsp_mapping({ "gri" })
+remove_lsp_mapping({ "gO" })
 remove_lsp_mapping({ "<C-s>", mode = "i" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
-    remove_lsp_mapping({ "<C-]>", buffer = args.buf })
-    remove_lsp_mapping({ "<C-w>]", buffer = args.buf })
-
+    vim.bo[args.buf].tagfunc = nil
     vim.bo[args.buf].omnifunc = nil
   end,
   group = Dotfiles.augroup("disable_default_lsp_mappings"),

@@ -5,10 +5,16 @@ end
 local BUILD_DIRECTORY = vim.fs.joinpath(vim.uv.os_tmpdir(), "dotfiles_neovim_nightly")
 local INSTALL_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
 local INSTALL_METADATA_PATH = vim.fs.joinpath(INSTALL_DIRECTORY, "install-metadata.json")
-local LOCKFILE = vim.fs.joinpath(vim.uv.os_tmpdir(), "NVIM_BUILDLOCK")
+local LOCKFILE = vim.fs.joinpath(vim.uv.os_tmpdir(), "DOTFILES_NVIM_NIGHTLY_BUILDLOCK")
 local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
 
 local augroup = Dotfiles.augroup("nightly")
+
+local function unlock()
+  if vim.fn.filereadable(LOCKFILE) == 1 then
+    vim.fs.rm(LOCKFILE, { force = true })
+  end
+end
 
 -- FIXME: implement a **real** file lock here
 local function lock()
@@ -16,11 +22,11 @@ local function lock()
     return false
   end
   vim.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
+  vim.api.nvim_create_autocmd("VimLeave", {
+    callback = unlock,
+    group = augroup,
+  })
   return true
-end
-
-local function unlock()
-  vim.fs.rm(LOCKFILE, { force = true })
 end
 
 local function build_nightly()

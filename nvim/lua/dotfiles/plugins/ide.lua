@@ -2,6 +2,12 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function(_, opts)
+      -- shrink lsp log size
+      local log_path = vim.lsp.log.get_filename()
+      if vim.fn.getfsize(log_path) > 1.5 * 1024 * 1024 then
+        vim.fn.writefile({}, log_path)
+      end
+
       -- https://github.com/nvimdev/lspsaga.nvim {{{
       local peek_list = {}
       local peek_group = Dotfiles.augroup("peek_definition")
@@ -18,11 +24,11 @@ return {
           local win_opts = {
             buf = buf,
             border = "rounded",
-            height = math.floor(vim.api.nvim_win_get_height(0) * 0.5),
+            height = math.floor(vim.o.lines * 0.5),
             position = "float",
             title = vim.api.nvim_buf_get_name(buf),
             title_pos = "center",
-            width = math.floor(vim.api.nvim_win_get_width(0) * 0.6),
+            width = math.floor(vim.o.columns * 0.6),
           }
           if #peek_list > 0 then
             local prev_conf = vim.api.nvim_win_get_config(peek_list[#peek_list])

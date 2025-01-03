@@ -8,11 +8,11 @@ return {
           opts.buffer = buffer
           Dotfiles.map(opts)
         end
-        map({ "<Leader>ga", "<Cmd>Gitsigns stage_hunk<CR>", mode = { "n", "v" }, desc = "Stage hunk" })
+        map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage hunk" })
         map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage current buffer" })
         map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo staged hunk" })
         map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview hunk" })
-        map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "v" }, desc = "Reset hunk" })
+        map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset hunk" })
         map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
         map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
         map({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })

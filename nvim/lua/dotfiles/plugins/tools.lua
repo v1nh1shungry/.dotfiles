@@ -116,7 +116,7 @@ return {
         pattern = "http",
       })
     end,
-    opts = {},
+    opts = { display_mode = "float" },
   },
   {
     "kristijanhusak/vim-dadbod-ui",

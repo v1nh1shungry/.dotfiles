@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = Dotfiles.augroup("disable_default_lsp_mappings"),
 })
 
-vim.g.mapleader = " "
+vim.g.mapleader = vim.keycode("<Space>")
 vim.g.maplocalleader = "\\"
 
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })

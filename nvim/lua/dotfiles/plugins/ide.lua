@@ -225,7 +225,7 @@ return {
       end
 
       for server, server_opts in pairs(opts.servers) do
-        if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+        if server_opts.mason == false or not vim.list_contains(all_mslp_servers, server) then
           setup(server)
         else
           ensure_installed[#ensure_installed + 1] = server

@@ -68,54 +68,24 @@ return {
   {
     "mistweaverco/kulala.nvim",
     ft = "http",
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function(arg)
-          Dotfiles.map({
-            "<CR>",
-            function()
-              require("kulala").run()
-            end,
-            buffer = arg.buf,
-            desc = "Run the request",
-          })
-          Dotfiles.map({
-            "]r",
-            function()
-              require("kulala").jump_next()
-            end,
-            buffer = arg.buf,
-            desc = "Jump to the next request",
-          })
-          Dotfiles.map({
-            "[r",
-            function()
-              require("kulala").jump_prev()
-            end,
-            buffer = arg.buf,
-            desc = "Jump to the prev request",
-          })
-          Dotfiles.map({
-            "yr",
-            function()
-              require("kulala").copy()
-            end,
-            buffer = arg.buf,
-            desc = "Copy as curl command",
-          })
-          Dotfiles.map({
-            "<Tab>",
-            function()
-              require("kulala").toggle_view()
-            end,
-            buffer = arg.buf,
-            desc = "Toggle between body and headers",
+    keys = {
+      { "<CR>", function() require("kulala").run() end, desc = "Send request", ft = "http" },
+      { "]r", function() require("kulala").jump_next() end, desc = "Jump to next request", ft = "http" },
+      { "[r", function() require("kulala").jump_prev() end, desc = "Jump to previvous request", ft = "http" },
+      { "yr", function() require("kulala").copy() end, desc = "Copy as curl command", ft = "http" },
+      { "<Tab>", function() require("kulala").toggle_view() end, desc = "Toggle headers/body", ft = "http" },
+      { "<S-Tab>", function() require("kulala").show_stats() end, desc = "Show request stats", ft = "http" },
+      {
+        "<Leader>ur",
+        function()
+          Snacks.scratch.open({
+            name = "Kulala Scratchpad",
+            ft = "http",
           })
         end,
-        group = Dotfiles.augroup("kulala_keymaps"),
-        pattern = "http",
-      })
-    end,
+        desc = "Open kulala scratchpad",
+      },
+    },
     opts = { display_mode = "float" },
   },
   {

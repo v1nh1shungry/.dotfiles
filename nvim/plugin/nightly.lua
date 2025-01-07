@@ -92,7 +92,7 @@ local function build_nightly()
 
   Dotfiles.async.schedule()
   local usr_bin_path = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin")
-  if vim.tbl_contains(vim.split(vim.env.PATH, ":"), usr_bin_path) then
+  if vim.list_contains(vim.split(vim.env.PATH, ":"), usr_bin_path) then
     vim.uv.fs_symlink(vim.fs.joinpath(INSTALL_DIRECTORY, "bin", "nvim"), vim.fs.joinpath(usr_bin_path, "nvim"))
   end
 

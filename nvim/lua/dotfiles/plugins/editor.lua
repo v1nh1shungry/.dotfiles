@@ -387,7 +387,7 @@ return {
         if opts.skip_ts and #opts.skip_ts > 0 then
           local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
           for _, capture in ipairs(ok and captures or {}) do
-            if vim.tbl_contains(opts.skip_ts, capture.capture) then
+            if vim.list_contains(opts.skip_ts, capture.capture) then
               return o
             end
           end

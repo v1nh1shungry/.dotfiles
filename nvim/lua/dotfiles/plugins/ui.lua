@@ -558,27 +558,42 @@ return {
         })
       end
 
-      local function cwd()
-        local cur_entry_path = MiniFiles.get_fs_entry().path
-        local cur_directory = vim.fs.dirname(cur_entry_path)
-        if cur_entry_path then
-          vim.fn.chdir(cur_directory)
-        end
-      end
-
-      local show_hidden = false
+      local show_hidden = true
+      local ns = vim.api.nvim_create_namespace("dotfiles_mini_files_extmarks")
+      local augroup = Dotfiles.augroup("mini_files")
+      local ignored = {}
 
       local function filter_show(_)
         return true
       end
 
+      local function update_git_ignored(path)
+        if not vim.fs.root(vim.uv.cwd() or 0, ".git") then
+          return
+        end
+
+        local items = {}
+
+        for name, _ in vim.fs.dir(path) do
+          table.insert(items, name)
+        end
+
+        ignored[path] = {}
+        local ret = vim.fn.system(vim.list_extend({ "git", "-C", path, "check-ignore" }, items))
+        vim.list_extend(ignored[path], vim.split(ret, "\n", { trimempty = true }))
+      end
+
       local function filter_hide(fs_entry)
-        return not vim.tbl_contains({
-          ".cache",
-          ".git",
-          "build",
-          "node_modules",
-        }, fs_entry.name)
+        local parent = vim.fs.dirname(fs_entry.path)
+        local pparent = vim.fs.dirname(parent)
+        if ignored[pparent] and vim.list_contains(ignored[pparent], vim.fs.basename(parent)) then
+          return false
+        end
+
+        if not ignored[parent] then
+          update_git_ignored(parent)
+        end
+        return not vim.list_contains(ignored[parent], fs_entry.name)
       end
 
       local function toggle_hidden()
@@ -589,15 +604,35 @@ return {
       vim.api.nvim_create_autocmd("User", {
         callback = function(event)
           local bufnr = event.data.buf_id
-          Dotfiles.map({ "gc", cwd, buffer = bufnr, desc = "Change CWD to here" })
           Dotfiles.map({ "g.", toggle_hidden, buffer = bufnr, desc = "Toggle hidden files" })
           map_split(bufnr, "<C-w>s", "horizontal", false)
           map_split(bufnr, "<C-w>v", "vertical", false)
           map_split(bufnr, "<C-w>S", "horizontal", true)
           map_split(bufnr, "<C-w>V", "vertical", true)
         end,
-        group = Dotfiles.augroup("mini_files_keymaps"),
+        group = augroup,
         pattern = "MiniFilesBufferCreate",
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        callback = function(args)
+          vim.api.nvim_buf_clear_namespace(args.data.buf_id, ns, 0, -1)
+
+          if not show_hidden then
+            return
+          end
+
+          for i = 1, vim.api.nvim_buf_line_count(args.data.buf_id) do
+            local entry = require("mini.files").get_fs_entry(args.data.buf_id, i)
+            if entry and not filter_hide(entry) then
+              vim.api.nvim_buf_set_extmark(args.data.buf_id, ns, i - 1, 0, {
+                line_hl_group = "DiagnosticUnnecessary",
+              })
+            end
+          end
+        end,
+        group = augroup,
+        pattern = "MiniFilesBufferUpdate",
       })
       -- }}}
 
@@ -610,12 +645,21 @@ return {
       })
     end,
     dependencies = {
-      "v1nh1shungry/mini-files-status.nvim",
-      config = function()
-        vim.cmd("highlight link MiniFilesGitIndex GitSignsAdd")
-        vim.cmd("highlight link MiniFilesGitWorkspace GitSignsChange")
-      end,
+      {
+        "v1nh1shungry/mini-files-status.nvim",
+        config = function()
+          vim.cmd("highlight link MiniFilesGitIndex GitSignsAdd")
+          vim.cmd("highlight link MiniFilesGitWorkspace GitSignsChange")
+        end,
+      },
+      "echasnovski/mini.icons",
     },
+    lazy = (function()
+      local stats = vim.uv.fs_stat(vim.fn.argv(0))
+      if stats and stats.type == "directory" then
+        return false
+      end
+    end)(),
     keys = {
       {
         "<Leader>e",

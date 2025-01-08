@@ -495,6 +495,7 @@ return {
   {
     "OXY2DEV/markview.nvim",
     ft = "markdown",
+    keys = { { "<Leader>um", "<Cmd>Markview<CR>", desc = "Toggle render", ft = "markdown" } },
     opts = {},
   },
   {
@@ -568,6 +569,8 @@ return {
       end
 
       local function update_git_ignored(path)
+        ignored[path] = {}
+
         if not vim.fs.root(vim.uv.cwd() or 0, ".git") then
           return
         end
@@ -578,11 +581,11 @@ return {
           table.insert(items, name)
         end
 
-        ignored[path] = {}
         local ret = vim.fn.system(vim.list_extend({ "git", "-C", path, "check-ignore" }, items))
         vim.list_extend(ignored[path], vim.split(ret, "\n", { trimempty = true }))
       end
 
+      -- FIXME: can't handle new/removed files
       local function filter_hide(fs_entry)
         local parent = vim.fs.dirname(fs_entry.path)
         local pparent = vim.fs.dirname(parent)
@@ -685,8 +688,9 @@ return {
   },
   {
     "OXY2DEV/helpview.nvim",
-    ft = "help",
     dependencies = "nvim-treesitter/nvim-treesitter",
+    ft = "help",
+    keys = { { "<Leader>um", "<Cmd>Helpview<CR>", desc = "Toggle render view", ft = "help" } },
   },
   {
     "lewis6991/satellite.nvim",

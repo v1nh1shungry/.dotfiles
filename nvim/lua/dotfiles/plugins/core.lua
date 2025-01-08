@@ -295,13 +295,17 @@ return {
         callback = function()
           vim.print = Snacks.debug.inspect
 
-          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<Leader>uw")
-          Snacks.toggle.diagnostics():map("<Leader>ux")
+          Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<Leader>ug")
           Snacks.toggle
             .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
             :map("<Leader>uc")
+          Snacks.toggle.option("wrap", { name = "Wrap" }):map("<Leader>uw")
+
+          Snacks.toggle.option("relativenumber", { name = "Relative number" }):map("<Leader>uL")
+          Snacks.toggle.line_number():map("<Leader>ul")
+
+          Snacks.toggle.diagnostics():map("<Leader>ux")
           Snacks.toggle.treesitter():map("<Leader>uT")
-          Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<Leader>ug")
 
           Snacks.toggle.profiler():map("<Leader>pp")
           Snacks.toggle.profiler_highlights():map("<Leader>ph")

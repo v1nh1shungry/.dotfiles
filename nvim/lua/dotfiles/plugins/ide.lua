@@ -204,7 +204,6 @@ return {
 
       local function setup(server)
         if not opts.servers[server] then
-          vim.notify("Unused LSP server: " .. server, vim.log.levels.WARN)
           return
         end
         local setup_opts = vim.tbl_deep_extend("force", {
@@ -505,7 +504,6 @@ return {
   },
   {
     "folke/lazydev.nvim",
-    ft = "lua",
     dependencies = {
       {
         "hrsh7th/nvim-cmp",
@@ -515,6 +513,7 @@ return {
         end,
       },
     },
+    ft = "lua",
     opts = {
       library = {
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
@@ -527,6 +526,7 @@ return {
     "williamboman/mason.nvim",
     config = function(_, opts)
       require("mason").setup(opts)
+
       local mr = require("mason-registry")
       mr:on("package:install:success", function()
         vim.defer_fn(function()
@@ -540,13 +540,34 @@ return {
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
           if not p:is_installed() then
+            Snacks.notify.info("Installing package " .. p.name)
             p:install()
+          end
+        end
+      end)
+
+      Snacks.util.on_module("mason-lspconfig", function()
+        local installed = mr.get_installed_packages()
+        local ensure_installed = vim.list_extend(
+          vim
+            .iter(require("mason-lspconfig.settings").current.ensure_installed)
+            :map(function(p)
+              return require("mason-lspconfig.mappings.server").lspconfig_to_package[p]
+            end)
+            :totable(),
+          opts.ensure_installed
+        )
+
+        for _, p in ipairs(installed) do
+          if not vim.list_contains(ensure_installed, p.name) then
+            Snacks.notify.info("Uninstall unused package " .. p.name)
+            p:uninstall()
           end
         end
       end)
     end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    opts = { ensure_installed = { "cspell", "shfmt", "stylua" } },
+    opts = { ensure_installed = {} },
     opts_extend = { "ensure_installed" },
   },
   -- }}}
@@ -752,7 +773,10 @@ return {
     init = function()
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
-    dependencies = "williamboman/mason.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      opts = { ensure_installed = { "shfmt", "stylua" } },
+    },
     keys = {
       {
         "<Leader>cf",
@@ -836,7 +860,10 @@ return {
         group = Dotfiles.augroup("nvim_lint"),
       })
     end,
-    dependencies = "williamboman/mason.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      opts = { ensure_installed = { "cspell" } },
+    },
     event = Dotfiles.events.enter_buffer,
     opts = {
       events = { "BufWritePost", "BufReadPost" },

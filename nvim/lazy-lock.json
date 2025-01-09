@@ -14,7 +14,7 @@
   "dropbar.nvim": { "branch": "master", "commit": "d0c78c570db0f5941f85ba54522c0f01427cdf67" },
   "edgy.nvim": { "branch": "main", "commit": "7e8dedc39abebe40c289b8012cc89b11c69aa7a0" },
   "flash.nvim": { "branch": "main", "commit": "34c7be146a91fec3555c33fe89c7d643f6ef5cf1" },
-  "gitsigns.nvim": { "branch": "main", "commit": "2eaa30537365f6889c850bd46ef6f18ddf8fac70" },
+  "gitsigns.nvim": { "branch": "main", "commit": "904108425c5ef606983ffd47b0bf1e09fa54395d" },
   "grug-far.nvim": { "branch": "main", "commit": "08f32182335754abf461dfb77b2c4e24bfe4d614" },
   "helpview.nvim": { "branch": "main", "commit": "857aec1dab331252910da158ab6cbfbc65239c71" },
   "highlight-undo.nvim": { "branch": "main", "commit": "795fc36f8bb7e4cf05e31bd7e354b86d27643a9e" },

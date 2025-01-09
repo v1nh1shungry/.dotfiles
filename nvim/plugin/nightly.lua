@@ -1,4 +1,3 @@
--- TODO: support rollback
 if not require("dotfiles.user").nightly then
   return
 end
@@ -8,6 +7,7 @@ local INSTALL_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
 local INSTALL_METADATA_PATH = vim.fs.joinpath(INSTALL_DIRECTORY, "install-metadata.json")
 local LOCKFILE = vim.fs.joinpath(vim.uv.os_tmpdir(), "DOTFILES_NVIM_NIGHTLY_BUILDLOCK")
 local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
+local USR_BIN_PATH = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin", "nvim")
 
 local augroup = Dotfiles.augroup("nightly")
 local ns = vim.api.nvim_create_namespace("dotfiles_neovim_nightly")
@@ -21,6 +21,8 @@ end
 -- FIXME: implement a **real** file lock here
 local function lock()
   if vim.fn.filereadable(LOCKFILE) == 1 then
+    -- TODO: maybe too noisy
+    Snacks.notify.warn("There is another session holding the lock, please wait for it")
     return false
   end
   vim.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
@@ -34,6 +36,11 @@ end
 local function fetch()
   local ret
   if vim.fn.isdirectory(BUILD_DIRECTORY) == 1 then
+    ret = Dotfiles.async.system({ "git", "checkout", "master" }, { cwd = BUILD_DIRECTORY })
+    if ret.code ~= 0 then
+      Snacks.notify.error("Failed to checkout master branch")
+      return false
+    end
     ret = Dotfiles.async.system({ "git", "pull", "--rebase" }, { cwd = BUILD_DIRECTORY })
   else
     ret =
@@ -64,13 +71,39 @@ local function get_head_sha1()
   return vim.trim(ret.stdout)
 end
 
-local function build_nightly()
+-- TODO: copy icons, desktop etc
+local function compile_and_install()
+  local ret = Dotfiles.async.system(
+    { "make", "CMAKE_BUILD_TYPE=Release", "CMAKE_INSTALL_PREFIX=" .. INSTALL_DIRECTORY },
+    { cwd = BUILD_DIRECTORY }
+  )
+  if ret.code ~= 0 then
+    Snacks.notify.error("Failed to build nightly neovim: " .. ret.stderr)
+    return false
+  end
+
+  ret = Dotfiles.async.system({ "make", "install" }, { cwd = BUILD_DIRECTORY })
+  if ret.code ~= 0 then
+    Snacks.notify.error("Failed to install nightly neovim: " .. ret.stderr)
+    return false
+  end
+
+  Dotfiles.async.schedule()
+  if vim.list_contains(vim.split(vim.env.PATH, ":"), vim.fs.dirname(USR_BIN_PATH)) then
+    vim.uv.fs_symlink(vim.fs.joinpath(INSTALL_DIRECTORY, "bin", "nvim"), USR_BIN_PATH)
+  end
+
+  return true
+end
+
+---@param force boolean
+local function build_nightly(force)
   if not lock() then
     return
   end
 
   local meta = get_metadata()
-  if meta and meta.date and os.time() - meta.date < TIMEOUT_SECS then
+  if not force and meta and meta.date and os.time() - meta.date < TIMEOUT_SECS then
     unlock()
     return
   end
@@ -94,42 +127,19 @@ local function build_nightly()
     return
   end
 
-  local ret = Dotfiles.async.system(
-    { "make", "CMAKE_BUILD_TYPE=Release", "CMAKE_INSTALL_PREFIX=" .. INSTALL_DIRECTORY },
-    { cwd = BUILD_DIRECTORY }
-  )
-  if ret.code ~= 0 then
-    Snacks.notify.error("Failed to build nightly neovim: " .. ret.stderr)
+  if not compile_and_install() then
     unlock()
     return
-  end
-
-  ret = Dotfiles.async.system({ "make", "install" }, { cwd = BUILD_DIRECTORY })
-  if ret.code ~= 0 then
-    Snacks.notify.error("Failed to install nightly neovim: " .. ret.stderr)
-    unlock()
-    return
-  end
-
-  Dotfiles.async.schedule()
-  local usr_bin_path = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin")
-  if vim.list_contains(vim.split(vim.env.PATH, ":"), usr_bin_path) then
-    vim.uv.fs_symlink(vim.fs.joinpath(INSTALL_DIRECTORY, "bin", "nvim"), vim.fs.joinpath(usr_bin_path, "nvim"))
   end
 
   Dotfiles.async.schedule()
   vim.fn.writefile(
-    { vim.json.encode({
-      rollback = meta.version,
-      version = latest_sha1,
-      date = os.time(),
-    }) },
+    { vim.json.encode({ rollback = meta.version, version = latest_sha1, date = os.time() }) },
     INSTALL_METADATA_PATH
   )
 
   unlock()
 
-  -- TODO: copy icons, desktop etc
   Snacks.notify.info("Complete building nightly neovim successfully")
 end
 
@@ -143,6 +153,10 @@ vim.api.nvim_create_autocmd("User", {
 
 -- TODO: can load updated first
 local function dashboard()
+  if not lock() then
+    return
+  end
+
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "Updating..." })
   Snacks.win({
@@ -155,6 +169,7 @@ local function dashboard()
   })
 
   if not fetch() then
+    unlock()
     return
   end
 
@@ -207,13 +222,66 @@ local function dashboard()
   for _, l in ipairs(bold_linenr) do
     vim.api.nvim_buf_set_extmark(buf, ns, l - 1, 0, { line_hl_group = "Bold" })
   end
+
+  unlock()
+end
+
+local function rollback()
+  if not lock() then
+    return
+  end
+
+  local meta = get_metadata()
+  if not meta or not meta.rollback then
+    Snacks.notify.error("Failed to get last neovim nightly SHA1")
+    unlock()
+    return
+  end
+
+  Snacks.notify.info("Start rolling neovim back to " .. meta.rollback)
+
+  if not fetch() then
+    unlock()
+    return
+  end
+
+  local ret = Dotfiles.async.system({ "git", "checkout", meta.rollback }, { cwd = BUILD_DIRECTORY })
+  if ret.code ~= 0 then
+    Snacks.notify.error("Failed to checkout " .. meta.rollback)
+    unlock()
+    return
+  end
+
+  if not compile_and_install() then
+    unlock()
+    return
+  end
+
+  Dotfiles.async.schedule()
+  vim.fn.writefile({ vim.json.encode({ version = meta.rollback, date = os.time() }) }, INSTALL_METADATA_PATH)
+
+  unlock()
+  Snacks.notify.info("Complete rolling back neovim successfully")
 end
 
 Dotfiles.map({
-  "<Leader>pn",
+  "<Leader>pnn",
   function()
     Dotfiles.async.run(dashboard)
   end,
   desc = "Neovim nightly dashboard",
 })
--- TODO: add a keymap to trigger building manually
+Dotfiles.map({
+  "<Leader>pnb",
+  function()
+    Dotfiles.async.run(build_nightly, true)
+  end,
+  desc = "Build neovim nightly",
+})
+Dotfiles.map({
+  "<Leader>pnr",
+  function()
+    Dotfiles.async.run(rollback)
+  end,
+  desc = "Rollback neovim nightly",
+})

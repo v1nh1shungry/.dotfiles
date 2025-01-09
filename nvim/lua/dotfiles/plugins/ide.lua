@@ -871,6 +871,7 @@ return {
         bash = { "bash" },
         cpp = { "cspell" },
         fish = { "fish" },
+        sh = { "bash" },
       },
       linters = {
         cspell = {

@@ -1,3 +1,4 @@
+-- TODO: steal nvim-tinygit's pickaxe :)
 return {
   {
     "lewis6991/gitsigns.nvim",
@@ -55,7 +56,7 @@ return {
   },
   {
     "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen" },
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     config = function()
       local actions = require("diffview.actions")
 
@@ -64,7 +65,7 @@ return {
         view = {
           default = { disable_diagnostics = true },
           merge_tool = { layout = "diff3_mixed" },
-          file_history = { disable_diagnostics = true },
+          file_history = { lazyout = "diff2_vertical", disable_diagnostics = true },
         },
         keymaps = {
           file_history_panel = {

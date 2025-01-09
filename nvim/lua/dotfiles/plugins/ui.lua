@@ -252,6 +252,7 @@ return {
           { "<Leader>g", group = "git" },
           { "<Leader>gx", group = "conflict" },
           { "<Leader>p", group = "package/profile" },
+          { "<Leader>pn", group = "nightly" },
           { "<Leader>q", group = "quit/sessions" },
           { "<Leader>s", group = "search" },
           { "<Leader>u", group = "ui/utils" },

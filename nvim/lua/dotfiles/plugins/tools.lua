@@ -69,12 +69,54 @@ return {
     "mistweaverco/kulala.nvim",
     ft = "http",
     keys = {
-      { "<CR>", function() require("kulala").run() end, desc = "Send request", ft = "http" },
-      { "]r", function() require("kulala").jump_next() end, desc = "Jump to next request", ft = "http" },
-      { "[r", function() require("kulala").jump_prev() end, desc = "Jump to previvous request", ft = "http" },
-      { "yr", function() require("kulala").copy() end, desc = "Copy as curl command", ft = "http" },
-      { "<Tab>", function() require("kulala").toggle_view() end, desc = "Toggle headers/body", ft = "http" },
-      { "<S-Tab>", function() require("kulala").show_stats() end, desc = "Show request stats", ft = "http" },
+      {
+        "<CR>",
+        function()
+          require("kulala").run()
+        end,
+        desc = "Send request",
+        ft = "http",
+      },
+      {
+        "]r",
+        function()
+          require("kulala").jump_next()
+        end,
+        desc = "Jump to next request",
+        ft = "http",
+      },
+      {
+        "[r",
+        function()
+          require("kulala").jump_prev()
+        end,
+        desc = "Jump to previvous request",
+        ft = "http",
+      },
+      {
+        "yr",
+        function()
+          require("kulala").copy()
+        end,
+        desc = "Copy as curl command",
+        ft = "http",
+      },
+      {
+        "<Tab>",
+        function()
+          require("kulala").toggle_view()
+        end,
+        desc = "Toggle headers/body",
+        ft = "http",
+      },
+      {
+        "<S-Tab>",
+        function()
+          require("kulala").show_stats()
+        end,
+        desc = "Show request stats",
+        ft = "http",
+      },
       {
         "<Leader>ur",
         function()

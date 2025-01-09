@@ -868,6 +868,7 @@ return {
     opts = {
       events = { "BufWritePost", "BufReadPost" },
       linters_by_ft = {
+        bash = { "bash" },
         cpp = { "cspell" },
         fish = { "fish" },
       },

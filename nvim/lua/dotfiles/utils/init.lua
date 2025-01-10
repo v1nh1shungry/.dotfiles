@@ -26,4 +26,8 @@ M.augroup = function(name)
   return vim.api.nvim_create_augroup("dotfiles_" .. name, {})
 end
 
+M.is_git_repo = function()
+  return vim.fs.root(vim.uv.cwd() or 0, ".git")
+end
+
 return M

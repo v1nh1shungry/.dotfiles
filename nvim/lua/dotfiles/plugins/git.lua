@@ -1,4 +1,3 @@
--- TODO: steal nvim-tinygit's pickaxe :)
 return {
   {
     "lewis6991/gitsigns.nvim",
@@ -147,7 +146,7 @@ return {
         desc = "Open git diff pane",
       },
       {
-        "<Leader>g?",
+        "<Leader>gh",
         function()
           vim.cmd("DiffviewFileHistory" .. (vim.bo.buftype == "" and " %" or ""))
         end,

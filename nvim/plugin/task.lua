@@ -104,7 +104,7 @@ local function cook_command(cmd)
   return cmd
 end
 
-local augroup = Dotfiles.augroup("task")
+local AUGROUP = Dotfiles.augroup("task")
 
 for lang, cmd in pairs(config.compile) do
   vim.api.nvim_create_autocmd("FileType", {
@@ -142,7 +142,7 @@ for lang, cmd in pairs(config.compile) do
         desc = "Compile",
       })
     end,
-    group = augroup,
+    group = AUGROUP,
     pattern = lang,
   })
 end
@@ -175,7 +175,7 @@ for ft, cmd in pairs(config.execute) do
         desc = "Execute",
       })
     end,
-    group = augroup,
+    group = AUGROUP,
     pattern = ft,
   })
 end

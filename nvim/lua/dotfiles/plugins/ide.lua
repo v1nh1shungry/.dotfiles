@@ -10,7 +10,7 @@ return {
 
       -- https://github.com/nvimdev/lspsaga.nvim {{{
       local peek_list = {}
-      local peek_group = Dotfiles.augroup("peek_definition")
+      local PEEK_GROUP = Dotfiles.augroup("peek_definition")
       local function peek_definition()
         local params = vim.lsp.util.make_position_params(0, "utf-8")
         vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _)
@@ -19,7 +19,6 @@ return {
           end
 
           local buf = vim.uri_to_bufnr(result.targetUri or result.uri)
-          vim.bo[buf].bufhidden = "wipe"
 
           local win_opts = {
             buf = buf,
@@ -49,7 +48,7 @@ return {
             callback = function()
               table.remove(peek_list)
             end,
-            group = peek_group,
+            group = PEEK_GROUP,
             pattern = tostring(winid),
           })
           peek_list[#peek_list + 1] = winid
@@ -236,6 +235,69 @@ return {
         handlers = { setup },
       })
       -- }}}
+
+      -- https://github.com/kosayoda/nvim-lightbulb {{{
+      vim.api.nvim_create_autocmd("CursorHold", {
+        callback = function(args)
+          if vim.bo[args.buf].buftype ~= "" then
+            return
+          end
+
+          local available = false
+          for _, client in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
+            if client.supports_method("textDocument/codeAction") then
+              available = true
+              break
+            end
+          end
+
+          if not available then
+            return
+          end
+
+          if vim.b[args.buf].lightbulb_cancel then
+            pcall(vim.b[args.buf].lightbulb_cancel)
+            vim.b[args.buf].lightbulb_cancel = nil
+          end
+
+          local params = vim.lsp.util.make_range_params(0, "utf-8")
+          params.context = {
+            diagnostics = vim.lsp.diagnostic.from(
+              vim.diagnostic.get(args.buf, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+            ),
+          }
+          vim.b[args.buf].lightbulb_cancel = vim.F.npcall(
+            vim.lsp.buf_request_all,
+            args.buf,
+            "textDocument/codeAction",
+            params,
+            function(res)
+              local NS = Dotfiles.ns("lightbulb")
+
+              vim.api.nvim_buf_clear_namespace(args.buf, NS, 0, -1)
+
+              local has_action = false
+              for _, r in pairs(res) do
+                if r.result and not vim.tbl_isempty(r.result) then
+                  has_action = true
+                  break
+                end
+              end
+              if not has_action then
+                return
+              end
+
+              vim.api.nvim_buf_set_extmark(args.buf, NS, params.range.start.line, params.range.start.character + 1, {
+                strict = false,
+                virt_text = { { "💡", "DiagnosticVirtualTextInfo" } },
+                virt_text_pos = "eol",
+              })
+            end
+          )
+        end,
+        group = Dotfiles.augroup("lightbulb"),
+      })
+      -- }}}
     end,
     dependencies = {
       {
@@ -290,10 +352,10 @@ return {
               function()
                 local node_pos = {}
                 local detail_pos = {}
-                local ns = vim.api.nvim_get_namespaces()["clangd_ast"] or vim.api.nvim_create_namespace("clangd_ast")
+                local NS = Dotfiles.ns("clangd_ast")
 
                 local function clear_highlight(source_buf)
-                  vim.api.nvim_buf_clear_namespace(source_buf, ns, 0, -1)
+                  vim.api.nvim_buf_clear_namespace(source_buf, NS, 0, -1)
                 end
 
                 local function update_highlight(source_buf, ast_buf)
@@ -304,7 +366,7 @@ return {
                   local curline = vim.fn.getcurpos()[2]
                   local curline_ranges = node_pos[source_buf][ast_buf][curline]
                   if curline_ranges then
-                    vim.highlight.range(source_buf, ns, "Search", curline_ranges.start, curline_ranges["end"], {
+                    vim.highlight.range(source_buf, NS, "Search", curline_ranges.start, curline_ranges["end"], {
                       regtype = "v",
                       inclusive = false,
                       priority = 110,
@@ -313,16 +375,16 @@ return {
                 end
 
                 local function setup_hl_autocmd(source_buf, ast_buf)
-                  local group = Dotfiles.augroup("clangd_ast_autocmds")
+                  local AUGROUP = Dotfiles.augroup("clangd_ast_autocmds")
                   vim.api.nvim_create_autocmd("CursorMoved", {
-                    group = group,
+                    group = AUGROUP,
                     buffer = ast_buf,
                     callback = function()
                       update_highlight(source_buf, ast_buf)
                     end,
                   })
                   vim.api.nvim_create_autocmd("BufLeave", {
-                    group = group,
+                    group = AUGROUP,
                     buffer = ast_buf,
                     callback = function()
                       clear_highlight(source_buf)
@@ -400,7 +462,7 @@ return {
                   for linenum, range in pairs(detail_pos[ast_buf]) do
                     vim.highlight.range(
                       ast_buf,
-                      ns,
+                      NS,
                       "Comment",
                       { linenum - 1, range.start },
                       { linenum - 1, range["end"] },

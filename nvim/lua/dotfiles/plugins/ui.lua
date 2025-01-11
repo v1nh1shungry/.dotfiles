@@ -561,8 +561,8 @@ return {
       end
 
       local show_hidden = true
-      local ns = vim.api.nvim_create_namespace("dotfiles_mini_files_extmarks")
-      local augroup = Dotfiles.augroup("mini_files")
+      local NS = Dotfiles.ns("mini_files_extmarks")
+      local AUGROUP = Dotfiles.augroup("mini_files")
       local ignored = {}
 
       local function filter_show(_)
@@ -614,13 +614,13 @@ return {
           map_split(bufnr, "<C-w>S", "horizontal", true)
           map_split(bufnr, "<C-w>V", "vertical", true)
         end,
-        group = augroup,
+        group = AUGROUP,
         pattern = "MiniFilesBufferCreate",
       })
 
       vim.api.nvim_create_autocmd("User", {
         callback = function(args)
-          vim.api.nvim_buf_clear_namespace(args.data.buf_id, ns, 0, -1)
+          vim.api.nvim_buf_clear_namespace(args.data.buf_id, NS, 0, -1)
 
           if not show_hidden then
             return
@@ -629,13 +629,13 @@ return {
           for i = 1, vim.api.nvim_buf_line_count(args.data.buf_id) do
             local entry = require("mini.files").get_fs_entry(args.data.buf_id, i)
             if entry and not filter_hide(entry) then
-              vim.api.nvim_buf_set_extmark(args.data.buf_id, ns, i - 1, 0, {
+              vim.api.nvim_buf_set_extmark(args.data.buf_id, NS, i - 1, 0, {
                 line_hl_group = "DiagnosticUnnecessary",
               })
             end
           end
         end,
-        group = augroup,
+        group = AUGROUP,
         pattern = "MiniFilesBufferUpdate",
       })
       -- }}}

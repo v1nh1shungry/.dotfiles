@@ -1,3 +1,4 @@
+-- https://github.com/echasnovski/mini.trailspace
 local match_group = "DotfilesTrailer"
 
 local function get_match_id()
@@ -26,15 +27,15 @@ local function highlight()
   vim.fn.matchadd(match_group, [[\s\+$]])
 end
 
-local augroup = Dotfiles.augroup("trail_white_space")
+local AUGROUP = Dotfiles.augroup("trail_white_space")
 
 vim.api.nvim_create_autocmd({ "BufRead", "InsertLeave" }, {
   callback = highlight,
-  group = augroup,
+  group = AUGROUP,
 })
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   callback = unhighlight,
-  group = augroup,
+  group = AUGROUP,
 })
 vim.api.nvim_create_autocmd("OptionSet", {
   callback = function()
@@ -44,7 +45,7 @@ vim.api.nvim_create_autocmd("OptionSet", {
       unhighlight()
     end
   end,
-  group = augroup,
+  group = AUGROUP,
   pattern = "buftype",
 })
 

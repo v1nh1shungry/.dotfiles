@@ -114,7 +114,6 @@
 * [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive.git)
 * [tpope/vim-sleuth](https://github.com/tpope/vim-sleuth.git)
 * [tzachar/highlight-undo.nvim](https://github.com/tzachar/highlight-undo.nvim.git)
-* [v1nh1shungry/biquge.nvim](https://github.com/v1nh1shungry/biquge.nvim.git)
 * [v1nh1shungry/mini-files-status.nvim](https://github.com/v1nh1shungry/mini-files-status.nvim.git)
 * [williamboman/mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim.git)
 * [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim.git)

@@ -9,8 +9,8 @@ local LOCKFILE = vim.fs.joinpath(vim.uv.os_tmpdir(), "DOTFILES_NVIM_NIGHTLY_BUIL
 local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
 local USR_BIN_PATH = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin", "nvim")
 
-local augroup = Dotfiles.augroup("nightly")
-local ns = vim.api.nvim_create_namespace("dotfiles_neovim_nightly")
+local AUGROUP = Dotfiles.augroup("nightly")
+local NS = Dotfiles.ns("nightly")
 
 local function unlock()
   if vim.fn.filereadable(LOCKFILE) == 1 then
@@ -28,7 +28,7 @@ local function lock()
   vim.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
   vim.api.nvim_create_autocmd("VimLeave", {
     callback = unlock,
-    group = augroup,
+    group = AUGROUP,
   })
   return true
 end
@@ -147,7 +147,7 @@ vim.api.nvim_create_autocmd("User", {
   callback = function()
     Dotfiles.async.run(build_nightly)
   end,
-  group = augroup,
+  group = AUGROUP,
   pattern = "VeryLazy",
 })
 
@@ -220,7 +220,7 @@ local function dashboard()
   Dotfiles.async.schedule()
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, contents)
   for _, l in ipairs(bold_linenr) do
-    vim.api.nvim_buf_set_extmark(buf, ns, l - 1, 0, { line_hl_group = "Bold" })
+    vim.api.nvim_buf_set_extmark(buf, NS, l - 1, 0, { line_hl_group = "Bold" })
   end
 
   unlock()

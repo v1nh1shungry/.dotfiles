@@ -54,13 +54,13 @@ local function restore_previous_im()
   end)
 end
 
-local augroup = Dotfiles.augroup("im_switcher")
+local AUGROUP = Dotfiles.augroup("im_switcher")
 
 vim.api.nvim_create_autocmd("InsertEnter", {
   callback = restore_previous_im,
-  group = augroup,
+  group = AUGROUP,
 })
 vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave" }, {
   callback = restore_default_im,
-  group = augroup,
+  group = AUGROUP,
 })

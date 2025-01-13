@@ -10,7 +10,6 @@ local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
 local USR_BIN_PATH = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin", "nvim")
 
 local AUGROUP = Dotfiles.augroup("nightly")
-local NS = Dotfiles.ns("nightly")
 
 local function unlock()
   if vim.fn.filereadable(LOCKFILE) == 1 then
@@ -158,15 +157,17 @@ local function dashboard()
   end
 
   local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "Updating..." })
-  Snacks.win({
+  vim.bo[buf].filetype = "markdown"
+
+  local TITLE = "Neovim Nightly Dashboard"
+  local win = Snacks.win({
     buf = buf,
     width = 0.7,
     height = 0.7,
     border = "rounded",
-    title = "Neovim Nightly Dashboard",
+    title = TITLE .. " (Updating...)",
     title_pos = "center",
-  })
+  }).win
 
   if not fetch() then
     unlock()
@@ -181,15 +182,21 @@ local function dashboard()
   end
 
   local contents = {}
-  local bold_linenr = {}
 
   local ret = Dotfiles.async.system(cmd, { cwd = BUILD_DIRECTORY, text = true })
   if ret.code == 0 then
     local updates = vim.split(ret.stdout, "\n", { trimempty = true })
     if #updates > 0 then
-      table.insert(contents, "Updates")
-      table.insert(bold_linenr, #contents)
-      vim.list_extend(contents, updates)
+      table.insert(contents, "# Updates")
+      vim.list_extend(
+        contents,
+        vim
+          .iter(updates)
+          :map(function(l)
+            return "* " .. l
+          end)
+          :totable()
+      )
       table.insert(contents, "")
     end
   else
@@ -208,22 +215,27 @@ local function dashboard()
     if ret.code == 0 then
       local updated = vim.split(ret.stdout, "\n", { trimempty = true })
       if #updated > 0 then
-        table.insert(contents, "Updated")
-        table.insert(bold_linenr, #contents)
-        vim.list_extend(contents, updated)
+        table.insert(contents, "# Updated")
+        vim.list_extend(
+          contents,
+          vim
+            .iter(updated)
+            :map(function(l)
+              return "* " .. l
+            end)
+            :totable()
+        )
       end
     else
       Snacks.notify.error("Failed to get git history: " .. ret.stderr)
     end
   end
 
+  unlock()
+
   Dotfiles.async.schedule()
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, contents)
-  for _, l in ipairs(bold_linenr) do
-    vim.api.nvim_buf_set_extmark(buf, NS, l - 1, 0, { line_hl_group = "Bold" })
-  end
-
-  unlock()
+  vim.api.nvim_win_set_config(win, vim.tbl_extend("force", vim.api.nvim_win_get_config(win), { title = TITLE }))
 end
 
 local function rollback()

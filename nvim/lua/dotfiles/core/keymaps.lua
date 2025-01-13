@@ -172,10 +172,10 @@ map({ "<Esc>", "<Cmd>noh<CR><Esc>", mode = { "i", "n" }, desc = "Escape and clea
 map({
   "dm",
   function()
-    local ok, input = pcall(function()
+    local input = vim.F.npcall(function()
       return string.char(vim.fn.getchar())
     end)
-    if not ok then
+    if not input then
       return
     end
     pcall(vim.cmd.delmark, input)
@@ -199,3 +199,38 @@ map({
   "<Cmd>delm!<CR>",
   desc = "Delete all marks",
 })
+
+-- https://github.com/chrisgrieser/nvim-origami/blob/main/lua/origami/fold-keymaps.lua {{{
+local function normal(expr)
+  return vim.cmd("normal! " .. expr)
+end
+
+map({
+  "h",
+  function()
+    local count = vim.v.count1
+    for _ = 1, count do
+      if vim.api.nvim_win_get_cursor(0)[2] == 0 then
+        local ok = pcall(normal, "zc")
+        if not ok then
+          normal("h")
+        end
+      else
+        normal("h")
+      end
+    end
+  end,
+  desc = "Left",
+})
+
+map({
+  "l",
+  function()
+    local count = vim.v.count1
+    for _ = 1, count do
+      pcall(normal, vim.fn.foldclosed(".") > -1 and "zo" or "l")
+    end
+  end,
+  desc = "Right",
+})
+-- }}}

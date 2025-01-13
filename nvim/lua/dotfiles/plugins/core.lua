@@ -341,6 +341,7 @@ return {
         function()
           Snacks.gitbrowse()
         end,
+        mode = { "n", "x" },
         desc = "Git browse",
       },
       {

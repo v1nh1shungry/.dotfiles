@@ -1,3 +1,5 @@
+-- TODO: show each file separately
+
 -- Inspired by https://github.com/chrisgrieser/nvim-tinygit {{{
 local function is_normal_git_repo()
   if not Dotfiles.is_git_repo() then

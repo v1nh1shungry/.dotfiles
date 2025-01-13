@@ -9,8 +9,8 @@ return {
       end
 
       -- https://github.com/nvimdev/lspsaga.nvim {{{
-      local peek_list = {}
       local PEEK_GROUP = Dotfiles.augroup("peek_definition")
+      local peek_stack = {}
       local function peek_definition()
         local params = vim.lsp.util.make_position_params(0, "utf-8")
         vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _)
@@ -28,9 +28,10 @@ return {
             title = vim.api.nvim_buf_get_name(buf),
             title_pos = "center",
             width = math.floor(vim.o.columns * 0.6),
+            zindex = 20,
           }
-          if #peek_list > 0 then
-            local prev_conf = vim.api.nvim_win_get_config(peek_list[#peek_list])
+          if #peek_stack > 0 then
+            local prev_conf = vim.api.nvim_win_get_config(peek_stack[#peek_stack])
             win_opts.col = prev_conf.col + 1
             win_opts.height = prev_conf.height - 1
             win_opts.row = prev_conf.row + 1
@@ -46,15 +47,18 @@ return {
 
           vim.api.nvim_create_autocmd("WinClosed", {
             callback = function()
-              table.remove(peek_list)
+              table.remove(peek_stack)
             end,
             group = PEEK_GROUP,
             pattern = tostring(winid),
           })
-          peek_list[#peek_list + 1] = winid
+          peek_stack[#peek_stack + 1] = winid
         end)
       end
       -- }}}
+
+      local CODENLENS_AUGROUP = Dotfiles.augroup("codelens")
+      local LIGHTBULB_AUGROUP = Dotfiles.augroup("lightbulb")
 
       local on_attach = function(client, bufnr)
         local map_local = function(key)
@@ -166,9 +170,61 @@ return {
           vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
             buffer = bufnr,
             callback = vim.lsp.codelens.refresh,
-            group = Dotfiles.augroup("codelens"),
+            group = CODENLENS_AUGROUP,
           })
         end
+
+        -- https://github.com/kosayoda/nvim-lightbulb {{{
+        vim.api.nvim_create_autocmd("CursorHold", {
+          buffer = bufnr,
+          callback = function()
+            if vim.bo[bufnr].buftype ~= "" then
+              return
+            end
+
+            if vim.b[bufnr].lightbulb_cancel then
+              pcall(vim.b[bufnr].lightbulb_cancel)
+              vim.b[bufnr].lightbulb_cancel = nil
+            end
+
+            local params = vim.lsp.util.make_range_params(0, "utf-8")
+            params.context = {
+              diagnostics = vim.lsp.diagnostic.from(
+                vim.diagnostic.get(bufnr, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+              ),
+            }
+            vim.b[bufnr].lightbulb_cancel = vim.F.npcall(
+              vim.lsp.buf_request_all,
+              bufnr,
+              "textDocument/codeAction",
+              params,
+              function(res)
+                local NS = Dotfiles.ns("lightbulb")
+
+                vim.api.nvim_buf_clear_namespace(bufnr, NS, 0, -1)
+
+                local has_action = false
+                for _, r in pairs(res) do
+                  if r.result and not vim.tbl_isempty(r.result) then
+                    has_action = true
+                    break
+                  end
+                end
+                if not has_action then
+                  return
+                end
+
+                vim.api.nvim_buf_set_extmark(bufnr, NS, params.range.start.line, params.range.start.character + 1, {
+                  strict = false,
+                  virt_text = { { "💡", "DiagnosticVirtualTextInfo" } },
+                  virt_text_pos = "eol",
+                })
+              end
+            )
+          end,
+          group = LIGHTBULB_AUGROUP,
+        })
+        -- }}}
       end
 
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -233,69 +289,6 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = ensure_installed,
         handlers = { setup },
-      })
-      -- }}}
-
-      -- https://github.com/kosayoda/nvim-lightbulb {{{
-      vim.api.nvim_create_autocmd("CursorHold", {
-        callback = function(args)
-          if vim.bo[args.buf].buftype ~= "" then
-            return
-          end
-
-          local available = false
-          for _, client in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
-            if client.supports_method("textDocument/codeAction") then
-              available = true
-              break
-            end
-          end
-
-          if not available then
-            return
-          end
-
-          if vim.b[args.buf].lightbulb_cancel then
-            pcall(vim.b[args.buf].lightbulb_cancel)
-            vim.b[args.buf].lightbulb_cancel = nil
-          end
-
-          local params = vim.lsp.util.make_range_params(0, "utf-8")
-          params.context = {
-            diagnostics = vim.lsp.diagnostic.from(
-              vim.diagnostic.get(args.buf, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
-            ),
-          }
-          vim.b[args.buf].lightbulb_cancel = vim.F.npcall(
-            vim.lsp.buf_request_all,
-            args.buf,
-            "textDocument/codeAction",
-            params,
-            function(res)
-              local NS = Dotfiles.ns("lightbulb")
-
-              vim.api.nvim_buf_clear_namespace(args.buf, NS, 0, -1)
-
-              local has_action = false
-              for _, r in pairs(res) do
-                if r.result and not vim.tbl_isempty(r.result) then
-                  has_action = true
-                  break
-                end
-              end
-              if not has_action then
-                return
-              end
-
-              vim.api.nvim_buf_set_extmark(args.buf, NS, params.range.start.line, params.range.start.character + 1, {
-                strict = false,
-                virt_text = { { "💡", "DiagnosticVirtualTextInfo" } },
-                virt_text_pos = "eol",
-              })
-            end
-          )
-        end,
-        group = Dotfiles.augroup("lightbulb"),
       })
       -- }}}
     end,

@@ -572,7 +572,7 @@ return {
       local function update_git_ignored(path)
         ignored[path] = {}
 
-        if not vim.fs.root(vim.uv.cwd() or 0, ".git") then
+        if not Dotfiles.is_git_repo() then
           return
         end
 

@@ -22,8 +22,8 @@ M.map = function(opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
-M.augroup = function(name)
-  return vim.api.nvim_create_augroup("dotfiles_" .. name, {})
+M.augroup = function(name, opts)
+  return vim.api.nvim_create_augroup("dotfiles_" .. name, opts or {})
 end
 
 M.ns = function(name)

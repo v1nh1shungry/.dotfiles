@@ -353,7 +353,7 @@ return {
         desc = "Terminal",
       },
       {
-        "<Leader>.",
+        "<Leader>fs",
         function()
           Snacks.scratch()
         end,

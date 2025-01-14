@@ -572,7 +572,7 @@ return {
       local function update_git_ignored(path)
         ignored[path] = {}
 
-        if not Dotfiles.is_git_repo() then
+        if not Dotfiles.git_root() then
           return
         end
 

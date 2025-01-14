@@ -1,13 +1,4 @@
 -- Inspired by https://github.com/chrisgrieser/nvim-tinygit {{{
-local action_state = require("telescope.actions.state")
-local actions = require("telescope.actions")
-local conf = require("telescope.config").values
-local entry_display = require("telescope.pickers.entry_display")
-local finders = require("telescope.finders")
-local pickers = require("telescope.pickers")
-local previewers = require("telescope.previewers")
-local git_command = require("telescope.utils").__git_command
-
 local function is_normal_git_repo()
   if not Dotfiles.git_root() then
     Snacks.notify.error("Aborting: not a git repository")
@@ -26,6 +17,15 @@ local function pickaxe()
   if not is_normal_git_repo() then
     return
   end
+
+  local action_state = require("telescope.actions.state")
+  local actions = require("telescope.actions")
+  local conf = require("telescope.config").values
+  local entry_display = require("telescope.pickers.entry_display")
+  local finders = require("telescope.finders")
+  local pickers = require("telescope.pickers")
+  local previewers = require("telescope.previewers")
+  local git_command = require("telescope.utils").__git_command
 
   vim.ui.input({ prompt = "Git Pickaxe" }, function(query)
     if not query then

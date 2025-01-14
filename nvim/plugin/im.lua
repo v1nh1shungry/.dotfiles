@@ -1,21 +1,16 @@
 -- Inspired by https://github.com/keaising/im-select.nvim
-if vim.fn.has("wsl") == 0 and vim.uv.os_uname().sysname ~= "Linux" then
+if vim.uv.os_uname().sysname ~= "Linux" then
   return
 end
 
-local command
-local default_im
-
-if vim.fn.has("wsl") ~= 0 then
-  command = "im-select.exe"
-  default_im = "1033"
-else
-  command = "fcitx-remote"
-  default_im = "1"
-end
+local command = "fcitx-remote"
+local default_im = "1"
 
 if vim.fn.executable(command) == 0 then
-  return
+  command = "fcitx5-remote"
+  if vim.fn.executable(command) == 0 then
+    return
+  end
 end
 
 local previous_im
@@ -24,14 +19,10 @@ local function restore_default_im()
   Dotfiles.async.run(function()
     local ret = Dotfiles.async.system({ command }, { text = true })
     previous_im = vim.trim(ret.stdout)
-    if vim.fn.has("wsl") == 0 then
-      if default_im == "1" then
-        vim.system({ command, "-c" })
-      else
-        vim.system({ command, "-o" })
-      end
+    if default_im == "1" then
+      vim.system({ command, "-c" })
     else
-      vim.system({ command, default_im })
+      vim.system({ command, "-o" })
     end
   end)
 end
@@ -42,14 +33,10 @@ local function restore_previous_im()
     if ret.stdout == previous_im then
       return
     end
-    if vim.fn.has("wsl") == 0 then
-      if previous_im == "1" then
-        vim.system({ command, "-c" })
-      elseif previous_im == "2" then
-        vim.system({ command, "-o" })
-      end
-    else
-      vim.system({ command, previous_im })
+    if previous_im == "1" then
+      vim.system({ command, "-c" })
+    elseif previous_im == "2" then
+      vim.system({ command, "-o" })
     end
   end)
 end

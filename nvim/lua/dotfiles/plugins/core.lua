@@ -366,6 +366,97 @@ return {
         end,
         desc = "Zoom",
       },
+      {
+        "<Leader>h",
+        function()
+          Snacks.picker.help()
+        end,
+        desc = "Help pages",
+      },
+      {
+        "<Leader>ff",
+        function()
+          Snacks.picker.files()
+        end,
+        desc = "Find files",
+      },
+      {
+        "<Leader>fr",
+        function()
+          Snacks.picker.recent({ filter = { cwd = true } })
+        end,
+        desc = "Recent files",
+      },
+      {
+        "<Leader>/",
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = "Live grep",
+      },
+      {
+        "<Leader>sa",
+        function()
+          Snacks.picker.autocmds()
+        end,
+        desc = "Autocommands",
+      },
+      {
+        "<Leader>sk",
+        function()
+          Snacks.picker.keymaps()
+        end,
+        desc = "Keymaps",
+      },
+      {
+        "<Leader>s,",
+        function()
+          Snacks.picker.resume()
+        end,
+        desc = "Last search",
+      },
+      {
+        "<Leader>sh",
+        function()
+          Snacks.picker.highlights()
+        end,
+        desc = "Highlight groups",
+      },
+      {
+        "<Leader>sm",
+        function()
+          Snacks.picker.man()
+        end,
+        desc = "Manpages",
+      },
+      {
+        "<Leader>sx",
+        function()
+          Snacks.picker.diagnostics()
+        end,
+        desc = "Diagnostics",
+      },
+      {
+        "<Leader>sq",
+        function()
+          Snacks.picker.qflist()
+        end,
+        desc = "Quickfix",
+      },
+      {
+        "<Leader>sb",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Buffers",
+      },
+      {
+        "<Leader>sc",
+        function()
+          Snacks.picker.colorschemes()
+        end,
+        desc = "Colorschemes",
+      },
     },
     opts = {
       bigfile = { enabled = true },
@@ -383,14 +474,16 @@ return {
  \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓ 
           ]],
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
             {
               icon = " ",
               key = "r",
               desc = "Recent Files",
-              action = ":lua Snacks.dashboard.pick('oldfiles', { only_cwd = true })",
+              action = function()
+                Snacks.picker.recent({ filter = { cwd = true } })
+              end,
             },
-            { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
             { icon = " ", key = "c", desc = "Config", action = ":e ~/.nvimrc" },
             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
@@ -400,19 +493,11 @@ return {
       indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },
+      picker = { layout = { preset = "ivy" } },
       quickfile = { enabled = true },
       scope = { cursor = false },
       scratch = { autowrite = false },
       statuscolumn = { folds = { open = true, git_hl = true } },
-      styles = {
-        input = {
-          keys = {
-            cr = { "<CR>", "confirm" },
-            esc = { "<Esc>", "cancel" },
-            i_esc = { "<Esc>", "stopinsert", mode = "i" },
-          },
-        },
-      },
       words = { enabled = true },
     },
     priority = 1000,

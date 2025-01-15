@@ -31,20 +31,6 @@ return {
         -- }}}
       },
     },
-    keys = {
-      { "<Leader>h", "<Cmd>Telescope help_tags<CR>", desc = "Help pages" },
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles cwd_only=true<CR>", desc = "Recent files" },
-      { "<Leader>/", "<Cmd>Telescope live_grep<CR>", desc = "Live grep" },
-      { "<Leader>sa", "<Cmd>Telescope autocommands<CR>", desc = "Autocommands" },
-      { "<Leader>sk", "<Cmd>Telescope keymaps<CR>", desc = "Keymaps" },
-      { "<Leader>s,", "<Cmd>Telescope resume<CR>", desc = "Last search" },
-      { "<Leader>sh", "<Cmd>Telescope highlights<CR>", desc = "Highlight groups" },
-      { "<Leader>sm", "<Cmd>Telescope man_pages<CR>", desc = "Manpages" },
-      { "<Leader>sx", "<Cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
-      { "<Leader>sq", "<Cmd>Telescope quickfix<CR>", desc = "Quickfix" },
-      { "<Leader>sb", "<Cmd>Telescope buffers<CR>", desc = "Buffers" },
-    },
     opts = {
       defaults = {
         prompt_prefix = " ",

@@ -20,8 +20,20 @@ return {
       },
       { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
       { "<Leader>xT", "<Cmd>TodoQuickFix keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
-      { "<Leader>st", "<Cmd>TodoTelescope<CR>", desc = "Todo" },
-      { "<Leader>sT", "<Cmd>TodoTelescope keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
+      {
+        "<leader>st",
+        function()
+          Snacks.picker.todo_comments()
+        end,
+        desc = "Todo",
+      },
+      {
+        "<leader>sT",
+        function()
+          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+        end,
+        desc = "Todo/Fix/Fixme",
+      },
     },
     opts = { signs = false },
   },
@@ -281,7 +293,6 @@ return {
     end,
     keys = {
       { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" },
-      { "<Leader>un", "<Cmd>Noice dismiss<CR>", desc = "Dismiss all notifications" },
       {
         "<C-f>",
         function()
@@ -420,8 +431,6 @@ return {
             return vim.bo[buf].buftype == "help"
           end,
         },
-        { ft = "dap-repl", title = "REPL" },
-        { ft = "dapui_console", title = "Console" },
         { ft = "man", size = { height = 0.4 } },
         {
           ft = "snacks_terminal",
@@ -434,34 +443,12 @@ return {
           end,
         },
       },
-      left = {
-        {
-          ft = "dapui_scopes",
-          title = "Scopes",
-          size = { height = 0.25 },
-        },
-        {
-          ft = "dapui_breakpoints",
-          title = "Breakpoints",
-          size = { height = 0.25 },
-        },
-        {
-          ft = "dapui_stacks",
-          title = "Stacks",
-          size = { height = 0.25 },
-        },
-        {
-          ft = "dapui_watches",
-          title = "Watches",
-          size = { height = 0.25 },
-        },
-      },
       right = {
         {
           title = "Treesitter",
           ft = "query",
           filter = function(buf, _)
-            return vim.bo[buf].buftype ~= ""
+            return vim.bo[buf].buftype == "nofile"
           end,
           size = { width = 0.4 },
           wo = { number = false, relativenumber = false, stc = "" },
@@ -707,16 +694,10 @@ return {
     opts = {},
   },
   {
-    "nvim-telescope/telescope-ui-select.nvim",
-    config = function()
-      require("telescope").load_extension("ui-select")
-    end,
-    init = function()
-      vim.ui.select = function(...)
-        require("lazy").load({ plugins = { "telescope-ui-select.nvim" } })
-        return vim.ui.select(...)
-      end
-    end,
-    lazy = true,
+    "3rd/image.nvim",
+    build = false,
+    enabled = vim.fn.executable("kitty") == 1,
+    ft = "markdown",
+    opts = { processor = "magick_cli" },
   },
 }

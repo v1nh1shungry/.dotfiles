@@ -1,5 +1,6 @@
--- Credit: https://github.com/lewis6991/async.nvim
+-- FIXME: a lot of async bullshit in my dotfiles :(
 
+--- Credit: https://github.com/lewis6991/async.nvim
 --- Small async library for Neovim plugins
 
 local function validate_callback(func, callback)

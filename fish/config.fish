@@ -74,4 +74,8 @@ if status is-interactive
             return 1
         end
     end
+
+    if command -q kitty
+        alias icat 'kitty +kitten icat'
+    end
 end

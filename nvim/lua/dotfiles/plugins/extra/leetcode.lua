@@ -5,7 +5,6 @@ return {
       "nvim-telescope/telescope.nvim",
       "MunifTanjim/nui.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "rcarriga/nvim-notify",
     },
     lazy = vim.fn.argv()[1] ~= "leetcode.nvim",
     opts = {

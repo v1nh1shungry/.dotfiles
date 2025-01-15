@@ -70,39 +70,58 @@ return {
           ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
           ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code action" },
           ["textDocument/documentSymbol"] = {
-            { "<Leader>ss", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "LSP symbols (Document)" },
+            {
+              "<Leader>ss",
+              function()
+                Snacks.picker.lsp_symbols({ hierarchy = false })
+              end,
+              desc = "LSP symbols (Document)",
+            },
             { "gO", "<Cmd>Outline<CR>", desc = "Symbol outline" },
-          },
-          ["workspace/symbol"] = {
-            "<Leader>sS",
-            "<Cmd>Telescope lsp_workspace_symbols<CR>",
-            desc = "LSP symbols (Workspace)",
           },
           ["textDocument/references"] = {
             { "gR", vim.lsp.buf.references, desc = "Go to references" },
-            { "<Leader>sR", "<Cmd>Telescope lsp_references<CR>", desc = "LSP references" },
+            {
+              "<Leader>sR",
+              function()
+                Snacks.picker.lsp_references()
+              end,
+              desc = "LSP references",
+            },
           },
           ["textDocument/definition"] = {
             { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
-            { "<Leader>sd", "<Cmd>Telescope lsp_definitions<CR>", desc = "LSP definitions" },
+            {
+              "<Leader>sd",
+              function()
+                Snacks.picker.lsp_definitions()
+              end,
+              desc = "LSP definitions",
+            },
             { "<Leader>cp", peek_definition, desc = "Peek definition" },
           },
           ["textDocument/typeDefinition*"] = {
             { "gy", vim.lsp.buf.type_definition, desc = "Go to type definition" },
-            { "<Leader>sy", "<Cmd>Telescope lsp_type_definitions<CR>", desc = "LSP type definitions" },
+            {
+              "<Leader>sy",
+              function()
+                Snacks.picker.lsp_type_definitions()
+              end,
+              desc = "LSP type definitions",
+            },
           },
           ["textDocument/implementation*"] = {
             { "gI", vim.lsp.buf.implementation, desc = "Go to implementation" },
-            { "<Leader>sI", "<Cmd>Telescope lsp_implementations<CR>", desc = "LSP implementations" },
+            {
+              "<Leader>sI",
+              function()
+                Snacks.picker.lsp_implementations()
+              end,
+              desc = "LSP implementations",
+            },
           },
-          ["callHierarchy/incomingCalls"] = {
-            { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming calls" },
-            { "<Leader>si", "<Cmd>Telescope lsp_incoming_calls<CR>", desc = "LSP incoming calls" },
-          },
-          ["callHierarchy/outgoingCalls"] = {
-            { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing calls" },
-            { "<Leader>so", "<Cmd>Telescope lsp_outgoing_calls<CR>", desc = "LSP outgoing calls" },
-          },
+          ["callHierarchy/incomingCalls"] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming calls" },
+          ["callHierarchy/outgoingCalls"] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing calls" },
           ["textDocument/inlayHint"] = function()
             Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
           end,

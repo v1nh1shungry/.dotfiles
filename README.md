@@ -46,6 +46,7 @@
 
 <!-- Neovim plugins -->
 ## Neovim plugins
+* [3rd/image.nvim](https://github.com/3rd/image.nvim.git)
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
 * [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)
@@ -102,7 +103,6 @@
 * [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim.git)
 * [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim.git)
 * [nvim-telescope/telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim.git)
-* [nvim-telescope/telescope-ui-select.nvim](https://github.com/nvim-telescope/telescope-ui-select.nvim.git)
 * [nvim-telescope/telescope.nvim](https://github.com/nvim-telescope/telescope.nvim.git)
 * [nvim-treesitter/nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git)
 * [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter.git)

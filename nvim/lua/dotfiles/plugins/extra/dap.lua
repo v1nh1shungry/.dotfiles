@@ -94,4 +94,36 @@ return {
       },
     },
   },
+  {
+    "folke/edgy.nvim",
+    optional = true,
+    opts = {
+      bottom = {
+        { ft = "dap-repl", title = "REPL" },
+        { ft = "dapui_console", title = "Console" },
+      },
+      left = {
+        {
+          ft = "dapui_scopes",
+          title = "Scopes",
+          size = { height = 0.25 },
+        },
+        {
+          ft = "dapui_breakpoints",
+          title = "Breakpoints",
+          size = { height = 0.25 },
+        },
+        {
+          ft = "dapui_stacks",
+          title = "Stacks",
+          size = { height = 0.25 },
+        },
+        {
+          ft = "dapui_watches",
+          title = "Watches",
+          size = { height = 0.25 },
+        },
+      },
+    },
+  },
 }

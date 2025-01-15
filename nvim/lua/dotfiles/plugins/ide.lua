@@ -257,12 +257,12 @@ return {
       })
 
       -- https://www.lazyvim.org/plugins/lsp {{{
-      local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+      local has_blink, blink = pcall(require, "blink.cmp")
       local capabilities = vim.tbl_deep_extend(
         "force",
         {},
         vim.lsp.protocol.make_client_capabilities(),
-        has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+        has_blink and blink.get_lsp_capabilities() or {},
         {
           workspace = {
             fileOperations = {
@@ -580,11 +580,19 @@ return {
     "folke/lazydev.nvim",
     dependencies = {
       {
-        "hrsh7th/nvim-cmp",
-        optional = true,
-        opts = function(_, opts)
-          table.insert(opts.sources or {}, { name = "lazydev", group_index = 0 })
-        end,
+        "saghen/blink.cmp",
+        opts = {
+          sources = {
+            default = { "lazydev" },
+            providers = {
+              lazydev = {
+                name = "LazyDev",
+                module = "lazydev.integrations.blink",
+                score_offset = 100,
+              },
+            },
+          },
+        },
       },
     },
     ft = "lua",
@@ -645,202 +653,45 @@ return {
     opts_extend = { "ensure_installed" },
   },
   -- }}}
+  -- TODO: add ripgrep source, current community source is TOO SLOW
   {
-    "hrsh7th/nvim-cmp",
-    -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/cmp.lua {{{
-    config = function(_, opts)
-      for _, source in ipairs(opts.sources) do
-        source.group_index = source.group_index or 1
-      end
-
-      ---@alias Placeholder {n:number, text:string}
-      ---
-      ---@param snippet string
-      ---@param fn fun(placeholder:Placeholder):string
-      ---@return string
-      local function snippet_replace(snippet, fn)
-        return snippet:gsub("%$%b{}", function(m)
-          local n, name = m:match("^%${(%d+):(.+)}$")
-          return n and fn({ n = n, text = name }) or m
-        end) or snippet
-      end
-
-      -- This function resolves nested placeholders in a snippet.
-      ---@param snippet string
-      ---@return string
-      local function snippet_preview(snippet)
-        local ok, parsed = pcall(function()
-          return vim.lsp._snippet_grammar.parse(snippet)
-        end)
-        return ok and tostring(parsed)
-          or snippet_replace(snippet, function(placeholder)
-            return snippet_preview(placeholder.text)
-          end):gsub("%$0", "")
-      end
-
-      -- This function replaces nested placeholders in a snippet with LSP placeholders.
-      local function snippet_fix(snippet)
-        local texts = {} ---@type table<number, string>
-        return snippet_replace(snippet, function(placeholder)
-          texts[placeholder.n] = texts[placeholder.n] or snippet_preview(placeholder.text)
-          return "${" .. placeholder.n .. ":" .. texts[placeholder.n] .. "}"
-        end)
-      end
-
-      -- This function adds missing documentation to snippets.
-      -- The documentation is a preview of the snippet.
-      ---@param window cmp.CustomEntriesView|cmp.NativeEntriesView
-      local function add_missing_snippet_docs(window)
-        local cmp = require("cmp")
-        local Kind = cmp.lsp.CompletionItemKind
-        local entries = window:get_entries()
-        for _, entry in ipairs(entries) do
-          if entry:get_kind() == Kind.Snippet then
-            local item = entry:get_completion_item()
-            if not item.documentation and item.insertText then
-              item.documentation = {
-                kind = cmp.lsp.MarkupKind.Markdown,
-                value = string.format("```%s\n%s\n```", vim.bo.filetype, snippet_preview(item.insertText)),
-              }
-            end
-          end
-        end
-      end
-
-      local parse = require("cmp.utils.snippet").parse
-      require("cmp.utils.snippet").parse = function(input)
-        local ok, ret = pcall(parse, input)
-        if ok then
-          return ret
-        end
-        return snippet_preview(input)
-      end
-
-      opts.snippet = {
-        expand = function(item)
-          -- Native sessions don't support nested snippet sessions.
-          -- Always use the top-level session.
-          -- Otherwise, when on the first placeholder and selecting a new completion,
-          -- the nested session will be used instead of the top-level session.
-          -- See: https://github.com/LazyVim/LazyVim/issues/3199
-          local session = vim.snippet.active() and vim.snippet._session or nil
-
-          local ok, err = pcall(vim.snippet.expand, item.body)
-          if not ok then
-            local fixed = snippet_fix(item.body)
-            ok = pcall(vim.snippet.expand, fixed)
-
-            local msg = ok and "Failed to parse snippet,\nbut was able to fix it automatically."
-              or ("Failed to parse snippet.\n" .. err)
-
-            Snacks.notify[ok and "warn" or "error"](
-              ([[%s
-```%s
-%s
-```]]):format(msg, vim.bo.filetype, item.body),
-              { title = "vim.snippet" }
-            )
-          end
-
-          -- Restore top-level session when needed
-          if session then
-            vim.snippet._session = session
-          end
-        end,
-      }
-
-      local cmp = require("cmp")
-      cmp.setup(opts)
-      cmp.event:on("menu_opened", function(event)
-        add_missing_snippet_docs(event.window)
-      end)
-    end,
-    -- }}}
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "lukas-reineke/cmp-rg",
+    "saghen/blink.cmp",
+    build = "cargo build --release",
+    event = "InsertEnter",
+    opts = {
+      appearance = { use_nvim_cmp_as_default = false, nerd_font_variant = "mono" },
+      completion = {
+        accept = { auto_brackets = { enabled = true } },
+        menu = {
+          draw = {
+            align_to = "none",
+            treesitter = { "lsp" },
+            components = {
+              kind_icon = {
+                ellipsis = false,
+                text = function(ctx)
+                  local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return kind_icon
+                end,
+                highlight = function(ctx)
+                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+                  return hl
+                end,
+              },
+            },
+          },
+        },
+        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+        trigger = { show_in_snippet = false },
+      },
+      sources = {
+        default = { "lsp", "snippets", "path", "buffer" },
+        cmdline = {},
+      },
+      keymap = { preset = "super-tab" },
+      fuzzy = { prebuilt_binaries = { download = false } },
     },
-    event = Dotfiles.events.enter_insert,
-    opts = function()
-      local cmp = require("cmp")
-
-      return {
-        completion = { completeopt = "menu,menuone,noinsert" },
-        -- https://github.com/tranzystorekk/cmp-minikind.nvim/blob/main/lua/cmp-minikind/init.lua {{{
-        formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = function(_, item)
-            local mini_icons = require("mini.icons")
-            item.kind, item.kind_hlgroup = mini_icons.get("lsp", item.kind)
-
-            local widths = { abbr = 40, menu = 30 }
-            for k, w in pairs(widths) do
-              if item[k] then
-                item[k] = vim.trim(item[k])
-                if vim.fn.strdisplaywidth(item[k]) > w then
-                  item[k] = vim.fn.strcharpart(item[k], 0, w - 1) .. "…"
-                end
-              end
-            end
-
-            return item
-          end,
-          expandable_indicator = true,
-        },
-        -- }}}
-        mapping = {
-          ["<C-n>"] = cmp.mapping.select_next_item(),
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
-              if not cmp.get_selected_entry() then
-                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-              else
-                if vim.api.nvim_get_mode().mode == "i" then
-                  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-G>u", true, true, true), "n", false)
-                end
-                cmp.confirm({
-                  select = true,
-                  behavior = cmp.ConfirmBehavior.Insert,
-                })
-              end
-            elseif vim.snippet.active({ direction = 1 }) then
-              vim.schedule(function()
-                vim.snippet.jump(1)
-              end)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
-              cmp.select_prev_item()
-            elseif vim.snippet.active({ direction = -1 }) then
-              vim.schedule(function()
-                vim.snippet.jump(-1)
-              end)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        },
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "snippets" },
-        }, {
-          { name = "buffer" },
-          { name = "path" },
-        }, {
-          { name = "rg", keyword_length = 5, option = { debounce = 500 } },
-        }),
-        sorting = require("cmp.config.default")().sorting,
-      }
-    end,
+    opts_extend = { "sources.default" },
   },
   {
     "stevearc/conform.nvim",

@@ -151,6 +151,8 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 -- TODO: can load updated first
+-- TODO: print error msg in the dashboard
+-- TODO: turn #XXX into PR links
 local function dashboard()
   if not lock() then
     return

@@ -484,7 +484,7 @@ return {
     "OXY2DEV/markview.nvim",
     ft = "markdown",
     keys = { { "<Leader>um", "<Cmd>Markview<CR>", desc = "Toggle render", ft = "markdown" } },
-    opts = {},
+    opts = { buf_ignore = {} },
   },
   {
     "mcauley-penney/visual-whitespace.nvim",

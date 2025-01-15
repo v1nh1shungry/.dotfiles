@@ -685,8 +685,14 @@ return {
         trigger = { show_in_snippet = false },
       },
       sources = {
-        default = { "lsp", "snippets", "path", "buffer" },
+        default = { "lsp", "snippets", "path", "buffer", "rg" },
         cmdline = {},
+        providers = {
+          rg = {
+            module = "blink.rg",
+            name = "rg",
+          }
+        }
       },
       keymap = { preset = "super-tab" },
       fuzzy = { prebuilt_binaries = { download = false } },

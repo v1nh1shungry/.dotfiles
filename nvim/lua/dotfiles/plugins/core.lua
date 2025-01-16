@@ -451,7 +451,7 @@ return {
         desc = "Buffers",
       },
       {
-        "<Leader>sc",
+        "<Leader>sC",
         function()
           Snacks.picker.colorschemes()
         end,

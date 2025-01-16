@@ -124,4 +124,9 @@ return {
       vim.g.db_ui_use_nerd_fonts = 1
     end,
   },
+  {
+    "v1nh1shungry/cppman.nvim",
+    cmd = "Cppman",
+    keys = { { "<Leader>sc", "<Cmd>Cppman<CR>", desc = "Cppman" } },
+  },
 }

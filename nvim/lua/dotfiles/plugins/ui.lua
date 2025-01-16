@@ -484,7 +484,7 @@ return {
     "OXY2DEV/markview.nvim",
     ft = "markdown",
     keys = { { "<Leader>um", "<Cmd>Markview<CR>", desc = "Toggle render", ft = "markdown" } },
-    opts = { buf_ignore = {} },
+    opts = {},
   },
   {
     "mcauley-penney/visual-whitespace.nvim",
@@ -692,12 +692,5 @@ return {
     "fei6409/log-highlight.nvim",
     event = "BufRead *.log",
     opts = {},
-  },
-  {
-    "3rd/image.nvim",
-    build = false,
-    enabled = vim.fn.executable("kitty") == 1,
-    ft = "markdown",
-    opts = { processor = "magick_cli" },
   },
 }

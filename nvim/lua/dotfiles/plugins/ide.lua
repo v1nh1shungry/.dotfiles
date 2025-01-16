@@ -653,7 +653,6 @@ return {
     opts_extend = { "ensure_installed" },
   },
   -- }}}
-  -- TODO: add ripgrep source, current community source is TOO SLOW
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
@@ -691,8 +690,9 @@ return {
           rg = {
             module = "blink.rg",
             name = "rg",
-          }
-        }
+            score_offset = -100,
+          },
+        },
       },
       keymap = { preset = "super-tab" },
       fuzzy = { prebuilt_binaries = { download = false } },

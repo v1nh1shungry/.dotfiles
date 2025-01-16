@@ -7,7 +7,7 @@ vim.filetype.add({
   pattern = {
     [".*/kitty/.+%.conf"] = "kitty",
     ["%.env%.[%w_.-]+"] = "sh",
-  }
+  },
 })
 vim.treesitter.language.register("bash", "kitty")
 

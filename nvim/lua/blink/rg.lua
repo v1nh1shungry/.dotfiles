@@ -1,19 +1,18 @@
+-- More faster ripgrep source
 -- Credit: https://github.com/mikavilpas/blink-ripgrep.nvim
 
 ---@module "blink.cmp"
 
 ---@class blink.cmp.Source
----
 ---@field context integer
 ---@field max_file_size string
+---@field timeout integer
 ---@field hl_group string
 ---@field min_keyword_length integer
----
----@field job vim.SystemObj
 local M = {
   context = 3,
-  max_file_size = "1G",
-  max_item_count = 1024,
+  max_file_size = "1M",
+  timeout = 100,
   hl_group = "Search",
   min_keyword_length = 5,
 }
@@ -70,12 +69,11 @@ function M:get_completions(context, resolve)
     return function() end
   end
 
-  local total = 0
   local files = {}
-  -- NOTE: a json string may be split into two parts for two `stdout` call
+  -- a json string may be split into two parts for two `stdout` call
   local last_line = ""
 
-  M.job = vim.system(
+  local job = vim.system(
     {
       "rg",
       "--no-config",
@@ -86,12 +84,15 @@ function M:get_completions(context, resolve)
       "--max-filesize",
       self.max_file_size,
       "--smart-case",
+      "--iglob",
+      "!" .. vim.fs.relpath(vim.uv.cwd(), vim.api.nvim_buf_get_name(context.bufnr)),
       "--",
       prefix .. "[\\w_-]+",
     },
     {
       cwd = vim.uv.cwd(),
       text = true,
+      timeout = self.timeout,
       stdout = vim.schedule_wrap(function(_, data)
         if not data or data == "" then
           return
@@ -143,11 +144,6 @@ function M:get_completions(context, resolve)
                 end
               end
               file.lines = {}
-
-              total = total + #file.matches
-              if total >= self.max_item_count then
-                self.job:kill(9)
-              end
             end
           else
             last_line = line
@@ -156,7 +152,8 @@ function M:get_completions(context, resolve)
       end),
     },
     vim.schedule_wrap(function(res)
-      if res.code ~= 0 then
+      -- signal 15 means timeout, we should go ahead
+      if res.code ~= 0 and res.signal ~= 15 then
         resolve()
         return
       end
@@ -165,65 +162,63 @@ function M:get_completions(context, resolve)
       local items = {}
       for filename, file in pairs(files) do
         for _, match in ipairs(file.matches) do
-          if #match.context_preview == 0 or items[match.match] then
+          -- this item is incomplete, and following items are likely incomplete too
+          if #match.context_preview == 0 then
             break
           end
 
-          items[match.match] = {
-            documentation = {
-              kind = "markdown",
-              value = vim.iter(match.context_preview):fold("", function(acc, v)
-                return acc .. v.text .. "\n"
-              end),
-              ---@param opts blink.cmp.SourceRenderDocumentationOpts
-              render = function(opts)
-                local bufnr = opts.window:get_buf()
+          if not items[match.match] then
+            items[match.match] = {
+              documentation = {
+                kind = "markdown",
+                value = vim.iter(match.context_preview):fold("", function(acc, v)
+                  return acc .. v.text .. "\n"
+                end),
+                ---@param opts blink.cmp.SourceRenderDocumentationOpts
+                render = function(opts)
+                  local bufnr = opts.window:get_buf()
 
-                local text = {
-                  vim.fs.relpath(vim.uv.cwd(), filename),
-                  string.rep(
-                    "-",
-                    vim.iter(match.context_preview):fold(0, function(acc, v)
-                      return math.max(acc, string.len(v.text))
-                    end)
-                  ),
-                }
-                vim.list_extend(
-                  text,
-                  vim
-                    .iter(match.context_preview)
-                    :map(function(v)
-                      return v.text
-                    end)
-                    :totable()
-                )
-                vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, text)
+                  local text = {
+                    vim.fs.relpath(vim.uv.cwd(), filename),
+                    string.rep("─", opts.window:get_width() - opts.window:get_border_size().horizontal - 1),
+                  }
+                  vim.list_extend(
+                    text,
+                    vim
+                      .iter(match.context_preview)
+                      :map(function(v)
+                        return v.text
+                      end)
+                      :totable()
+                  )
+                  vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, text)
 
-                local parser_installed = pcall(vim.treesitter.get_parser, nil, file.lang, {})
-                if parser_installed then
-                  require("blink.cmp.lib.window.docs").highlight_with_treesitter(bufnr, file.lang, 2, #text)
-                end
-
-                local line_in_doc
-                for i, data in ipairs(match.context_preview) do
-                  if data.line_number == match.line_number then
-                    line_in_doc = i
-                    break
+                  local parser_installed = pcall(vim.treesitter.get_parser, nil, file.lang, {})
+                  if parser_installed then
+                    require("blink.cmp.lib.window.docs").highlight_with_treesitter(bufnr, file.lang, 2, #text)
                   end
-                end
 
-                vim.api.nvim_buf_set_extmark(bufnr, NS, line_in_doc + 1, match.start_col, {
-                  end_col = match.end_col,
-                  hl_group = M.hl_group,
-                })
-              end,
-            },
-            source_id = "blink.rg",
-            kind = kind,
-            label = match.match,
-            labelDetails = { description = "(rg)" },
-            insertText = match.match,
-          }
+                  local line_in_doc
+                  for i, data in ipairs(match.context_preview) do
+                    if data.line_number == match.line_number then
+                      line_in_doc = i
+                      break
+                    end
+                  end
+
+                  vim.api.nvim_buf_set_extmark(bufnr, NS, line_in_doc + 1, match.start_col, {
+                    end_col = match.end_col,
+                    hl_group = M.hl_group,
+                  })
+                end,
+              },
+              source_id = "blink.rg",
+              kind = kind,
+              label = match.match,
+              labelDetails = { description = "(rg)" },
+              insertText = match.match,
+            }
+          end
         end
       end
 
@@ -237,7 +232,7 @@ function M:get_completions(context, resolve)
   )
 
   return function()
-    M.job:kill(9)
+    job:kill(9)
   end
 end
 

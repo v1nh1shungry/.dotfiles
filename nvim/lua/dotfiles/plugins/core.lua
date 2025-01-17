@@ -457,6 +457,20 @@ return {
         end,
         desc = "Colorschemes",
       },
+      {
+        "<Leader>sj",
+        function()
+          Snacks.picker.jumps()
+        end,
+        desc = "Jumplist",
+      },
+      {
+        "<Leader>gl",
+        function()
+          Snacks.picker.git_log()
+        end,
+        desc = "Git log",
+      },
     },
     opts = {
       bigfile = { enabled = true },

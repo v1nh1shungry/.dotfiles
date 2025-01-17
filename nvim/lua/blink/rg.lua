@@ -69,26 +69,35 @@ function M:get_completions(context, resolve)
     return function() end
   end
 
+  local cmd = {
+    "rg",
+    "--no-config",
+    "--json",
+    "--context",
+    tostring(self.context),
+    "--word-regexp",
+    "--max-filesize",
+    self.max_file_size,
+    "--smart-case",
+  }
+
+  local filename = vim.api.nvim_buf_get_name(context.bufnr)
+  if filename ~= "" then
+    local relpath = vim.fs.relpath(vim.uv.cwd(), filename)
+    if relpath then
+      table.insert(cmd, "-g")
+      table.insert(cmd, "!" .. relpath)
+    end
+  end
+
+  table.insert(cmd, "--")
+  table.insert(cmd, prefix .. "[\\w_-]+")
+
   local files = {}
   -- a json string may be split into two parts for two `stdout` call
   local last_line = ""
-
   local job = vim.system(
-    {
-      "rg",
-      "--no-config",
-      "--json",
-      "--context",
-      tostring(self.context),
-      "--word-regexp",
-      "--max-filesize",
-      self.max_file_size,
-      "--smart-case",
-      "--iglob",
-      "!" .. vim.fs.relpath(vim.uv.cwd(), vim.api.nvim_buf_get_name(context.bufnr)),
-      "--",
-      prefix .. "[\\w_-]+",
-    },
+    cmd,
     {
       cwd = vim.uv.cwd(),
       text = true,

@@ -10,7 +10,7 @@ return {
       "nvim-lua/plenary.nvim",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
-        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+        build = "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
         -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/plugins/extras/editor/telescope.lua {{{
         config = function(plugin)
           Snacks.util.on_module("telescope", function()
@@ -127,6 +127,7 @@ return {
   {
     "v1nh1shungry/cppman.nvim",
     cmd = "Cppman",
+    enabled = vim.fn.executable("cppman") == 1,
     keys = { { "<Leader>sc", "<Cmd>Cppman<CR>", desc = "Cppman" } },
   },
 }

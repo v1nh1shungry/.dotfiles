@@ -312,13 +312,6 @@ return {
         end,
         pattern = "VeryLazy",
       })
-
-      vim.api.nvim_create_autocmd("User", {
-        callback = function(event)
-          Snacks.rename.on_rename_file(event.data.from, event.data.to)
-        end,
-        pattern = "MiniFilesActionRename",
-      })
     end,
     lazy = false,
     keys = {
@@ -498,7 +491,7 @@ return {
               end,
             },
             { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
-            { icon = " ", key = "c", desc = "Config", action = ":e ~/.nvimrc" },
+            { icon = " ", key = "c", desc = "Config", action = "<Leader>fc" },
             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },

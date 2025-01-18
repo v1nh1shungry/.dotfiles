@@ -77,7 +77,20 @@ map({
 
 map({ "<Leader>,", "<Cmd>e #<CR>", desc = "Last buffer" })
 
-map({ "<Leader>fc", "<Cmd>e ~/.nvimrc<CR>", desc = "Open preferences" })
+map({
+  "<Leader>fc",
+  function()
+    local NVIMRC = vim.fs.joinpath(os.getenv("HOME"), ".nvimrc")
+    vim.cmd("edit " .. NVIMRC)
+
+    if vim.fn.filereadable(NVIMRC) == 0 then
+      local lines = vim.split(vim.inspect(require("dotfiles.user")), "\n")
+      lines[1] = "return " .. lines[1]
+      vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+    end
+  end,
+  desc = "Edit local configuration",
+})
 
 map({ "<C-j>", "<Cmd>m .+1<CR>==", desc = "Move down" })
 map({ "<C-k>", "<Cmd>m .-2<CR>==", desc = "Move up" })

@@ -257,22 +257,6 @@ return {
       })
 
       -- https://www.lazyvim.org/plugins/lsp {{{
-      local has_blink, blink = pcall(require, "blink.cmp")
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        has_blink and blink.get_lsp_capabilities() or {},
-        {
-          workspace = {
-            fileOperations = {
-              didRename = true,
-              willRename = true,
-            },
-          },
-        }
-      )
-
       local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
       local ensure_installed = {}
 
@@ -280,21 +264,18 @@ return {
         if not opts.servers[server] then
           return
         end
-        local setup_opts = vim.tbl_deep_extend("force", {
-          capabilities = vim.deepcopy(capabilities),
-        }, opts.servers[server])
         if opts.setup then
           if opts.setup[server] then
-            if opts.setup[server](server, setup_opts) then
+            if opts.setup[server](server, opts.servers[server]) then
               return
             end
           elseif opts.setup["*"] then
-            if opts.setup["*"](server, setup_opts) then
+            if opts.setup["*"](server, opts.servers[server]) then
               return
             end
           end
         end
-        require("lspconfig")[server].setup(setup_opts)
+        require("lspconfig")[server].setup(opts.servers[server])
       end
 
       for server, server_opts in pairs(opts.servers) do

@@ -12,20 +12,20 @@ local USR_BIN_PATH = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin", "nvim
 local AUGROUP = Dotfiles.augroup("nightly")
 
 local function unlock()
-  if vim.fn.filereadable(LOCKFILE) == 1 then
+  if Dotfiles.async.fn.filereadable(LOCKFILE) == 1 then
     vim.fs.rm(LOCKFILE, { force = true })
   end
 end
 
 -- FIXME: implement a **real** file lock here
 local function lock()
-  if vim.fn.filereadable(LOCKFILE) == 1 then
+  if Dotfiles.async.fn.filereadable(LOCKFILE) == 1 then
     -- TODO: maybe too noisy
     Snacks.notify.warn("There is another session holding the lock, please wait for it")
     return false
   end
-  vim.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
-  vim.api.nvim_create_autocmd("VimLeave", {
+  Dotfiles.async.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
+  Dotfiles.async.api.nvim_create_autocmd("VimLeave", {
     callback = unlock,
     group = AUGROUP,
   })
@@ -34,7 +34,7 @@ end
 
 local function fetch()
   local ret
-  if vim.fn.isdirectory(BUILD_DIRECTORY) == 1 then
+  if Dotfiles.async.fn.isdirectory(BUILD_DIRECTORY) == 1 then
     ret = Dotfiles.async.system({ "git", "checkout", "master" }, { cwd = BUILD_DIRECTORY })
     if ret.code ~= 0 then
       Snacks.notify.error("Failed to checkout master branch")
@@ -55,9 +55,8 @@ local function fetch()
 end
 
 local function get_metadata()
-  if vim.fn.filereadable(INSTALL_METADATA_PATH) == 1 then
-    Dotfiles.async.schedule()
-    return vim.json.decode(table.concat(vim.fn.readfile(INSTALL_METADATA_PATH), "\n"))
+  if Dotfiles.async.fn.filereadable(INSTALL_METADATA_PATH) == 1 then
+    return vim.json.decode(table.concat(Dotfiles.async.fn.readfile(INSTALL_METADATA_PATH), "\n"))
   end
 end
 
@@ -87,9 +86,9 @@ local function compile_and_install()
     return false
   end
 
-  Dotfiles.async.schedule()
+  Dotfiles.async.util.scheduler()
   if vim.list_contains(vim.split(vim.env.PATH, ":"), vim.fs.dirname(USR_BIN_PATH)) then
-    vim.uv.fs_symlink(vim.fs.joinpath(INSTALL_DIRECTORY, "bin", "nvim"), USR_BIN_PATH)
+    Dotfiles.async.uv.fs_symlink(vim.fs.joinpath(INSTALL_DIRECTORY, "bin", "nvim"), USR_BIN_PATH)
   end
 
   return true
@@ -131,8 +130,7 @@ local function build_nightly(force)
     return
   end
 
-  Dotfiles.async.schedule()
-  vim.fn.writefile(
+  Dotfiles.async.fn.writefile(
     { vim.json.encode({ rollback = meta.version, version = latest_sha1, date = os.time() }) },
     INSTALL_METADATA_PATH
   )
@@ -158,7 +156,7 @@ local function dashboard()
     return
   end
 
-  local buf = vim.api.nvim_create_buf(false, true)
+  local buf = Dotfiles.async.api.nvim_create_buf(false, true)
   vim.bo[buf].filetype = "markdown"
 
   local TITLE = "Neovim Nightly Dashboard"
@@ -235,9 +233,11 @@ local function dashboard()
 
   unlock()
 
-  Dotfiles.async.schedule()
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, contents)
-  vim.api.nvim_win_set_config(win, vim.tbl_extend("force", vim.api.nvim_win_get_config(win), { title = TITLE }))
+  Dotfiles.async.api.nvim_buf_set_lines(buf, 0, -1, false, contents)
+  Dotfiles.async.api.nvim_win_set_config(
+    win,
+    vim.tbl_extend("force", Dotfiles.async.api.nvim_win_get_config(win), { title = TITLE })
+  )
 end
 
 local function rollback()
@@ -271,8 +271,7 @@ local function rollback()
     return
   end
 
-  Dotfiles.async.schedule()
-  vim.fn.writefile({ vim.json.encode({ version = meta.rollback, date = os.time() }) }, INSTALL_METADATA_PATH)
+  Dotfiles.async.fn.writefile({ vim.json.encode({ version = meta.rollback, date = os.time() }) }, INSTALL_METADATA_PATH)
 
   unlock()
   Snacks.notify.info("Complete rolling back neovim successfully")
@@ -288,7 +287,9 @@ Dotfiles.map({
 Dotfiles.map({
   "<Leader>pnb",
   function()
-    Dotfiles.async.run(build_nightly, true)
+    Dotfiles.async.run(function()
+      build_nightly(true)
+    end)
   end,
   desc = "Build neovim nightly",
 })

@@ -1,5 +1,9 @@
 return {
   {
+    "nvim-lua/plenary.nvim",
+    lazy = true,
+  },
+  {
     "tpope/vim-sleuth",
     event = Dotfiles.events.enter_buffer,
   },

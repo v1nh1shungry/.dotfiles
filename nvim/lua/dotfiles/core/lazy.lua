@@ -29,7 +29,6 @@ require("lazy").setup({
       :totable()
   ),
   local_spec = false,
-  rocks = { hererocks = true },
   install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },
   dev = { path = "~/Documents/repos", patterns = { "v1nh1shungry" }, fallback = true },
   diff = { cmd = "diffview.nvim" },

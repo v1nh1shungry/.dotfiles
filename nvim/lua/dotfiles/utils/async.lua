@@ -2,6 +2,8 @@ local Async = require("plenary.async")
 
 Async.system = Async.wrap(vim.system, 3)
 
+Async.input = Async.wrap(vim.ui.input, 2)
+
 Async.fn = setmetatable({}, {
   __index = function(_, k)
     return function(...)

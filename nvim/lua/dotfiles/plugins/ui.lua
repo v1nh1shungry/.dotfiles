@@ -693,9 +693,4 @@ return {
     event = "BufRead *.log",
     opts = {},
   },
-  {
-    "3rd/image.nvim",
-    ft = "markdown",
-    opts = {},
-  },
 }

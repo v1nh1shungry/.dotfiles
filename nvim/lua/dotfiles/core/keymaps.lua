@@ -33,6 +33,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.g.mapleader = vim.keycode("<Space>")
 vim.g.maplocalleader = "\\"
 
+map({ "<C-q>", "<Cmd>bd<CR>", desc = "Close buffer" })
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
 
 map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = "Save", mode = { "i", "x", "n", "s" } })
@@ -169,7 +170,8 @@ map({
   desc = "Jump to the first error",
 })
 
-map({ "<Leader>xx", vim.diagnostic.setqflist, desc = "Diagnostics" })
+map({ "<Leader>xx", vim.diagnostic.setloclist, desc = "Document diagnostics" })
+map({ "<Leader>xX", vim.diagnostic.setqflist, desc = "Workspace diagnostics" })
 
 map({ "<BS>", "<C-o>s", mode = "s" })
 

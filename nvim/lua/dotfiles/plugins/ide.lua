@@ -79,6 +79,13 @@ return {
             },
             { "gO", "<Cmd>Outline<CR>", desc = "Symbol outline" },
           },
+          ["workspace/symbol"] = {
+            "<Leader>sS",
+            function()
+              Snacks.picker.lsp_workspace_symbols({ hierarchy = false })
+            end,
+            desc = "LSP symbols (Workspace)",
+          },
           ["textDocument/references"] = {
             { "gR", vim.lsp.buf.references, desc = "Go to references" },
             {

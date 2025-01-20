@@ -331,7 +331,7 @@ return {
         function()
           Snacks.bufdelete()
         end,
-        desc = "Delete buffer",
+        desc = "Close buffer",
       },
       {
         "<Leader>gf",
@@ -429,9 +429,16 @@ return {
       {
         "<Leader>sx",
         function()
+          Snacks.picker.diagnostics_buffer()
+        end,
+        desc = "Document diagnostics",
+      },
+      {
+        "<Leader>sX",
+        function()
           Snacks.picker.diagnostics()
         end,
-        desc = "Diagnostics",
+        desc = "Workspace diagnostics",
       },
       {
         "<Leader>sq",
@@ -439,6 +446,13 @@ return {
           Snacks.picker.qflist()
         end,
         desc = "Quickfix",
+      },
+      {
+        "<Leader>sl",
+        function()
+          Snacks.picker.loclist()
+        end,
+        desc = "Loclist",
       },
       {
         "<Leader>sb",
@@ -468,6 +482,13 @@ return {
         end,
         desc = "Git log",
       },
+      {
+        "<Leader>ut",
+        function()
+          Snacks.picker.undo()
+        end,
+        desc = "Undotree",
+      },
     },
     opts = {
       bigfile = { enabled = true },
@@ -485,15 +506,8 @@ return {
  \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓     \▓▓   \▓▓\▓▓▓▓▓▓▓▓\▓▓   \▓▓ \▓▓▓▓▓▓ 
           ]],
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
-            {
-              icon = " ",
-              key = "r",
-              desc = "Recent Files",
-              action = function()
-                Snacks.picker.recent({ filter = { cwd = true } })
-              end,
-            },
+            { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
+            { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
             { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
             { icon = " ", key = "c", desc = "Config", action = "<Leader>fc" },
             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy },

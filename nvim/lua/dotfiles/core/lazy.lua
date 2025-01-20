@@ -21,7 +21,7 @@ require("lazy").setup({
     vim
       .iter(require("dotfiles.user").extra)
       :map(function(m)
-        if type(m) == "string" then
+        if type(m) == "string" and vim.F.npcall(require, "dotfiles.plugins.extra." .. m) then
           return { import = "dotfiles.plugins.extra." .. m }
         end
         return m
@@ -30,7 +30,11 @@ require("lazy").setup({
   ),
   local_spec = false,
   install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },
-  dev = { path = "~/Documents/repos", patterns = { "v1nh1shungry" }, fallback = true },
+  dev = {
+    path = vim.fs.joinpath(vim.env.HOME, "Documents", "repos"),
+    patterns = { "v1nh1shungry" },
+    fallback = true,
+  },
   diff = { cmd = "diffview.nvim" },
   performance = {
     rtp = {

@@ -18,7 +18,6 @@ local function pickaxe()
     return
   end
 
-  Dotfiles.async.util.scheduler()
   local query = Dotfiles.async.input({ prompt = "Git Pickaxe" })
   if not query then
     return
@@ -76,6 +75,7 @@ local function pickaxe()
         query,
       }, ctx, { ft = "git" })
     end,
+    layout = { layout = { title = "Git Pickaxe" } },
   })
 end
 

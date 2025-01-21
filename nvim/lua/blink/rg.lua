@@ -1,4 +1,4 @@
--- More faster ripgrep source
+-- Faster ripgrep source
 -- Credit: https://github.com/mikavilpas/blink-ripgrep.nvim
 
 ---@module "blink.cmp"

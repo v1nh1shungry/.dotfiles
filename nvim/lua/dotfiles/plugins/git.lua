@@ -62,9 +62,9 @@ return {
       local opts = {
         enhanced_diff_hl = true,
         view = {
-          default = { disable_diagnostics = true },
+          default = { disable_diagnostics = true, winbar_info = true },
           merge_tool = { layout = "diff3_mixed" },
-          file_history = { lazyout = "diff2_vertical", disable_diagnostics = true },
+          file_history = { disable_diagnostics = true, winbar_info = true },
         },
         keymaps = {
           file_history_panel = {
@@ -132,6 +132,11 @@ return {
             },
           },
         },
+        hooks = {
+          view_opened = function()
+            require("diffview.actions").toggle_files()
+          end,
+        },
       }
 
       opts.keymaps.file_panel = vim.tbl_deep_extend("force", opts.keymaps.file_panel, opts.keymaps.file_history_panel)
@@ -140,11 +145,7 @@ return {
       require("diffview").setup(opts)
     end,
     keys = {
-      {
-        "<Leader>gD",
-        "<Cmd>exe 'DiffviewOpen' | DiffviewToggleFiles<CR>",
-        desc = "Open git diff pane",
-      },
+      { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" },
       {
         "<Leader>gh",
         function()

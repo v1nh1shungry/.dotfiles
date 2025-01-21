@@ -7,6 +7,12 @@ setmetatable(M, {
   end,
 })
 
+---@class dotfiles.map.Opts: vim.keymap.set.Opts
+---@field [1] string
+---@field [2] string | function
+---@field mode? string | string[]
+---
+---@param opts dotfiles.map.Opts
 M.map = function(opts)
   opts = vim.deepcopy(opts)
   local lhs, rhs, mode = opts[1], opts[2], opts.mode or "n"
@@ -22,14 +28,20 @@ M.map = function(opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+---@param name string
+---@param opts? vim.api.keyset.create_augroup
+---@return integer
 M.augroup = function(name, opts)
   return vim.api.nvim_create_augroup("dotfiles_" .. name, opts or {})
 end
 
+---@param name string
+---@return integer
 M.ns = function(name)
   return vim.api.nvim_create_namespace("dotfiles_" .. name)
 end
 
+---@return string?
 M.git_root = function()
   return vim.fs.root(vim.uv.cwd() or 0, ".git")
 end

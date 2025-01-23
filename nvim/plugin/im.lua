@@ -16,38 +16,34 @@ end
 local previous_im
 
 local function restore_default_im()
-  Dotfiles.async.run(function()
-    local ret = Dotfiles.async.system({ command }, { text = true })
-    previous_im = vim.trim(ret.stdout)
-    if default_im == "1" then
-      vim.system({ command, "-c" })
-    else
-      vim.system({ command, "-o" })
-    end
-  end)
+  local ret = Dotfiles.async.system({ command }, { text = true })
+  previous_im = vim.trim(ret.stdout)
+  if default_im == "1" then
+    vim.system({ command, "-c" })
+  else
+    vim.system({ command, "-o" })
+  end
 end
 
 local function restore_previous_im()
-  Dotfiles.async.run(function()
-    local ret = Dotfiles.async.system({ command }, { text = true })
-    if ret.stdout == previous_im then
-      return
-    end
-    if previous_im == "1" then
-      vim.system({ command, "-c" })
-    elseif previous_im == "2" then
-      vim.system({ command, "-o" })
-    end
-  end)
+  local ret = Dotfiles.async.system({ command }, { text = true })
+  if ret.stdout == previous_im then
+    return
+  end
+  if previous_im == "1" then
+    vim.system({ command, "-c" })
+  elseif previous_im == "2" then
+    vim.system({ command, "-o" })
+  end
 end
 
 local AUGROUP = Dotfiles.augroup("im_switcher")
 
 vim.api.nvim_create_autocmd("InsertEnter", {
-  callback = restore_previous_im,
+  callback = Dotfiles.async.void(restore_previous_im),
   group = AUGROUP,
 })
 vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave" }, {
-  callback = restore_default_im,
+  callback = Dotfiles.async.void(restore_default_im),
   group = AUGROUP,
 })

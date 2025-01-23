@@ -1,302 +1,242 @@
+-- TODO: dashboard
 if not require("dotfiles.user").nightly then
   return
 end
 
-local BUILD_DIRECTORY = vim.fs.joinpath(vim.uv.os_tmpdir(), "dotfiles_neovim_nightly")
-local INSTALL_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
-local INSTALL_METADATA_PATH = vim.fs.joinpath(INSTALL_DIRECTORY, "install-metadata.json")
-local LOCKFILE = vim.fs.joinpath(vim.uv.os_tmpdir(), "DOTFILES_NVIM_NIGHTLY_BUILDLOCK")
+---@class dotfiles.nightly.Metadata
+---@field last_update integer
+---@field current string
+---@field latest string
+---@field rollback? string
+
+local NIGHTLY_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
+local NIGHTLY_METADATA_DIRECTORY = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-metadata.json")
+local LOCKFILE = vim.fs.joinpath(NIGHTLY_DIRECTORY, "LOCK")
 local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
-local USR_BIN_PATH = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin", "nvim")
+local USR_BIN_DIRECTORY = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin")
+local GITHUB_PROXY = "https://mirror.ghproxy.com/"
 
 local AUGROUP = Dotfiles.augroup("nightly")
 
-local function unlock()
-  if Dotfiles.async.fn.filereadable(LOCKFILE) == 1 then
-    vim.fs.rm(LOCKFILE, { force = true })
-  end
+if vim.fn.isdirectory(NIGHTLY_DIRECTORY) == 0 then
+  vim.fn.mkdir(NIGHTLY_DIRECTORY)
 end
 
--- FIXME: implement a **real** file lock here
-local function lock()
-  if Dotfiles.async.fn.filereadable(LOCKFILE) == 1 then
-    -- TODO: maybe too noisy
-    Snacks.notify.warn("There is another session holding the lock, please wait for it")
+local ffi = require("ffi")
+
+ffi.cdef([[
+int lockf(int fd, int cmd, long len);
+]])
+
+local F_TLOCK = 2
+local F_ULOCK = 0
+
+local LOCK_FD = vim.uv.fs_open(LOCKFILE, "w", tonumber("0644", 8))
+
+local function unlock()
+  ffi.C.lockf(LOCK_FD, F_ULOCK, 0)
+end
+
+---@param force? boolean
+local function lock(force)
+  if ffi.C.lockf(LOCK_FD, F_TLOCK, 0) == -1 then
+    if force then
+      Snacks.notify.warn("There is another session holding the lock, please wait for it")
+    end
+
     return false
   end
-  Dotfiles.async.fn.writefile({ tostring(vim.uv.os_getpid()) }, LOCKFILE)
+
   Dotfiles.async.api.nvim_create_autocmd("VimLeave", {
     callback = unlock,
     group = AUGROUP,
   })
-  return true
-end
-
-local function fetch()
-  local ret
-  if Dotfiles.async.fn.isdirectory(BUILD_DIRECTORY) == 1 then
-    ret = Dotfiles.async.system({ "git", "checkout", "master" }, { cwd = BUILD_DIRECTORY })
-    if ret.code ~= 0 then
-      Snacks.notify.error("Failed to checkout master branch")
-      return false
-    end
-    ret = Dotfiles.async.system({ "git", "pull", "--rebase" }, { cwd = BUILD_DIRECTORY })
-  else
-    ret =
-      Dotfiles.async.system({ "git", "clone", "--depth=1", "https://github.com/neovim/neovim.git", BUILD_DIRECTORY })
-  end
-
-  if ret.code ~= 0 then
-    Snacks.notify.error("Failed to get the latest neovim source: " .. ret.stderr)
-    return false
-  end
 
   return true
 end
 
-local function get_metadata()
-  if Dotfiles.async.fn.filereadable(INSTALL_METADATA_PATH) == 1 then
-    return vim.json.decode(table.concat(Dotfiles.async.fn.readfile(INSTALL_METADATA_PATH), "\n"))
-  end
-end
-
-local function get_head_sha1()
-  local ret = Dotfiles.async.system({ "git", "rev-parse", "HEAD" }, { cwd = BUILD_DIRECTORY, text = true })
-  if ret.code ~= 0 then
-    Snacks.notify.error("Failed to get HEAD SHA-1 of neovim repo: " .. ret.stderr)
+---@async
+---@param url string
+local function api(url)
+  local res = Dotfiles.async.system({ "curl", "-fsSL", url })
+  if res.code ~= 0 then
+    Snacks.notify.error(("Failed to request %s: %s"):format(url, res.stderr))
     return
   end
-  return vim.trim(ret.stdout)
+
+  return vim.json.decode(res.stdout)
 end
 
--- TODO: copy icons, desktop etc
-local function compile_and_install()
-  local ret = Dotfiles.async.system(
-    { "make", "CMAKE_BUILD_TYPE=Release", "CMAKE_INSTALL_PREFIX=" .. INSTALL_DIRECTORY },
-    { cwd = BUILD_DIRECTORY }
-  )
-  if ret.code ~= 0 then
-    Snacks.notify.error("Failed to build nightly neovim: " .. ret.stderr)
-    return false
+local function read_metadata()
+  if Dotfiles.async.fn.filereadable(NIGHTLY_METADATA_DIRECTORY) == 1 then
+    return vim.json.decode(table.concat(Dotfiles.async.fn.readfile(NIGHTLY_METADATA_DIRECTORY), "\n"))
   end
+end
 
-  ret = Dotfiles.async.system({ "make", "install" }, { cwd = BUILD_DIRECTORY })
-  if ret.code ~= 0 then
-    Snacks.notify.error("Failed to install nightly neovim: " .. ret.stderr)
-    return false
-  end
+---@param metadata dotfiles.nightly.Metadata
+local function write_metadata(metadata)
+  Dotfiles.async.fn.writefile({ vim.json.encode(metadata) }, NIGHTLY_METADATA_DIRECTORY)
+end
 
+---@async
+---@param version string
+---@return boolean
+local function install(version)
   Dotfiles.async.util.scheduler()
-  if vim.list_contains(vim.split(vim.env.PATH, ":"), vim.fs.dirname(USR_BIN_PATH)) then
-    Dotfiles.async.uv.fs_symlink(vim.fs.joinpath(INSTALL_DIRECTORY, "bin", "nvim"), USR_BIN_PATH)
+  if not vim.list_contains(vim.split(vim.env.PATH, ":", { trimempty = true }), USR_BIN_DIRECTORY) then
+    Snacks.notify.warn(USR_BIN_DIRECTORY .. " is not in $PATH")
+    return false
+  end
+
+  local res = Dotfiles.async.system({
+    "ln",
+    "-sf",
+    vim.fs.joinpath(NIGHTLY_DIRECTORY, version, "bin", "nvim"),
+    vim.fs.joinpath(USR_BIN_DIRECTORY, "nvim"),
+  })
+
+  if res.code ~= 0 then
+    Snacks.notify.error("Failed to install nightly neovim: " .. res.stderr)
+    return false
   end
 
   return true
 end
 
----@param force boolean
-local function build_nightly(force)
-  if not lock() then
+---@async
+---@param force? boolean
+local function update(force)
+  if not lock(force) then
     return
   end
 
-  local meta = get_metadata()
-  if not force and meta and meta.date and os.time() - meta.date < TIMEOUT_SECS then
+  ---@type dotfiles.nightly.Metadata
+  local metadata = read_metadata() or {}
+  if not force and metadata.last_update and os.time() - metadata.last_update < TIMEOUT_SECS then
     unlock()
     return
   end
 
-  Snacks.notify.info("Start building nightly neovim...")
+  Snacks.notify.info("Start updating nightly neovim")
 
-  if not fetch() then
+  local release = api("https://api.github.com/repos/neovim/neovim/releases/tags/nightly")
+  if not release then
     unlock()
     return
   end
 
-  local latest_sha1 = get_head_sha1()
-  if not latest_sha1 then
-    unlock()
-    return
-  end
-
-  if meta and meta.version and meta.version == latest_sha1 then
-    Snacks.notify.info("Neovim has no update")
-    unlock()
-    return
-  end
-
-  if not compile_and_install() then
-    unlock()
-    return
-  end
-
-  Dotfiles.async.fn.writefile(
-    { vim.json.encode({ rollback = meta.version, version = latest_sha1, date = os.time() }) },
-    INSTALL_METADATA_PATH
-  )
-
-  unlock()
-
-  Snacks.notify.info("Complete building nightly neovim successfully")
-end
-
-vim.api.nvim_create_autocmd("User", {
-  callback = function()
-    Dotfiles.async.run(build_nightly)
-  end,
-  group = AUGROUP,
-  pattern = "VeryLazy",
-})
-
--- TODO: can load updated first
--- TODO: print error msg in the dashboard
--- TODO: turn #XXX into PR links
-local function dashboard()
-  if not lock() then
-    return
-  end
-
-  local buf = Dotfiles.async.api.nvim_create_buf(false, true)
-  vim.bo[buf].filetype = "markdown"
-
-  local TITLE = "Neovim Nightly Dashboard"
-  local win = Snacks.win({
-    buf = buf,
-    width = 0.7,
-    height = 0.7,
-    border = "rounded",
-    title = TITLE .. " (Updating...)",
-    title_pos = "center",
-  }).win
-
-  if not fetch() then
-    unlock()
-    return
-  end
-
-  local meta = get_metadata()
-
-  local cmd = { "git", "log", "--oneline", "--no-decorate" }
-  if meta and meta.version then
-    table.insert(cmd, meta.version .. "..HEAD")
-  end
-
-  local contents = {}
-
-  local ret = Dotfiles.async.system(cmd, { cwd = BUILD_DIRECTORY, text = true })
-  if ret.code == 0 then
-    local updates = vim.split(ret.stdout, "\n", { trimempty = true })
-    if #updates > 0 then
-      table.insert(contents, "# Updates")
-      vim.list_extend(
-        contents,
-        vim
-          .iter(updates)
-          :map(function(l)
-            return "* " .. l
-          end)
-          :totable()
-      )
-      table.insert(contents, "")
-    end
-  else
-    Snacks.notify.error("Failed to fetch git history: " .. ret.stderr)
-  end
-
-  if meta and meta.version then
-    cmd = { "git", "log", "--oneline", "--no-decorate" }
-    if meta.rollback then
-      table.insert(cmd, meta.rollback .. ".." .. meta.version)
-    else
-      table.insert(cmd, meta.version)
-    end
-
-    ret = Dotfiles.async.system(cmd, { cwd = BUILD_DIRECTORY, text = true })
-    if ret.code == 0 then
-      local updated = vim.split(ret.stdout, "\n", { trimempty = true })
-      if #updated > 0 then
-        table.insert(contents, "# Updated")
-        vim.list_extend(
-          contents,
-          vim
-            .iter(updated)
-            :map(function(l)
-              return "* " .. l
-            end)
-            :totable()
-        )
+  if metadata.latest and metadata.latest == release.target_commitish then
+    if metadata.current ~= metadata.latest then
+      if install(metadata.latest) then
+        metadata.current = metadata.latest
+        write_metadata(metadata)
       end
-    else
-      Snacks.notify.error("Failed to get git history: " .. ret.stderr)
+
+      unlock()
+      return
     end
+  end
+
+  local url
+  for _, asset in ipairs(release.assets) do
+    if asset.name == "nvim-linux64.tar.gz" then
+      url = asset.browser_download_url
+      break
+    end
+  end
+  if not url then
+    Snacks.notify.error("No available package in github release")
+    unlock()
+    return
+  end
+
+  local res = Dotfiles.async.system({
+    "curl",
+    "-fsSLO",
+    GITHUB_PROXY .. url,
+  }, { cwd = vim.uv.os_tmpdir() })
+
+  if res.code ~= 0 then
+    Snacks.notify.error("Failed to download nightly neovim package: " .. res.stderr)
+    unlock()
+    return
+  end
+
+  local package_path = vim.fs.joinpath(vim.uv.os_tmpdir(), "nvim-linux64.tar.gz")
+  res = Dotfiles.async.system({
+    "tar",
+    "xf",
+    package_path,
+    "--transform",
+    ("s/nvim-linux64/%s/"):format(release.target_commitish),
+    "--directory",
+    NIGHTLY_DIRECTORY,
+  })
+
+  if res.code ~= 0 then
+    Snacks.notify.error("Failed to extract nightly neovim package: " .. res.stderr)
+    unlock()
+    return
+  end
+
+  if metadata.rollback and metadata.rollback ~= metadata.latest then
+    vim.fs.rm(vim.fs.joinpath(NIGHTLY_DIRECTORY, metadata.rollback), { recursive = true, force = true })
+  end
+
+  if install(release.target_commitish) then
+    metadata.rollback = metadata.latest
+    metadata.latest = release.target_commitish
+    metadata.current = metadata.latest
+    metadata.last_update = os.time()
+
+    write_metadata(metadata)
+
+    Snacks.notify.info("Complete updating nightly neovim")
   end
 
   unlock()
 
-  Dotfiles.async.api.nvim_buf_set_lines(buf, 0, -1, false, contents)
-  Dotfiles.async.api.nvim_win_set_config(
-    win,
-    vim.tbl_extend("force", Dotfiles.async.api.nvim_win_get_config(win), { title = TITLE })
-  )
+  vim.fs.rm(package_path, { force = true })
 end
 
 local function rollback()
-  if not lock() then
+  if not lock(true) then
     return
   end
 
-  local meta = get_metadata()
-  if not meta or not meta.rollback then
-    Snacks.notify.error("Failed to get last neovim nightly SHA1")
+  ---@type dotfiles.nightly.Metadata
+  local metadata = read_metadata() or {}
+  if not metadata.rollback or metadata.current == metadata.rollback then
+    Snacks.notify.warn("No available rollback")
     unlock()
     return
   end
 
-  Snacks.notify.info("Start rolling neovim back to " .. meta.rollback)
-
-  if not fetch() then
-    unlock()
-    return
+  if install(metadata.rollback) then
+    metadata.current = metadata.rollback
+    write_metadata(metadata)
+    Snacks.notify.info("Complete rolling back nightly neovim")
   end
-
-  local ret = Dotfiles.async.system({ "git", "checkout", meta.rollback }, { cwd = BUILD_DIRECTORY })
-  if ret.code ~= 0 then
-    Snacks.notify.error("Failed to checkout " .. meta.rollback)
-    unlock()
-    return
-  end
-
-  if not compile_and_install() then
-    unlock()
-    return
-  end
-
-  Dotfiles.async.fn.writefile({ vim.json.encode({ version = meta.rollback, date = os.time() }) }, INSTALL_METADATA_PATH)
 
   unlock()
-  Snacks.notify.info("Complete rolling back neovim successfully")
 end
 
-Dotfiles.map({
-  "<Leader>pnn",
-  function()
-    Dotfiles.async.run(dashboard)
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    Dotfiles.async.run(update)
   end,
-  desc = "Neovim nightly dashboard",
+  group = AUGROUP,
 })
+
 Dotfiles.map({
-  "<Leader>pnb",
-  function()
-    Dotfiles.async.run(function()
-      build_nightly(true)
-    end)
-  end,
-  desc = "Build neovim nightly",
+  "<Leader>pnu",
+  Dotfiles.async.void(function()
+    update(true)
+  end),
+  desc = "Update",
 })
 Dotfiles.map({
   "<Leader>pnr",
-  function()
-    Dotfiles.async.run(rollback)
-  end,
-  desc = "Rollback neovim nightly",
+  Dotfiles.async.void(rollback),
+  desc = "Rollback",
 })

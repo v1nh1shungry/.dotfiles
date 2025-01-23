@@ -1,15 +1,23 @@
 local M = {
+  ---@type (string | LazyPluginSpec)[]
   extra = {},
   ui = {
+    ---@type "dark" | "light"
     background = "dark",
+    ---@type integer
     blend = 10,
+    ---@type string
     colorscheme = "tokyonight",
   },
   task = {
+    ---@type boolean
     save = true,
+    ---@type table<string, string[]>
     compile = {},
+    ---@type table<string, string[]>
     execute = {},
   },
+  ---@type boolean | integer
   nightly = false,
 }
 

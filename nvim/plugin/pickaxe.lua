@@ -79,11 +79,5 @@ local function pickaxe()
   })
 end
 
-Dotfiles.map({
-  "<Leader>g/",
-  function()
-    Dotfiles.async.run(pickaxe)
-  end,
-  desc = "Git pickaxe",
-})
+Dotfiles.map({ "<Leader>g/", Dotfiles.async.void(pickaxe), desc = "Git pickaxe" })
 -- }}}

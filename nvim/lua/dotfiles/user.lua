@@ -2,8 +2,6 @@ local M = {
   ---@type (string | LazyPluginSpec)[]
   extra = {},
   ui = {
-    ---@type "dark" | "light"
-    background = "dark",
     ---@type integer
     blend = 10,
     ---@type string

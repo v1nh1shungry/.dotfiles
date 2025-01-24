@@ -111,8 +111,6 @@ map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
 
 map({ "<C-w>z", Dotfiles.toggle.maximize, desc = "Zoom" })
 
-map({ "<Leader>cd", vim.diagnostic.open_float, desc = "Show diagnostics" })
-
 map({
   "]w",
   function()
@@ -249,3 +247,5 @@ map({
   desc = "Right",
 })
 -- }}}
+
+map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search inside visual selection" })

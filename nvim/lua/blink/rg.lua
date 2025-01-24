@@ -81,9 +81,9 @@ function M:get_completions(context, resolve)
     "--smart-case",
   }
 
-  local filename = vim.api.nvim_buf_get_name(context.bufnr)
-  if filename ~= "" then
-    local relpath = vim.fs.relpath(vim.uv.cwd(), filename)
+  local curr_file = vim.api.nvim_buf_get_name(context.bufnr)
+  if curr_file ~= "" then
+    local relpath = vim.fs.relpath(vim.uv.cwd(), curr_file)
     if relpath then
       table.insert(cmd, "-g")
       table.insert(cmd, "!" .. relpath)

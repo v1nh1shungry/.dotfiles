@@ -1,3 +1,4 @@
+-- Better scrollbind
 -- Idea from https://github.com/jackplus-xyz/scroll-it.nvim
 
 local enabled = true

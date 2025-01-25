@@ -46,6 +46,7 @@
 
 <!-- Neovim plugins -->
 ## Neovim plugins
+* [3rd/image.nvim](https://github.com/3rd/image.nvim.git)
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
 * [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)
@@ -56,6 +57,7 @@
 * [Wansmer/sibling-swap.nvim](https://github.com/Wansmer/sibling-swap.nvim.git)
 * [Wansmer/treesj](https://github.com/Wansmer/treesj.git)
 * [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)
+* [andymass/vim-matchup](https://github.com/andymass/vim-matchup.git)
 * [b0o/SchemaStore.nvim](https://github.com/b0o/SchemaStore.nvim.git)
 * [catppuccin/nvim](https://github.com/catppuccin/nvim.git)
 * [chrisgrieser/nvim-recorder](https://github.com/chrisgrieser/nvim-recorder.git)
@@ -107,7 +109,6 @@
 * [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive.git)
 * [tpope/vim-sleuth](https://github.com/tpope/vim-sleuth.git)
 * [tzachar/highlight-undo.nvim](https://github.com/tzachar/highlight-undo.nvim.git)
-* [v1nh1shungry/biquge.nvim](https://github.com/v1nh1shungry/biquge.nvim.git)
 * [v1nh1shungry/cppman.nvim](https://github.com/v1nh1shungry/cppman.nvim.git)
 * [v1nh1shungry/mini-files-status.nvim](https://github.com/v1nh1shungry/mini-files-status.nvim.git)
 * [williamboman/mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim.git)

@@ -173,13 +173,6 @@ map({ "<Leader>xX", vim.diagnostic.setqflist, desc = "Workspace diagnostics" })
 
 map({ "<BS>", "<C-o>s", mode = "s" })
 
-map({ "<C-f>", "<Right>", mode = { "i", "c" }, desc = "Move a character forward" })
-map({ "<C-b>", "<Left>", mode = { "i", "c" }, desc = "Move a character backward" })
-map({ "<M-f>", "<S-Right>", mode = { "i", "c" }, desc = "Move a word forward" })
-map({ "<M-b>", "<S-Left>", mode = { "i", "c" }, desc = "Move a word backward" })
-map({ "<C-a>", "<Home>", mode = { "i", "c" }, desc = "Begin of line" })
-map({ "<C-e>", "<End>", mode = { "i", "c" }, desc = "End of line" })
-
 map({ "<Esc>", "<Cmd>noh<CR><Esc>", mode = { "i", "n" }, desc = "Escape and clear hlsearch" })
 
 map({

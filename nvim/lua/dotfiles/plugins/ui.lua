@@ -265,7 +265,7 @@ return {
           { "<Leader>gx", group = "conflict" },
           { "<Leader>p", group = "package/profile" },
           { "<Leader>pn", group = "nightly" },
-          { "<Leader>q", group = "quit/sessions" },
+          { "<Leader>q", group = "quit" },
           { "<Leader>s", group = "search" },
           { "<Leader>u", group = "ui/utils" },
           { "<Leader>x", group = "diagnostic/quickfix" },
@@ -297,7 +297,7 @@ return {
         "<C-f>",
         function()
           if not require("noice.lsp").scroll(4) then
-            return vim.fn.mode() == "i" and "<Right>" or "<C-f>"
+            return "<C-f>"
           end
         end,
         silent = true,
@@ -309,7 +309,7 @@ return {
         "<C-b>",
         function()
           if not require("noice.lsp").scroll(-4) then
-            return vim.fn.mode() == "i" and "<Left>" or "<C-b>"
+            return "<C-b>"
           end
         end,
         silent = true,
@@ -353,7 +353,6 @@ return {
     keys = {
       { "/", desc = "Forward search" },
       { "?", desc = "Backward search" },
-      { "<C-n>", mode = { "n", "v" }, desc = "Multi cursors" },
       {
         "n",
         [[<Cmd>execute('normal! ' . v:count1 . 'Nn'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]],
@@ -416,7 +415,12 @@ return {
             return vim.api.nvim_win_get_config(win).relative == ""
           end,
         },
-        { ft = "qf", title = "QuickFix" },
+        {
+          ft = "qf",
+          title = function()
+            return vim.fn.getloclist(0, { filewinid = 1 }).filewinid == 0 and "Quickfix List" or "Location List"
+          end,
+        },
         {
           ft = "help",
           size = { height = 0.4 },

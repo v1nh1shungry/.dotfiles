@@ -242,7 +242,7 @@ return {
 
                 vim.api.nvim_buf_set_extmark(bufnr, NS, params.range.start.line, params.range.start.character + 1, {
                   strict = false,
-                  virt_text = { { "💡", "DiagnosticVirtualTextInfo" } },
+                  virt_text = { { "💡" } },
                   virt_text_pos = "eol",
                 })
               end

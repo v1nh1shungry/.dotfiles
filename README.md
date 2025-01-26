@@ -46,6 +46,7 @@
 
 <!-- Neovim plugins -->
 ## Neovim plugins
+* [3rd/image.nvim](https://github.com/3rd/image.nvim.git)
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
 * [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)
@@ -106,7 +107,6 @@
 * [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive.git)
 * [tpope/vim-sleuth](https://github.com/tpope/vim-sleuth.git)
 * [tzachar/highlight-undo.nvim](https://github.com/tzachar/highlight-undo.nvim.git)
-* [v1nh1shungry/biquge.nvim](https://github.com/v1nh1shungry/biquge.nvim.git)
 * [v1nh1shungry/cppman.nvim](https://github.com/v1nh1shungry/cppman.nvim.git)
 * [williamboman/mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim.git)
 * [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim.git)

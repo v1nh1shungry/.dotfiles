@@ -484,9 +484,29 @@ return {
     lazy = true,
     opts = {},
   },
-  -- TODO: conceal in cursor line
   {
     "OXY2DEV/markview.nvim",
+    config = function()
+      local presets = require("markview.presets")
+
+      local headings = presets.headings.glow
+      for i = 1, 6 do
+        headings["heading_" .. i].sign = ""
+      end
+
+      require("markview").setup({
+        markdown = {
+          headings = headings,
+          code_blocks = { sign = false },
+        },
+        markdown_inline = { checkboxes = presets.checkboxes.nerd },
+        preview = {
+          icon_provider = "mini",
+          modes = { "n", "c" },
+          hybrid_modes = { "n" },
+        },
+      })
+    end,
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
     ft = "markdown",
     init = function()
@@ -497,23 +517,6 @@ return {
       })
     end,
     keys = { { "<Leader>uc", "<Cmd>Markview<CR>", desc = "Toggle render", ft = "markdown" } },
-    opts = function()
-      local presets = require("markview.presets")
-
-      local headings = presets.headings.glow
-      for i = 1, 6 do
-        headings["heading_" .. i].sign = ""
-      end
-
-      return {
-        markdown = {
-          headings = headings,
-          code_blocks = { sign = false },
-        },
-        markdown_inline = { checkboxes = presets.checkboxes.nerd },
-        preview = { icon_provider = "mini" },
-      }
-    end,
   },
   {
     "mcauley-penney/visual-whitespace.nvim",

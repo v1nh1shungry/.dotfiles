@@ -375,16 +375,13 @@ return {
                 end
 
                 local function setup_hl_autocmd(source_buf, ast_buf)
-                  local AUGROUP = Dotfiles.augroup("clangd_ast_autocmds")
                   vim.api.nvim_create_autocmd("CursorMoved", {
-                    group = AUGROUP,
                     buffer = ast_buf,
                     callback = function()
                       update_highlight(source_buf, ast_buf)
                     end,
                   })
                   vim.api.nvim_create_autocmd("BufLeave", {
-                    group = AUGROUP,
                     buffer = ast_buf,
                     callback = function()
                       clear_highlight(source_buf)

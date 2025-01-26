@@ -46,12 +46,10 @@
 
 <!-- Neovim plugins -->
 ## Neovim plugins
-* [3rd/image.nvim](https://github.com/3rd/image.nvim.git)
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
 * [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)
 * [MunifTanjim/nui.nvim](https://github.com/MunifTanjim/nui.nvim.git)
-* [OXY2DEV/helpview.nvim](https://github.com/OXY2DEV/helpview.nvim.git)
 * [OXY2DEV/markview.nvim](https://github.com/OXY2DEV/markview.nvim.git)
 * [RRethy/nvim-treesitter-endwise](https://github.com/RRethy/nvim-treesitter-endwise.git)
 * [Wansmer/sibling-swap.nvim](https://github.com/Wansmer/sibling-swap.nvim.git)
@@ -63,7 +61,6 @@
 * [chrisgrieser/nvim-recorder](https://github.com/chrisgrieser/nvim-recorder.git)
 * [chrisgrieser/nvim-spider](https://github.com/chrisgrieser/nvim-spider.git)
 * [cshuaimin/ssr.nvim](https://github.com/cshuaimin/ssr.nvim.git)
-* [danymat/neogen](https://github.com/danymat/neogen.git)
 * [dhruvasagar/vim-table-mode](https://github.com/dhruvasagar/vim-table-mode.git)
 * [echasnovski/mini.ai](https://github.com/echasnovski/mini.ai.git)
 * [echasnovski/mini.align](https://github.com/echasnovski/mini.align.git)
@@ -109,8 +106,8 @@
 * [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive.git)
 * [tpope/vim-sleuth](https://github.com/tpope/vim-sleuth.git)
 * [tzachar/highlight-undo.nvim](https://github.com/tzachar/highlight-undo.nvim.git)
+* [v1nh1shungry/biquge.nvim](https://github.com/v1nh1shungry/biquge.nvim.git)
 * [v1nh1shungry/cppman.nvim](https://github.com/v1nh1shungry/cppman.nvim.git)
-* [v1nh1shungry/mini-files-status.nvim](https://github.com/v1nh1shungry/mini-files-status.nvim.git)
 * [williamboman/mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim.git)
 * [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim.git)
 <!-- Neovim plugins -->

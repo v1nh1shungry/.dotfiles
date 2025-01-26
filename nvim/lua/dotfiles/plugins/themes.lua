@@ -6,9 +6,10 @@ return {
     name = "catppuccin",
     opts = {
       integrations = {
+        blink_cmp = true,
         dadbod_ui = true,
         diffview = true,
-        dropbar = { enabled = true },
+        dropbar = { enabled = true, color_mode = true },
         grug_far = true,
         mason = true,
         native_lsp = {
@@ -20,6 +21,7 @@ return {
           },
         },
         noice = true,
+        snacks = true,
         which_key = true,
       },
     },

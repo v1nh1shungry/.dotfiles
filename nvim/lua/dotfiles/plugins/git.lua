@@ -2,6 +2,16 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = Dotfiles.events.enter_buffer,
+    keys = {
+      {
+        "<Leader>xH",
+        function()
+          require("gitsigns").setqflist("all")
+        end,
+        desc = "Workspace git hunks",
+      },
+      { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" },
+    },
     opts = {
       on_attach = function(buffer)
         local map = function(opts)
@@ -16,7 +26,6 @@ return {
         map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
         map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
         map({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })
-        map({ "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" })
         map({
           "]h",
           function()
@@ -47,7 +56,7 @@ return {
         })
         map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
         map({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
-        map({ "<Leader>xh", "<Cmd>Gitsigns setqflist<CR>", desc = "Git hunks" })
+        map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Document git hunks" })
       end,
       attach_to_untracked = true,
       current_line_blame = true,

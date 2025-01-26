@@ -291,11 +291,39 @@ return {
   },
   {
     "folke/flash.nvim",
-    keys = { "/", "?", "f", "F", "t", "T", ",", ";" },
-    opts = {
-      modes = { char = { highlight = { backdrop = false } } },
-      prompt = { enabled = false },
+    keys = {
+      "f",
+      "F",
+      "t",
+      "T",
+      ",",
+      ";",
+      {
+        "gs",
+        function()
+          require("flash").jump()
+        end,
+        mode = { "n", "x", "o" },
+        desc = "Jump",
+      },
+      {
+        "r",
+        function()
+          require("flash").remote()
+        end,
+        mode = "o",
+        desc = "Jump",
+      },
+      {
+        "<C-s>",
+        function()
+          require("flash").toggle()
+        end,
+        mode = "c",
+        desc = "Toggle search jump",
+      },
     },
+    opts = { modes = { char = { highlight = { backdrop = false } } } },
   },
   {
     "folke/snacks.nvim",

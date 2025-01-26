@@ -253,7 +253,7 @@ return {
         {
           mode = { "n", "v" },
           { "g", group = "goto" },
-          { "gs", group = "surround" },
+          { "s", group = "surround" },
           { "]", group = "next" },
           { "[", group = "prev" },
           { "z", group = "fold" },
@@ -484,11 +484,36 @@ return {
     lazy = true,
     opts = {},
   },
+  -- TODO: conceal in cursor line
   {
     "OXY2DEV/markview.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
     ft = "markdown",
-    keys = { { "<Leader>um", "<Cmd>Markview<CR>", desc = "Toggle render", ft = "markdown" } },
-    opts = {},
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        command = "let b:snacks_indent = v:false",
+        group = Dotfiles.augroup("markview_disable_indent"),
+        pattern = "markdown",
+      })
+    end,
+    keys = { { "<Leader>uc", "<Cmd>Markview<CR>", desc = "Toggle render", ft = "markdown" } },
+    opts = function()
+      local presets = require("markview.presets")
+
+      local headings = presets.headings.glow
+      for i = 1, 6 do
+        headings["heading_" .. i].sign = ""
+      end
+
+      return {
+        markdown = {
+          headings = headings,
+          code_blocks = { sign = false },
+        },
+        markdown_inline = { checkboxes = presets.checkboxes.nerd },
+        preview = { icon_provider = "mini" },
+      }
+    end,
   },
   {
     "mcauley-penney/visual-whitespace.nvim",
@@ -530,65 +555,58 @@ return {
   {
     "echasnovski/mini.files",
     config = function()
-      -- https://www.lazyvim.org/extras/editor/mini-files {{{
-      local function map_split(bufnr, lhs, direction, close_on_file)
-        Dotfiles.map({
-          lhs,
-          function()
-            local new_target_window
-            local cur_target_window = MiniFiles.get_target_window()
-            if cur_target_window then
-              vim.api.nvim_win_call(cur_target_window, function()
-                vim.cmd("belowright " .. direction .. " split")
-                new_target_window = vim.api.nvim_get_current_win()
-              end)
-              MiniFiles.set_target_window(new_target_window)
-              MiniFiles.go_in({ close_on_file = close_on_file })
-            end
-          end,
-          buffer = bufnr,
-          desc = "Open in " .. direction .. " split" .. (close_on_file and " and close" or ""),
-        })
-      end
+      local show_hidden = false
 
-      local show_hidden = true
       local NS = Dotfiles.ns("mini_files_extmarks")
       local AUGROUP = Dotfiles.augroup("mini_files")
+
+      ---@type string[]
+      local IGNORED_PATTERN = {
+        ".cache",
+        ".git",
+        "build",
+        "node_modules",
+      }
+      ---@type table<string, boolean>
       local ignored = {}
 
       local function filter_show(_)
         return true
       end
 
-      local function update_git_ignored(path)
-        ignored[path] = {}
+      local function update_ignored(path)
+        local items = {}
+
+        for name, _ in vim.fs.dir(path) do
+          if vim.list_contains(IGNORED_PATTERN, name) then
+            ignored[vim.fs.joinpath(path, name)] = true
+          else
+            ignored[vim.fs.joinpath(path, name)] = false
+            table.insert(items, name)
+          end
+        end
 
         if not Dotfiles.git_root() then
           return
         end
 
-        local items = {}
-
-        for name, _ in vim.fs.dir(path) do
-          table.insert(items, name)
-        end
-
         local ret = vim.fn.system(vim.list_extend({ "git", "-C", path, "check-ignore" }, items))
-        vim.list_extend(ignored[path], vim.split(ret, "\n", { trimempty = true }))
+        for _, name in ipairs(vim.split(ret, "\n", { trimempty = true })) do
+          ignored[vim.fs.joinpath(path, name)] = true
+        end
       end
 
-      -- FIXME: can't handle new/removed files
       local function filter_hide(fs_entry)
         local parent = vim.fs.dirname(fs_entry.path)
-        local pparent = vim.fs.dirname(parent)
-        if ignored[pparent] and vim.list_contains(ignored[pparent], vim.fs.basename(parent)) then
+        if ignored[parent] then
           return false
         end
 
-        if not ignored[parent] then
-          update_git_ignored(parent)
+        if ignored[fs_entry.path] == nil then
+          update_ignored(parent)
         end
-        return not vim.list_contains(ignored[parent], fs_entry.name)
+
+        return not ignored[fs_entry.path]
       end
 
       local function toggle_hidden()
@@ -598,12 +616,7 @@ return {
 
       vim.api.nvim_create_autocmd("User", {
         callback = function(event)
-          local bufnr = event.data.buf_id
-          Dotfiles.map({ "g.", toggle_hidden, buffer = bufnr, desc = "Toggle hidden files" })
-          map_split(bufnr, "<C-w>s", "horizontal", false)
-          map_split(bufnr, "<C-w>v", "vertical", false)
-          map_split(bufnr, "<C-w>S", "horizontal", true)
-          map_split(bufnr, "<C-w>V", "vertical", true)
+          Dotfiles.map({ "g.", toggle_hidden, buffer = event.data.buf_id, desc = "Toggle hidden files" })
         end,
         group = AUGROUP,
         pattern = "MiniFilesBufferCreate",
@@ -629,7 +642,6 @@ return {
         group = AUGROUP,
         pattern = "MiniFilesBufferUpdate",
       })
-      -- }}}
 
       require("mini.files").setup({
         content = {
@@ -639,16 +651,7 @@ return {
         },
       })
     end,
-    dependencies = {
-      {
-        "v1nh1shungry/mini-files-status.nvim",
-        config = function()
-          vim.cmd("highlight link MiniFilesGitIndex GitSignsAdd")
-          vim.cmd("highlight link MiniFilesGitWorkspace GitSignsChange")
-        end,
-      },
-      "echasnovski/mini.icons",
-    },
+    dependencies = "echasnovski/mini.icons",
     lazy = (function()
       local stats = vim.uv.fs_stat(vim.fn.argv(0))
       if stats and stats.type == "directory" then
@@ -672,17 +675,16 @@ return {
     keys = {
       { "u", desc = "Undo" },
       { "<C-r>", desc = "Redo" },
+      { "p", desc = "Paste" },
+      { "P", desc = "Paste before" },
     },
     opts = {
-      undo = { hlgroup = "IncSearch" },
-      redo = { hlgroup = "IncSearch" },
+      keymaps = {
+        undo = { hlgroup = "IncSearch" },
+        redo = { hlgroup = "IncSearch" },
+        paste = { hlgroup = "IncSearch" },
+      },
     },
-  },
-  {
-    "OXY2DEV/helpview.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    ft = "help",
-    keys = { { "<Leader>um", "<Cmd>Helpview<CR>", desc = "Toggle render view", ft = "help" } },
   },
   {
     "lewis6991/satellite.nvim",

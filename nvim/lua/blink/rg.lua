@@ -224,7 +224,6 @@ function M:get_completions(context, resolve)
               source_id = "blink.rg",
               kind = kind,
               label = match.match,
-              labelDetails = { description = "(rg)" },
               insertText = match.match,
             }
           end

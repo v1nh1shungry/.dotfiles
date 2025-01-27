@@ -271,6 +271,7 @@ return {
         if not opts.servers[server] then
           return
         end
+
         if opts.setup then
           if opts.setup[server] then
             if opts.setup[server](server, opts.servers[server]) then
@@ -282,6 +283,7 @@ return {
             end
           end
         end
+
         require("lspconfig")[server].setup(opts.servers[server])
       end
 
@@ -322,14 +324,6 @@ return {
         },
         neocmake = {},
         clangd = {
-          capabilities = {
-            offsetEncoding = { "utf-8", "utf-16" },
-            textDocument = {
-              completion = {
-                editsNearCursor = true,
-              },
-            },
-          },
           cmd = {
             "clangd",
             "--all-scopes-completion",
@@ -641,6 +635,7 @@ return {
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
+    dependencies = "xzbdmw/colorful-menu.nvim",
     event = "InsertEnter",
     opts = {
       appearance = { use_nvim_cmp_as_default = false, nerd_font_variant = "mono" },
@@ -649,7 +644,7 @@ return {
         menu = {
           draw = {
             align_to = "none",
-            treesitter = { "lsp" },
+            columns = { { "kind_icon" }, { "label", gap = 1 } },
             components = {
               kind_icon = {
                 ellipsis = false,
@@ -660,6 +655,14 @@ return {
                 highlight = function(ctx)
                   local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
                   return hl
+                end,
+              },
+              label = {
+                text = function(ctx)
+                  return require("colorful-menu").blink_components_text(ctx)
+                end,
+                highlight = function(ctx)
+                  return require("colorful-menu").blink_components_highlight(ctx)
                 end,
               },
             },

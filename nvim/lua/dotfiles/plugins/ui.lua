@@ -355,12 +355,36 @@ return {
       { "?", desc = "Backward search" },
       {
         "n",
-        [[<Cmd>execute('normal! ' . v:count1 . 'Nn'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]],
+        function()
+          vim.cmd("execute('normal! ' . v:count1 . 'Nn'[v:searchforward] . 'zzzv')")
+          require("hlslens").start()
+        end,
+        desc = "Next search result",
+      },
+      {
+        "n",
+        function()
+          vim.cmd("execute('normal! ' . v:count1 . 'Nn'[v:searchforward])")
+          require("hlslens").start()
+        end,
+        mode = { "x", "o" },
         desc = "Next search result",
       },
       {
         "N",
-        [[<Cmd>execute('normal! ' . v:count1 . 'nN'[v:searchforward])<CR><Cmd>lua require('hlslens').start()<CR>]],
+        function()
+          vim.cmd("execute('normal! ' . v:count1 . 'nN'[v:searchforward] . 'zzzv')")
+          require("hlslens").start()
+        end,
+        desc = "Previous search result",
+      },
+      {
+        "N",
+        function()
+          vim.cmd("execute('normal! ' . v:count1 . 'nN'[v:searchforward])")
+          require("hlslens").start()
+        end,
+        mode = { "x", "o" },
         desc = "Previous search result",
       },
       { "*", [[*<Cmd>lua require('hlslens').start()<CR>]], desc = "Forward search current word" },
@@ -500,11 +524,7 @@ return {
           code_blocks = { sign = false },
         },
         markdown_inline = { checkboxes = presets.checkboxes.nerd },
-        preview = {
-          icon_provider = "mini",
-          modes = { "n", "c" },
-          hybrid_modes = { "n" },
-        },
+        preview = { icon_provider = "mini" },
       })
     end,
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
@@ -546,6 +566,20 @@ return {
             require("quicker").collapse()
           end,
           desc = "Collapse quickfix context",
+        },
+        {
+          "<Leader>xq",
+          function()
+            require("quicker").toggle()
+          end,
+          desc = "Toggle quickfix",
+        },
+        {
+          "<Leader>xl",
+          function()
+            require("quicker").toggle({ loclist = true })
+          end,
+          desc = "Toggle loclist",
         },
       },
     },

@@ -1,5 +1,6 @@
 local map = Dotfiles.map
 
+-- https://github.com/echasnovski/mini.operators {{{
 local function remove_lsp_mapping(mapping)
   mapping.mode = mapping.mode or { "n" }
 
@@ -21,6 +22,7 @@ remove_lsp_mapping({ "gra", mode = { "n", "x" } })
 remove_lsp_mapping({ "gri" })
 remove_lsp_mapping({ "gO" })
 remove_lsp_mapping({ "<C-s>", mode = "i" })
+-- }}}
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
@@ -42,7 +44,7 @@ map({ "<", "<gv", mode = "v" })
 map({ ">", ">gv", mode = "v" })
 
 map({ "<Leader>xq", Dotfiles.toggle.quickfix, desc = "Toggle quickfix" })
-map({ "<Leader>xl", Dotfiles.toggle.location, desc = "Toggle location list" })
+map({ "<Leader>xl", Dotfiles.toggle.location, desc = "Toggle loclist" })
 
 map({ ",", ",<C-g>u", mode = "i" })
 map({ ".", ".<C-g>u", mode = "i" })
@@ -242,3 +244,11 @@ map({
 -- }}}
 
 map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search inside visual selection" })
+
+map({ "<C-d>", "<C-d>zz", desc = "Scroll downwards" })
+map({ "<C-u>", "<C-u>zz", desc = "Scroll upwards" })
+
+map({ "n", "'Nn'[v:searchforward].'zzzv'", expr = true, desc = "Next search result" })
+map({ "n", "'Nn'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Next search result" })
+map({ "N", "'nN'[v:searchforward].'zzzv'", expr = true, desc = "Previous search result" })
+map({ "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Previous search result" })

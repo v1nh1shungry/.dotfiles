@@ -46,7 +46,6 @@
 
 <!-- Neovim plugins -->
 ## Neovim plugins
-* [3rd/image.nvim](https://github.com/3rd/image.nvim.git)
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
 * [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)
@@ -84,7 +83,6 @@
 * [hedyhli/outline.nvim](https://github.com/hedyhli/outline.nvim.git)
 * [kevinhwang91/nvim-bqf](https://github.com/kevinhwang91/nvim-bqf.git)
 * [kevinhwang91/nvim-hlslens](https://github.com/kevinhwang91/nvim-hlslens.git)
-* [kristijanhusak/vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui.git)
 * [lambdalisue/suda.vim](https://github.com/lambdalisue/suda.vim.git)
 * [lewis6991/gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim.git)
 * [lewis6991/satellite.nvim](https://github.com/lewis6991/satellite.nvim.git)
@@ -103,13 +101,14 @@
 * [stevearc/conform.nvim](https://github.com/stevearc/conform.nvim.git)
 * [stevearc/quicker.nvim](https://github.com/stevearc/quicker.nvim.git)
 * [tiagovla/scope.nvim](https://github.com/tiagovla/scope.nvim.git)
-* [tpope/vim-dadbod](https://github.com/tpope/vim-dadbod.git)
 * [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive.git)
 * [tpope/vim-sleuth](https://github.com/tpope/vim-sleuth.git)
 * [tzachar/highlight-undo.nvim](https://github.com/tzachar/highlight-undo.nvim.git)
+* [v1nh1shungry/biquge.nvim](https://github.com/v1nh1shungry/biquge.nvim.git)
 * [v1nh1shungry/cppman.nvim](https://github.com/v1nh1shungry/cppman.nvim.git)
 * [williamboman/mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim.git)
 * [williamboman/mason.nvim](https://github.com/williamboman/mason.nvim.git)
+* [xzbdmw/colorful-menu.nvim](https://github.com/xzbdmw/colorful-menu.nvim.git)
 <!-- Neovim plugins -->
 <!-- vscode extensions -->
 ## vscode extensions

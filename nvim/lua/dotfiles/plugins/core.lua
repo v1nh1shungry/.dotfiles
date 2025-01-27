@@ -193,7 +193,6 @@ return {
         "diff",
         "doxygen",
         "fish",
-        "git_rebase",
         "gitcommit",
         "html",
         "http",
@@ -201,9 +200,11 @@ return {
         "just",
         "lua",
         "luadoc",
+        "luap",
         "make",
         "markdown",
         "markdown_inline",
+        "printf",
         "query",
         "regex",
         "sql",
@@ -416,6 +417,13 @@ return {
       {
         "<Leader>ff",
         function()
+          Snacks.picker.smart()
+        end,
+        desc = "Smartly find files",
+      },
+      {
+        "<Leader>fF",
+        function()
           Snacks.picker.files()
         end,
         desc = "Find files",
@@ -550,7 +558,6 @@ return {
           ]],
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
-            { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
             { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
             { icon = " ", key = "c", desc = "Config", action = "<Leader>fc" },
             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy },

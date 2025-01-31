@@ -132,7 +132,6 @@ return {
           ["textDocument/inlayHint"] = function()
             Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
           end,
-          ["textDocument/signatureHelp"] = { "<C-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
           ["typeHierarchy/subtypes"] = {
             "<Leader>cs",
             function()
@@ -336,12 +335,12 @@ return {
           },
           keys = {
             {
-              "<Leader>;",
+              "<Leader>cs",
               "<Cmd>ClangdSwitchSourceHeader<CR>",
               desc = "Switch between header and source",
             },
             {
-              "<Leader>uI",
+              "<Leader>cA",
               -- https://github.com/p00f/clangd_extensions.nvim/blob/main/lua/clangd_extensions/ast.lua {{{
               function()
                 local node_pos = {}
@@ -644,7 +643,8 @@ return {
         menu = {
           draw = {
             align_to = "none",
-            columns = { { "kind_icon" }, { "label", gap = 1 } },
+            treesitter = { "lsp" },
+            columns = { { "kind_icon" }, { "label", gap = 1 }, { "source_name" } },
             components = {
               kind_icon = {
                 ellipsis = false,
@@ -677,7 +677,7 @@ return {
         providers = {
           rg = {
             module = "blink.rg",
-            name = "rg",
+            name = "Ripgrep",
             score_offset = -100,
           },
         },

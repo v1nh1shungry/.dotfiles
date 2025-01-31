@@ -266,14 +266,21 @@ return {
   },
   {
     "chrisgrieser/nvim-recorder",
-    opts = { mapping = { switchSlot = "<M-q>" } },
+    opts = {
+      mapping = {
+        switchSlot = "<Leader>qs",
+        editMacro = "<Leader>qe",
+        deleteAllMacros = "<Leader>qd",
+        yankMacro = "<Leader>qy",
+      },
+    },
     keys = {
       { "q", desc = "Record macro" },
       { "Q", desc = "Replay macro" },
-      { "<M-q>", desc = "Change register slot" },
-      { "cq", desc = "Edit macro" },
-      { "dq", desc = "Delete all macros" },
-      { "yq", desc = "Yank macro" },
+      { "<Leader>qs", desc = "Change register slot" },
+      { "<Leader>qe", desc = "Edit macro" },
+      { "<Leader>qd", desc = "Delete all macros" },
+      { "<Leader>qy", desc = "Yank macro" },
     },
   },
   {
@@ -417,7 +424,7 @@ return {
       {
         "<Leader>ff",
         function()
-          Snacks.picker.smart()
+          Snacks.picker.smart({ filter = { cwd = true } })
         end,
         desc = "Smartly find files",
       },
@@ -527,11 +534,32 @@ return {
         desc = "Jumplist",
       },
       {
+        "<Leader>si",
+        function()
+          Snacks.picker.icons()
+        end,
+        desc = "Icons",
+      },
+      {
+        "<Leader>sp",
+        function()
+          Snacks.picker.lazy()
+        end,
+        desc = "Plugin specs",
+      },
+      {
         "<Leader>gl",
         function()
           Snacks.picker.git_log()
         end,
         desc = "Git log",
+      },
+      {
+        "<Leader>gs",
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = "Git status",
       },
       {
         "<Leader>ut",
@@ -558,6 +586,7 @@ return {
           ]],
           keys = {
             { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
+            { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
             { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
             { icon = " ", key = "c", desc = "Config", action = "<Leader>fc" },
             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy", enabled = package.loaded.lazy },

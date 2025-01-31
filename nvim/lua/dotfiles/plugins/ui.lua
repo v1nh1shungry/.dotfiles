@@ -265,7 +265,7 @@ return {
           { "<Leader>gx", group = "conflict" },
           { "<Leader>p", group = "package/profile" },
           { "<Leader>pn", group = "nightly" },
-          { "<Leader>q", group = "quit" },
+          { "<Leader>q", group = "quit/macro" },
           { "<Leader>s", group = "search" },
           { "<Leader>u", group = "ui/utils" },
           { "<Leader>x", group = "diagnostic/quickfix" },
@@ -356,7 +356,7 @@ return {
       {
         "n",
         function()
-          vim.cmd("execute('normal! ' . v:count1 . 'Nn'[v:searchforward] . 'zzzv')")
+          vim.cmd("execute('normal! ' . v:count1 . 'Nn'[v:searchforward] . 'zv')")
           require("hlslens").start()
         end,
         desc = "Next search result",
@@ -373,7 +373,7 @@ return {
       {
         "N",
         function()
-          vim.cmd("execute('normal! ' . v:count1 . 'nN'[v:searchforward] . 'zzzv')")
+          vim.cmd("execute('normal! ' . v:count1 . 'nN'[v:searchforward] . 'zv')")
           require("hlslens").start()
         end,
         desc = "Previous search result",

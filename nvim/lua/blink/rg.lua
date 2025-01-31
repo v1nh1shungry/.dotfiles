@@ -185,26 +185,27 @@ function M:get_completions(context, resolve)
                 end),
                 ---@param opts blink.cmp.SourceRenderDocumentationOpts
                 render = function(opts)
+                  local lib = require("blink.cmp.lib.window.docs")
                   local bufnr = opts.window:get_buf()
 
-                  local text = {
-                    vim.fs.relpath(vim.uv.cwd(), filename),
-                    string.rep("─", opts.window:get_width() - opts.window:get_border_size().horizontal - 1),
-                  }
-                  vim.list_extend(
-                    text,
-                    vim
-                      .iter(match.context_preview)
-                      :map(function(v)
-                        return v.text
-                      end)
-                      :totable()
-                  )
-                  vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, text)
+                  lib.render_detail_and_documentation({
+                    bufnr = bufnr,
+                    detail = vim.fs.relpath(vim.fn.getcwd(), filename),
+                    documentation = vim.iter(match.context_preview):fold("", function(acc, v)
+                      return acc .. "\n" .. v.text
+                    end),
+                    max_width = 80,
+                    use_treesitter_highlighting = false,
+                  })
 
                   local parser_installed = pcall(vim.treesitter.get_parser, nil, file.lang, {})
                   if parser_installed then
-                    require("blink.cmp.lib.window.docs").highlight_with_treesitter(bufnr, file.lang, 2, #text)
+                    lib.highlight_with_treesitter(
+                      bufnr,
+                      file.lang,
+                      2,
+                      vim.api.nvim_buf_line_count(bufnr)
+                    )
                   end
 
                   local line_in_doc

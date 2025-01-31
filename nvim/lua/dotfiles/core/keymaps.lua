@@ -78,8 +78,6 @@ map({
   expr = true,
 })
 
-map({ "<Leader>,", "<Cmd>e #<CR>", desc = "Last buffer" })
-
 map({
   "<Leader>fc",
   function()
@@ -97,8 +95,6 @@ map({
 
 map({ "<C-j>", "<Cmd>m .+1<CR>==", desc = "Move down" })
 map({ "<C-k>", "<Cmd>m .-2<CR>==", desc = "Move up" })
-map({ "<C-j>", "<Esc><Cmd>m .+1<Cr>==gi", mode = "i", desc = "Move Down" })
-map({ "<C-k>", "<Esc><Cmd>m .-2<Cr>==gi", mode = "i", desc = "Move Up" })
 map({ "<C-j>", ":m '>+1<CR>gv=gv", mode = "v", desc = "Move down" })
 map({ "<C-k>", ":m '<-2<CR>gv=gv", mode = "v", desc = "Move up" })
 
@@ -245,10 +241,7 @@ map({
 
 map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search inside visual selection" })
 
-map({ "<C-d>", "<C-d>zz", desc = "Scroll downwards" })
-map({ "<C-u>", "<C-u>zz", desc = "Scroll upwards" })
-
-map({ "n", "'Nn'[v:searchforward].'zzzv'", expr = true, desc = "Next search result" })
+map({ "n", "'Nn'[v:searchforward].'zv'", expr = true, desc = "Next search result" })
 map({ "n", "'Nn'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Next search result" })
-map({ "N", "'nN'[v:searchforward].'zzzv'", expr = true, desc = "Previous search result" })
+map({ "N", "'nN'[v:searchforward].'zv'", expr = true, desc = "Previous search result" })
 map({ "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Previous search result" })

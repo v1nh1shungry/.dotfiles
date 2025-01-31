@@ -1,4 +1,6 @@
--- TODO: dashboard
+-- TODO:
+-- * dashboard
+-- * install icon, desktop entry, etc
 if not require("dotfiles.user").nightly then
   return
 end
@@ -14,7 +16,10 @@ local NIGHTLY_METADATA_DIRECTORY = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-m
 local LOCKFILE = vim.fs.joinpath(NIGHTLY_DIRECTORY, "LOCK")
 local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
 local USR_BIN_DIRECTORY = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin")
-local GITHUB_PROXY = "https://mirror.ghproxy.com/"
+
+local GITHUB_PROXY = "https://gh-proxy.com/"
+local ASSET_NAME = "nvim-linux-x86_64"
+local ASSET_PACKAGE_NAME = ASSET_NAME .. ".tar.gz"
 
 local AUGROUP = Dotfiles.augroup("nightly")
 
@@ -139,7 +144,7 @@ local function update(force)
 
   local url
   for _, asset in ipairs(release.assets) do
-    if asset.name == "nvim-linux64.tar.gz" then
+    if asset.name == ASSET_PACKAGE_NAME then
       url = asset.browser_download_url
       break
     end
@@ -162,13 +167,13 @@ local function update(force)
     return
   end
 
-  local package_path = vim.fs.joinpath(vim.uv.os_tmpdir(), "nvim-linux64.tar.gz")
+  local package_path = vim.fs.joinpath(vim.uv.os_tmpdir(), ASSET_PACKAGE_NAME)
   res = Dotfiles.async.system({
     "tar",
     "xf",
     package_path,
     "--transform",
-    ("s/nvim-linux64/%s/"):format(release.target_commitish),
+    ("s/%s/%s/"):format(ASSET_NAME, release.target_commitish),
     "--directory",
     NIGHTLY_DIRECTORY,
   })

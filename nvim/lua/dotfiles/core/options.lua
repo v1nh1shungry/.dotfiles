@@ -8,7 +8,6 @@ vim.opt.colorcolumn = "80"
 vim.opt.completeopt = "menu,menuone,popup,fuzzy"
 vim.opt.confirm = true
 vim.opt.cursorline = true
-vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
 vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }
 vim.opt.fillchars = { eob = " ", fold = " ", foldclose = "", foldopen = "", foldsep = " " }
@@ -52,7 +51,6 @@ vim.opt.splitbelow = true
 vim.opt.splitkeep = "screen"
 vim.opt.splitright = true
 vim.opt.swapfile = false
-vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 300
 vim.opt.undofile = true

@@ -266,21 +266,14 @@ return {
   },
   {
     "chrisgrieser/nvim-recorder",
-    opts = {
-      mapping = {
-        switchSlot = "<Leader>qs",
-        editMacro = "<Leader>qe",
-        deleteAllMacros = "<Leader>qd",
-        yankMacro = "<Leader>qy",
-      },
-    },
+    opts = { mapping = { switchSlot = "<M-q>" } },
     keys = {
       { "q", desc = "Record macro" },
       { "Q", desc = "Replay macro" },
-      { "<Leader>qs", desc = "Change register slot" },
-      { "<Leader>qe", desc = "Edit macro" },
-      { "<Leader>qd", desc = "Delete all macros" },
-      { "<Leader>qy", desc = "Yank macro" },
+      { "<M-q>", desc = "Change register slot" },
+      { "cq", desc = "Edit macro" },
+      { "dq", desc = "Delete all macros" },
+      { "yq", desc = "Yank macro" },
     },
   },
   {

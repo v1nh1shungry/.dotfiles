@@ -245,3 +245,5 @@ map({ "n", "'Nn'[v:searchforward].'zv'", expr = true, desc = "Next search result
 map({ "n", "'Nn'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Next search result" })
 map({ "N", "'nN'[v:searchforward].'zv'", expr = true, desc = "Previous search result" })
 map({ "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Previous search result" })
+
+vim.keymap.del("n", "<C-w><C-d>")

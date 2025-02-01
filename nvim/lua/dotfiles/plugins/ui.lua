@@ -4,20 +4,6 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     event = Dotfiles.events.enter_buffer,
     keys = {
-      {
-        "[t",
-        function()
-          require("todo-comments").jump_prev()
-        end,
-        desc = "Jump to the previous TODO",
-      },
-      {
-        "]t",
-        function()
-          require("todo-comments").jump_next()
-        end,
-        desc = "Jump to the next TODO",
-      },
       { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
       { "<Leader>xT", "<Cmd>TodoQuickFix keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
       {
@@ -195,10 +181,7 @@ return {
             },
             {
               function()
-                if vim.bo.expandtab then
-                  return "Spaces: " .. vim.bo.shiftwidth
-                end
-                return "Tab: " .. vim.bo.tabstop
+                return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop)
               end,
             },
             {
@@ -265,7 +248,7 @@ return {
           { "<Leader>gx", group = "conflict" },
           { "<Leader>p", group = "package/profile" },
           { "<Leader>pn", group = "nightly" },
-          { "<Leader>q", group = "quit/macro" },
+          { "<Leader>q", group = "quit" },
           { "<Leader>s", group = "search" },
           { "<Leader>u", group = "ui/utils" },
           { "<Leader>x", group = "diagnostic/quickfix" },
@@ -431,6 +414,12 @@ return {
       end,
     },
     opts = {
+      left = {
+        {
+          ft = "dbui",
+          title = "DBUI",
+        },
+      },
       bottom = {
         {
           ft = "noice",
@@ -470,6 +459,10 @@ return {
               and vim.w[win].snacks_win.relative == "editor"
           end,
         },
+        {
+          ft = "dbout",
+          title = "DB Query Result",
+        },
       },
       right = {
         {
@@ -493,6 +486,11 @@ return {
         {
           ft = "ClangdAST",
           size = { width = 0.4 },
+        },
+        {
+          ft = "rest_nvim_result",
+          size = { width = 0.5 },
+          wo = { winbar = false },
         },
       },
     },

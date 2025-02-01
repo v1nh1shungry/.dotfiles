@@ -1,5 +1,5 @@
 -- Faster ripgrep source
--- Credit: https://github.com/mikavilpas/blink-ripgrep.nvim
+-- Modified from https://github.com/mikavilpas/blink-ripgrep.nvim
 
 ---@module "blink.cmp"
 
@@ -10,12 +10,14 @@
 ---@field hl_group string
 ---@field min_keyword_length integer
 local M = {
-  context = 3,
+  context = 2,
   max_file_size = "1M",
-  timeout = 100,
+  timeout = 50,
   hl_group = "Search",
   min_keyword_length = 5,
 }
+
+local Config = require("blink.cmp.config")
 
 local word_pattern
 do
@@ -34,7 +36,7 @@ do
 end
 
 local NS = vim.F.npcall(function()
-  return require("blink.cmp.config").appearance.highlight_ns
+  return Config.appearance.highlight_ns
 end) or 0
 
 ---@param text_before_cursor string "The text of the entire line before the cursor"
@@ -185,27 +187,49 @@ function M:get_completions(context, resolve)
                 end),
                 ---@param opts blink.cmp.SourceRenderDocumentationOpts
                 render = function(opts)
-                  local lib = require("blink.cmp.lib.window.docs")
                   local bufnr = opts.window:get_buf()
 
-                  lib.render_detail_and_documentation({
-                    bufnr = bufnr,
-                    detail = vim.fs.relpath(vim.fn.getcwd(), filename),
-                    documentation = vim.iter(match.context_preview):fold("", function(acc, v)
-                      return acc .. "\n" .. v.text
-                    end),
-                    max_width = 80,
-                    use_treesitter_highlighting = false,
+                  vim.api.nvim_buf_set_lines(
+                    bufnr,
+                    0,
+                    -1,
+                    true,
+                    vim.list_extend(
+                      {
+                        vim.fs.relpath(vim.fn.getcwd(), filename),
+                        "",
+                      },
+                      vim
+                        .iter(match.context_preview)
+                        :map(function(v)
+                          return v.text
+                        end)
+                        :totable()
+                    )
+                  )
+                  vim.bo[bufnr].modified = false
+
+                  vim.api.nvim_buf_clear_namespace(bufnr, NS, 0, -1)
+                  vim.api.nvim_buf_set_extmark(bufnr, NS, 1, 0, {
+                    virt_text = {
+                      { string.rep("─", Config.completion.documentation.window.max_width), "BlinkCmpDocSeparator" },
+                    },
+                    virt_text_pos = "overlay",
                   })
 
                   local parser_installed = pcall(vim.treesitter.get_parser, nil, file.lang, {})
                   if parser_installed then
-                    lib.highlight_with_treesitter(
+                    require("blink.cmp.lib.window.docs").highlight_with_treesitter(
                       bufnr,
                       file.lang,
                       2,
                       vim.api.nvim_buf_line_count(bufnr)
                     )
+                  else
+                    vim.bo[bufnr].filetype = file.lang
+                    vim.api.nvim_buf_call(bufnr, function()
+                      vim.cmd("syntax on")
+                    end)
                   end
 
                   local line_in_doc

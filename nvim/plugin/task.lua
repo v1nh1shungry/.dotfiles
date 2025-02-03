@@ -1,3 +1,4 @@
+-- TODO: redesign and rewrite
 local config = {
   save = true,
   compile = {

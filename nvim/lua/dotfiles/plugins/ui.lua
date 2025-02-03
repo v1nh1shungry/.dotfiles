@@ -734,4 +734,8 @@ return {
     event = "BufRead *.log",
     opts = {},
   },
+  {
+    "v1nh1shungry/error-lens.nvim",
+    event = Dotfiles.events.enter_buffer,
+  },
 }

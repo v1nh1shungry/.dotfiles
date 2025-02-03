@@ -131,15 +131,17 @@ local function update(force)
   end
 
   if metadata.latest and metadata.latest == release.target_commitish then
+    Snacks.notify.info("No update for nightly neovim")
+
     if metadata.current ~= metadata.latest then
       if install(metadata.latest) then
         metadata.current = metadata.latest
         write_metadata(metadata)
       end
-
-      unlock()
-      return
     end
+
+    unlock()
+    return
   end
 
   local url
@@ -149,6 +151,7 @@ local function update(force)
       break
     end
   end
+
   if not url then
     Snacks.notify.error("No available package in github release")
     unlock()

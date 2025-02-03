@@ -15,6 +15,7 @@ vim.diagnostic.config({
   signs = false,
   jump = { float = true },
   update_in_insert = true,
+  virtual_text = true,
 })
 
 for name, icon in pairs(Dotfiles.ui.icons.diagnostic) do

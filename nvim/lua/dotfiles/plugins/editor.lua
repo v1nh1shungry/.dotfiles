@@ -60,7 +60,7 @@ return {
           require("ssr").open()
         end,
         mode = { "n", "x" },
-        desc = "Structural search & replace",
+        desc = "Structural Search & Replace",
       },
     },
   },

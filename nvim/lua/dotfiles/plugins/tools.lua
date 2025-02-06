@@ -8,7 +8,11 @@ return {
   {
     "rest-nvim/rest.nvim",
     ft = "http",
-    keys = { { "<CR>", "<Cmd>Rest run<CR>", desc = "Send request", ft = "http" } },
+    keys = {
+      { "<CR>", "<Cmd>Rest run<CR>", desc = "Send request", ft = "http" },
+      { "<Tab>", "<Cmd>Rest open<CR>", desc = "Open REST result pane", ft = "http" },
+      { "yr", "<Cmd>Rest curl yank<CR>", desc = "Copy request", ft = "http" },
+    },
   },
   {
     "v1nh1shungry/cppman.nvim",

@@ -80,6 +80,7 @@ end
 
 ---@param metadata dotfiles.nightly.Metadata
 local function write_metadata(metadata)
+  metadata.last_update = os.time()
   Dotfiles.async.fn.writefile({ vim.json.encode(metadata) }, NIGHTLY_METADATA_DIRECTORY)
 end
 
@@ -89,7 +90,7 @@ end
 local function install(version)
   Dotfiles.async.util.scheduler()
   if not vim.list_contains(vim.split(vim.env.PATH, ":", { trimempty = true }), USR_BIN_DIRECTORY) then
-    Snacks.notify.warn(USR_BIN_DIRECTORY .. " is not in $PATH")
+    Snacks.notify.error(USR_BIN_DIRECTORY .. " is not in $PATH")
     return false
   end
 
@@ -133,12 +134,11 @@ local function update(force)
   if metadata.latest and metadata.latest == release.target_commitish then
     Snacks.notify.info("No update for nightly neovim")
 
-    if metadata.current ~= metadata.latest then
-      if install(metadata.latest) then
-        metadata.current = metadata.latest
-        write_metadata(metadata)
-      end
+    if metadata.current ~= metadata.latest and install(metadata.latest) then
+      metadata.current = metadata.latest
     end
+
+    write_metadata(metadata)
 
     unlock()
     return
@@ -195,7 +195,6 @@ local function update(force)
     metadata.rollback = metadata.latest
     metadata.latest = release.target_commitish
     metadata.current = metadata.latest
-    metadata.last_update = os.time()
 
     write_metadata(metadata)
 

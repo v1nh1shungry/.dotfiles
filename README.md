@@ -46,14 +46,12 @@
 
 <!-- Neovim plugins -->
 ## Neovim plugins
-* [3rd/image.nvim](https://github.com/3rd/image.nvim.git)
 * [Bekaboo/deadcolumn.nvim](https://github.com/Bekaboo/deadcolumn.nvim.git)
 * [Bekaboo/dropbar.nvim](https://github.com/Bekaboo/dropbar.nvim.git)
 * [MagicDuck/grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim.git)
 * [MunifTanjim/nui.nvim](https://github.com/MunifTanjim/nui.nvim.git)
 * [OXY2DEV/markview.nvim](https://github.com/OXY2DEV/markview.nvim.git)
 * [RRethy/nvim-treesitter-endwise](https://github.com/RRethy/nvim-treesitter-endwise.git)
-* [Saecki/crates.nvim](https://github.com/Saecki/crates.nvim.git)
 * [Wansmer/sibling-swap.nvim](https://github.com/Wansmer/sibling-swap.nvim.git)
 * [Wansmer/treesj](https://github.com/Wansmer/treesj.git)
 * [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim.git)
@@ -109,6 +107,7 @@
 * [tpope/vim-fugitive](https://github.com/tpope/vim-fugitive.git)
 * [tpope/vim-sleuth](https://github.com/tpope/vim-sleuth.git)
 * [tzachar/highlight-undo.nvim](https://github.com/tzachar/highlight-undo.nvim.git)
+* [v1nh1shungry/biquge.nvim](https://github.com/v1nh1shungry/biquge.nvim.git)
 * [v1nh1shungry/cppman.nvim](https://github.com/v1nh1shungry/cppman.nvim.git)
 * [v1nh1shungry/error-lens.nvim](https://github.com/v1nh1shungry/error-lens.nvim.git)
 * [williamboman/mason-lspconfig.nvim](https://github.com/williamboman/mason-lspconfig.nvim.git)

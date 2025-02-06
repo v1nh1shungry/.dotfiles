@@ -107,6 +107,16 @@ return {
             },
             { "<Leader>cp", peek_definition, desc = "Peek definition" },
           },
+          ["textDocument/declaration"] = {
+            { "gD", vim.lsp.buf.declaration, desc = "Go to declaration" },
+            {
+              "<Leader>sD",
+              function()
+                Snacks.picker.lsp_declarations()
+              end,
+              desc = "LSP declarations",
+            },
+          },
           ["textDocument/typeDefinition*"] = {
             { "gy", vim.lsp.buf.type_definition, desc = "Go to type definition" },
             {
@@ -345,9 +355,10 @@ return {
               "<Leader>cA",
               -- https://github.com/p00f/clangd_extensions.nvim/blob/main/lua/clangd_extensions/ast.lua {{{
               function()
+                local NS = Dotfiles.ns("clangd_ast")
+
                 local node_pos = {}
                 local detail_pos = {}
-                local NS = Dotfiles.ns("clangd_ast")
 
                 local function clear_highlight(source_buf)
                   vim.api.nvim_buf_clear_namespace(source_buf, NS, 0, -1)
@@ -355,13 +366,15 @@ return {
 
                 local function update_highlight(source_buf, ast_buf)
                   clear_highlight(source_buf)
+
                   if vim.api.nvim_get_current_buf() ~= ast_buf then
                     return
                   end
+
                   local curline = vim.fn.getcurpos()[2]
                   local curline_ranges = node_pos[source_buf][ast_buf][curline]
                   if curline_ranges then
-                    vim.highlight.range(source_buf, NS, "Search", curline_ranges.start, curline_ranges["end"], {
+                    vim.hl.range(source_buf, NS, "Search", curline_ranges.start, curline_ranges["end"], {
                       regtype = "v",
                       inclusive = false,
                       priority = 110,
@@ -376,6 +389,7 @@ return {
                       update_highlight(source_buf, ast_buf)
                     end,
                   })
+
                   vim.api.nvim_create_autocmd("BufLeave", {
                     buffer = ast_buf,
                     callback = function()
@@ -396,10 +410,10 @@ return {
                 end
 
                 local function describe(role, kind, detail)
-                  local str = ""
                   local icon = icon_prefix(role, kind)
-                  local detailpos = nil
-                  str = str .. kind
+                  local detailpos
+                  local str = kind
+
                   if
                     not (
                       role == "expression"
@@ -410,6 +424,7 @@ return {
                   then
                     str = str .. " " .. role
                   end
+
                   if detail then
                     detailpos = {
                       start = string.len(str) + vim.fn.strlen(icon) + 1,
@@ -417,6 +432,7 @@ return {
                     }
                     str = str .. " " .. detail
                   end
+
                   return (icon .. str), detailpos
                 end
 
@@ -452,51 +468,47 @@ return {
 
                 local function highlight_detail(ast_buf)
                   for linenum, range in pairs(detail_pos[ast_buf]) do
-                    vim.highlight.range(
-                      ast_buf,
-                      NS,
-                      "Comment",
-                      { linenum - 1, range.start },
-                      { linenum - 1, range["end"] },
-                      {
-                        regtype = "v",
-                        inclusive = false,
-                        priority = 110,
-                      }
-                    )
+                    vim.hl.range(ast_buf, NS, "Comment", { linenum - 1, range.start }, { linenum - 1, range["end"] }, {
+                      regtype = "v",
+                      inclusive = false,
+                      priority = 110,
+                    })
                   end
                 end
 
                 local function handler(err, node)
                   if err or not node then
                     return
-                  else
-                    local source_buf = vim.api.nvim_get_current_buf()
-                    local b = vim.b[source_buf]
-                    if not b.clangd_ast_buf or not vim.api.nvim_buf_is_valid(b.clangd_ast_buf) then
-                      b.clangd_ast_buf = vim.api.nvim_create_buf(false, true)
-                      vim.bo[b.clangd_ast_buf].filetype = "ClangdAST"
-                      vim.bo[b.clangd_ast_buf].shiftwidth = 2
-                    end
-                    if not b.clangd_ast_win or not vim.api.nvim_win_is_valid(b.clangd_ast_win) then
-                      b.clangd_ast_win = vim.api.nvim_open_win(b.clangd_ast_buf, true, { split = "right" })
-                    else
-                      vim.cmd(vim.api.nvim_win_get_number(b.clangd_ast_win) .. " wincmd w")
-                    end
-
-                    if not node_pos[source_buf] then
-                      node_pos[source_buf] = {}
-                    end
-                    node_pos[source_buf][b.clangd_ast_buf] = {}
-                    detail_pos[b.clangd_ast_buf] = {}
-
-                    local lines = walk_tree(node, {}, {}, "", { source_buf = source_buf, ast_buf = b.clangd_ast_buf })
-                    vim.bo.modifiable = true
-                    vim.api.nvim_buf_set_lines(b.clangd_ast_buf, 0, -1, true, lines)
-                    vim.bo.modifiable = false
-                    setup_hl_autocmd(source_buf, b.clangd_ast_buf)
-                    highlight_detail(b.clangd_ast_buf)
                   end
+
+                  local source_buf = vim.api.nvim_get_current_buf()
+                  local b = vim.b[source_buf]
+
+                  if not b.clangd_ast_buf or not vim.api.nvim_buf_is_valid(b.clangd_ast_buf) then
+                    b.clangd_ast_buf = vim.api.nvim_create_buf(false, true)
+                    vim.bo[b.clangd_ast_buf].filetype = "ClangdAST"
+                    vim.bo[b.clangd_ast_buf].shiftwidth = 2
+                  end
+
+                  if not b.clangd_ast_win or not vim.api.nvim_win_is_valid(b.clangd_ast_win) then
+                    b.clangd_ast_win = vim.api.nvim_open_win(b.clangd_ast_buf, true, { split = "right" })
+                  else
+                    vim.cmd(vim.api.nvim_win_get_number(b.clangd_ast_win) .. " wincmd w")
+                  end
+
+                  if not node_pos[source_buf] then
+                    node_pos[source_buf] = {}
+                  end
+
+                  node_pos[source_buf][b.clangd_ast_buf] = {}
+                  detail_pos[b.clangd_ast_buf] = {}
+
+                  local lines = walk_tree(node, {}, {}, "", { source_buf = source_buf, ast_buf = b.clangd_ast_buf })
+                  vim.bo.modifiable = true
+                  vim.api.nvim_buf_set_lines(b.clangd_ast_buf, 0, -1, true, lines)
+                  vim.bo.modifiable = false
+                  setup_hl_autocmd(source_buf, b.clangd_ast_buf)
+                  highlight_detail(b.clangd_ast_buf)
                 end
 
                 vim.lsp.buf_request(0, "textDocument/ast", {
@@ -549,6 +561,7 @@ return {
             },
           },
         },
+        marksman = {},
       },
     },
   },

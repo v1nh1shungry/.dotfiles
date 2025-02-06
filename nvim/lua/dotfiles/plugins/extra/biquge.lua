@@ -1,20 +1,8 @@
 return {
   {
     "v1nh1shungry/biquge.nvim",
-    init = function()
-      vim.api.nvim_create_autocmd("User", {
-        callback = function()
-          Snacks.util.on_module("which-key", function()
-            require("which-key").add({ "<Leader>b", group = "biquge" })
-          end)
-        end,
-        group = Dotfiles.augroup("biquge_which_key"),
-        pattern = "VeryLazy",
-      })
-
-      vim.api.nvim_set_hl(0, "BiqugeDocument", { link = "Comment", italic = false })
-    end,
     keys = {
+      { "<Leader>b", "", desc = "+biquge" },
       {
         "<Leader>b/",
         function()

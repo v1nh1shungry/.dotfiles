@@ -225,7 +225,7 @@ return {
           init_selection = "<C-Space>",
           node_incremental = "<C-Space>",
           scope_incremental = false,
-          node_decremental = "<bs>",
+          node_decremental = "<BS>",
         },
       },
       textobjects = {
@@ -266,14 +266,17 @@ return {
   },
   {
     "chrisgrieser/nvim-recorder",
-    opts = { mapping = { switchSlot = "<M-q>" } },
+    opts = {
+      mapping = { switchSlot = "<M-q>" },
+      useNerdfontIcons = false,
+    },
     keys = {
-      { "q", desc = "Record macro" },
-      { "Q", desc = "Replay macro" },
-      { "<M-q>", desc = "Change register slot" },
-      { "cq", desc = "Edit macro" },
-      { "dq", desc = "Delete all macros" },
-      { "yq", desc = "Yank macro" },
+      { "q", desc = "Start/Stop Recording" },
+      { "Q", desc = "Play Macro" },
+      { "<M-q>", desc = "Switch Macro Slot" },
+      { "cq", desc = "Edit Macro" },
+      { "dq", desc = "Delete All Macros" },
+      { "yq", desc = "Yank Macro" },
     },
   },
   {
@@ -539,6 +542,20 @@ return {
           Snacks.picker.lazy()
         end,
         desc = "Plugin specs",
+      },
+      {
+        "<Leader>sz",
+        function()
+          Snacks.picker.zoxide()
+        end,
+        desc = "Zoxide"
+      },
+      {
+        "<Leader>sP",
+        function()
+          Snacks.picker.projects()
+        end,
+        desc = "Projects",
       },
       {
         "<Leader>gl",

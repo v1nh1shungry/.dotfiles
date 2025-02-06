@@ -644,14 +644,18 @@ return {
         return not ignored[fs_entry.path]
       end
 
-      local function toggle_hidden()
-        show_hidden = not show_hidden
-        require("mini.files").refresh({ content = { filter = show_hidden and filter_show or filter_hide } })
-      end
-
       vim.api.nvim_create_autocmd("User", {
         callback = function(event)
-          Dotfiles.map({ "g.", toggle_hidden, buffer = event.data.buf_id, desc = "Toggle hidden files" })
+          Dotfiles.map({
+            "g.",
+            function()
+              show_hidden = not show_hidden
+              Snacks.notify.info((show_hidden and "Show" or "Hide") .. " hidden files")
+              require("mini.files").refresh({ content = { filter = show_hidden and filter_show or filter_hide } })
+            end,
+            buffer = event.data.buf_id,
+            desc = "Toggle hidden files",
+          })
         end,
         group = AUGROUP,
         pattern = "MiniFilesBufferCreate",

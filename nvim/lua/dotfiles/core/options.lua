@@ -10,7 +10,6 @@ vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
-vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }
 vim.opt.fillchars = { eob = " ", fold = " ", foldclose = "", foldopen = "", foldsep = " " }
 vim.opt.foldcolumn = "1"
 vim.opt.foldenable = false
@@ -24,6 +23,7 @@ vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.grepprg = "rg --vimgrep"
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
+vim.opt.indentkeys:remove(":")
 vim.opt.jumpoptions = "view"
 vim.opt.laststatus = 3
 vim.opt.linebreak = true
@@ -54,7 +54,6 @@ vim.opt.splitright = true
 vim.opt.swapfile = false
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 300
-vim.opt.undofile = true
 vim.opt.updatetime = 200
 vim.opt.virtualedit = "block"
 vim.opt.wildmode = "longest:full,full"

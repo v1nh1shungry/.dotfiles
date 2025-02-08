@@ -106,23 +106,23 @@ for lang, cmd in pairs(config.compile) do
             vim.cmd("w")
           end
 
-          vim.cmd("cclose")
-          vim.fn.setqflist({}, " ", { title = table.concat(cmd, " ") })
+          vim.cmd("lclose")
+          vim.fn.setloclist(0, {}, " ", { title = table.concat(cmd, " ") })
 
           vim.system(
             cmd,
             nil,
             vim.schedule_wrap(function(res)
               if res.code == 0 then
-                Snacks.notify.info("Sucessfully compile the program!")
+                Snacks.notify.info("Sucessfully compile the program")
               else
-                Snacks.notify.error("Compile error!")
+                Snacks.notify.error("Failed to compile the program")
               end
 
               if res.stderr and res.stderr ~= "" then
                 local lines = vim.split(res.stderr, "\n", { trimempty = true })
-                vim.fn.setqflist({}, "a", { lines = lines })
-                vim.cmd("copen")
+                vim.fn.setloclist(0, {}, "a", { lines = lines })
+                vim.cmd("lopen")
                 vim.cmd("wincmd p")
               end
             end)

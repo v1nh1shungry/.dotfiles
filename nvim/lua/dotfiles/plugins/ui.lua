@@ -430,9 +430,7 @@ return {
         },
         {
           ft = "qf",
-          title = function()
-            return vim.fn.getloclist(0, { filewinid = 1 }).filewinid == 0 and "Quickfix List" or "Location List"
-          end,
+          title = "Quickfix List",
         },
         {
           ft = "help",
@@ -548,7 +546,8 @@ return {
   },
   {
     "stevearc/quicker.nvim",
-    ft = "qf",
+    -- NOTE: loclist doesn't work in `ft = "qf"`
+    event = "VeryLazy",
     opts = {
       keys = {
         {

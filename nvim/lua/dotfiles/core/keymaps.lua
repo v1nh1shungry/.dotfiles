@@ -59,23 +59,21 @@ map({ "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = "Vi
 
 map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close tab" })
 map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New tab" })
-map({ "<Leader><Tab>0", "<Cmd>tabfirst<CR>", desc = "First tab" })
-map({ "<Leader><Tab>$", "<Cmd>tablast<CR>", desc = "Last tab" })
+map({ "[<S-Tab>", "<Cmd>tabfirst<CR>", desc = "First tab" })
+map({ "]<S-Tab>", "<Cmd>tablast<CR>", desc = "Last tab" })
 map({
   "]<Tab>",
   function()
-    return "<Cmd>+" .. vim.v.count1 .. "tabnext<CR>"
+    vim.cmd("+" .. vim.v.count1 .. "tabnext")
   end,
   desc = "Next tab",
-  expr = true,
 })
 map({
   "[<Tab>",
   function()
-    return "<Cmd>-" .. vim.v.count1 .. "tabnext<CR>"
+    vim.cmd("-" .. vim.v.count1 .. "tabnext")
   end,
   desc = "Previous tab",
-  expr = true,
 })
 
 map({

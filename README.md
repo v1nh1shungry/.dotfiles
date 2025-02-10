@@ -27,21 +27,17 @@
 * [tpm](https://github.com/tmux-plugins/tpm)
 * [Neovim nightly](https://github.com/neovim/neovim)
 * [cargo](https://www.rust-lang.org/)
-* [cargo-binstall](https://github.com/cargo-bins/cargo-binstall)
 * [cargo-cache](https://github.com/matthiaskrgr/cargo-cache)
-* [cargo-update](https://github.com/nabijaczleweli/cargo-update)
 * [pipx](https://pipx.pypa.io/stable/)
 * [eza](https://github.com/eza-community/eza)
 * [fzf](https://github.com/junegunn/fzf)
 * ncdu
 * [btop](https://github.com/aristocratos/btop)
 * [fnm](https://github.com/Schniz/fnm)
-* [bob](https://github.com/MordechaiHadad/bob)
 * [delta](https://github.com/dandavison/delta)
 * [tldr](https://github.com/dbrgn/tealdeer)
 * [cppman](https://github.com/aitjcize/cppman)
 * [jq](https://github.com/jqlang/jq)
-* [wine](https://www.winehq.org/)
 * [just](https://github.com/casey/just)
 
 <!-- Neovim plugins -->

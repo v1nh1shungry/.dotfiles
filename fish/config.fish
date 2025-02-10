@@ -6,17 +6,17 @@ if status is-interactive
     set fish_greeting
 
     if test -d ~/.local/bin
-        fish_add_path ~/.local/bin
+        fish_add_path -g ~/.local/bin
     end
 
     if test -d ~/.rustup || command -q rustup
         set -gx RUSTUP_UPDATE_ROOT https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup
         set -gx RUSTUP_DIST_SERVER https://mirrors.tuna.tsinghua.edu.cn/rustup
-        fish_add_path ~/.cargo/bin
+        fish_add_path -g ~/.cargo/bin
     end
 
     if test -d ~/.spicetify
-        fish_add_path ~/.spicetify
+        fish_add_path -g ~/.spicetify
     end
 
     if command -q starship
@@ -33,24 +33,13 @@ if status is-interactive
         alias vim nvim
     end
 
+    alias l ls
+    alias la 'ls -a'
+    alias ll 'ls -al'
+
     if command -q eza
         alias ls 'eza --icons'
         alias tree 'eza -T --icons'
-    end
-
-    alias l ls
-    alias la 'ls -a'
-    alias ll 'ls -al --git'
-
-    if command -q batcat
-        alias bat batcat
-    end
-    if type -q batdiff
-        alias diff 'batdiff --delta'
-    end
-
-    if command -q fdfind
-        alias fd fdfind
     end
 
     if command -q ncdu
@@ -65,8 +54,10 @@ if status is-interactive
         end
     end
 
-    if command -q kitty
+    if test -d ~/.local/kitty.app
+        fish_add_path -g ~/.local/kitty.app/bin
         alias icat 'kitty +kitten icat'
+        alias kitty-update "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
     end
 
     if command -q yazi

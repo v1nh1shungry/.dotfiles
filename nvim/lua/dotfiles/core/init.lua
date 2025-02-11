@@ -67,4 +67,4 @@ require("dotfiles.core.options")
 require("dotfiles.core.lazy")
 
 -- should execute after colorscheme plugins are loaded
-vim.cmd("colorscheme " .. require("dotfiles.user").ui.colorscheme)
+vim.cmd("colorscheme " .. Dotfiles.user.ui.colorscheme)

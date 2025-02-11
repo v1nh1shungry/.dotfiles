@@ -14,22 +14,10 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
+require("lazy").setup("dotfiles.plugins", {
   checker = { enabled = true },
-  spec = vim.list_extend(
-    { { import = "dotfiles.plugins" } },
-    vim
-      .iter(require("dotfiles.user").extra)
-      :map(function(m)
-        if type(m) == "string" and vim.F.npcall(require, "dotfiles.plugins.extra." .. m) then
-          return { import = "dotfiles.plugins.extra." .. m }
-        end
-        return m
-      end)
-      :totable()
-  ),
   local_spec = false,
-  install = { colorscheme = { require("dotfiles.user").ui.colorscheme } },
+  install = { colorscheme = { Dotfiles.user.ui.colorscheme } },
   dev = {
     path = vim.fs.joinpath(vim.env.HOME, "Documents", "repos"),
     patterns = { "v1nh1shungry" },

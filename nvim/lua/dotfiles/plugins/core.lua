@@ -560,6 +560,13 @@ return {
       {
         "<Leader>gl",
         function()
+          Snacks.picker.git_log_file()
+        end,
+        desc = "Git log (current file)",
+      },
+      {
+        "<Leader>gL",
+        function()
           Snacks.picker.git_log()
         end,
         desc = "Git log",
@@ -604,6 +611,7 @@ return {
           },
         },
       },
+      image = { enabled = true },
       indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },

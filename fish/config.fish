@@ -3,6 +3,8 @@ if status is-interactive
     set -gx LANGUAGE "en_US.UTF-8"
     set -gx LC_ALL "en_US.UTF-8"
 
+    set -gx EDITOR nvim
+
     set fish_greeting
 
     if test -d ~/.local/bin

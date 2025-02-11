@@ -43,9 +43,6 @@ map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = "Save", mode = { "i", "x", "n", "s" } }
 map({ "<", "<gv", mode = "v" })
 map({ ">", ">gv", mode = "v" })
 
-map({ "<Leader>xq", Dotfiles.toggle.quickfix, desc = "Toggle quickfix" })
-map({ "<Leader>xl", Dotfiles.toggle.location, desc = "Toggle loclist" })
-
 map({ ",", ",<C-g>u", mode = "i" })
 map({ ".", ".<C-g>u", mode = "i" })
 map({ ";", ";<C-g>u", mode = "i" })
@@ -83,7 +80,7 @@ map({
     vim.cmd("edit " .. NVIMRC)
 
     if vim.fn.filereadable(NVIMRC) == 0 then
-      local lines = vim.split(vim.inspect(require("dotfiles.user")), "\n")
+      local lines = vim.split(vim.inspect(Dotfiles.user), "\n")
       lines[1] = "return " .. lines[1]
       vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
     end
@@ -104,8 +101,6 @@ map({ "$", "g_", mode = "x", desc = "End of line" })
 
 map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = "Inspect position under the cursor" })
 map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
-
-map({ "<C-w>z", Dotfiles.toggle.maximize, desc = "Zoom" })
 
 map({
   "]w",

@@ -1,21 +1,22 @@
+---@module "lazy"
+---
+---@class dotfiles.user.Config
+---@field extra (string | LazyPluginSpec)[]
+---@field ui { blend: integer, colorscheme: string }
+---@field task { compile: table<string, string[]>, execute: table<string, string[]> }
+---@field nightly boolean | integer
+
+---@type dotfiles.user.Config
 local M = {
-  ---@type (string | LazyPluginSpec)[]
   extra = {},
   ui = {
-    ---@type integer
     blend = 10,
-    ---@type string
     colorscheme = "tokyonight",
   },
   task = {
-    ---@type boolean
-    save = true,
-    ---@type table<string, string[]>
     compile = {},
-    ---@type table<string, string[]>
     execute = {},
   },
-  ---@type boolean | integer
   nightly = false,
 }
 

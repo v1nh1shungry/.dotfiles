@@ -1,6 +1,5 @@
 -- TODO: redesign and rewrite
 local config = {
-  save = true,
   compile = {
     c = {
       "ccache",
@@ -41,7 +40,7 @@ local config = {
   },
 }
 
-config = vim.tbl_deep_extend("force", config, require("dotfiles.user").task)
+config = vim.tbl_deep_extend("force", config, Dotfiles.user.task)
 
 local function cook_variable(line)
   local variables = {
@@ -102,9 +101,7 @@ for lang, cmd in pairs(config.compile) do
         function()
           cmd = cook_command(cmd)
 
-          if config.save then
-            vim.cmd("w")
-          end
+          vim.cmd("w")
 
           vim.cmd("lclose")
           vim.fn.setloclist(0, {}, " ", { title = table.concat(cmd, " ") })
@@ -145,9 +142,7 @@ for ft, cmd in pairs(config.execute) do
       Dotfiles.map({
         "<Leader>fx",
         function()
-          if config.save then
-            vim.cmd("w")
-          end
+          vim.cmd("w")
 
           cmd = cook_command(cmd)
 

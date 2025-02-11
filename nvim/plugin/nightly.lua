@@ -1,7 +1,7 @@
 -- TODO:
 -- * dashboard
 -- * install icon, desktop entry, etc
-if not require("dotfiles.user").nightly then
+if not Dotfiles.user.nightly then
   return
 end
 
@@ -14,7 +14,7 @@ end
 local NIGHTLY_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
 local NIGHTLY_METADATA_DIRECTORY = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-metadata.json")
 local LOCKFILE = vim.fs.joinpath(NIGHTLY_DIRECTORY, "LOCK")
-local TIMEOUT_SECS = require("dotfiles.user").nightly * 60 * 60
+local TIMEOUT_SECS = Dotfiles.user.nightly * 60 * 60
 local USR_BIN_DIRECTORY = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin")
 
 local GITHUB_PROXY = "https://gh-proxy.com/"

@@ -2,12 +2,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function(_, opts)
-      -- shrink lsp log size
-      local log_path = vim.lsp.log.get_filename()
-      if vim.fn.getfsize(log_path) > 1.5 * 1024 * 1024 then
-        vim.fn.writefile({}, log_path)
-      end
-
       -- https://github.com/nvimdev/lspsaga.nvim {{{
       local PEEK_GROUP = Dotfiles.augroup("peek_definition")
       local peek_stack = {}
@@ -561,7 +555,6 @@ return {
             },
           },
         },
-        marksman = {},
       },
     },
   },
@@ -571,7 +564,14 @@ return {
   },
   {
     "folke/lazydev.nvim",
-    dependencies = {
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        { path = "snacks.nvim", words = { "Snacks" } },
+      },
+    },
+    specs = {
       {
         "saghen/blink.cmp",
         opts = {
@@ -586,13 +586,6 @@ return {
             },
           },
         },
-      },
-    },
-    ft = "lua",
-    opts = {
-      library = {
-        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        { path = "snacks.nvim", words = { "Snacks" } },
       },
     },
   },

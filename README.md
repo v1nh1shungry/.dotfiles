@@ -2,9 +2,9 @@
 
 `$HOME` sweet `$HOME`
 
-![](https://github.com/v1nh1shungry/.dotfiles/assets/98312435/5031f191-58a9-4571-b5ae-0ca31c8e0060)
+![demo1](https://github.com/user-attachments/assets/5f780d12-7c05-43d6-abea-09b400a77b29)
 
-![](https://github.com/v1nh1shungry/.dotfiles/assets/98312435/f010d957-02d8-48ef-856b-ea4a95056e97)
+![demo2](https://github.com/user-attachments/assets/bc2f7ce4-de02-406b-9f4e-257bdd813641)
 
 ## Requirements
 
@@ -12,6 +12,7 @@
 * [Motrix](https://motrix.app/)
 * [Neovim](https://github.com/neovim/neovim)
 * [Spotify](https://open.spotify.com/)
+* [Visual Studio Code](https://code.visualstudio.com/)
 * [WeChat](https://weixin.qq.com/)
 * [bat](https://github.com/sharkdp/bat)
 * [btop](https://github.com/aristocratos/btop)
@@ -38,6 +39,5 @@
 * [tmux](https://github.com/tmux/tmux)
 * [tokei](https://github.com/XAMPPRocky/tokei)
 * [tpm](https://github.com/tmux-plugins/tpm)
-* [vscode](https://code.visualstudio.com/)
 * [yazi](https://github.com/sxyazi/yazi)
 * [zoxide](https://github.com/ajeetdsouza/zoxide)

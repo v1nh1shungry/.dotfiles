@@ -12,8 +12,8 @@ if status is-interactive
     end
 
     if test -d ~/.rustup || command -q rustup
-        set -gx RUSTUP_UPDATE_ROOT https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup
-        set -gx RUSTUP_DIST_SERVER https://mirrors.tuna.tsinghua.edu.cn/rustup
+        set -gx RUSTUP_UPDATE_ROOT https://mirrors.ustc.edu.cn/rust-static/rustup
+        set -gx RUSTUP_DIST_SERVER https://mirrors.ustc.edu.cn/rust-static
         fish_add_path -g ~/.cargo/bin
     end
 
@@ -27,7 +27,7 @@ if status is-interactive
 
     if command -q fnm
         fnm env --use-on-cd | source
-        set -gx FNM_NODE_DIST_MIRROR https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/
+        set -gx FNM_NODE_DIST_MIRROR https://mirrors.ustc.edu.cn/node/
     end
 
     if command -q nvim
@@ -50,16 +50,16 @@ if status is-interactive
 
     if command -q zoxide
         zoxide init fish | source
-        function cd
-            echo 'use `z` instead'
-            return 1
-        end
+        alias cd "echo 'use `z` instead'; false"
     end
 
     if test -d ~/.local/kitty.app
         fish_add_path -g ~/.local/kitty.app/bin
-        alias icat 'kitty +kitten icat'
         alias kitty-update "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
+    end
+
+    if command -q kitty
+        alias icat 'kitty +kitten icat'
     end
 
     if command -q yazi

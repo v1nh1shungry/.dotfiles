@@ -1,6 +1,4 @@
--- TODO:
--- * dashboard
--- * install icon, desktop entry, etc
+-- TODO: dashboard
 if not Dotfiles.user.nightly then
   return
 end
@@ -15,7 +13,9 @@ local NIGHTLY_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
 local NIGHTLY_METADATA_DIRECTORY = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-metadata.json")
 local LOCKFILE = vim.fs.joinpath(NIGHTLY_DIRECTORY, "LOCK")
 local TIMEOUT_SECS = Dotfiles.user.nightly * 60 * 60
-local USR_BIN_DIRECTORY = vim.fs.joinpath(vim.uv.os_homedir(), ".local", "bin")
+
+local USR_LOCAL_DIRECTORY = vim.fs.joinpath(vim.env.HOME, ".local")
+local USR_BIN_DIRECTORY = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "bin")
 
 local GITHUB_PROXY = "https://gh-proxy.com/"
 local ASSET_NAME = "nvim-linux-x86_64"
@@ -88,21 +88,71 @@ end
 ---@param version string
 ---@return boolean
 local function install(version)
-  Dotfiles.async.util.scheduler()
-  if not vim.list_contains(vim.split(vim.env.PATH, ":", { trimempty = true }), USR_BIN_DIRECTORY) then
-    Snacks.notify.error(USR_BIN_DIRECTORY .. " is not in $PATH")
-    return false
-  end
+  local VERSION_DIR = vim.fs.joinpath(NIGHTLY_DIRECTORY, version)
 
   local res = Dotfiles.async.system({
     "ln",
     "-sf",
-    vim.fs.joinpath(NIGHTLY_DIRECTORY, version, "bin", "nvim"),
+    vim.fs.joinpath(VERSION_DIR, "bin", "nvim"),
     vim.fs.joinpath(USR_BIN_DIRECTORY, "nvim"),
   })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to install nightly neovim: " .. res.stderr)
+    Snacks.notify.error("Failed to install binary: " .. res.stderr)
+    return false
+  end
+
+  local ENTRY_PATH = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "share", "applications", "nvim.desktop")
+
+  res = Dotfiles.async.system({
+    "install",
+    "-Dm644",
+    vim.fs.joinpath(VERSION_DIR, "share", "applications", "nvim.desktop"),
+    "-T",
+    ENTRY_PATH,
+  })
+
+  if res.code ~= 0 then
+    Snacks.notify.error("Failed to install desktop entry: " .. res.stderr)
+    return false
+  end
+
+  res = Dotfiles.async.system({
+    "sed",
+    "-i",
+    "s|Icon=nvim|Icon="
+      .. vim.fs.joinpath(VERSION_DIR, "share", "icons", "hicolor", "128x128", "apps", "nvim.png")
+      .. "|g",
+    ENTRY_PATH,
+  })
+
+  if res.code ~= 0 then
+    Snacks.notify.error("Failed to install desktop entry: " .. res.stderr)
+    return false
+  end
+
+  res = Dotfiles.async.system({
+    "sed",
+    "-i",
+    "s|Exec=nvim|Exec=" .. vim.fs.joinpath(USR_BIN_DIRECTORY, "nvim") .. "|g",
+    ENTRY_PATH,
+  })
+
+  if res.code ~= 0 then
+    Snacks.notify.error("Failed to install desktop entry: " .. res.stderr)
+    return false
+  end
+
+  res = Dotfiles.async.system({
+    "install",
+    "-Dm444",
+    vim.fs.joinpath(VERSION_DIR, "share", "man", "man1", "nvim.1"),
+    "-t",
+    vim.fs.joinpath(USR_LOCAL_DIRECTORY, "share", "man", "man1"),
+  })
+
+  if res.code ~= 0 then
+    Snacks.notify.error("Failed to install man page: " .. res.stderr)
     return false
   end
 

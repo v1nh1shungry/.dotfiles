@@ -1,3 +1,4 @@
+---@class dotfiles.utils.Events
 local M = {}
 
 M.enter_buffer = {

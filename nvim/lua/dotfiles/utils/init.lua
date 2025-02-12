@@ -1,3 +1,8 @@
+---@class dotfiles.utils
+---@field async any
+---@field events dotfiles.utils.Events
+---@field ui dotfiles.utils.UI
+---@field user dotfiles.user.Config
 local M = {}
 
 setmetatable(M, {

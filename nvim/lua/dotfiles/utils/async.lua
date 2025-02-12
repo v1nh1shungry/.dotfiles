@@ -1,14 +1,14 @@
-local Async = require("plenary.async")
+local M = setmetatable({}, { __index = require("plenary.async") })
 
-Async.system = Async.wrap(vim.system, 3)
+M.system = M.wrap(vim.system, 3)
 
-Async.input = Async.wrap(vim.schedule_wrap(vim.ui.input), 2)
+M.input = M.wrap(vim.schedule_wrap(vim.ui.input), 2)
 
-Async.fn = setmetatable({}, {
+M.fn = setmetatable({}, {
   __index = function(_, k)
     return function(...)
       if vim.in_fast_event() then
-        Async.util.scheduler()
+        M.util.scheduler()
       end
 
       return vim.fn[k](...)
@@ -16,4 +16,4 @@ Async.fn = setmetatable({}, {
   end,
 })
 
-return Async
+return M

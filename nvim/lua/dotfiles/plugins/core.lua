@@ -52,54 +52,6 @@ return {
     opts = function()
       local ai = require("mini.ai")
 
-      Snacks.util.on_module("which-key", function()
-        local objects = {
-          { " ", desc = "whitespace" },
-          { '"', desc = 'balanced "' },
-          { "'", desc = "balanced '" },
-          { "(", desc = "balanced (" },
-          { ")", desc = "balanced ) including white-space" },
-          { "<", desc = "balanced <" },
-          { ">", desc = "balanced > including white-space" },
-          { "?", desc = "user prompt" },
-          { "U", desc = "use/call without dot in name" },
-          { "[", desc = "balanced [" },
-          { "]", desc = "balanced ] including white-space" },
-          { "_", desc = "underscore" },
-          { "`", desc = "balanced `" },
-          { "a", desc = "argument" },
-          { "b", desc = "balanced )]}" },
-          { "c", desc = "class" },
-          { "d", desc = "digit(s)" },
-          { "f", desc = "function" },
-          { "g", desc = "entire file" },
-          { "i", desc = "indent" },
-          { "o", desc = "block, conditional, loop" },
-          { "q", desc = "quote `\"'" },
-          { "t", desc = "tag" },
-          { "u", desc = "use/call function & method" },
-          { "{", desc = "balanced {" },
-          { "}", desc = "balanced } including white-space" },
-        }
-
-        local ret = { mode = { "o", "x" } }
-        for prefix, name in pairs({
-          i = "inside",
-          a = "around",
-          il = "last",
-          ["in"] = "next",
-          al = "last",
-          an = "next",
-        }) do
-          ret[#ret + 1] = { prefix, group = name }
-          for _, obj in ipairs(objects) do
-            ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
-          end
-        end
-
-        require("which-key").add(ret, { notify = false })
-      end)
-
       return {
         n_lines = 500,
         custom_textobjects = {
@@ -162,6 +114,58 @@ return {
         },
       }
     end,
+    specs = {
+      {
+        "folke/which-key.nvim",
+        opts = function()
+          local objects = {
+            { " ", desc = "whitespace" },
+            { '"', desc = 'balanced "' },
+            { "'", desc = "balanced '" },
+            { "(", desc = "balanced (" },
+            { ")", desc = "balanced ) including white-space" },
+            { "<", desc = "balanced <" },
+            { ">", desc = "balanced > including white-space" },
+            { "?", desc = "user prompt" },
+            { "U", desc = "use/call without dot in name" },
+            { "[", desc = "balanced [" },
+            { "]", desc = "balanced ] including white-space" },
+            { "_", desc = "underscore" },
+            { "`", desc = "balanced `" },
+            { "a", desc = "argument" },
+            { "b", desc = "balanced )]}" },
+            { "c", desc = "class" },
+            { "d", desc = "digit(s)" },
+            { "f", desc = "function" },
+            { "g", desc = "entire file" },
+            { "i", desc = "indent" },
+            { "o", desc = "block, conditional, loop" },
+            { "q", desc = "quote `\"'" },
+            { "t", desc = "tag" },
+            { "u", desc = "use/call function & method" },
+            { "{", desc = "balanced {" },
+            { "}", desc = "balanced } including white-space" },
+          }
+
+          local spec = { mode = { "o", "x" } }
+          for prefix, name in pairs({
+            i = "inside",
+            a = "around",
+            il = "last",
+            ["in"] = "next",
+            al = "last",
+            an = "next",
+          }) do
+            spec[#spec + 1] = { prefix, group = name }
+            for _, obj in ipairs(objects) do
+              spec[#spec + 1] = { prefix .. obj[1], desc = obj.desc }
+            end
+          end
+
+          return { spec = { spec } }
+        end,
+      },
+    },
   },
   -- }}}
   {
@@ -548,7 +552,7 @@ return {
         function()
           Snacks.picker.zoxide()
         end,
-        desc = "Zoxide"
+        desc = "Zoxide",
       },
       {
         "<Leader>sP",
@@ -623,5 +627,11 @@ return {
       words = { enabled = true },
     },
     priority = 1000,
+    specs = {
+      {
+        "folke/lazydev.nvim",
+        opts = { library = { { path = "snacks.nvim", words = { "Snacks" } } } },
+      },
+    },
   },
 }

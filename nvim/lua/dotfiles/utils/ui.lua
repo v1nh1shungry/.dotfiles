@@ -1,3 +1,4 @@
+---@class dotfiles.utils.UI
 local M = {}
 
 M.icons = {

@@ -255,6 +255,7 @@ return {
         },
       },
     },
+    opts_extend = { "spec" },
   },
   {
     "MunifTanjim/nui.nvim",

@@ -570,6 +570,20 @@ return {
         desc = "Treesitter",
       },
       {
+        "<Leader>sL",
+        function()
+          Snacks.picker.lsp_config()
+        end,
+        desc = "LSP",
+      },
+      {
+        "<Leader>sn",
+        function()
+          Snacks.picker.notifications()
+        end,
+        desc = "Notifications",
+      },
+      {
         "<Leader>gl",
         function()
           Snacks.picker.git_log_file()

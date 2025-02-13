@@ -11,7 +11,7 @@ if status is-interactive
         fish_add_path -g ~/.local/bin
     end
 
-    if test -d ~/.rustup || command -q rustup
+    if test -d ~/.cargo
         set -gx RUSTUP_UPDATE_ROOT https://mirrors.ustc.edu.cn/rust-static/rustup
         set -gx RUSTUP_DIST_SERVER https://mirrors.ustc.edu.cn/rust-static
         fish_add_path -g ~/.cargo/bin
@@ -42,10 +42,6 @@ if status is-interactive
     if command -q eza
         alias ls 'eza --icons'
         alias tree 'eza -T --icons'
-    end
-
-    if command -q ncdu
-        alias ncdu 'ncdu --color dark'
     end
 
     if command -q zoxide

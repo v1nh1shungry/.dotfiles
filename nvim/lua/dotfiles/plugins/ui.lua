@@ -5,20 +5,12 @@ return {
     event = Dotfiles.events.enter_buffer,
     keys = {
       { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
-      { "<Leader>xT", "<Cmd>TodoQuickFix keywords=TODO,FIX,FIXME<CR>", desc = "Todo/Fix/Fixme" },
       {
         "<leader>st",
         function()
           Snacks.picker.todo_comments()
         end,
         desc = "Todo",
-      },
-      {
-        "<leader>sT",
-        function()
-          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
-        end,
-        desc = "Todo/Fix/Fixme",
       },
     },
     opts = { signs = false },
@@ -92,50 +84,7 @@ return {
     config = function()
       require("lualine_require").require = require
 
-      -- https://github.com/chrisgrieser/nvim-tinygit/blob/main/lua/tinygit/statusline/branch-state.lua {{{
-      local function get_git_branch_state()
-        local cwd = vim.uv.cwd()
-        if not cwd then
-          return ""
-        end
-        local allBranchInfo = vim.system({ "git", "-C", cwd, "branch", "--verbose" }):wait()
-        if allBranchInfo.code ~= 0 then
-          return ""
-        end
-        local branches = vim.split(allBranchInfo.stdout, "\n")
-        local currentBranchInfo
-        for _, line in pairs(branches) do
-          currentBranchInfo = line:match("^%* .*")
-          if currentBranchInfo then
-            break
-          end
-        end
-        if not currentBranchInfo then
-          return ""
-        end
-        local ahead = currentBranchInfo:match("ahead (%d+)")
-        local behind = currentBranchInfo:match("behind (%d+)")
-        if ahead and behind then
-          return ("󰃻" .. " %s/%s"):format(ahead, behind)
-        elseif ahead then
-          return "󰶣" .. ahead
-        elseif behind then
-          return "󰶡" .. behind
-        end
-        return ""
-      end
-
-      local function refresh_git_branch_state()
-        vim.b.dotfiles_git_branch_state = get_git_branch_state()
-      end
-
-      vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
-        callback = refresh_git_branch_state,
-        group = Dotfiles.augroup("lualine_git_branch_state"),
-      })
-
-      refresh_git_branch_state()
-      -- }}}
+      Dotfiles.git.refresh_branch_state()
 
       require("lualine").setup({
         options = {
@@ -706,6 +655,8 @@ return {
   },
   {
     "tzachar/highlight-undo.nvim",
+    -- NOTE: current HEAD will highlight all changes, very noisy
+    commit = "795fc36f8bb7e4cf05e31bd7e354b86d27643a9e",
     keys = {
       { "u", desc = "Undo" },
       { "<C-r>", desc = "Redo" },
@@ -719,6 +670,7 @@ return {
         paste = { hlgroup = "IncSearch" },
       },
     },
+    pin = true,
   },
   {
     "lewis6991/satellite.nvim",

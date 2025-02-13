@@ -117,6 +117,7 @@ return {
     specs = {
       {
         "folke/which-key.nvim",
+        optional = true,
         opts = function()
           local objects = {
             { " ", desc = "whitespace" },
@@ -562,6 +563,13 @@ return {
         desc = "Projects",
       },
       {
+        "<Leader>sT",
+        function()
+          Snacks.picker.treesitter()
+        end,
+        desc = "Treesitter",
+      },
+      {
         "<Leader>gl",
         function()
           Snacks.picker.git_log_file()
@@ -630,6 +638,7 @@ return {
     specs = {
       {
         "folke/lazydev.nvim",
+        optional = true,
         opts = { library = { { path = "snacks.nvim", words = { "Snacks" } } } },
       },
     },

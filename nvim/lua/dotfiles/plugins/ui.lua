@@ -496,34 +496,31 @@ return {
     opts = {},
   },
   {
-    "OXY2DEV/markview.nvim",
-    config = function()
-      local presets = require("markview.presets")
-
-      local headings = presets.headings.glow
-      for i = 1, 6 do
-        headings["heading_" .. i].sign = ""
-      end
-
-      require("markview").setup({
-        markdown = {
-          headings = headings,
-          code_blocks = { sign = false },
-        },
-        markdown_inline = { checkboxes = presets.checkboxes.nerd },
-        preview = { icon_provider = "mini" },
-      })
+    "MeanderingProgrammer/render-markdown.nvim",
+    config = function(_, opts)
+      require("render-markdown").setup(opts)
+      Snacks.toggle({
+        name = "Render Markdown",
+        get = function()
+          return require("render-markdown.state").enabled
+        end,
+        set = function(enabled)
+          local m = require("render-markdown")
+          if enabled then
+            m.enable()
+          else
+            m.disable()
+          end
+        end,
+      }):map("<leader>uc")
     end,
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
     ft = "markdown",
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        command = "let b:snacks_indent = v:false",
-        group = Dotfiles.augroup("markview_disable_indent"),
-        pattern = "markdown",
-      })
-    end,
-    keys = { { "<Leader>uc", "<Cmd>Markview<CR>", desc = "Toggle Render", ft = "markdown" } },
+    opts = {
+      code = { sign = false, width = "block", right_pad = 1 },
+      heading = { sign = false, icons = {} },
+      checkbox = { enabled = false },
+    },
   },
   {
     "mcauley-penney/visual-whitespace.nvim",

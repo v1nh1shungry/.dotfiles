@@ -661,6 +661,21 @@ return {
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
+    config = function(_, opts)
+      for _, source in ipairs(opts.sources.compat) do
+        opts.sources.providers[source] = vim.tbl_deep_extend("force", {
+          name = source,
+          module = "blink.compat.source",
+        }, opts.sources.providers[source] or {})
+        if not vim.list_contains(opts.sources.default, source) then
+          table.insert(opts.sources.default, source)
+        end
+      end
+
+      opts.sources.compat = nil
+
+      require("blink.cmp").setup(opts)
+    end,
     dependencies = "xzbdmw/colorful-menu.nvim",
     event = "InsertEnter",
     opts = {
@@ -701,6 +716,7 @@ return {
       sources = {
         default = { "lsp", "snippets", "path", "buffer", "rg" },
         cmdline = {},
+        compat = {},
         providers = {
           rg = {
             module = "blink.rg",
@@ -712,7 +728,7 @@ return {
       keymap = { preset = "super-tab" },
       fuzzy = { prebuilt_binaries = { download = false } },
     },
-    opts_extend = { "sources.default" },
+    opts_extend = { "sources.default", "sources.compat" },
   },
   {
     "stevearc/conform.nvim",

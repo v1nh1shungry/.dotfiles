@@ -5,8 +5,6 @@ return {
       vim.g.matchup_matchparen_offscreen = {}
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_nomode = "i"
-      vim.g.matchup_delim_noskips = 2
-      vim.g.matchup_matchparen_pumvisible = 0
     end,
     event = Dotfiles.events.enter_buffer,
   },
@@ -185,7 +183,7 @@ return {
         end
       end
       if #unused_parsers > 0 then
-        vim.cmd("TSUninstall " .. table.concat(unused_parsers, " "))
+        require("nvim-treesitter.install").uninstall(unused_parsers)
       end
     end,
     event = Dotfiles.events.enter_buffer,

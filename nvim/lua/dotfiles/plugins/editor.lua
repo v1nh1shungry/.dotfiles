@@ -2,8 +2,8 @@ return {
   {
     "Wansmer/treesj",
     keys = {
-      { "S", "<Cmd>TSJSplit<CR>", desc = "Split line" },
-      { "J", "<Cmd>TSJJoin<CR>", desc = "Join line" },
+      { "S", "<Cmd>TSJSplit<CR>", desc = "Split" },
+      { "J", "<Cmd>TSJJoin<CR>", desc = "Join" },
     },
     opts = { use_default_keymaps = false },
   },
@@ -22,14 +22,14 @@ return {
         function()
           require("sibling-swap").swap_with_right()
         end,
-        desc = "Swap with right",
+        desc = "Swap with Right",
       },
       {
         "<C-h>",
         function()
           require("sibling-swap").swap_with_left()
         end,
-        desc = "Swap with left",
+        desc = "Swap with Left",
       },
     },
   },
@@ -47,7 +47,7 @@ return {
     "echasnovski/mini.align",
     keys = {
       { "ga", mode = { "n", "x" }, desc = "Align" },
-      { "gA", mode = { "n", "x" }, desc = "Align with preview" },
+      { "gA", mode = { "n", "x" }, desc = "Align with Preview" },
     },
     opts = {},
   },
@@ -70,7 +70,7 @@ return {
       vim.g.table_mode_corner = "|"
       vim.g.table_mode_disable_mappings = 1
     end,
-    keys = { { "<Leader>ct", "<Cmd>TableModeToggle<CR>", desc = "Table mode" } },
+    keys = { { "<Leader>ct", "<Cmd>TableModeToggle<CR>", desc = "Toggle Table Mode" } },
   },
   {
     "RRethy/nvim-treesitter-endwise",

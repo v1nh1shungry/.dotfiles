@@ -1,35 +1,22 @@
 ---@class dotfiles.utils.UI
 local M = {}
 
-M.icons = {
-  -- clangd_extensions.nvim {{{
-  ast = {
-    role_icons = {
-      type = "",
-      declaration = "",
-      expression = "",
-      specifier = "",
-      statement = "",
-      ["template argument"] = "",
-    },
-    kind_icons = {
-      Compound = "",
-      Recovery = "",
-      TranslationUnit = "",
-      PackExpansion = "",
-      TemplateTypeParm = "",
-      TemplateTemplateParm = "",
-      TemplateParamObject = "",
-    },
-  },
-  -- }}}
-  diagnostic = {
+M.icons = setmetatable({
+  diagnostics = {
     Error = "",
     Warn = "",
     Hint = "",
     Info = "",
   },
-}
+}, {
+  __index = function(_, category)
+    return setmetatable({}, {
+      __index = function(_, name)
+        return require("mini.icons").get(category, name)
+      end,
+    })
+  end,
+})
 
 -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/ui.lua {{{
 local skip_foldexpr = {}

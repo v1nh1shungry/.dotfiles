@@ -51,7 +51,7 @@ return {
             vim.cmd("BufferLineCycleNext")
           end
         end,
-        desc = "Jump to the next buffer",
+        desc = "Goto Next Buffer",
       },
       {
         "[b",
@@ -60,23 +60,13 @@ return {
             vim.cmd("BufferLineCyclePrev")
           end
         end,
-        desc = "Jump to the previous buffer",
+        desc = "Goto Previous Buffer",
       },
-      {
-        "[B",
-        function()
-          require("bufferline").go_to(1, true)
-        end,
-        desc = "Jump to the first buffer",
-      },
-      {
-        "]B",
-        function()
-          require("bufferline").go_to(-1, true)
-        end,
-        desc = "Jump to the last buffer",
-      },
-      { "gb", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
+      { "[B", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Goto First Buffer" },
+      { "]B", "<Cmd>BufferLineGoToBuffer -1<CR>", desc = "Goto Last Buffer" },
+      { "gb", "<Cmd>execute 'BufferLineGoToBuffer ' .. v:count1<CR>", desc = "Goto Buffer" },
+      { "gB", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
+      { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Only" },
     },
   },
   {
@@ -84,7 +74,57 @@ return {
     config = function()
       require("lualine_require").require = require
 
-      Dotfiles.git.refresh_branch_state()
+      -- https://github.com/chrisgrieser/nvim-tinygit/blob/main/lua/tinygit/statusline/branch-state.lua {{{
+      local function git_branch_state()
+        local cwd = vim.fn.getcwd()
+        if not cwd then
+          return ""
+        end
+
+        local allBranchInfo = vim.system({ "git", "-C", cwd, "branch", "--verbose" }):wait()
+        if allBranchInfo.code ~= 0 then
+          return ""
+        end
+
+        local branches = vim.split(allBranchInfo.stdout, "\n")
+        local currentBranchInfo
+
+        for _, line in pairs(branches) do
+          currentBranchInfo = line:match("^%* .*")
+          if currentBranchInfo then
+            break
+          end
+        end
+
+        if not currentBranchInfo then
+          return ""
+        end
+
+        local ahead = currentBranchInfo:match("ahead (%d+)")
+        local behind = currentBranchInfo:match("behind (%d+)")
+
+        if ahead and behind then
+          return ("󰃻" .. " %s/%s"):format(ahead, behind)
+        elseif ahead then
+          return "󰶣" .. ahead
+        elseif behind then
+          return "󰶡" .. behind
+        end
+
+        return ""
+      end
+
+      local function refresh_branch_state()
+        vim.b.dotfiles_git_branch_state = git_branch_state()
+      end
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
+        callback = refresh_branch_state,
+        group = Dotfiles.augroup("lualine_git_branch_state"),
+      })
+
+      refresh_branch_state()
+      -- }}}
 
       require("lualine").setup({
         options = {
@@ -191,6 +231,7 @@ return {
           { "z", group = "fold" },
           { "<Space>", group = "leader" },
           { "<Leader><Tab>", group = "tab" },
+          { "<Leader>b", group = "buffer" },
           { "<Leader>c", group = "code" },
           { "<Leader>f", group = "file" },
           { "<Leader>g", group = "git" },
@@ -235,7 +276,7 @@ return {
         end,
         silent = true,
         expr = true,
-        desc = "Scroll forward",
+        desc = "Scroll Forward",
         mode = { "i", "n", "s" },
       },
       {
@@ -247,7 +288,7 @@ return {
         end,
         silent = true,
         expr = true,
-        desc = "Scroll backward",
+        desc = "Scroll Backward",
         mode = { "i", "n", "s" },
       },
     },
@@ -284,15 +325,15 @@ return {
   {
     "kevinhwang91/nvim-hlslens",
     keys = {
-      { "/", desc = "Forward search" },
-      { "?", desc = "Backward search" },
+      { "/", desc = "Forward Search" },
+      { "?", desc = "Backward Search" },
       {
         "n",
         function()
           vim.cmd("execute('normal! ' . v:count1 . 'Nn'[v:searchforward] . 'zv')")
           require("hlslens").start()
         end,
-        desc = "Next search result",
+        desc = "Next Search",
       },
       {
         "n",
@@ -301,7 +342,7 @@ return {
           require("hlslens").start()
         end,
         mode = { "x", "o" },
-        desc = "Next search result",
+        desc = "Next Search",
       },
       {
         "N",
@@ -309,7 +350,7 @@ return {
           vim.cmd("execute('normal! ' . v:count1 . 'nN'[v:searchforward] . 'zv')")
           require("hlslens").start()
         end,
-        desc = "Previous search result",
+        desc = "Previous Search",
       },
       {
         "N",
@@ -318,10 +359,10 @@ return {
           require("hlslens").start()
         end,
         mode = { "x", "o" },
-        desc = "Previous search result",
+        desc = "Previous Search",
       },
-      { "*", [[*<Cmd>lua require('hlslens').start()<CR>]], desc = "Forward search current word" },
-      { "#", [[#<Cmd>lua require('hlslens').start()<CR>]], desc = "Backward search current word" },
+      { "*", [[*<Cmd>lua require('hlslens').start()<CR>]], desc = "Forward Search Current Word" },
+      { "#", [[#<Cmd>lua require('hlslens').start()<CR>]], desc = "Backward Search Current Word" },
     },
     opts = { calm_down = true },
   },
@@ -482,7 +523,7 @@ return {
         pattern = "markdown",
       })
     end,
-    keys = { { "<Leader>uc", "<Cmd>Markview<CR>", desc = "Toggle render", ft = "markdown" } },
+    keys = { { "<Leader>uc", "<Cmd>Markview<CR>", desc = "Toggle Render", ft = "markdown" } },
   },
   {
     "mcauley-penney/visual-whitespace.nvim",
@@ -505,28 +546,28 @@ return {
           function()
             require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
           end,
-          desc = "Expand quickfix context",
+          desc = "Expand Context",
         },
         {
           "<",
           function()
             require("quicker").collapse()
           end,
-          desc = "Collapse quickfix context",
+          desc = "Collapse Context",
         },
         {
           "<Leader>xq",
           function()
             require("quicker").toggle()
           end,
-          desc = "Toggle quickfix",
+          desc = "Toggle Quickfix List",
         },
         {
           "<Leader>xl",
           function()
             require("quicker").toggle({ loclist = true })
           end,
-          desc = "Toggle loclist",
+          desc = "Toggle Location List",
         },
       },
     },
@@ -603,7 +644,7 @@ return {
               require("mini.files").refresh({ content = { filter = show_hidden and filter_show or filter_hide } })
             end,
             buffer = event.data.buf_id,
-            desc = "Toggle hidden files",
+            desc = "Toggle Hidden Files",
           })
         end,
         group = AUGROUP,
@@ -661,7 +702,7 @@ return {
       { "u", desc = "Undo" },
       { "<C-r>", desc = "Redo" },
       { "p", desc = "Paste" },
-      { "P", desc = "Paste before" },
+      { "P", desc = "Paste Before" },
     },
     opts = {
       keymaps = {

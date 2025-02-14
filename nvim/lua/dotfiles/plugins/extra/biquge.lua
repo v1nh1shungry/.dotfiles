@@ -8,51 +8,51 @@ return {
       })
     end,
     keys = {
-      { "<Leader>b", "", desc = "+biquge" },
+      { "<Leader>n", "", desc = "+novel" },
       {
-        "<Leader>b/",
+        "<Leader>n/",
         function()
           require("biquge").search()
         end,
         desc = "Search",
       },
       {
-        "<Leader>bb",
+        "<Leader>nn",
         function()
           require("biquge").toggle()
         end,
         desc = "Toggle",
       },
       {
-        "<Leader>bt",
+        "<Leader>nt",
         function()
           require("biquge").toc()
         end,
         desc = "Toc",
       },
       {
-        "<Leader>bn",
+        "]n",
         function()
           require("biquge").next_chap()
         end,
-        desc = "Next chapter",
+        desc = "Next Chapter",
       },
       {
-        "<Leader>bp",
+        "[n",
         function()
           require("biquge").prev_chap()
         end,
-        desc = "Previous chapter",
+        desc = "Previous Chapter",
       },
       {
-        "<Leader>bs",
+        "<Leader>ns",
         function()
           require("biquge").star()
         end,
-        desc = "Star current book",
+        desc = "Star",
       },
       {
-        "<Leader>bl",
+        "<Leader>nl",
         function()
           require("biquge").bookshelf()
         end,
@@ -63,14 +63,14 @@ return {
         function()
           require("biquge").scroll(2)
         end,
-        desc = "Scroll down",
+        desc = "Scroll Down",
       },
       {
         "<M-u>",
         function()
           require("biquge").scroll(-2)
         end,
-        desc = "Scroll up",
+        desc = "Scroll Up",
       },
     },
     opts = {

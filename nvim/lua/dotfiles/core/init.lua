@@ -18,7 +18,7 @@ vim.diagnostic.config({
   virtual_text = true,
 })
 
-for name, icon in pairs(Dotfiles.ui.icons.diagnostic) do
+for name, icon in pairs(Dotfiles.ui.icons.diagnostics) do
   name = "DiagnosticSign" .. name
   vim.fn.sign_define(name, { texthl = name, text = icon, numhl = "" })
 end

@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.g.mapleader = vim.keycode("<Space>")
 vim.g.maplocalleader = "\\"
 
-map({ "<C-q>", "<Cmd>bd<CR>", desc = "Close buffer" })
+map({ "<C-q>", "<Cmd>bd<CR>", desc = "Close Buffer" })
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
 
 map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = "Save", mode = { "i", "x", "n", "s" } })
@@ -52,26 +52,28 @@ map({ "k", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up", mode = { "n", 
 map({ "<Down>", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down", mode = { "n", "x" } })
 map({ "<Up>", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up", mode = { "n", "x" } })
 
-map({ "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = "Visually select changed text" })
+map({ "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = "Visually Select Changed Text" })
 
-map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close tab" })
-map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New tab" })
-map({ "[<S-Tab>", "<Cmd>tabfirst<CR>", desc = "First tab" })
-map({ "]<S-Tab>", "<Cmd>tablast<CR>", desc = "Last tab" })
+map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close Tab" })
+map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New Tab" })
+map({ "[<S-Tab>", "<Cmd>tabfirst<CR>", desc = "First Tab" })
+map({ "]<S-Tab>", "<Cmd>tablast<CR>", desc = "Last Tab" })
 map({
   "]<Tab>",
   function()
     vim.cmd("+" .. vim.v.count1 .. "tabnext")
   end,
-  desc = "Next tab",
+  desc = "Next Tab",
 })
 map({
   "[<Tab>",
   function()
     vim.cmd("-" .. vim.v.count1 .. "tabnext")
   end,
-  desc = "Previous tab",
+  desc = "Previous Tab",
 })
+
+map({ "<Leader>bn", "<Cmd>enew<CR>", desc = "New Buffer" })
 
 map({
   "<Leader>fc",
@@ -85,21 +87,21 @@ map({
       vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
     end
   end,
-  desc = "Edit local configuration",
+  desc = "Edit Local Configuration",
 })
 
-map({ "<C-j>", "<Cmd>m .+1<CR>==", desc = "Move down" })
-map({ "<C-k>", "<Cmd>m .-2<CR>==", desc = "Move up" })
-map({ "<C-j>", ":m '>+1<CR>gv=gv", mode = "v", desc = "Move down" })
-map({ "<C-k>", ":m '<-2<CR>gv=gv", mode = "v", desc = "Move up" })
+map({ "<C-j>", "<Cmd>m .+1<CR>==", desc = "Move Down" })
+map({ "<C-k>", "<Cmd>m .-2<CR>==", desc = "Move Up" })
+map({ "<C-j>", ":m '>+1<CR>gv=gv", mode = "v", desc = "Move Down" })
+map({ "<C-k>", ":m '<-2<CR>gv=gv", mode = "v", desc = "Move Up" })
 
 map({ "<Leader>pl", "<Cmd>Lazy home<CR>", desc = "Lazy" })
 
-map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Give up modifications" })
+map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Give Up Modifications" })
 
-map({ "$", "g_", mode = "x", desc = "End of line" })
+map({ "$", "g_", mode = "x", desc = "End of Line" })
 
-map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = "Inspect position under the cursor" })
+map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = "Inspect Position" })
 map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
 
 map({
@@ -107,64 +109,64 @@ map({
   function()
     vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.WARN })
   end,
-  desc = "Jump to the next warning",
+  desc = "Goto Next Warning",
 })
 map({
   "[w",
   function()
     vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.WARN })
   end,
-  desc = "Jump to the previous warning",
+  desc = "Goto Previous Warning",
 })
 map({
   "]e",
   function()
     vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR })
   end,
-  desc = "Jump to the next error",
+  desc = "Goto Next Error",
 })
 map({
   "[e",
   function()
     vim.diagnostic.jump({ count = -vim.v.count1, severity = vim.diagnostic.severity.ERROR })
   end,
-  desc = "Jump to the previous error",
+  desc = "Goto Previous Error",
 })
 map({
   "]W",
   function()
     vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.WARN, wrap = false })
   end,
-  desc = "Jump to the last warning",
+  desc = "Goto Last Warning",
 })
 map({
   "[W",
   function()
     vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.WARN, wrap = false })
   end,
-  desc = "Jump to the first warning",
+  desc = "Goto First Warning",
 })
 map({
   "]E",
   function()
     vim.diagnostic.jump({ count = math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false })
   end,
-  desc = "Jump to the last error",
+  desc = "Goto Last Error",
 })
 map({
   "[E",
   function()
     vim.diagnostic.jump({ count = -math.huge, severity = vim.diagnostic.severity.ERROR, wrap = false })
   end,
-  desc = "Jump to the first error",
+  desc = "Goto First Error",
 })
 
-map({ "<Leader>xx", vim.diagnostic.setloclist, desc = "Document diagnostics" })
-map({ "<Leader>xX", vim.diagnostic.setqflist, desc = "Workspace diagnostics" })
+map({ "<Leader>xx", vim.diagnostic.setloclist, desc = "Document Diagnostics" })
+map({ "<Leader>xX", vim.diagnostic.setqflist, desc = "Workspace Diagnostics" })
 
 map({ "<BS>", "<C-o>s", mode = "s" })
 
-map({ "<Esc>", "<Cmd>noh<CR><Esc>", mode = { "i", "n" }, desc = "Escape and clear hlsearch" })
+map({ "<Esc>", "<Cmd>noh<CR><Esc>", mode = { "i", "n" }, desc = "Escape and Clear Highlight" })
 
 map({
   "dm",
@@ -177,7 +179,7 @@ map({
     end
     pcall(vim.cmd.delmark, input)
   end,
-  desc = "Delete mark",
+  desc = "Delete Mark",
 })
 map({
   "dm-",
@@ -189,12 +191,12 @@ map({
       end
     end
   end,
-  desc = "Delete mark in current line",
+  desc = "Delete Mark in Current Line",
 })
 map({
   "dm<Space>",
   "<Cmd>delm!<CR>",
-  desc = "Delete all marks",
+  desc = "Delete All Marks",
 })
 
 -- https://github.com/chrisgrieser/nvim-origami/blob/main/lua/origami/fold-keymaps.lua {{{
@@ -232,11 +234,11 @@ map({
 })
 -- }}}
 
-map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search inside visual selection" })
+map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search Selection" })
 
-map({ "n", "'Nn'[v:searchforward].'zv'", expr = true, desc = "Next search result" })
-map({ "n", "'Nn'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Next search result" })
-map({ "N", "'nN'[v:searchforward].'zv'", expr = true, desc = "Previous search result" })
-map({ "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Previous search result" })
+map({ "n", "'Nn'[v:searchforward].'zv'", expr = true, desc = "Next Search" })
+map({ "n", "'Nn'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Next Search" })
+map({ "N", "'nN'[v:searchforward].'zv'", expr = true, desc = "Previous Search" })
+map({ "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Previous Search" })
 
 vim.keymap.del("n", "<C-w><C-d>")

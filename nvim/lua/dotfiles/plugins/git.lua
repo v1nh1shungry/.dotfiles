@@ -8,9 +8,9 @@ return {
         function()
           require("gitsigns").setqflist("all")
         end,
-        desc = "Workspace git hunks",
+        desc = "Workspace Git Hunks",
       },
-      { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle git blame" },
+      { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle Git Blame" },
     },
     opts = {
       on_attach = function(buffer)
@@ -18,45 +18,45 @@ return {
           opts.buffer = buffer
           Dotfiles.map(opts)
         end
-        map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage hunk" })
-        map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage current buffer" })
-        map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo staged hunk" })
-        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview hunk" })
-        map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset hunk" })
-        map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset current buffer" })
-        map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this line" })
+        map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
+        map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Current Buffer" })
+        map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo Staged Hunk" })
+        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" })
+        map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset Hunk" })
+        map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Current Buffer" })
+        map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this Line" })
         map({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })
         map({
           "]h",
           function()
             require("gitsigns").nav_hunk("next", { navigation_message = false })
           end,
-          desc = "Next git hunk",
+          desc = "Next Git Hunk",
         })
         map({
           "[h",
           function()
             require("gitsigns").nav_hunk("prev", { navigation_message = false })
           end,
-          desc = "Previous git hunk",
+          desc = "Previous Git Hunk",
         })
         map({
           "]H",
           function()
             require("gitsigns").nav_hunk("last", { navigation_message = false })
           end,
-          desc = "Last git hunk",
+          desc = "Last Git Hunk",
         })
         map({
           "[H",
           function()
             require("gitsigns").nav_hunk("first", { navigation_message = false })
           end,
-          desc = "First git hunk",
+          desc = "First Git Hunk",
         })
-        map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
-        map({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git hunk" })
-        map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Document git hunks" })
+        map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
+        map({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
+        map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Document Git Hunks" })
       end,
       attach_to_untracked = true,
       current_line_blame = true,
@@ -77,7 +77,7 @@ return {
         },
         keymaps = {
           file_history_panel = {
-            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle file panel" } },
+            { "n", "<leader>e", actions.toggle_files, { desc = "Toggle File Panel" } },
             ["<leader>b"] = false,
           },
           view = {
@@ -89,25 +89,25 @@ return {
               "n",
               "<Leader>gxo",
               actions.conflict_choose("ours"),
-              { desc = "Choose the OURS version of a conflict" },
+              { desc = "Choose OURS" },
             },
             {
               "n",
               "<Leader>gxt",
               actions.conflict_choose("theirs"),
-              { desc = "Choose the THEIRS version of a conflict" },
+              { desc = "Choose THEIRS" },
             },
             {
               "n",
               "<Leader>gxb",
               actions.conflict_choose("base"),
-              { desc = "Choose the BASE version of a conflict" },
+              { desc = "Choose BASE" },
             },
             {
               "n",
               "<Leader>gxa",
               actions.conflict_choose("all"),
-              { desc = "Choose all the versions of a conflict" },
+              { desc = "Choose All" },
             },
           },
           file_panel = {
@@ -119,25 +119,25 @@ return {
               "n",
               "<Leader>gxO",
               actions.conflict_choose_all("ours"),
-              { desc = "Choose the OURS version of a conflict for the whole file" },
+              { desc = "Choose OURS (File)" },
             },
             {
               "n",
               "<Leader>gxT",
               actions.conflict_choose_all("theirs"),
-              { desc = "Choose the THEIRS version of a conflict for the whole file" },
+              { desc = "Choose THEIRS (File)" },
             },
             {
               "n",
               "<Leader>gxB",
               actions.conflict_choose_all("base"),
-              { desc = "Choose the BASE version of a conflict for the whole file" },
+              { desc = "Choose BASE (File)" },
             },
             {
               "n",
               "<Leader>gxA",
               actions.conflict_choose_all("all"),
-              { desc = "Choose all the versions of a conflict for the whole file" },
+              { desc = "Choose All (File)" },
             },
           },
         },
@@ -154,19 +154,19 @@ return {
       require("diffview").setup(opts)
     end,
     keys = {
-      { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Open git diff pane" },
+      { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Git Diff Pane" },
       {
         "<Leader>gh",
         function()
           vim.cmd("DiffviewFileHistory" .. (vim.bo.buftype == "" and " %" or ""))
         end,
-        desc = "Git history",
+        desc = "Git History",
       },
     },
   },
   {
     "tpope/vim-fugitive",
     cmd = { "Git", "Gedit", "Gvdiffsplit", "Gread", "Gwrite", "GMove", "GRename", "GDelete" },
-    keys = { { "<Leader>gd", "<Cmd>Gvdiffsplit<CR>", desc = "Diff this" } },
+    keys = { { "<Leader>gd", "<Cmd>Gvdiffsplit<CR>", desc = "Diffthis" } },
   },
 }

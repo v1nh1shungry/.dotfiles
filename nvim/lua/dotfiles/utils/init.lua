@@ -1,8 +1,6 @@
 ---@class dotfiles.utils
 ---@field async any
 ---@field events dotfiles.utils.Events
----@field git dotfiles.utils.Git
----@field lsp dotfiles.utils.LSP
 ---@field ui dotfiles.utils.UI
 ---@field user dotfiles.user.Config
 local M = {}

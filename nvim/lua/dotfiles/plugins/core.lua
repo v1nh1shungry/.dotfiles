@@ -249,10 +249,10 @@ return {
   {
     "chrisgrieser/nvim-spider",
     keys = {
-      { "w", "<Cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" }, desc = "Next word" },
-      { "e", "<Cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" }, desc = "Next end of word" },
-      { "b", "<Cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" }, desc = "Previous word" },
-      { "ge", "<Cmd>lua require('spider').motion('ge')<CR>", mode = { "n", "o", "x" }, desc = "Previous end of word" },
+      { "w", "<Cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" }, desc = "Next Word" },
+      { "e", "<Cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" }, desc = "Next End of Word" },
+      { "b", "<Cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" }, desc = "Previous Word" },
+      { "ge", "<Cmd>lua require('spider').motion('ge')<CR>", mode = { "n", "o", "x" }, desc = "Previous End of Word" },
     },
   },
   {
@@ -261,7 +261,7 @@ return {
       { "g=", mode = { "n", "v" }, desc = "Evaluate" },
       { "cx", mode = { "n", "v" }, desc = "Exchange" },
       { "gm", mode = { "n", "v" }, desc = "Dumplicate" },
-      { "gr", mode = { "n", "v" }, desc = "Replace with register" },
+      { "gr", mode = { "n", "v" }, desc = "Replace with Register" },
       { "gS", mode = { "n", "v" }, desc = "Sort" },
     },
     opts = {
@@ -291,10 +291,10 @@ return {
   {
     "numToStr/Navigator.nvim",
     keys = {
-      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Go to left window", mode = { "i", "n", "t" } },
-      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Go to right window", mode = { "i", "n", "t" } },
-      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Go to lower window", mode = { "i", "n", "t" } },
-      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Go to upper window", mode = { "i", "n", "t" } },
+      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Goto Left Window", mode = { "i", "n", "t" } },
+      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Goto Right window", mode = { "i", "n", "t" } },
+      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Goto Lower Window", mode = { "i", "n", "t" } },
+      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Goto Upper Window", mode = { "i", "n", "t" } },
     },
     opts = {},
   },
@@ -322,14 +322,6 @@ return {
         end,
         mode = "o",
         desc = "Jump",
-      },
-      {
-        "<C-s>",
-        function()
-          require("flash").toggle()
-        end,
-        mode = "c",
-        desc = "Toggle search jump",
       },
     },
     opts = { modes = { char = { highlight = { backdrop = false } } } },
@@ -376,14 +368,21 @@ return {
         function()
           Snacks.notifier.hide()
         end,
-        desc = "Dismiss all notifications",
+        desc = "Dismiss All Notifications",
+      },
+      {
+        "<Leader>u/",
+        function()
+          Snacks.picker.notifications()
+        end,
+        desc = "Notifications",
       },
       {
         "<C-q>",
         function()
           Snacks.bufdelete()
         end,
-        desc = "Close buffer",
+        desc = "Close Buffer",
       },
       {
         "<Leader>gf",
@@ -391,7 +390,7 @@ return {
           Snacks.gitbrowse()
         end,
         mode = { "n", "x" },
-        desc = "Git browse",
+        desc = "Git Browse",
       },
       {
         "<M-=>",
@@ -406,7 +405,7 @@ return {
         function()
           Snacks.scratch()
         end,
-        desc = "Toggle scratch buffer",
+        desc = "Open Scratch Buffer",
       },
       {
         "<C-w>z",
@@ -420,35 +419,42 @@ return {
         function()
           Snacks.picker.help()
         end,
-        desc = "Help pages",
+        desc = "Help Pages",
       },
       {
         "<Leader>ff",
         function()
           Snacks.picker.smart({ filter = { cwd = true } })
         end,
-        desc = "Smartly find files",
+        desc = "Smart Find Files",
       },
       {
         "<Leader>fF",
         function()
           Snacks.picker.files()
         end,
-        desc = "Find files",
+        desc = "Find Files",
       },
       {
         "<Leader>fr",
         function()
           Snacks.picker.recent({ filter = { cwd = true } })
         end,
-        desc = "Recent files",
+        desc = "Recent Files",
+      },
+      {
+        "<Leader>fp",
+        function()
+          Snacks.picker.projects()
+        end,
+        desc = "Projects",
       },
       {
         "<Leader>/",
         function()
           Snacks.picker.grep()
         end,
-        desc = "Live grep",
+        desc = "Live Grep",
       },
       {
         "<Leader>sa",
@@ -469,14 +475,14 @@ return {
         function()
           Snacks.picker.resume()
         end,
-        desc = "Last search",
+        desc = "Resume Last Search",
       },
       {
         "<Leader>sh",
         function()
           Snacks.picker.highlights()
         end,
-        desc = "Highlight groups",
+        desc = "Highlight Groups",
       },
       {
         "<Leader>sm",
@@ -490,35 +496,28 @@ return {
         function()
           Snacks.picker.diagnostics_buffer()
         end,
-        desc = "Document diagnostics",
+        desc = "Document Diagnostics",
       },
       {
         "<Leader>sX",
         function()
           Snacks.picker.diagnostics()
         end,
-        desc = "Workspace diagnostics",
+        desc = "Workspace Diagnostics",
       },
       {
         "<Leader>sq",
         function()
           Snacks.picker.qflist()
         end,
-        desc = "Quickfix",
+        desc = "Quickfix List",
       },
       {
         "<Leader>sl",
         function()
           Snacks.picker.loclist()
         end,
-        desc = "Loclist",
-      },
-      {
-        "<Leader>sb",
-        function()
-          Snacks.picker.buffers()
-        end,
-        desc = "Buffers",
+        desc = "Location List",
       },
       {
         "<Leader>sC",
@@ -546,7 +545,7 @@ return {
         function()
           Snacks.picker.lazy()
         end,
-        desc = "Plugin specs",
+        desc = "Plugins",
       },
       {
         "<Leader>sz",
@@ -556,13 +555,6 @@ return {
         desc = "Zoxide",
       },
       {
-        "<Leader>sP",
-        function()
-          Snacks.picker.projects()
-        end,
-        desc = "Projects",
-      },
-      {
         "<Leader>sT",
         function()
           Snacks.picker.treesitter()
@@ -570,39 +562,32 @@ return {
         desc = "Treesitter",
       },
       {
-        "<Leader>sL",
+        "<Leader>:",
         function()
-          Snacks.picker.lsp_config()
+          Snacks.picker.command_history()
         end,
-        desc = "LSP",
-      },
-      {
-        "<Leader>sn",
-        function()
-          Snacks.picker.notifications()
-        end,
-        desc = "Notifications",
+        desc = "Command History",
       },
       {
         "<Leader>gl",
         function()
           Snacks.picker.git_log_file()
         end,
-        desc = "Git log (current file)",
+        desc = "Git Log File",
       },
       {
         "<Leader>gL",
         function()
           Snacks.picker.git_log()
         end,
-        desc = "Git log",
+        desc = "Git Log",
       },
       {
         "<Leader>gs",
         function()
           Snacks.picker.git_status()
         end,
-        desc = "Git status",
+        desc = "Git Status",
       },
       {
         "<Leader>ut",
@@ -610,6 +595,13 @@ return {
           Snacks.picker.undo()
         end,
         desc = "Undotree",
+      },
+      {
+        "<Leader>bb",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Find Buffers",
       },
     },
     opts = {
@@ -649,12 +641,5 @@ return {
       words = { enabled = true },
     },
     priority = 1000,
-    specs = {
-      {
-        "folke/lazydev.nvim",
-        optional = true,
-        opts = { library = { { path = "snacks.nvim", words = { "Snacks" } } } },
-      },
-    },
   },
 }

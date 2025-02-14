@@ -9,8 +9,8 @@ return {
     "rest-nvim/rest.nvim",
     ft = "http",
     keys = {
-      { "<CR>", "<Cmd>Rest run<CR>", desc = "Send request", ft = "http" },
-      { "yr", "<Cmd>Rest curl yank<CR>", desc = "Copy request", ft = "http" },
+      { "<CR>", "<Cmd>Rest run<CR>", desc = "Send Request", ft = "http" },
+      { "yr", "<Cmd>Rest curl yank<CR>", desc = "Copy Request", ft = "http" },
     },
   },
   {

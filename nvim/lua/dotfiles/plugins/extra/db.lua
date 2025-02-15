@@ -18,7 +18,7 @@ return {
     "saghen/blink.cmp",
     opts = {
       sources = {
-        default = { "dadbod" },
+        per_filetype = { sql = { "dadbod" } },
         providers = {
           dadbod = {
             name = "Dadbod",

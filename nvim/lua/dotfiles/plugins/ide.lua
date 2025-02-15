@@ -592,10 +592,9 @@ return {
     specs = {
       {
         "saghen/blink.cmp",
-        optional = true,
         opts = {
           sources = {
-            default = { "lazydev" },
+            per_filetype = { lua = { "lazydev" } },
             providers = {
               lazydev = {
                 name = "LazyDev",
@@ -667,12 +666,13 @@ return {
           name = source,
           module = "blink.compat.source",
         }, opts.sources.providers[source] or {})
-        if not vim.list_contains(opts.sources.default, source) then
-          table.insert(opts.sources.default, source)
-        end
       end
 
       opts.sources.compat = nil
+
+      for _, sources in pairs(opts.sources.per_filetype) do
+        vim.list_extend(sources, opts.sources.default)
+      end
 
       require("blink.cmp").setup(opts)
     end,
@@ -715,7 +715,6 @@ return {
       },
       sources = {
         default = { "lsp", "snippets", "path", "buffer", "rg" },
-        cmdline = {},
         compat = {},
         providers = {
           rg = {
@@ -725,6 +724,7 @@ return {
           },
         },
       },
+      cmdline = { enabled = false },
       keymap = { preset = "super-tab" },
       fuzzy = { prebuilt_binaries = { download = false } },
     },

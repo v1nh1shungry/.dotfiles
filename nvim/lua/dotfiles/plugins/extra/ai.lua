@@ -3,12 +3,6 @@ if not vim.env.AVANTE_NVIM_API_KEY then
   return {}
 end
 
-vim.api.nvim_create_autocmd("FileType", {
-  command = "let b:snacks_image_attached = v:true",
-  group = Dotfiles.augroup("avante_disable_image"),
-  pattern = "Avante",
-})
-
 return {
   {
     "yetone/avante.nvim",
@@ -19,15 +13,15 @@ return {
       "folke/snacks.nvim",
       "echasnovski/mini.icons",
     },
-    keys = { { "<Leader>a", desc = "+ai" } },
+    keys = "<Leader>a",
     opts = {
-      provider = "deepseek",
+      provider = "qwen",
       vendors = {
-        deepseek = {
+        qwen = {
           __inherited_from = "openai",
           api_key_name = "AVANTE_NVIM_API_KEY",
           endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
-          model = "deepseek-r1",
+          model = "qwen-max-latest",
           disable_tools = true,
         },
       },
@@ -40,11 +34,27 @@ return {
       "saghen/blink.compat",
       opts = {},
     },
-    opts = { sources = { compat = { "avante_commands", "avante_mentions", "avante_files" } } },
+    opts = {
+      sources = {
+        compat = { "avante_commands", "avante_mentions", "avante_files" },
+        per_filetype = { AvanteInput = { "avante_commands", "avante_mentions", "avante_files" } },
+      },
+    },
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "Avante" },
     opts = { file_types = { "Avante" } },
-    ft = "Avante",
+  },
+  {
+    "folke/which-key.nvim",
+    opts = {
+      spec = {
+        {
+          mode = { "n", "v" },
+          { "<Leader>a", group = "ai" },
+        },
+      },
+    },
   },
 }

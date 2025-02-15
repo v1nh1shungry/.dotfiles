@@ -1,12 +1,9 @@
 return vim
   .iter(Dotfiles.user.extra)
   :map(function(spec)
-    local extra = "dotfiles.plugins.extra." .. spec
-
-    if type(spec) == "string" and vim.F.npcall(require, extra) then
-      return { import = extra }
+    if type(spec) == "string" and vim.F.npcall(require, "dotfiles.plugins.extra." .. spec) then
+      return { import = "dotfiles.plugins.extra." .. spec }
     end
-
     return spec
   end)
   :totable()

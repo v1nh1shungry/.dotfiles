@@ -454,7 +454,6 @@ return {
     },
     specs = {
       "akinsho/bufferline.nvim",
-      optional = true,
       opts = function()
         local Offset = require("bufferline.offset")
         if not Offset.edgy then
@@ -497,29 +496,31 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    config = function(_, opts)
-      require("render-markdown").setup(opts)
-      Snacks.toggle({
-        name = "Render Markdown",
-        get = function()
-          return require("render-markdown.state").enabled
-        end,
-        set = function(enabled)
-          local m = require("render-markdown")
-          if enabled then
-            m.enable()
-          else
-            m.disable()
-          end
-        end,
-      }):map("<leader>uc")
-    end,
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
-    ft = "markdown",
+    ft = { "markdown" },
+    keys = { { "<Leader>uc", "<Cmd>RenderMarkdown buf_toggle<CR>", desc = "Toggle Render Markdown", ft = "markdown" } },
     opts = {
       code = { sign = false, width = "block", right_pad = 1 },
       heading = { sign = false, icons = {} },
       checkbox = { enabled = false },
+      file_types = { "markdown" },
+    },
+    opts_extend = { "file_types" },
+    specs = {
+      {
+        "saghen/blink.cmp",
+        opts = {
+          sources = {
+            per_filetype = { markdown = { "markdown" } },
+            providers = {
+              markdown = {
+                name = "RenderMarkdown",
+                module = "render-markdown.integ.blink",
+              },
+            },
+          },
+        },
+      },
     },
   },
   {

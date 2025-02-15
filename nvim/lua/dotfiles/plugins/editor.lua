@@ -13,27 +13,6 @@ return {
     opts = { search_method = "cover_or_next" },
   },
   {
-    "Wansmer/sibling-swap.nvim",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    opts = { use_default_keymaps = false },
-    keys = {
-      {
-        "<C-l>",
-        function()
-          require("sibling-swap").swap_with_right()
-        end,
-        desc = "Swap with Right",
-      },
-      {
-        "<C-h>",
-        function()
-          require("sibling-swap").swap_with_left()
-        end,
-        desc = "Swap with Left",
-      },
-    },
-  },
-  {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
     opts = {
@@ -52,19 +31,6 @@ return {
     opts = {},
   },
   {
-    "cshuaimin/ssr.nvim",
-    keys = {
-      {
-        "<Leader>sr",
-        function()
-          require("ssr").open()
-        end,
-        mode = { "n", "x" },
-        desc = "Structural Search & Replace",
-      },
-    },
-  },
-  {
     "dhruvasagar/vim-table-mode",
     config = function()
       vim.g.table_mode_corner = "|"
@@ -77,59 +43,103 @@ return {
     -- TODO: remove pin after #42 is merged
     build = "git pull origin refs/pull/42/head",
     commit = "8b34305ffc28bd75a22f5a0a9928ee726a85c9a6",
-    event = Dotfiles.events.enter_insert,
+    event = "InsertEnter",
     main = "nvim-treesitter.configs",
     opts = { endwise = { enable = true } },
     pin = true,
   },
-  -- LazyVim {{{
+  -- Modified from https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/mini.lua {{{
   {
     "echasnovski/mini.pairs",
     config = function(_, opts)
       local pairs = require("mini.pairs")
       pairs.setup(opts)
+
       local open = pairs.open
       pairs.open = function(pair, neigh_pattern)
         if vim.fn.getcmdline() ~= "" then
           return open(pair, neigh_pattern)
         end
+
         local o, c = pair:sub(1, 1), pair:sub(2, 2)
         local line = vim.api.nvim_get_current_line()
         local cursor = vim.api.nvim_win_get_cursor(0)
         local next = line:sub(cursor[2] + 1, cursor[2] + 1)
         local before = line:sub(1, cursor[2])
-        if opts.markdown and o == "`" and vim.bo.filetype == "markdown" and before:match("^%s*``") then
+
+        if o == "`" and vim.bo.filetype == "markdown" and before:match("^%s*``") then
           return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
         end
-        if opts.skip_next and next ~= "" and next:match(opts.skip_next) then
+
+        if next ~= "" and next:match([=[[%w%%%'%[%"%.%`%$]]=]) then
           return o
         end
-        if opts.skip_ts and #opts.skip_ts > 0 then
-          local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
-          for _, capture in ipairs(ok and captures or {}) do
-            if vim.list_contains(opts.skip_ts, capture.capture) then
-              return o
-            end
+
+        local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
+        for _, capture in ipairs(ok and captures or {}) do
+          if vim.list_contains({ "string" }, capture.capture) then
+            return o
           end
         end
-        if opts.skip_unbalanced and next == c and c ~= o then
+
+        if next == c and c ~= o then
           local _, count_open = line:gsub(vim.pesc(pair:sub(1, 1)), "")
           local _, count_close = line:gsub(vim.pesc(pair:sub(2, 2)), "")
           if count_close > count_open then
             return o
           end
         end
+
         return open(pair, neigh_pattern)
       end
+
+      -- Modified from original `MiniPairs.close`. {{{
+      --
+      -- API exported is not enough to implement the feature, so I have to copy
+      -- some helper function from original plugin :(
+      local function get_cursor_pos()
+        if vim.fn.mode() == "c" then
+          return vim.fn.getcmdline(), vim.fn.getcmdpos()
+        end
+        return vim.api.nvim_get_current_line(), vim.api.nvim_win_get_cursor(0)[2]
+      end
+
+      local function get_cursor_neigh(start, finish)
+        local line, col = get_cursor_pos()
+        if vim.fn.mode() == "c" then
+          start = start - 1
+          finish = finish - 1
+        end
+        return string.sub(("%s%s%s"):format("\r", line, "\n"), col + 1 + start, col + 1 + finish)
+      end
+
+      local function neigh_match(pattern)
+        return (pattern == nil) or (get_cursor_neigh(0, 1):find(pattern) ~= nil)
+      end
+
+      local function is_disabled()
+        return vim.g.minipairs_disable == true or vim.b.minipairs_disable == true
+      end
+
+      pairs.close = function(pair, neigh_pattern)
+        if is_disabled() or not neigh_match(neigh_pattern) then
+          return pair:sub(2, 2)
+        end
+
+        local close = pair:sub(2, 2)
+        local line, col = get_cursor_pos()
+        local idx = line:find(close, col + 1, true)
+
+        if idx then
+          return vim.api.nvim_replace_termcodes("<Right>", true, true, true):rep(idx - col)
+        end
+
+        return close
+      end
+      -- }}}
     end,
-    event = Dotfiles.events.enter_insert,
-    opts = {
-      modes = { insert = true, command = true, terminal = false },
-      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-      skip_ts = { "string" },
-      skip_unbalanced = true,
-      markdown = true,
-    },
+    event = "InsertEnter",
+    opts = { mappings = { [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" } } },
   },
   -- }}}
 }

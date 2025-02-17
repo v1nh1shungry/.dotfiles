@@ -55,17 +55,6 @@ return {
       local pairs = require("mini.pairs")
       pairs.setup(opts)
 
-      local function match_skip_ts()
-        local cursor = vim.api.nvim_win_get_cursor(0)
-        local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
-        for _, capture in ipairs(ok and captures or {}) do
-          if vim.list_contains({ "string", "comment" }, capture.capture) then
-            return true
-          end
-        end
-        return false
-      end
-
       local open = pairs.open
       pairs.open = function(pair, neigh_pattern)
         if vim.fn.getcmdline() ~= "" then
@@ -86,8 +75,11 @@ return {
           return o
         end
 
-        if match_skip_ts() then
-          return o
+        local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
+        for _, capture in ipairs(ok and captures or {}) do
+          if vim.tbl_contains({ "string" }, capture.capture) then
+            return o
+          end
         end
 
         if next == c and c ~= o then
@@ -100,55 +92,6 @@ return {
 
         return open(pair, neigh_pattern)
       end
-
-      -- Modified from original `MiniPairs.close`. {{{
-      --
-      -- API exported is not enough to implement the feature, so I have to copy
-      -- some helper function from original plugin :(
-      local function get_cursor_pos()
-        if vim.fn.mode() == "c" then
-          return vim.fn.getcmdline(), vim.fn.getcmdpos()
-        end
-        return vim.api.nvim_get_current_line(), vim.api.nvim_win_get_cursor(0)[2]
-      end
-
-      local function get_cursor_neigh(start, finish)
-        local line, col = get_cursor_pos()
-        if vim.fn.mode() == "c" then
-          start = start - 1
-          finish = finish - 1
-        end
-        return string.sub(("%s%s%s"):format("\r", line, "\n"), col + 1 + start, col + 1 + finish)
-      end
-
-      local function neigh_match(pattern)
-        return (pattern == nil) or (get_cursor_neigh(0, 1):find(pattern) ~= nil)
-      end
-
-      local function is_disabled()
-        return vim.g.minipairs_disable == true or vim.b.minipairs_disable == true
-      end
-
-      pairs.close = function(pair, neigh_pattern)
-        if is_disabled() or not neigh_match(neigh_pattern) then
-          return pair:sub(2, 2)
-        end
-
-        local close = pair:sub(2, 2)
-        if match_skip_ts() then
-          return close
-        end
-
-        local line, col = get_cursor_pos()
-        local idx = line:find(close, col + 1, true)
-
-        if idx then
-          return vim.api.nvim_replace_termcodes("<Right>", true, true, true):rep(idx - col)
-        end
-
-        return close
-      end
-      -- }}}
     end,
     event = "InsertEnter",
     opts = { mappings = { [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" } } },

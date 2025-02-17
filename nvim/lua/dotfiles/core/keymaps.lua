@@ -97,7 +97,7 @@ map({ "<C-k>", ":m '<-2<CR>gv=gv", mode = "v", desc = "Move Up" })
 
 map({ "<Leader>pl", "<Cmd>Lazy home<CR>", desc = "Lazy" })
 
-map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Give Up Modifications" })
+map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Drop Modifications" })
 
 map({ "$", "g_", mode = "x", desc = "End of Line" })
 

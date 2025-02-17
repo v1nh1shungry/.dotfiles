@@ -374,12 +374,7 @@ return {
     "folke/edgy.nvim",
     event = "VeryLazy",
     opts = {
-      left = {
-        {
-          ft = "dbui",
-          title = "DBUI",
-        },
-      },
+      left = {},
       bottom = {
         {
           ft = "noice",
@@ -417,10 +412,6 @@ return {
               and vim.w[win].snacks_win.relative == "editor"
           end,
         },
-        {
-          ft = "dbout",
-          title = "DB Query Result",
-        },
       },
       right = {
         {
@@ -452,6 +443,7 @@ return {
         },
       },
     },
+    opts_extend = { "left", "bottom", "right", "top" },
     specs = {
       "akinsho/bufferline.nvim",
       opts = function()

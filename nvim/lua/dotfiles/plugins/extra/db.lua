@@ -28,4 +28,21 @@ return {
       },
     },
   },
+  {
+    "folke/edgy.nvim",
+    opts = {
+      left = {
+        {
+          ft = "dbui",
+          title = "DBUI",
+        },
+      },
+      bottom = {
+        {
+          ft = "dbout",
+          title = "DB Query Result",
+        },
+      },
+    },
+  },
 }

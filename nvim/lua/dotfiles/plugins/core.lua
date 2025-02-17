@@ -394,6 +394,7 @@ return {
         mode = { "n", "x" },
         desc = "Git Browse",
       },
+      -- FIXME: terminal exited with -1
       {
         "<M-=>",
         function()
@@ -408,6 +409,13 @@ return {
           Snacks.scratch()
         end,
         desc = "Open Scratch Buffer",
+      },
+      {
+        "<Leader>ft",
+        function()
+          Snacks.picker.explorer()
+        end,
+        desc = "Explorer (Tree)",
       },
       {
         "<C-w>z",
@@ -605,6 +613,13 @@ return {
         end,
         desc = "Find Buffers",
       },
+      {
+        "<Leader>b/",
+        function()
+          Snacks.picker.grep_buffers()
+        end,
+        desc = "Grep",
+      }
     },
     opts = {
       bigfile = { enabled = true },
@@ -635,7 +650,10 @@ return {
       indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },
-      picker = { layout = { preset = "ivy" } },
+      picker = {
+        layout = { preset = "ivy" },
+        previewers = { git = { native = true } },
+      },
       quickfile = { enabled = true },
       scope = { cursor = false },
       scratch = { autowrite = false },

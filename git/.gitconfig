@@ -1,35 +1,47 @@
-[user]
-  email = v1nh1shungry@outlook.com
-  name = Yuanjing Hong
+[core]
+  editor = nvim
+  pager = delta
+
+[delta]
+  line-numbers = true
+  navigate = true
+  syntax-theme = tokyonight_moon
+  # https://github.com/folke/tokyonight.nvim
+  line-numbers-minus-style      = "#e26a75"
+  line-numbers-plus-style       = "#b8db87"
+  line-numbers-zero-style       = "#3b4261"
+  minus-emph-style              = syntax "#6b2e43"
+  minus-empty-line-marker-style = syntax "#3a273a"
+  minus-non-emph-style          = syntax "#3a273a"
+  minus-style                   = syntax "#3a273a"
+  plus-emph-style               = syntax "#305f6f"
+  plus-empty-line-marker-style  = syntax "#273849"
+  plus-non-emph-style           = syntax "#273849"
+  plus-style                    = syntax "#273849"
+
+[diff]
+  colorMoved = default
 
 [init]
   defaultBranch = main
 
-[core]
-  pager = delta
-  editor = nvim
-
 [interactive]
   diffFilter = delta --color-only
-
-[delta]
-  navigate = true
-  light = false
-  line-numbers = true
 
 [merge]
   conflictstyle = zdiff3
   tool = diffview
 
 [mergetool]
-  prompt = false
   keepBackup = false
+  prompt = false
 
 [mergetool "diffview"]
   cmd = nvim -n -c "DiffviewOpen" "$MERGE"
 
-[diff]
-  colorMoved = default
-
 [pull]
   rebase = true
+
+[user]
+  email = v1nh1shungry@outlook.com
+  name = Yuanjing Hong

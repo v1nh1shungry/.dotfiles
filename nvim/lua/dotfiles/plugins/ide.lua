@@ -1,7 +1,8 @@
 -- Modified from https://github.com/nvimdev/lspsaga.nvim {{{
 local peek_stack = {}
 
--- FIXME: restore buffer
+-- FIXME: `q` keymap doesn't work after a few windows
+-- TODO: open keymaps
 local function peek_definition()
   local params = vim.lsp.util.make_position_params(0, "utf-8")
   vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _)
@@ -10,10 +11,11 @@ local function peek_definition()
     end
 
     local buf = vim.uri_to_bufnr(result.targetUri or result.uri)
-    local win_opts = {
+    local opts = {
       buf = buf,
       border = "rounded",
       height = math.floor(vim.o.lines * 0.5),
+      minimal = false,
       position = "float",
       title = vim.api.nvim_buf_get_name(buf),
       title_pos = "center",
@@ -23,13 +25,13 @@ local function peek_definition()
 
     if #peek_stack > 0 then
       local prev_conf = vim.api.nvim_win_get_config(peek_stack[#peek_stack])
-      win_opts.col = prev_conf.col + 1
-      win_opts.height = prev_conf.height - 1
-      win_opts.row = prev_conf.row + 1
-      win_opts.width = prev_conf.width - 2
+      opts.col = prev_conf.col + 1
+      opts.height = prev_conf.height - 1
+      opts.row = prev_conf.row + 1
+      opts.width = prev_conf.width - 2
     end
 
-    local winid = Snacks.win(win_opts).win
+    local winid = Snacks.win(opts).win
     local range = result.targetSelectionRange or result.range
     vim.api.nvim_win_set_cursor(winid, {
       range.start.line + 1,
@@ -38,7 +40,10 @@ local function peek_definition()
 
     vim.api.nvim_create_autocmd("WinClosed", {
       callback = function()
-        table.remove(peek_stack)
+        if #peek_stack > 0 then
+          table.remove(peek_stack)
+          vim.cmd(vim.api.nvim_win_get_number(peek_stack[#peek_stack]) .. " wincmd w")
+        end
       end,
       pattern = tostring(winid),
     })

@@ -13,7 +13,7 @@ local M = {
   context = 2,
   max_file_size = "1M",
   timeout = 50,
-  hl_group = "Search",
+  hl_group = "IncSearch",
   min_keyword_length = 5,
 }
 
@@ -185,8 +185,8 @@ function M:get_completions(context, resolve)
                 value = vim.iter(match.context_preview):fold("", function(acc, v)
                   return acc .. v.text .. "\n"
                 end),
-                ---@param opts blink.cmp.SourceRenderDocumentationOpts
-                render = function(opts)
+                ---@param opts blink.cmp.CompletionDocumentationDrawOpts
+                draw = function(opts)
                   local bufnr = opts.window:get_buf()
 
                   vim.api.nvim_buf_set_lines(

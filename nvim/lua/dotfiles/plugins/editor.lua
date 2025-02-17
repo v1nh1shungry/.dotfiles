@@ -55,6 +55,17 @@ return {
       local pairs = require("mini.pairs")
       pairs.setup(opts)
 
+      local function match_skip_ts()
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
+        for _, capture in ipairs(ok and captures or {}) do
+          if vim.list_contains({ "string", "comment" }, capture.capture) then
+            return true
+          end
+        end
+        return false
+      end
+
       local open = pairs.open
       pairs.open = function(pair, neigh_pattern)
         if vim.fn.getcmdline() ~= "" then
@@ -75,11 +86,8 @@ return {
           return o
         end
 
-        local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
-        for _, capture in ipairs(ok and captures or {}) do
-          if vim.list_contains({ "string" }, capture.capture) then
-            return o
-          end
+        if match_skip_ts() then
+          return o
         end
 
         if next == c and c ~= o then
@@ -127,6 +135,10 @@ return {
         end
 
         local close = pair:sub(2, 2)
+        if match_skip_ts() then
+          return close
+        end
+
         local line, col = get_cursor_pos()
         local idx = line:find(close, col + 1, true)
 

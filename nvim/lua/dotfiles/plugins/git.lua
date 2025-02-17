@@ -21,7 +21,7 @@ return {
         map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
         map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Current Buffer" })
         map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo Staged Hunk" })
-        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" })
+        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk_inline<CR>", desc = "Preview Hunk" })
         map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset Hunk" })
         map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Current Buffer" })
         map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this Line" })

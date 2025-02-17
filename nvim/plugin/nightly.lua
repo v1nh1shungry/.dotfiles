@@ -1,4 +1,3 @@
--- TODO: dashboard
 if not Dotfiles.user.nightly then
   return
 end
@@ -9,6 +8,13 @@ end
 ---@field latest string
 ---@field rollback? string
 
+local ffi = require("ffi")
+
+ffi.cdef([[
+int lockf(int fd, int cmd, long len);
+const char *gnu_get_libc_version();
+]])
+
 local NIGHTLY_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
 local NIGHTLY_METADATA_DIRECTORY = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-metadata.json")
 local LOCKFILE = vim.fs.joinpath(NIGHTLY_DIRECTORY, "LOCK")
@@ -17,26 +23,25 @@ local TIMEOUT_SECS = Dotfiles.user.nightly * 60 * 60
 local USR_LOCAL_DIRECTORY = vim.fs.joinpath(vim.env.HOME, ".local")
 local USR_BIN_DIRECTORY = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "bin")
 
+local GITHUB_REPO_NAME = "neovim"
+if vim.version.cmp(ffi.string(ffi.C.gnu_get_libc_version()), "2.31") <= 0 then
+  GITHUB_REPO_NAME = "neovim-releases"
+end
+
 local GITHUB_PROXY = "https://gh-proxy.com/"
 local ASSET_NAME = "nvim-linux-x86_64"
 local ASSET_PACKAGE_NAME = ASSET_NAME .. ".tar.gz"
 
 local AUGROUP = Dotfiles.augroup("nightly")
 
-if vim.fn.isdirectory(NIGHTLY_DIRECTORY) == 0 then
-  vim.fn.mkdir(NIGHTLY_DIRECTORY)
-end
-
-local ffi = require("ffi")
-
-ffi.cdef([[
-int lockf(int fd, int cmd, long len);
-]])
-
 local F_TLOCK = 2
 local F_ULOCK = 0
 
 local LOCK_FD = vim.uv.fs_open(LOCKFILE, "w", tonumber("0644", 8))
+
+if vim.fn.isdirectory(NIGHTLY_DIRECTORY) == 0 then
+  vim.fn.mkdir(NIGHTLY_DIRECTORY)
+end
 
 local function unlock()
   ffi.C.lockf(LOCK_FD, F_ULOCK, 0)
@@ -85,15 +90,15 @@ local function write_metadata(metadata)
 end
 
 ---@async
----@param version string
+---@param id string
 ---@return boolean
-local function install(version)
-  local VERSION_DIR = vim.fs.joinpath(NIGHTLY_DIRECTORY, version)
+local function install(id)
+  local TARGET_DIR = vim.fs.joinpath(NIGHTLY_DIRECTORY, id)
 
   local res = Dotfiles.async.system({
     "ln",
     "-sf",
-    vim.fs.joinpath(VERSION_DIR, "bin", "nvim"),
+    vim.fs.joinpath(TARGET_DIR, "bin", "nvim"),
     vim.fs.joinpath(USR_BIN_DIRECTORY, "nvim"),
   })
 
@@ -107,7 +112,7 @@ local function install(version)
   res = Dotfiles.async.system({
     "install",
     "-Dm644",
-    vim.fs.joinpath(VERSION_DIR, "share", "applications", "nvim.desktop"),
+    vim.fs.joinpath(TARGET_DIR, "share", "applications", "nvim.desktop"),
     "-T",
     ENTRY_PATH,
   })
@@ -121,7 +126,7 @@ local function install(version)
     "sed",
     "-i",
     "s|Icon=nvim|Icon="
-      .. vim.fs.joinpath(VERSION_DIR, "share", "icons", "hicolor", "128x128", "apps", "nvim.png")
+      .. vim.fs.joinpath(TARGET_DIR, "share", "icons", "hicolor", "128x128", "apps", "nvim.png")
       .. "|g",
     ENTRY_PATH,
   })
@@ -146,7 +151,7 @@ local function install(version)
   res = Dotfiles.async.system({
     "install",
     "-Dm444",
-    vim.fs.joinpath(VERSION_DIR, "share", "man", "man1", "nvim.1"),
+    vim.fs.joinpath(TARGET_DIR, "share", "man", "man1", "nvim.1"),
     "-t",
     vim.fs.joinpath(USR_LOCAL_DIRECTORY, "share", "man", "man1"),
   })
@@ -175,13 +180,13 @@ local function update(force)
 
   Snacks.notify.info("Start updating nightly neovim")
 
-  local release = api("https://api.github.com/repos/neovim/neovim/releases/tags/nightly")
+  local release = api(("https://api.github.com/repos/neovim/%s/releases/tags/nightly"):format(GITHUB_REPO_NAME))
   if not release then
     unlock()
     return
   end
 
-  if metadata.latest and metadata.latest == release.target_commitish then
+  if metadata.latest and metadata.latest == release.id then
     Snacks.notify.info("No update for nightly neovim")
 
     if metadata.current ~= metadata.latest and install(metadata.latest) then
@@ -203,7 +208,7 @@ local function update(force)
   end
 
   if not url then
-    Snacks.notify.error("No available package in github release")
+    Snacks.notify.error("No available nightly neovim package")
     unlock()
     return
   end
@@ -226,7 +231,7 @@ local function update(force)
     "xf",
     package_path,
     "--transform",
-    ("s/%s/%s/"):format(ASSET_NAME, release.target_commitish),
+    ("s/%s/%s/"):format(ASSET_NAME, release.id),
     "--directory",
     NIGHTLY_DIRECTORY,
   })
@@ -241,9 +246,9 @@ local function update(force)
     vim.fs.rm(vim.fs.joinpath(NIGHTLY_DIRECTORY, metadata.rollback), { recursive = true, force = true })
   end
 
-  if install(release.target_commitish) then
+  if install(release.id) then
     metadata.rollback = metadata.latest
-    metadata.latest = release.target_commitish
+    metadata.latest = release.id
     metadata.current = metadata.latest
 
     write_metadata(metadata)
@@ -292,8 +297,4 @@ Dotfiles.map({
   end),
   desc = "Update",
 })
-Dotfiles.map({
-  "<Leader>pnr",
-  Dotfiles.async.void(rollback),
-  desc = "Rollback",
-})
+Dotfiles.map({ "<Leader>pnr", Dotfiles.async.void(rollback), desc = "Rollback" })

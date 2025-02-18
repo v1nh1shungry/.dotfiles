@@ -1,12 +1,11 @@
+vim.api.nvim_set_hl(0, "BiqugeDocument", {
+  link = "Comment",
+  italic = false,
+})
+
 return {
   {
     "v1nh1shungry/biquge.nvim",
-    init = function()
-      vim.api.nvim_set_hl(0, "BiqugeDocument", {
-        link = "Comment",
-        italic = false,
-      })
-    end,
     keys = {
       { "<Leader>n", "", desc = "+novel" },
       {

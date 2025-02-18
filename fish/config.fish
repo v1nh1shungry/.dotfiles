@@ -68,4 +68,12 @@ if status is-interactive
             rm -f -- "$tmp"
         end
     end
+
+    if test -e ~/.local/share/nvim/lazy/fzf/bin/fzf
+        fish_add_path -g ~/.local/share/nvim/lazy/fzf/bin
+    end
+
+    if command -q fzf && command -q delta
+        set -gx fzf_diff_highlighter "delta --paging=never --width=20"
+    end
 end

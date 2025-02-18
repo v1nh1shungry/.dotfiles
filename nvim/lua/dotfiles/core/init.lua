@@ -1,5 +1,3 @@
-_G.Dotfiles = require("dotfiles.utils")
-
 vim.filetype.add({
   filename = { [".nvimrc"] = "lua" },
   pattern = {

@@ -855,7 +855,7 @@ return {
     cmd = "Outline",
     opts = {
       outline_window = { auto_close = true, hide_cursor = true },
-      preview_window = { border = "rounded", winblend = vim.opt.winblend },
+      preview_window = { border = "rounded", winblend = Dotfiles.user.ui.blend },
       keymaps = {
         goto_location = { "o", "<CR>" },
         peek_location = {},

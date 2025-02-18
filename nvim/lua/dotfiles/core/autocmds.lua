@@ -57,7 +57,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(event)
     if vim.bo.buftype == "nofile" then
       vim.opt_local.buflisted = false
-      vim.opt_local.bufhidden = "wipe"
       vim.opt_local.number = false
       vim.opt_local.relativenumber = false
       vim.opt_local.cc = ""

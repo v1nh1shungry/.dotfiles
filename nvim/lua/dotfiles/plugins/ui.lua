@@ -51,7 +51,7 @@ return {
             vim.cmd("BufferLineCycleNext")
           end
         end,
-        desc = "Goto Next Buffer",
+        desc = "Next Buffer",
       },
       {
         "[b",
@@ -60,10 +60,12 @@ return {
             vim.cmd("BufferLineCyclePrev")
           end
         end,
-        desc = "Goto Previous Buffer",
+        desc = "Previous Buffer",
       },
-      { "[B", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Goto First Buffer" },
-      { "]B", "<Cmd>BufferLineGoToBuffer -1<CR>", desc = "Goto Last Buffer" },
+      { "<S-h>", "<Cmd>BufferLineCycleNext<CR>", desc = "Previous Buffer" },
+      { "<S-l>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Next Buffer" },
+      { "[B", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "First Buffer" },
+      { "]B", "<Cmd>BufferLineGoToBuffer -1<CR>", desc = "Last Buffer" },
       { "gb", "<Cmd>execute 'BufferLineGoToBuffer ' .. v:count1<CR>", desc = "Goto Buffer" },
       { "gB", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
       { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Only" },

@@ -293,10 +293,10 @@ return {
   {
     "numToStr/Navigator.nvim",
     keys = {
-      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Goto Left Window", mode = { "i", "n", "t" } },
-      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Goto Right window", mode = { "i", "n", "t" } },
-      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Goto Lower Window", mode = { "i", "n", "t" } },
-      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Goto Upper Window", mode = { "i", "n", "t" } },
+      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Left Window", mode = { "i", "n", "t" } },
+      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Right window", mode = { "i", "n", "t" } },
+      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Lower Window", mode = { "i", "n", "t" } },
+      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Upper Window", mode = { "i", "n", "t" } },
     },
     opts = {},
   },
@@ -394,7 +394,6 @@ return {
         mode = { "n", "x" },
         desc = "Git Browse",
       },
-      -- FIXME: terminal exited with -1
       {
         "<M-=>",
         function()

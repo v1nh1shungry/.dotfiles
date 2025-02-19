@@ -1,7 +1,7 @@
 return {
   {
     "lewis6991/gitsigns.nvim",
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
     keys = {
       {
         "<Leader>xH",

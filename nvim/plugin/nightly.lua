@@ -28,7 +28,6 @@ if vim.version.cmp(ffi.string(ffi.C.gnu_get_libc_version()), "2.31") <= 0 then
   GITHUB_REPO_NAME = "neovim-releases"
 end
 
-local GITHUB_PROXY = "https://gh-proxy.com/"
 local ASSET_NAME = "nvim-linux-x86_64"
 local ASSET_PACKAGE_NAME = ASSET_NAME .. ".tar.gz"
 
@@ -213,11 +212,7 @@ local function update(force)
     return
   end
 
-  local res = Dotfiles.async.system({
-    "curl",
-    "-fsSLO",
-    GITHUB_PROXY .. url,
-  }, { cwd = vim.uv.os_tmpdir() })
+  local res = Dotfiles.async.system({ "curl", "-fsSLO", url }, { cwd = vim.uv.os_tmpdir() })
 
   if res.code ~= 0 then
     Snacks.notify.error("Failed to download nightly neovim package: " .. res.stderr)

@@ -6,15 +6,16 @@ return {
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_nomode = "i"
     end,
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
   },
   {
     "nvim-lua/plenary.nvim",
     lazy = true,
   },
   {
-    "tpope/vim-sleuth",
-    event = Dotfiles.events.enter_buffer,
+    "nmac427/guess-indent.nvim",
+    event = "LazyFile",
+    opts = {},
   },
   -- https://www.lazyvim.org/plugins/coding#miniai {{{
   -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter-textobjects
@@ -46,7 +47,7 @@ return {
         dependencies = "nvim-treesitter/nvim-treesitter",
       },
     },
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
     opts = function()
       local ai = require("mini.ai")
 
@@ -185,7 +186,18 @@ return {
         require("nvim-treesitter.install").uninstall(unused_parsers)
       end
     end,
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
+    -- https://github.com/LazyVim/LazyVim {{{
+    init = function(plugin)
+      -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
+      -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
+      -- no longer trigger the **nvim-treesitter** module to be loaded in time.
+      -- Luckily, the only things that those plugins need are the custom queries, which we make available
+      -- during startup.
+      require("lazy.core.loader").add_to_rtp(plugin)
+      require("nvim-treesitter.query_predicates")
+    end,
+    -- }}}
     opts = {
       ensure_installed = {
         "bash",

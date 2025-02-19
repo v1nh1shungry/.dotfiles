@@ -77,7 +77,7 @@ return {
 
         local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
         for _, capture in ipairs(ok and captures or {}) do
-          if vim.tbl_contains({ "string" }, capture.capture) then
+          if vim.tbl_contains({ "string", "comment" }, capture.capture) then
             return o
           end
         end
@@ -92,9 +92,41 @@ return {
 
         return open(pair, neigh_pattern)
       end
+
+      local closeopen = pairs.closeopen
+      pairs.closeopen = function(pair, neigh_pattern)
+        if vim.fn.getcmdline() ~= "" then
+          return closeopen(pair, neigh_pattern)
+        end
+
+        local o = pair:sub(1, 1)
+        if vim.list_contains(MiniPairs.config.mappings[o].excluded_filetypes or {}, vim.bo.filetype) then
+          return o
+        end
+
+        return closeopen(pair, neigh_pattern)
+      end
+
+      ---@param lhs string
+      ---@param rhs string | fun(): string
+      ---@param desc string
+      local function map(lhs, rhs, desc)
+        Dotfiles.map({ lhs, rhs, expr = true, mode = "i", replace_keycodes = false, desc = desc })
+      end
+
+      map("<C-h>", "v:lua.MiniPairs.bs()", "Backspace")
+      map("<C-w>", 'v:lua.MiniPairs.bs("\23")', "Delete Word Before Cursor")
+      map("<C-u>", 'v:lua.MiniPairs.bs("\21")', "Delete All Before Cursor")
+      map("<C-j>", "v:lua.MiniPairs.cr()", "New Line")
     end,
     event = "InsertEnter",
-    opts = { mappings = { [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" } } },
+    opts = {
+      mappings = {
+        [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" },
+        ["'"] = { excluded_filetypes = { "rust" } },
+      },
+      modes = { command = true },
+    },
   },
   -- }}}
 }

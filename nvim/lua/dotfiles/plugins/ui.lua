@@ -2,7 +2,7 @@ return {
   {
     "folke/todo-comments.nvim",
     dependencies = "nvim-lua/plenary.nvim",
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
     keys = {
       { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
       {
@@ -214,11 +214,18 @@ return {
     event = "VeryLazy",
     keys = {
       {
+        "<Leader>bk",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Keymaps",
+      },
+      {
         "<C-w><Space>",
         function()
           require("which-key").show({ keys = "<C-w>", loop = true })
         end,
-        desc = "Window Hydra Mode (which-key)",
+        desc = "Window Hydra Mode",
       },
     },
     opts = {
@@ -370,7 +377,7 @@ return {
   },
   {
     "Bekaboo/deadcolumn.nvim",
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
   },
   {
     "folke/edgy.nvim",
@@ -707,11 +714,11 @@ return {
   },
   {
     "lewis6991/satellite.nvim",
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
   },
   {
     "Bekaboo/dropbar.nvim",
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
   },
   {
     "fei6409/log-highlight.nvim",
@@ -720,6 +727,6 @@ return {
   },
   {
     "v1nh1shungry/error-lens.nvim",
-    event = Dotfiles.events.enter_buffer,
+    event = "LazyFile",
   },
 }

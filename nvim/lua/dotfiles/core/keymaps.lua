@@ -189,10 +189,12 @@ map({
     local input = vim.F.npcall(function()
       return string.char(vim.fn.getchar())
     end)
-    if not input then
+    if not input or not input:match("%a") then
+      Snacks.notify.warn("Aborted: invalid mark")
       return
     end
     pcall(vim.cmd.delmark, input)
+    vim.cmd("redraw!")
   end,
   desc = "Delete Mark",
 })
@@ -205,14 +207,11 @@ map({
         vim.cmd("delmark " .. mark.mark:sub(2, 2))
       end
     end
+    vim.cmd("redraw!")
   end,
   desc = "Delete Mark in Current Line",
 })
-map({
-  "dm<Space>",
-  "<Cmd>delm!<CR>",
-  desc = "Delete All Marks",
-})
+map({ "dm<Space>", "<Cmd>delm!<Bar>redraw!<CR>", desc = "Delete All Marks" })
 
 -- https://github.com/chrisgrieser/nvim-origami/blob/main/lua/origami/fold-keymaps.lua {{{
 local function normal(expr)

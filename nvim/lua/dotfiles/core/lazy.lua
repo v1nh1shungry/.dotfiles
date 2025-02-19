@@ -14,6 +14,12 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- https://github.com/LazyVim/LazyVim {{{
+local Event = require("lazy.core.handler.event")
+Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
+Event.mappings["User LazyFile"] = Event.mappings.LazyFile
+-- }}}
+
 require("lazy").setup("dotfiles.plugins", {
   checker = { enabled = true },
   local_spec = false,

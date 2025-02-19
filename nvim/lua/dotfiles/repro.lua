@@ -7,7 +7,7 @@ else
   load(vim.fn.system("curl -s https://raw.githubusercontent.com/folke/lazy.nvim/main/bootstrap.lua"))()
 end
 
-require("lazy.minit").repro({ spec = Dotfiles.user.repro.spec })
+require("lazy.minit").setup({ spec = Dotfiles.user.repro.spec })
 
 if Dotfiles.user.repro.setup then
   Dotfiles.user.repro.setup()

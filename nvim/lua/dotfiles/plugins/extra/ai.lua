@@ -13,7 +13,7 @@ return {
       "folke/snacks.nvim",
       "echasnovski/mini.icons",
     },
-    keys = "<Leader>a",
+    event = "VeryLazy",
     opts = {
       provider = "qwen",
       vendors = {

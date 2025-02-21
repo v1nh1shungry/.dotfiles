@@ -308,7 +308,6 @@ return {
         bottom_search = true,
         command_palette = true,
       },
-      messages = { view_search = false },
       lsp = {
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -330,50 +329,6 @@ return {
         },
       },
     },
-  },
-  {
-    "kevinhwang91/nvim-hlslens",
-    keys = {
-      { "/", desc = "Forward Search" },
-      { "?", desc = "Backward Search" },
-      {
-        "n",
-        function()
-          vim.cmd("execute('normal! ' . v:count1 . 'Nn'[v:searchforward] . 'zv')")
-          require("hlslens").start()
-        end,
-        desc = "Next Search",
-      },
-      {
-        "n",
-        function()
-          vim.cmd("execute('normal! ' . v:count1 . 'Nn'[v:searchforward])")
-          require("hlslens").start()
-        end,
-        mode = { "x", "o" },
-        desc = "Next Search",
-      },
-      {
-        "N",
-        function()
-          vim.cmd("execute('normal! ' . v:count1 . 'nN'[v:searchforward] . 'zv')")
-          require("hlslens").start()
-        end,
-        desc = "Previous Search",
-      },
-      {
-        "N",
-        function()
-          vim.cmd("execute('normal! ' . v:count1 . 'nN'[v:searchforward])")
-          require("hlslens").start()
-        end,
-        mode = { "x", "o" },
-        desc = "Previous Search",
-      },
-      { "*", [[*<Cmd>lua require('hlslens').start()<CR>]], desc = "Forward Search Current Word" },
-      { "#", [[#<Cmd>lua require('hlslens').start()<CR>]], desc = "Backward Search Current Word" },
-    },
-    opts = { calm_down = true },
   },
   {
     "Bekaboo/deadcolumn.nvim",

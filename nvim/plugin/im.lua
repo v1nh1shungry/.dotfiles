@@ -39,11 +39,11 @@ end
 
 local AUGROUP = Dotfiles.augroup("im_switcher")
 
-vim.api.nvim_create_autocmd("InsertEnter", {
+vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
   callback = Dotfiles.async.void(restore_previous_im),
   group = AUGROUP,
 })
-vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave" }, {
   callback = Dotfiles.async.void(restore_default_im),
   group = AUGROUP,
 })

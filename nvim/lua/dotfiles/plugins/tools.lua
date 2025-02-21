@@ -20,4 +20,21 @@ return {
     keys = { { "<Leader>sc", "<Cmd>Cppman<CR>", desc = "Cppman" } },
     opts = { picker = "snacks" },
   },
+  {
+    "v1nh1shungry/lyricify.nvim",
+    -- TODO: use `main` branch after the branch is stable and merged
+    branch = "feature/playerctl",
+    config = function()
+      Snacks.toggle({
+        name = "lyricify",
+        get = function()
+          return require("lyricify").enabled
+        end,
+        set = function()
+          vim.cmd("Lyricify toggle")
+        end,
+      }):map("<Leader>us")
+    end,
+    event = "VeryLazy",
+  },
 }

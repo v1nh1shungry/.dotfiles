@@ -24,9 +24,11 @@ return {
     "v1nh1shungry/lyricify.nvim",
     -- TODO: use `main` branch after the branch is stable and merged
     branch = "feature/playerctl",
-    config = function()
+    config = function(_, opts)
+      require("lyricify").setup(opts)
+
       Snacks.toggle({
-        name = "lyricify",
+        name = "lyricify.nvim",
         get = function()
           return require("lyricify").enabled
         end,
@@ -36,5 +38,6 @@ return {
       }):map("<Leader>us")
     end,
     event = "VeryLazy",
+    opts = { diff_time = 5000 },
   },
 }

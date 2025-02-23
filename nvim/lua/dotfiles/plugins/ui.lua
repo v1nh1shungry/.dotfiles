@@ -4,11 +4,11 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     event = "LazyFile",
     keys = {
-      { "<Leader>xt", "<Cmd>TodoQuickFix<CR>", desc = "Todo" },
+      { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIX<CR>", desc = "Todo" },
       {
         "<leader>st",
         function()
-          Snacks.picker.todo_comments()
+          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX" } })
         end,
         desc = "Todo",
       },

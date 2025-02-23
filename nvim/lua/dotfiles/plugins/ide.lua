@@ -427,8 +427,7 @@ return {
         menu = {
           draw = {
             align_to = "none",
-            treesitter = { "lsp" },
-            columns = { { "kind_icon" }, { "label", gap = 1 }, { "source_name" } },
+            columns = { { "kind_icon" }, { "label", gap = 1 } },
             components = {
               kind_icon = {
                 ellipsis = false,

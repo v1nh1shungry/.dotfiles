@@ -1,6 +1,6 @@
 -- Modified from https://github.com/kosayoda/nvim-lightbulb {{{
-local LIGHTBULB_AUGROUP = Dotfiles.augroup("lightbulb")
-local NS_ID = Dotfiles.ns("lightbulb")
+local LIGHTBULB_AUGROUP = Dotfiles.augroup("lsp.lightbulb")
+local NS_ID = Dotfiles.ns("lsp.lightbulb")
 
 Dotfiles.lsp.on_attach(function(client, bufnr)
   local function clear_lightbulb()

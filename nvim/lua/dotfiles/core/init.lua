@@ -30,7 +30,7 @@ end
 local orig = vim.notify
 vim.notify = temp
 
-local timer = vim.uv.new_timer()
+local timer = assert(vim.uv.new_timer())
 local check = assert(vim.uv.new_check())
 
 local replay = function()

@@ -452,7 +452,6 @@ return {
           },
         },
         documentation = { auto_show = true, auto_show_delay_ms = 200 },
-        trigger = { show_in_snippet = false },
       },
       sources = {
         default = { "lsp", "snippets", "path", "buffer", "rg" },
@@ -560,7 +559,7 @@ return {
 
       vim.api.nvim_create_autocmd(opts.events, {
         callback = M.debounce(100, M.lint),
-        group = Dotfiles.augroup("nvim_lint"),
+        group = Dotfiles.augroup("lint"),
       })
     end,
     dependencies = {

@@ -37,18 +37,18 @@ end
 ---@param opts? vim.api.keyset.create_augroup
 ---@return integer
 M.augroup = function(name, opts)
-  return vim.api.nvim_create_augroup("dotfiles_" .. name, opts or {})
+  return vim.api.nvim_create_augroup("dotfiles." .. name, opts or {})
 end
 
 ---@param name string
 ---@return integer
 M.ns = function(name)
-  return vim.api.nvim_create_namespace("dotfiles_" .. name)
+  return vim.api.nvim_create_namespace("dotfiles." .. name)
 end
 
 ---@return string?
 M.git_root = function()
-  return vim.fs.root(vim.uv.cwd() or 0, ".git")
+  return vim.fs.root(vim.fn.getcwd(), ".git")
 end
 
 return M

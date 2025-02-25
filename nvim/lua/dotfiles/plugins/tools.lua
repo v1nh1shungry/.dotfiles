@@ -35,7 +35,7 @@ return {
         set = function()
           vim.cmd("Lyricify toggle")
         end,
-      }):map("<Leader>us")
+      }):map("<Leader>uL")
     end,
     event = "VeryLazy",
     opts = { diff_time = 5000 },

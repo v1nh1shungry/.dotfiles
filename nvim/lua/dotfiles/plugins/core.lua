@@ -363,8 +363,6 @@ return {
             .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
             :map("<Leader>uc")
           Snacks.toggle.option("wrap", { name = "Wrap" }):map("<Leader>uw")
-
-          Snacks.toggle.option("relativenumber", { name = "Relative number" }):map("<Leader>uL")
           Snacks.toggle.line_number():map("<Leader>ul")
 
           Snacks.toggle.diagnostics():map("<Leader>ux")
@@ -630,7 +628,7 @@ return {
           Snacks.picker.grep_buffers()
         end,
         desc = "Grep",
-      }
+      },
     },
     opts = {
       bigfile = { enabled = true },

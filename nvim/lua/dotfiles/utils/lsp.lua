@@ -1,7 +1,7 @@
 ---@class dotfiles.utils.LSP
 local M = {}
 
-local AUGROUP = Dotfiles.augroup("lsp_on_attach")
+local AUGROUP = Dotfiles.augroup("lsp.on_attach")
 
 ---@param callback fun(client:vim.lsp.Client, buffer: integer)
 function M.on_attach(callback)

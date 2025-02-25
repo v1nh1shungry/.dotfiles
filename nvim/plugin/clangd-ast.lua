@@ -1,7 +1,7 @@
 -- TODO: refactor
 
 -- Modified from https://github.com/p00f/clangd_extensions.nvim/blob/main/lua/clangd_extensions/ast.lua {{{
-local NS_ID = Dotfiles.ns("clangd_ast")
+local NS_ID = Dotfiles.ns("lsp.clangd.ast")
 local ICONS = {
   role = {
     type = "",

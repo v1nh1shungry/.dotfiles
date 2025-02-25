@@ -69,7 +69,7 @@ local function cook_variable(line)
       return vim.fn.expand("%:p:h:t")
     end,
     ["${cwd}"] = function()
-      return vim.uv.cwd()
+      return vim.fn.getcwd()
     end,
     ["${/}"] = function()
       return "/"

@@ -85,7 +85,7 @@ function M:get_completions(context, resolve)
 
   local curr_file = vim.api.nvim_buf_get_name(context.bufnr)
   if curr_file ~= "" then
-    local relpath = vim.fs.relpath(vim.uv.cwd(), curr_file)
+    local relpath = vim.fs.relpath(vim.fn.getcwd(), curr_file)
     if relpath then
       table.insert(cmd, "-g")
       table.insert(cmd, "!" .. relpath)
@@ -101,7 +101,7 @@ function M:get_completions(context, resolve)
   local job = vim.system(
     cmd,
     {
-      cwd = vim.uv.cwd(),
+      cwd = vim.fn.getcwd(),
       text = true,
       timeout = self.timeout,
       stdout = vim.schedule_wrap(function(_, data)

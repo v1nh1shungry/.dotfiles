@@ -4,11 +4,11 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     event = "LazyFile",
     keys = {
-      { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIX<CR>", desc = "Todo" },
+      { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIXME<CR>", desc = "Todo" },
       {
         "<leader>st",
         function()
-          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX" } })
+          Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } })
         end,
         desc = "Todo",
       },
@@ -122,7 +122,7 @@ return {
 
       vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
         callback = refresh_branch_state,
-        group = Dotfiles.augroup("lualine_git_branch_state"),
+        group = Dotfiles.augroup("lualine.git_branch_state"),
       })
 
       refresh_branch_state()
@@ -335,111 +335,6 @@ return {
     event = "LazyFile",
   },
   {
-    "folke/edgy.nvim",
-    event = "VeryLazy",
-    opts = {
-      left = {},
-      bottom = {
-        {
-          ft = "noice",
-          size = { height = 0.4 },
-          filter = function(_, win)
-            return vim.api.nvim_win_get_config(win).relative == ""
-          end,
-        },
-        {
-          ft = "qf",
-          title = "Quickfix List",
-        },
-        {
-          ft = "help",
-          size = { height = 0.4 },
-          filter = function(buf)
-            return vim.bo[buf].buftype == "help"
-          end,
-        },
-        {
-          ft = "markdown",
-          size = { height = 0.4 },
-          filter = function(buf)
-            return vim.bo[buf].buftype == "help"
-          end,
-        },
-        { ft = "man", size = { height = 0.4 } },
-        {
-          ft = "snacks_terminal",
-          size = { height = 0.4 },
-          title = "%{b:snacks_terminal.id}: %{b:term_title}",
-          filter = function(_, win)
-            return vim.w[win].snacks_win
-              and vim.w[win].snacks_win.position == "bottom"
-              and vim.w[win].snacks_win.relative == "editor"
-          end,
-        },
-      },
-      right = {
-        {
-          title = "Treesitter",
-          ft = "query",
-          filter = function(buf, _)
-            return vim.bo[buf].buftype == "nofile"
-          end,
-          size = { width = 0.4 },
-          wo = { number = false, relativenumber = false, stc = "" },
-        },
-        {
-          ft = "Outline",
-          size = { width = 0.3 },
-        },
-        {
-          title = "Grug Far",
-          ft = "grug-far",
-          size = { width = 0.4 },
-        },
-        {
-          ft = "ClangdAST",
-          size = { width = 0.4 },
-        },
-        {
-          ft = "rest_nvim_result",
-          size = { width = 0.5 },
-          wo = { winbar = false },
-        },
-      },
-    },
-    opts_extend = { "left", "bottom", "right", "top" },
-    specs = {
-      "akinsho/bufferline.nvim",
-      opts = function()
-        local Offset = require("bufferline.offset")
-        if not Offset.edgy then
-          local get = Offset.get
-          Offset.get = function()
-            if package.loaded.edgy then
-              local layout = require("edgy.config").layout
-              local ret = { left = "", left_size = 0, right = "", right_size = 0 }
-              for _, pos in ipairs({ "left", "right" }) do
-                local sb = layout[pos]
-                if sb and #sb.wins > 0 then
-                  local blank = (sb.bounds.width - 7) / 2
-                  local title = string.rep(" ", blank) .. "Sidebar" .. string.rep(" ", blank)
-                  ret[pos] = "%#EdgyTitle#" .. title .. "%*" .. "%#WinSeparator#│%*"
-                  ret[pos .. "_size"] = sb.bounds.width
-                end
-              end
-              ret.total_size = ret.left_size + ret.right_size
-              if ret.total_size > 0 then
-                return ret
-              end
-            end
-            return get()
-          end
-          Offset.edgy = true
-        end
-      end,
-    },
-  },
-  {
     "echasnovski/mini.icons",
     init = function()
       package.preload["nvim-web-devicons"] = function()
@@ -527,17 +422,12 @@ return {
     },
   },
   {
-    "tiagovla/scope.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-  {
     "echasnovski/mini.files",
     config = function()
       local show_hidden = false
 
-      local NS = Dotfiles.ns("mini_files_extmarks")
-      local AUGROUP = Dotfiles.augroup("mini_files")
+      local NS = Dotfiles.ns("mini.files.extmarks")
+      local AUGROUP = Dotfiles.augroup("mini.files")
 
       ---@type string[]
       local IGNORED_PATTERN = {

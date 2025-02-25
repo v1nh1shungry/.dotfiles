@@ -32,7 +32,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.bo[args.buf].tagfunc = nil
     vim.bo[args.buf].omnifunc = nil
   end,
-  group = Dotfiles.augroup("disable_default_lsp_mappings"),
+  group = Dotfiles.augroup("lsp.disable_default_mappings"),
 })
 
 map({ "<C-q>", "<Cmd>bd<CR>", desc = "Close Buffer" })

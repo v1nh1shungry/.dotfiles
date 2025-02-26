@@ -15,6 +15,7 @@ end
 
 local previous_im
 
+---@async
 local function restore_default_im()
   local ret = Dotfiles.co.system({ command }, { text = true })
   previous_im = vim.trim(ret.stdout)
@@ -25,6 +26,7 @@ local function restore_default_im()
   end
 end
 
+---@async
 local function restore_previous_im()
   local ret = Dotfiles.co.system({ command }, { text = true })
   if ret.stdout == previous_im then

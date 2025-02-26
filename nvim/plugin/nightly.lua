@@ -46,6 +46,7 @@ local function unlock()
   ffi.C.lockf(LOCK_FD, F_ULOCK, 0)
 end
 
+---@async
 ---@param force? boolean
 local function lock(force)
   if ffi.C.lockf(LOCK_FD, F_TLOCK, 0) == -1 then
@@ -76,12 +77,14 @@ local function api(url)
   return vim.json.decode(res.stdout)
 end
 
+---@async
 local function read_metadata()
   if Dotfiles.co.fn.filereadable(NIGHTLY_METADATA_DIRECTORY) == 1 then
     return vim.json.decode(table.concat(Dotfiles.co.fn.readfile(NIGHTLY_METADATA_DIRECTORY), "\n"))
   end
 end
 
+---@async
 ---@param metadata dotfiles.nightly.Metadata
 local function write_metadata(metadata)
   metadata.last_update = os.time()
@@ -256,6 +259,7 @@ local function update(force)
   vim.fs.rm(package_path, { force = true })
 end
 
+---@async
 local function rollback()
   if not lock(true) then
     return

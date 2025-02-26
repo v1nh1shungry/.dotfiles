@@ -21,9 +21,8 @@ function M.wrap(fn)
 end
 
 ---@param fn function
----@return boolean, ...
 function M.run(fn, ...)
-  return coroutine.resume(coroutine.create(fn), ...)
+  assert(coroutine.resume(coroutine.create(fn), ...))
 end
 
 ---@param fn function
@@ -31,7 +30,7 @@ end
 function M.void(fn, ...)
   local args = vim.F.pack_len(...)
   return function()
-    return M.run(fn, vim.F.unpack_len(args))
+    M.run(fn, vim.F.unpack_len(args))
   end
 end
 
@@ -43,6 +42,7 @@ M.input = M.wrap(vim.schedule_wrap(vim.ui.input))
 
 M.schedule = M.wrap(vim.schedule) ---@type async fun()
 
+---@param t table
 local function schedule_wrapper(t)
   return setmetatable({}, {
     __index = function(_, k)

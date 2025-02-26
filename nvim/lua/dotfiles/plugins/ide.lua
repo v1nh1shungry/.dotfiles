@@ -10,14 +10,15 @@ local function peek_definition()
       result = result[1]
     end
 
-    local buf = vim.uri_to_bufnr(result.targetUri or result.uri)
-    local opts = {
-      buf = buf,
+    local fname = vim.uri_to_fname(result.targetUri or result.uri)
+    local opts = { ---@type snacks.win.Config | {}
       border = "rounded",
+      file = fname,
+      fixbuf = true,
       height = math.floor(vim.o.lines * 0.5),
       minimal = false,
-      position = "float",
-      title = vim.api.nvim_buf_get_name(buf),
+      style = "float",
+      title = fname,
       title_pos = "center",
       width = math.floor(vim.o.columns * 0.6),
       zindex = 20,
@@ -31,24 +32,24 @@ local function peek_definition()
       opts.width = prev_conf.width - 2
     end
 
-    local winid = Snacks.win(opts).win
+    local win = Snacks.win(opts)
     local range = result.targetSelectionRange or result.range
-    vim.api.nvim_win_set_cursor(winid, {
+    vim.api.nvim_win_set_cursor(win.win, {
       range.start.line + 1,
-      vim.lsp.util._get_line_byte_from_position(buf, range.start, "utf-8"),
+      vim.lsp.util._get_line_byte_from_position(win.buf, range.start, "utf-8"),
     })
 
     vim.api.nvim_create_autocmd("WinClosed", {
       callback = function()
+        table.remove(peek_stack)
         if #peek_stack > 0 then
-          table.remove(peek_stack)
           vim.cmd(vim.api.nvim_win_get_number(peek_stack[#peek_stack]) .. " wincmd w")
         end
       end,
-      pattern = tostring(winid),
+      pattern = tostring(win.win),
     })
 
-    peek_stack[#peek_stack + 1] = winid
+    peek_stack[#peek_stack + 1] = win.win
   end)
 end
 -- }}}

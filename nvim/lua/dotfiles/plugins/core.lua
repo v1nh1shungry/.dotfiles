@@ -9,10 +9,6 @@ return {
     event = "LazyFile",
   },
   {
-    "nvim-lua/plenary.nvim",
-    lazy = true,
-  },
-  {
     "nmac427/guess-indent.nvim",
     event = "LazyFile",
     opts = {},

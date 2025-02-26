@@ -1,5 +1,5 @@
 ---@class dotfiles.utils
----@field async any
+---@field co dotfiles.utils.Co
 ---@field lsp dotfiles.utils.LSP
 ---@field ui dotfiles.utils.UI
 ---@field user dotfiles.user.Config

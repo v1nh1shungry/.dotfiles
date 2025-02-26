@@ -56,7 +56,7 @@ local function lock(force)
     return false
   end
 
-  Dotfiles.async.api.nvim_create_autocmd("VimLeave", {
+  Dotfiles.co.api.nvim_create_autocmd("VimLeave", {
     callback = unlock,
     group = AUGROUP,
   })
@@ -67,7 +67,7 @@ end
 ---@async
 ---@param url string
 local function api(url)
-  local res = Dotfiles.async.system({ "curl", "-fsSL", url })
+  local res = Dotfiles.co.system({ "curl", "-fsSL", url })
   if res.code ~= 0 then
     Snacks.notify.error(("Failed to request %s: %s"):format(url, res.stderr))
     return
@@ -77,15 +77,15 @@ local function api(url)
 end
 
 local function read_metadata()
-  if Dotfiles.async.fn.filereadable(NIGHTLY_METADATA_DIRECTORY) == 1 then
-    return vim.json.decode(table.concat(Dotfiles.async.fn.readfile(NIGHTLY_METADATA_DIRECTORY), "\n"))
+  if Dotfiles.co.fn.filereadable(NIGHTLY_METADATA_DIRECTORY) == 1 then
+    return vim.json.decode(table.concat(Dotfiles.co.fn.readfile(NIGHTLY_METADATA_DIRECTORY), "\n"))
   end
 end
 
 ---@param metadata dotfiles.nightly.Metadata
 local function write_metadata(metadata)
   metadata.last_update = os.time()
-  Dotfiles.async.fn.writefile({ vim.json.encode(metadata) }, NIGHTLY_METADATA_DIRECTORY)
+  Dotfiles.co.fn.writefile({ vim.json.encode(metadata) }, NIGHTLY_METADATA_DIRECTORY)
 end
 
 ---@async
@@ -94,7 +94,7 @@ end
 local function install(id)
   local TARGET_DIR = vim.fs.joinpath(NIGHTLY_DIRECTORY, id)
 
-  local res = Dotfiles.async.system({
+  local res = Dotfiles.co.system({
     "ln",
     "-sf",
     vim.fs.joinpath(TARGET_DIR, "bin", "nvim"),
@@ -108,7 +108,7 @@ local function install(id)
 
   local ENTRY_PATH = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "share", "applications", "nvim.desktop")
 
-  res = Dotfiles.async.system({
+  res = Dotfiles.co.system({
     "install",
     "-Dm644",
     vim.fs.joinpath(TARGET_DIR, "share", "applications", "nvim.desktop"),
@@ -121,7 +121,7 @@ local function install(id)
     return false
   end
 
-  res = Dotfiles.async.system({
+  res = Dotfiles.co.system({
     "sed",
     "-i",
     "s|Icon=nvim|Icon="
@@ -135,7 +135,7 @@ local function install(id)
     return false
   end
 
-  res = Dotfiles.async.system({
+  res = Dotfiles.co.system({
     "sed",
     "-i",
     "s|Exec=nvim|Exec=" .. vim.fs.joinpath(USR_BIN_DIRECTORY, "nvim") .. "|g",
@@ -147,7 +147,7 @@ local function install(id)
     return false
   end
 
-  res = Dotfiles.async.system({
+  res = Dotfiles.co.system({
     "install",
     "-Dm444",
     vim.fs.joinpath(TARGET_DIR, "share", "man", "man1", "nvim.1"),
@@ -212,7 +212,7 @@ local function update(force)
     return
   end
 
-  local res = Dotfiles.async.system({ "curl", "-fsSLO", url }, { cwd = vim.uv.os_tmpdir() })
+  local res = Dotfiles.co.system({ "curl", "-fsSLO", url }, { cwd = vim.uv.os_tmpdir() })
 
   if res.code ~= 0 then
     Snacks.notify.error("Failed to download nightly neovim package: " .. res.stderr)
@@ -221,7 +221,7 @@ local function update(force)
   end
 
   local package_path = vim.fs.joinpath(vim.uv.os_tmpdir(), ASSET_PACKAGE_NAME)
-  res = Dotfiles.async.system({
+  res = Dotfiles.co.system({
     "tar",
     "xf",
     package_path,
@@ -279,17 +279,9 @@ local function rollback()
 end
 
 vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    Dotfiles.async.run(update)
-  end,
+  callback = Dotfiles.co.void(update),
   group = AUGROUP,
 })
 
-Dotfiles.map({
-  "<Leader>pnu",
-  Dotfiles.async.void(function()
-    update(true)
-  end),
-  desc = "Update",
-})
-Dotfiles.map({ "<Leader>pnr", Dotfiles.async.void(rollback), desc = "Rollback" })
+Dotfiles.map({ "<Leader>pnu", Dotfiles.co.void(update, true), desc = "Update" })
+Dotfiles.map({ "<Leader>pnr", Dotfiles.co.void(rollback), desc = "Rollback" })

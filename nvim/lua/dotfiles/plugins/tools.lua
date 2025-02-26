@@ -1,5 +1,9 @@
 return {
   {
+    "nvim-lua/plenary.nvim",
+    lazy = true,
+  },
+  {
     "MagicDuck/grug-far.nvim",
     cmd = "GrugFar",
     keys = { { "<Leader>sr", "<Cmd>GrugFar<CR>", desc = "Search & Replace" } },

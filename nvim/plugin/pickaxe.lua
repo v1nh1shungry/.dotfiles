@@ -5,7 +5,7 @@ local function is_normal_git_repo()
     return false
   end
 
-  if vim.trim(Dotfiles.async.system({ "git", "rev-parse", "--is-shallow-repository" }).stdout) == "true" then
+  if vim.trim(Dotfiles.co.system({ "git", "rev-parse", "--is-shallow-repository" }).stdout) == "true" then
     Snacks.notify.error("Aborting: repository is shallow")
     return false
   end
@@ -15,22 +15,18 @@ end
 
 local function pickaxe()
   if not is_normal_git_repo() then
+    Snacks.notify.warn("Not a normal Git repository")
     return
   end
 
-  local query = Dotfiles.async.input({ prompt = "Git Pickaxe" })
+  local query = Dotfiles.co.input({ prompt = "Git Pickaxe" })
   if not query then
     return
   end
 
-  local res = Dotfiles.async.system({ "git", "log", "--pretty=oneline", "--abbrev-commit", "-G", query })
+  local res = Dotfiles.co.system({ "git", "log", "--pretty=oneline", "--abbrev-commit", "-G", query })
   if res.code ~= 0 then
     Snacks.notify.error("Failed to execute git command: " .. res.stderr)
-    return
-  end
-
-  if res.stdout == "" then
-    Snacks.notify.warn("No result")
     return
   end
 
@@ -49,7 +45,7 @@ local function pickaxe()
     })
   end
 
-  Dotfiles.async.util.scheduler()
+  Dotfiles.co.schedule()
   Snacks.picker({
     items = results,
     format = function(item)
@@ -79,5 +75,5 @@ local function pickaxe()
   })
 end
 
-Dotfiles.map({ "<Leader>g/", Dotfiles.async.void(pickaxe), desc = "Git Pickaxe" })
+Dotfiles.map({ "<Leader>g/", Dotfiles.co.void(pickaxe), desc = "Git Pickaxe" })
 -- }}}

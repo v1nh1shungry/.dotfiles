@@ -278,7 +278,7 @@ return {
     event = "LazyFile",
     ---@class dotfiles.lspconfig.Config
     ---@field servers table<string, lspconfig.Config|{ keys: dotfiles.map.Opts[], mason: boolean }>
-    ---@field setup table<string, fun(server: string, opts: lspconfig.Config): boolean>
+    ---@field setup table<string, fun(server: string, opts: lspconfig.Config): boolean?>
     opts = {
       servers = {
         jsonls = {
@@ -552,7 +552,7 @@ return {
       local M = {}
 
       local lint = require("lint")
-      for name, linter in pairs(opts.linters) do
+      for name, linter in pairs(opts.linters or {}) do
         if type(linter) == "table" and type(lint.linters[name]) == "table" then
           lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
           if type(linter.prepend_args) == "table" then

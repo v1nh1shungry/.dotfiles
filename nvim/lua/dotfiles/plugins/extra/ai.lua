@@ -3,6 +3,8 @@ if not vim.env.AVANTE_NVIM_API_KEY then
   return {}
 end
 
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "yetone/avante.nvim",
@@ -14,14 +16,16 @@ return {
       "echasnovski/mini.icons",
     },
     event = "VeryLazy",
+    ---@module "avante.config"
+    ---@type avante.Config
     opts = {
-      provider = "qwen",
+      provider = "deepseek",
       vendors = {
-        qwen = {
+        deepseek = {
           __inherited_from = "openai",
           api_key_name = "AVANTE_NVIM_API_KEY",
           endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
-          model = "qwen-max-latest",
+          model = "deepseek-r1",
           disable_tools = true,
         },
       },
@@ -32,8 +36,12 @@ return {
     "saghen/blink.cmp",
     dependencies = {
       "saghen/blink.compat",
+      ---@module "blink.compat.config"
+      ---@type blink.compat.Config
       opts = {},
     },
+    ---@module "blink.cmp.config.types_partial"
+    ---@type blink.cmp.Config
     opts = {
       sources = {
         compat = { "avante_commands", "avante_mentions", "avante_files" },
@@ -42,12 +50,9 @@ return {
     },
   },
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "Avante" },
-    opts = { file_types = { "Avante" } },
-  },
-  {
     "folke/which-key.nvim",
+    ---@module "which-key.config"
+    ---@type wk.Opts|{}
     opts = {
       spec = {
         {

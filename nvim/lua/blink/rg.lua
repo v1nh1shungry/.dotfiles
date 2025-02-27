@@ -1,14 +1,9 @@
 -- Faster ripgrep source
 -- Modified from https://github.com/mikavilpas/blink-ripgrep.nvim
 
----@module "blink.cmp.sources.lib.types"
+---@module "blink.cmp"
 
----@class dotfiles.blink.cmp.source.Rg: blink.cmp.Source
----@field context integer
----@field max_file_size string
----@field timeout integer
----@field hl_group string
----@field min_keyword_length integer
+---@class blink.cmp.Source
 local M = {
   context = 2,
   max_file_size = "1M",
@@ -19,27 +14,22 @@ local M = {
 
 local Config = require("blink.cmp.config")
 
-local word_pattern
-do
-  -- match an ascii character as well as unicode continuation bytes.
-  -- Technically, unicode continuation bytes need to be applied in order to
-  -- construct valid utf-8 characters, but right now we trust that the user
-  -- only types valid utf-8 in their project.
-  local char = vim.lpeg.R("az", "AZ", "09", "\128\255")
+-- match an ascii character as well as unicode continuation bytes.
+-- Technically, unicode continuation bytes need to be applied in order to
+-- construct valid utf-8 characters, but right now we trust that the user
+-- only types valid utf-8 in their project.
+local char = vim.lpeg.R("az", "AZ", "09", "\128\255")
 
-  local non_starting_word_character = vim.lpeg.P(1) - char
-  local word_character = char + vim.lpeg.P("_") + vim.lpeg.P("-")
-  local non_middle_word_character = vim.lpeg.P(1) - word_character
+local non_starting_word_character = vim.lpeg.P(1) - char
+local word_character = char + vim.lpeg.P("_") + vim.lpeg.P("-")
+local non_middle_word_character = vim.lpeg.P(1) - word_character
 
-  word_pattern =
-    vim.lpeg.Ct((non_starting_word_character ^ 0 * vim.lpeg.C(word_character ^ 1) * non_middle_word_character ^ 0) ^ 0)
-end
+local word_pattern =
+  vim.lpeg.Ct((non_starting_word_character ^ 0 * vim.lpeg.C(word_character ^ 1) * non_middle_word_character ^ 0) ^ 0)
 
-local NS = vim.F.npcall(function()
-  return Config.appearance.highlight_ns
-end) or 0
+local NS_ID = Config.appearance.highlight_ns
 
----@param text_before_cursor string "The text of the entire line before the cursor"
+---@param text_before_cursor string The text of the entire line before the cursor
 ---@return string
 local function match_prefix(text_before_cursor)
   local matches = vim.lpeg.match(word_pattern, text_before_cursor)
@@ -208,8 +198,8 @@ function M:get_completions(context, resolve)
                   )
                   vim.bo[bufnr].modified = false
 
-                  vim.api.nvim_buf_clear_namespace(bufnr, NS, 0, -1)
-                  vim.api.nvim_buf_set_extmark(bufnr, NS, 1, 0, {
+                  vim.api.nvim_buf_clear_namespace(bufnr, NS_ID, 0, -1)
+                  vim.api.nvim_buf_set_extmark(bufnr, NS_ID, 1, 0, {
                     virt_text = {
                       { string.rep("─", Config.completion.documentation.window.max_width), "BlinkCmpDocSeparator" },
                     },
@@ -239,7 +229,7 @@ function M:get_completions(context, resolve)
                     end
                   end
 
-                  vim.api.nvim_buf_set_extmark(bufnr, NS, line_in_doc + 1, match.start_col, {
+                  vim.api.nvim_buf_set_extmark(bufnr, NS_ID, line_in_doc + 1, match.start_col, {
                     end_col = match.end_col,
                     hl_group = M.hl_group,
                   })

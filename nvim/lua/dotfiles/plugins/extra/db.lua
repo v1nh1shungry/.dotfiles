@@ -4,6 +4,8 @@ vim.g.db_ui_use_nerd_fonts = 1
 vim.g.db_ui_show_database_icon = 1
 vim.g.db_ui_use_nvim_notify = true
 
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "kristijanhusak/vim-dadbod-ui",
@@ -15,6 +17,8 @@ return {
   },
   {
     "saghen/blink.cmp",
+    ---@module "blink.cmp.config.types_partial"
+    ---@type blink.cmp.Config
     opts = {
       sources = {
         per_filetype = { sql = { "dadbod" } },

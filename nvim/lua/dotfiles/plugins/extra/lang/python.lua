@@ -1,11 +1,15 @@
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    ---@module "nvim-treesitter.configs"
+    ---@type TSConfig|{}
     opts = { ensure_installed = { "python" } },
   },
   {
     "neovim/nvim-lspconfig",
-    opts = {
+    opts = { ---@type dotfiles.lspconfig.Config|{}
       servers = {
         basedpyright = {},
         ruff = {
@@ -18,6 +22,6 @@ return {
   },
   {
     "williamboman/mason.nvim",
-    opts = { ensure_installed = { "ruff" } },
+    opts = { ensure_installed = { "ruff" } }, ---@type dotfiles.mason.Config
   },
 }

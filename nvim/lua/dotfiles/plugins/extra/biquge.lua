@@ -3,6 +3,8 @@ vim.api.nvim_set_hl(0, "BiqugeDocument", {
   italic = false,
 })
 
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "v1nh1shungry/biquge.nvim",

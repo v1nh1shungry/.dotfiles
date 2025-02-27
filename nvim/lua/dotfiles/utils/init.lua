@@ -14,8 +14,8 @@ setmetatable(M, {
 
 ---@class dotfiles.map.Opts: vim.keymap.set.Opts
 ---@field [1] string
----@field [2] string | function
----@field mode? string | string[]
+---@field [2] string|function
+---@field mode? string|string[]
 ---
 ---@param opts dotfiles.map.Opts
 M.map = function(opts)

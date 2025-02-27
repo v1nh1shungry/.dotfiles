@@ -1,3 +1,5 @@
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "nvim-lua/plenary.nvim",
@@ -7,6 +9,8 @@ return {
     "MagicDuck/grug-far.nvim",
     cmd = "GrugFar",
     keys = { { "<Leader>sr", "<Cmd>GrugFar<CR>", desc = "Search & Replace" } },
+    ---@module "grug-far.opts"
+    ---@type GrugFarOptionsOverride
     opts = {},
   },
   {
@@ -22,6 +26,8 @@ return {
     cmd = "Cppman",
     enabled = vim.fn.executable("cppman") == 1,
     keys = { { "<Leader>sc", "<Cmd>Cppman<CR>", desc = "Cppman" } },
+    ---@module "cppman.config"
+    ---@type cppman.Config|{}
     opts = { picker = "snacks" },
   },
   {
@@ -42,6 +48,6 @@ return {
       }):map("<Leader>uL")
     end,
     event = "VeryLazy",
-    opts = { diff_time = 5000 },
+    opts = { diff_time = 5000 }, ---@type lyricify.config.Opts|{}
   },
 }

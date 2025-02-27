@@ -1,3 +1,5 @@
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "folke/todo-comments.nvim",
@@ -13,24 +15,15 @@ return {
         desc = "Todo",
       },
     },
+    ---@module "todo-comments.config"
+    ---@type TodoOptions
     opts = { signs = false },
   },
   {
     "akinsho/bufferline.nvim",
-    config = function()
-      require("bufferline").setup({
-        options = {
-          close_command = function(b)
-            Snacks.bufdelete(b)
-          end,
-          right_mouse_command = function(b)
-            Snacks.bufdelete(b)
-          end,
-          numbers = "ordinal",
-          diagnostics = "nvim_lsp",
-          themable = true,
-        },
-      })
+    config = function(_, opts)
+      require("bufferline").setup(opts)
+
       -- https://www.lazyvim.org/plugins/ui#bufferlinenvim {{{
       vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
@@ -70,6 +63,19 @@ return {
       { "gB", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
       { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Only" },
     },
+    opts = { ---@type bufferline.Config|{}
+      options = {
+        close_command = function(b)
+          Snacks.bufdelete(b)
+        end,
+        right_mouse_command = function(b)
+          Snacks.bufdelete(b)
+        end,
+        numbers = "ordinal",
+        diagnostics = "nvim_lsp",
+        themable = true,
+      },
+    },
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -77,6 +83,7 @@ return {
       require("lualine_require").require = require
 
       -- https://github.com/chrisgrieser/nvim-tinygit/blob/main/lua/tinygit/statusline/branch-state.lua {{{
+      ---@return string
       local function git_branch_state()
         local cwd = vim.fn.getcwd()
         if not cwd then
@@ -228,7 +235,7 @@ return {
         desc = "Window Hydra Mode",
       },
     },
-    opts = {
+    opts = { ---@type wk.Opts|{}
       preset = "helix",
       spec = {
         {
@@ -301,7 +308,7 @@ return {
         mode = { "i", "n", "s" },
       },
     },
-    opts = {
+    opts = { ---@type NoiceConfig|{}
       views = { split = { enter = true } },
       presets = {
         long_message_to_split = true,
@@ -350,6 +357,8 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
     ft = { "markdown" },
     keys = { { "<Leader>uc", "<Cmd>RenderMarkdown buf_toggle<CR>", desc = "Toggle Render Markdown", ft = "markdown" } },
+    ---@module "render-markdown"
+    ---@type render.md.UserConfig
     opts = {
       code = { sign = false, width = "block", right_pad = 1 },
       heading = { sign = false, icons = {} },
@@ -360,6 +369,8 @@ return {
     specs = {
       {
         "saghen/blink.cmp",
+        ---@module "blink.cmp.config.types_partial"
+        ---@type blink.cmp.Config
         opts = {
           sources = {
             per_filetype = { markdown = { "markdown" } },
@@ -429,15 +440,13 @@ return {
       local NS = Dotfiles.ns("mini.files.extmarks")
       local AUGROUP = Dotfiles.augroup("mini.files")
 
-      ---@type string[]
-      local IGNORED_PATTERN = {
+      local IGNORED_PATTERN = { ---@type string[]
         ".cache",
         ".git",
         "build",
         "node_modules",
       }
-      ---@type table<string, boolean>
-      local ignored = {}
+      local ignored = {} ---@type table<string, boolean>
 
       local function filter_show(_)
         return true

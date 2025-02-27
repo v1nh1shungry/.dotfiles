@@ -89,13 +89,3 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "gitcommit", "markdown", "text" },
 })
 -- }}}
-
-local toggle_num_augroup = Dotfiles.augroup("toggle_number")
-vim.api.nvim_create_autocmd({ "CmdlineEnter", "InsertEnter", "WinLeave" }, {
-  command = "if &number | set norelativenumber | end",
-  group = toggle_num_augroup,
-})
-vim.api.nvim_create_autocmd({ "CmdlineLeave", "InsertLeave", "WinEnter" }, {
-  command = "if &number | set relativenumber | end",
-  group = toggle_num_augroup,
-})

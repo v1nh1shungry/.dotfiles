@@ -48,6 +48,7 @@ end
 
 ---@async
 ---@param force? boolean
+---@return boolean
 local function lock(force)
   if ffi.C.lockf(LOCK_FD, F_TLOCK, 0) == -1 then
     if force then
@@ -67,21 +68,24 @@ end
 
 ---@async
 ---@param url string
+---@return table?
 local function api(url)
   local res = Dotfiles.co.system({ "curl", "-fsSL", url })
   if res.code ~= 0 then
     Snacks.notify.error(("Failed to request %s: %s"):format(url, res.stderr))
-    return
+    return nil
   end
 
   return vim.json.decode(res.stdout)
 end
 
 ---@async
+---@return dotfiles.nightly.Metadata?
 local function read_metadata()
   if Dotfiles.co.fn.filereadable(NIGHTLY_METADATA_DIRECTORY) == 1 then
     return vim.json.decode(table.concat(Dotfiles.co.fn.readfile(NIGHTLY_METADATA_DIRECTORY), "\n"))
   end
+  return nil
 end
 
 ---@async
@@ -173,7 +177,6 @@ local function update(force)
     return
   end
 
-  ---@type dotfiles.nightly.Metadata
   local metadata = read_metadata() or {}
   if not force and metadata.last_update and os.time() - metadata.last_update < TIMEOUT_SECS then
     unlock()
@@ -265,7 +268,6 @@ local function rollback()
     return
   end
 
-  ---@type dotfiles.nightly.Metadata
   local metadata = read_metadata() or {}
   if not metadata.rollback or metadata.current == metadata.rollback then
     Snacks.notify.warn("No available rollback")

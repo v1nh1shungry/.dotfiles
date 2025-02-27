@@ -1,3 +1,5 @@
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "Wansmer/treesj",
@@ -15,6 +17,8 @@ return {
   {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
+    ---@module "ts-comments.config"
+    ---@type TSCommentsOptions
     opts = {
       lang = {
         c = { "// %s", "/* %s */" },
@@ -56,6 +60,7 @@ return {
       pairs.setup(opts)
 
       local open = pairs.open
+      ---@diagnostic disable-next-line: duplicate-set-field
       pairs.open = function(pair, neigh_pattern)
         if vim.fn.getcmdline() ~= "" then
           return open(pair, neigh_pattern)
@@ -94,13 +99,14 @@ return {
       end
 
       local closeopen = pairs.closeopen
+      ---@diagnostic disable-next-line: duplicate-set-field
       pairs.closeopen = function(pair, neigh_pattern)
         if vim.fn.getcmdline() ~= "" then
           return closeopen(pair, neigh_pattern)
         end
 
         local o = pair:sub(1, 1)
-        if vim.list_contains(MiniPairs.config.mappings[o].excluded_filetypes or {}, vim.bo.filetype) then
+        if MiniPairs.config.mappings[o].cond and not MiniPairs.config.mappings[o].cond() then
           return o
         end
 
@@ -108,7 +114,7 @@ return {
       end
 
       ---@param lhs string
-      ---@param rhs string | fun(): string
+      ---@param rhs string|fun(): string
       ---@param desc string
       local function map(lhs, rhs, desc)
         Dotfiles.map({ lhs, rhs, expr = true, mode = "i", replace_keycodes = false, desc = desc })
@@ -123,7 +129,11 @@ return {
     opts = {
       mappings = {
         [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" },
-        ["'"] = { excluded_filetypes = { "rust" } },
+        ["'"] = {
+          cond = function()
+            return not vim.list_contains({ "rust" }, vim.bo.filetype)
+          end,
+        },
       },
       modes = { command = true },
     },

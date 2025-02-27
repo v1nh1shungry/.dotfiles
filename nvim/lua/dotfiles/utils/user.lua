@@ -1,13 +1,11 @@
----@module "lazy"
+---@module "lazy.types"
 ---
 ---@class dotfiles.user.Config
 ---@field extra LazySpec[]
 ---@field ui { blend: integer, colorscheme: string }
 ---@field task { compile: table<string, string[]>, execute: table<string, string[]> }
----@field nightly boolean | integer
+---@field nightly boolean|integer
 ---@field repro { enabled: boolean, stdpath: string, spec: LazySpec[], setup?: fun() }
-
----@type dotfiles.user.Config
 local M = {
   extra = {},
   ui = {

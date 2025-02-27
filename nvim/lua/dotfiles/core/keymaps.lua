@@ -139,7 +139,7 @@ map({
         false,
         vim.list_extend({
           '---@module "dotfiles.utils"',
-          '---@module "lazy"',
+          '---@module "lazy.types"',
           "",
         }, lines)
       )

@@ -6,7 +6,7 @@ vim.api.nvim_set_hl(0, "BiqugeDocument", {
 return {
   {
     "v1nh1shungry/biquge.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
+    dependencies = "folke/snacks.nvim",
     keys = {
       { "<Leader>n", "", desc = "+novel" },
       {

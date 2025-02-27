@@ -1,3 +1,5 @@
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "andymass/vim-matchup",
@@ -11,6 +13,8 @@ return {
   {
     "nmac427/guess-indent.nvim",
     event = "LazyFile",
+    ---@module "guess-indent.config"
+    ---@type GuessIndentConfig
     opts = {},
   },
   -- https://www.lazyvim.org/plugins/coding#miniai {{{
@@ -171,7 +175,7 @@ return {
       require("nvim-treesitter.configs").setup(opts)
 
       -- clean unused parsers
-      local ensure_installed_parsers = require("nvim-treesitter.configs").get_ensure_installed_parsers()
+      local ensure_installed_parsers = require("nvim-treesitter.configs").get_ensure_installed_parsers() ---@cast ensure_installed_parsers string[]
       local unused_parsers = {}
       for _, parser in ipairs(require("nvim-treesitter.info").installed_parsers()) do
         if not vim.list_contains(ensure_installed_parsers, parser) then
@@ -194,7 +198,7 @@ return {
       require("nvim-treesitter.query_predicates")
     end,
     -- }}}
-    opts = {
+    opts = { ---@type TSConfig|{}
       ensure_installed = {
         "bash",
         "c",
@@ -281,8 +285,10 @@ return {
   },
   {
     "chrisgrieser/nvim-recorder",
+    ---@module "recorder"
+    ---@type configObj|{}
     opts = {
-      mapping = { switchSlot = "<M-q>" },
+      mapping = { switchSlot = "<M-q>" }, ---@type maps|{}
       useNerdfontIcons = false,
     },
     keys = {
@@ -306,6 +312,8 @@ return {
       { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Lower Window", mode = { "i", "n", "t" } },
       { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Upper Window", mode = { "i", "n", "t" } },
     },
+    ---@module "Navigator"
+    ---@type Config|{}
     opts = {},
   },
   {
@@ -334,6 +342,8 @@ return {
         desc = "Jump",
       },
     },
+    ---@module "flash.config"
+    ---@type Flash.Config|{}
     opts = { modes = { char = { highlight = { backdrop = false } } } },
   },
   {
@@ -626,7 +636,7 @@ return {
         desc = "Grep",
       },
     },
-    opts = {
+    opts = { ---@type snacks.Config
       bigfile = { enabled = true },
       dashboard = {
         preset = {

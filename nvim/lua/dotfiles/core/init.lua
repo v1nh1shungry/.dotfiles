@@ -12,7 +12,6 @@ vim.diagnostic.config({
   severity_sort = true,
   signs = false,
   jump = { float = true },
-  update_in_insert = true,
   virtual_text = true,
 })
 
@@ -57,6 +56,7 @@ end)
 timer:start(500, 0, replay)
 -- }}}
 
+---@diagnostic disable-next-line: duplicate-set-field
 vim.deprecate = function() end
 
 require("dotfiles.core.autocmds")

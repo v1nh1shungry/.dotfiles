@@ -1,9 +1,9 @@
 -- Faster ripgrep source
 -- Modified from https://github.com/mikavilpas/blink-ripgrep.nvim
 
----@module "blink.cmp"
+---@module "blink.cmp.sources.lib.types"
 
----@class blink.cmp.Source
+---@class dotfiles.blink.cmp.source.Rg: blink.cmp.Source
 ---@field context integer
 ---@field max_file_size string
 ---@field timeout integer
@@ -118,8 +118,7 @@ function M:get_completions(context, resolve)
 
           if json then
             if json.type == "begin" then
-              ---@type string
-              local filename = json.data.path.text
+              local filename = json.data.path.text ---@type string
               local ext = vim.fn.fnamemodify(filename, ":e")
               local ft = vim.filetype.match({ filename = filename })
               local lang = ft or vim.treesitter.language.get_lang(ext) or ext

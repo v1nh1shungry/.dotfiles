@@ -1,10 +1,12 @@
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   { "folke/tokyonight.nvim", lazy = true },
   {
     "catppuccin/nvim",
     lazy = true,
     name = "catppuccin",
-    opts = {
+    opts = { ---@type CatppuccinOptions
       integrations = {
         blink_cmp = true,
         dadbod_ui = true,
@@ -12,7 +14,7 @@ return {
         dropbar = { enabled = true, color_mode = true },
         grug_far = true,
         mason = true,
-        native_lsp = {
+        native_lsp = { ---@type CtpIntegrationNativeLsp|{}
           underlines = {
             errors = { "undercurl" },
             hints = { "undercurl" },
@@ -28,9 +30,11 @@ return {
     specs = {
       {
         "akinsho/bufferline.nvim",
+        ---@module "bufferline.config"
+        ---@param opts bufferline.Config
         opts = function(_, opts)
           if (vim.g.colors_name or ""):find("catppuccin") then
-            opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
+            opts.highlights = require("catppuccin.groups.integrations.bufferline").get() --[[@as table<string, bufferline.HLGroup>]]
           end
         end,
       },

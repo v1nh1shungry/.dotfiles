@@ -11,7 +11,7 @@ local function peek_definition()
     end
 
     local fname = vim.uri_to_fname(result.targetUri or result.uri)
-    local opts = { ---@type snacks.win.Config | {}
+    local opts = { ---@type snacks.win.Config|{}
       border = "rounded",
       file = fname,
       fixbuf = true,
@@ -54,17 +54,21 @@ local function peek_definition()
 end
 -- }}}
 
+---@module "lazy.types"
+---@type LazySpec[]
 return {
   {
     "neovim/nvim-lspconfig",
+    ---@param opts dotfiles.lspconfig.Config
     config = function(_, opts)
       Dotfiles.lsp.on_attach(function(client, bufnr)
+        ---@param key dotfiles.map.Opts
         local map = function(key)
           key.buffer = bufnr
           Dotfiles.map(key)
         end
 
-        local mappings = {
+        local mappings = { ---@type table<string, dotfiles.map.Opts|dotfiles.map.Opts[]|fun()>
           ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
           ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
           ["textDocument/documentSymbol"] = {
@@ -173,13 +177,15 @@ return {
         }
 
         for method, keys in pairs(mappings) do
-          if client.supports_method(method) then
+          if client:supports_method(method) then
             if type(keys) == "function" then
               keys()
             elseif type(keys[1]) == "string" then
               map(keys)
             else
-              for _, k in ipairs(keys) do
+              for _, k in
+                ipairs(keys --[=[@as dotfiles.map.Opts[]]=])
+              do
                 map(k)
               end
             end
@@ -191,14 +197,14 @@ return {
         end
 
         if
-          client.supports_method("textDocument/inlayHint")
+          client:supports_method("textDocument/inlayHint")
           and vim.api.nvim_buf_is_valid(bufnr)
           and vim.bo[bufnr].buftype == ""
         then
           vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
         end
 
-        if client.supports_method("textDocument/codeLens") then
+        if client:supports_method("textDocument/codeLens") then
           vim.lsp.codelens.refresh()
           vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
             buffer = bufnr,
@@ -211,22 +217,41 @@ return {
       local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
       local ensure_installed = {}
 
+      local capabilities = vim.tbl_deep_extend(
+        "force",
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        require("blink.cmp").get_lsp_capabilities(),
+        {
+          workspace = {
+            fileOperations = {
+              didRename = true,
+              willRename = true,
+            },
+          },
+        }
+      )
+
       local function setup(server)
         if not opts.servers[server] then
           return
         end
 
+        local server_opts = vim.tbl_deep_extend("force", {
+          capabilities = vim.deepcopy(capabilities),
+        }, opts.servers[server])
+
         if opts.setup[server] then
-          if opts.setup[server](server, opts.servers[server]) then
+          if opts.setup[server](server, server_opts) then
             return
           end
         elseif opts.setup["*"] then
-          if opts.setup["*"](server, opts.servers[server]) then
+          if opts.setup["*"](server, server_opts) then
             return
           end
         end
 
-        require("lspconfig")[server].setup(opts.servers[server])
+        require("lspconfig")[server].setup(server_opts)
       end
 
       for server, server_opts in pairs(opts.servers) do
@@ -237,6 +262,7 @@ return {
         end
       end
 
+      ---@diagnostic disable-next-line: missing-fields
       require("mason-lspconfig").setup({
         ensure_installed = ensure_installed,
         handlers = { setup },
@@ -250,6 +276,9 @@ return {
       },
     },
     event = "LazyFile",
+    ---@class dotfiles.lspconfig.Config
+    ---@field servers table<string, lspconfig.Config|{ keys: dotfiles.map.Opts[], mason: boolean }>
+    ---@field setup table<string, fun(server: string, opts: lspconfig.Config): boolean>
     opts = {
       servers = {
         jsonls = {
@@ -326,6 +355,8 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
+    ---@module "lazydev.config"
+    ---@type lazydev.Config|{}
     opts = {
       library = {
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
@@ -335,6 +366,8 @@ return {
     specs = {
       {
         "saghen/blink.cmp",
+        ---@module "blink.cmp.config.types_partial"
+        ---@type blink.cmp.Config
         opts = {
           sources = {
             per_filetype = { lua = { "lazydev" } },
@@ -353,6 +386,7 @@ return {
   -- https://www.lazyvim.org/plugins/lsp#masonnvim-1 {{{
   {
     "williamboman/mason.nvim",
+    ---@param opts dotfiles.mason.Config
     config = function(_, opts)
       require("mason").setup(opts)
 
@@ -396,6 +430,8 @@ return {
       end)
     end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
+    ---@alias dotfiles.mason.Config MasonSettings|{ ensure_installed: string[] }
+    ---@type dotfiles.mason.Config
     opts = { ensure_installed = {} },
     opts_extend = { "ensure_installed" },
   },
@@ -421,7 +457,7 @@ return {
     end,
     dependencies = "xzbdmw/colorful-menu.nvim",
     event = "InsertEnter",
-    opts = {
+    opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, nerd_font_variant = "mono" },
       completion = {
         accept = { auto_brackets = { enabled = true } },
@@ -478,7 +514,7 @@ return {
     end,
     dependencies = {
       "williamboman/mason.nvim",
-      opts = { ensure_installed = { "shfmt", "stylua" } },
+      opts = { ensure_installed = { "shfmt", "stylua" } }, ---@type dotfiles.mason.Config
     },
     keys = {
       {
@@ -490,7 +526,7 @@ return {
         mode = { "n", "v" },
       },
     },
-    opts = {
+    opts = { ---@type conform.setupOpts
       formatters_by_ft = {
         fish = { "fish_indent" },
         just = { "just" },
@@ -503,7 +539,7 @@ return {
         injected = { options = { ignore_errors = true } },
         stylua = {
           condition = function(_, ctx)
-            return vim.fs.root(ctx.filename, "stylua.toml")
+            return vim.fs.root(ctx.filename, "stylua.toml") ~= nil
           end,
         },
       },
@@ -551,7 +587,7 @@ return {
           if not linter then
             vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
           end
-          return linter and not (type(linter) == "table" and linter.condition and not linter.condition())
+          return linter and not (type(linter) == "table" and linter.cond and not linter.cond())
         end, names)
         if #names > 0 then
           lint.try_lint(names)
@@ -563,25 +599,13 @@ return {
         group = Dotfiles.augroup("lint"),
       })
     end,
-    dependencies = {
-      "williamboman/mason.nvim",
-      opts = { ensure_installed = { "cspell" } },
-    },
     event = "LazyFile",
     opts = {
       events = { "BufWritePost", "BufReadPost" },
       linters_by_ft = {
         bash = { "bash" },
-        cpp = { "cspell" },
         fish = { "fish" },
         sh = { "bash" },
-      },
-      linters = {
-        cspell = {
-          condition = function()
-            return vim.bo.buftype == "" and vim.fs.root(vim.uv.cwd() or 0, ".cspell-words.txt")
-          end,
-        },
       },
     },
   },

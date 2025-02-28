@@ -4,14 +4,19 @@ vim.g.mapleader = vim.keycode("<Space>")
 vim.g.maplocalleader = "\\"
 
 -- https://github.com/echasnovski/mini.operators {{{
+---@param mapping dotfiles.map.Opts|{ [1]: string, mode?: string|string[] }
 local function remove_lsp_mapping(mapping)
   mapping.mode = mapping.mode or { "n" }
 
   if type(mapping.mode) == "string" then
-    mapping.mode = { mapping.mode }
+    mapping.mode = {
+      mapping.mode --[[@as string]],
+    }
   end
 
-  for _, m in ipairs(mapping.mode) do
+  for _, m in
+    ipairs(mapping.mode --[=[@as string[]]=])
+  do
     local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
     if map_desc and string.find(map_desc, "vim%.lsp") then
       vim.keymap.del(m, mapping[1])
@@ -186,11 +191,9 @@ map({ "<BS>", "<C-o>s", mode = "s" })
 map({
   "dm",
   function()
-    local input = vim.F.npcall(function()
-      return string.char(vim.fn.getchar())
-    end)
+    local input = vim.F.npcall(string.char, vim.fn.getchar())
     if not input or not input:match("%a") then
-      Snacks.notify.warn("Aborted: invalid mark")
+      Snacks.notify.error("Aborted: invalid mark")
       return
     end
     pcall(vim.cmd.delmark, input)
@@ -241,6 +244,7 @@ map({
   function()
     local count = vim.v.count1
     for _ = 1, count do
+      ---@diagnostic disable-next-line: param-type-mismatch
       pcall(normal, vim.fn.foldclosed(".") > -1 and "zo" or "l")
     end
   end,

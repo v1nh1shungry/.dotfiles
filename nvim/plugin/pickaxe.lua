@@ -1,5 +1,7 @@
 -- Inspired by https://github.com/chrisgrieser/nvim-tinygit {{{
+
 ---@async
+---@return boolean
 local function is_normal_git_repo()
   if not Dotfiles.git_root() then
     Snacks.notify.error("Aborting: not a git repository")

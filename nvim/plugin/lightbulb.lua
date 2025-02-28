@@ -7,7 +7,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
     vim.api.nvim_buf_clear_namespace(bufnr, NS_ID, 0, -1)
   end
 
-  if client.supports_method("textDocument/codeAction") then
+  if client:supports_method("textDocument/codeAction") then
     vim.api.nvim_create_autocmd("CursorHold", {
       buffer = bufnr,
       callback = function()
@@ -22,7 +22,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
           vim.b[bufnr].lightbulb_cancel = nil
         end
 
-        local params = vim.lsp.util.make_range_params(0, "utf-8")
+        local params = vim.lsp.util.make_range_params(0, "utf-8") ---@type table
         params.context = {
           diagnostics = vim.lsp.diagnostic.from(
             vim.diagnostic.get(bufnr, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
@@ -59,6 +59,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
     })
 
     vim.api.nvim_create_autocmd("InsertEnter", {
+      buffer = bufnr,
       callback = clear_lightbulb,
       group = LIGHTBULB_AUGROUP,
     })

@@ -57,6 +57,8 @@ vim.api.nvim_create_autocmd("OptionSet", {
       M:del(args.buf)
     end
   end,
+  group = augroup,
+  pattern = "buftype",
 })
 
 vim.api.nvim_create_autocmd("TabEnter", {

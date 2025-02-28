@@ -1,4 +1,6 @@
 -- TODO: redesign and rewrite
+local AUGROUP = Dotfiles.augroup("task")
+
 local config = {
   compile = {
     c = {
@@ -42,6 +44,8 @@ local config = {
 
 config = vim.tbl_deep_extend("force", config, Dotfiles.user.task)
 
+---@param line string
+---@return string
 local function cook_variable(line)
   local variables = {
     ["${file}"] = function()
@@ -83,17 +87,13 @@ local function cook_variable(line)
   return line
 end
 
+---@param cmd string[]
+---@return string[]
 local function cook_command(cmd)
-  cmd = vim.deepcopy(cmd)
-  for i, line in ipairs(cmd) do
-    cmd[i] = cook_variable(line)
-  end
-  return cmd
+  return vim.iter(vim.deepcopy(cmd)):map(cook_variable):totable()
 end
 
-local AUGROUP = Dotfiles.augroup("task")
-
-for lang, cmd in pairs(config.compile) do
+for ft, cmd in pairs(config.compile) do
   vim.api.nvim_create_autocmd("FileType", {
     callback = function(args)
       Dotfiles.map({
@@ -130,11 +130,11 @@ for lang, cmd in pairs(config.compile) do
       })
     end,
     group = AUGROUP,
-    pattern = lang,
+    pattern = ft,
   })
 end
 
-local term = nil
+local term = nil ---@type snacks.win?
 
 for ft, cmd in pairs(config.execute) do
   vim.api.nvim_create_autocmd("FileType", {

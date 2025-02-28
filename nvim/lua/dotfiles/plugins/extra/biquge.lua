@@ -75,7 +75,7 @@ return {
         desc = "Scroll Up",
       },
     },
-    opts = {
+    opts = { ---@type biquge.Config|{}
       hlgroup = "BiqugeDocument",
       height = 5,
       picker = "snacks",

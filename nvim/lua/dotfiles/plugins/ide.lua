@@ -455,7 +455,6 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
-    dependencies = "xzbdmw/colorful-menu.nvim",
     event = "InsertEnter",
     opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, nerd_font_variant = "mono" },
@@ -464,7 +463,6 @@ return {
         menu = {
           draw = {
             align_to = "none",
-            columns = { { "kind_icon" }, { "label", gap = 1 } },
             components = {
               kind_icon = {
                 ellipsis = false,
@@ -477,15 +475,8 @@ return {
                   return hl
                 end,
               },
-              label = {
-                text = function(ctx)
-                  return require("colorful-menu").blink_components_text(ctx)
-                end,
-                highlight = function(ctx)
-                  return require("colorful-menu").blink_components_highlight(ctx)
-                end,
-              },
             },
+            treesitter = { "lsp" },
           },
         },
         documentation = { auto_show = true, auto_show_delay_ms = 200 },

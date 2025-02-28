@@ -8,6 +8,7 @@ return {
     name = "catppuccin",
     opts = { ---@type CatppuccinOptions
       integrations = {
+        avante = { enabled = true },
         blink_cmp = true,
         dadbod_ui = true,
         diffview = true,

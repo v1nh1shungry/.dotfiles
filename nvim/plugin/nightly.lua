@@ -16,7 +16,7 @@ const char *gnu_get_libc_version();
 ]])
 
 local NIGHTLY_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
-local NIGHTLY_METADATA_DIRECTORY = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-metadata.json")
+local NIGHTLY_METADATA_PATH = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-metadata.json")
 local LOCKFILE = vim.fs.joinpath(NIGHTLY_DIRECTORY, "LOCK")
 local TIMEOUT_SECS = Dotfiles.user.nightly * 60 * 60
 
@@ -82,8 +82,8 @@ end
 ---@async
 ---@return dotfiles.nightly.Metadata?
 local function read_metadata()
-  if Dotfiles.co.fn.filereadable(NIGHTLY_METADATA_DIRECTORY) == 1 then
-    return vim.json.decode(table.concat(Dotfiles.co.fn.readfile(NIGHTLY_METADATA_DIRECTORY), "\n"))
+  if Dotfiles.co.fn.filereadable(NIGHTLY_METADATA_PATH) == 1 then
+    return vim.json.decode(table.concat(Dotfiles.co.fn.readfile(NIGHTLY_METADATA_PATH), "\n"))
   end
   return nil
 end
@@ -92,7 +92,7 @@ end
 ---@param metadata dotfiles.nightly.Metadata
 local function write_metadata(metadata)
   metadata.last_update = os.time()
-  Dotfiles.co.fn.writefile({ vim.json.encode(metadata) }, NIGHTLY_METADATA_DIRECTORY)
+  Dotfiles.co.fn.writefile({ vim.json.encode(metadata) }, NIGHTLY_METADATA_PATH)
 end
 
 ---@async
@@ -113,14 +113,14 @@ local function install(id)
     return false
   end
 
-  local ENTRY_PATH = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "share", "applications", "nvim.desktop")
+  local DESKTOP_ENTRY_PATH = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "share", "applications", "nvim.desktop")
 
   res = Dotfiles.co.system({
     "install",
     "-Dm644",
     vim.fs.joinpath(TARGET_DIR, "share", "applications", "nvim.desktop"),
     "-T",
-    ENTRY_PATH,
+    DESKTOP_ENTRY_PATH,
   })
 
   if res.code ~= 0 then
@@ -134,7 +134,7 @@ local function install(id)
     "s|Icon=nvim|Icon="
       .. vim.fs.joinpath(TARGET_DIR, "share", "icons", "hicolor", "128x128", "apps", "nvim.png")
       .. "|g",
-    ENTRY_PATH,
+    DESKTOP_ENTRY_PATH,
   })
 
   if res.code ~= 0 then
@@ -146,7 +146,7 @@ local function install(id)
     "sed",
     "-i",
     "s|Exec=nvim|Exec=" .. vim.fs.joinpath(USR_BIN_DIRECTORY, "nvim") .. "|g",
-    ENTRY_PATH,
+    DESKTOP_ENTRY_PATH,
   })
 
   if res.code ~= 0 then

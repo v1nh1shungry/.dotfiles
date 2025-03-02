@@ -20,6 +20,7 @@ return {
     ---@type avante.Config
     opts = {
       provider = "deepseek",
+      cursor_applying_provider = "qwen",
       vendors = {
         deepseek = {
           __inherited_from = "openai",
@@ -28,24 +29,32 @@ return {
           model = "deepseek-r1",
           disable_tools = true,
         },
+        qwen = {
+          __inherited_from = "openai",
+          api_key_name = "AVANTE_NVIM_API_KEY",
+          endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
+          model = "qwen-max-latest",
+          disable_tools = true,
+        },
       },
+      behaviour = { enable_cursor_planning_mode = true },
       file_selector = { provider = "snacks" },
     },
   },
   {
     "saghen/blink.cmp",
-    dependencies = {
-      "saghen/blink.compat",
-      ---@module "blink.compat.config"
-      ---@type blink.compat.Config
-      opts = {},
-    },
+    dependencies = "Kaiser-Yang/blink-cmp-avante",
     ---@module "blink.cmp.config.types_partial"
     ---@type blink.cmp.Config
     opts = {
       sources = {
-        compat = { "avante_commands", "avante_mentions", "avante_files" },
-        per_filetype = { AvanteInput = { "avante_commands", "avante_mentions", "avante_files" } },
+        per_filetype = { AvanteInput = { "avante" } },
+        providers = {
+          avante = {
+            module = "blink-cmp-avante",
+            name = "Avante",
+          },
+        },
       },
     },
   },

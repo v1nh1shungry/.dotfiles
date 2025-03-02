@@ -382,6 +382,69 @@ return {
     lazy = false,
     keys = {
       {
+        "<Leader><Space>",
+        function()
+          Snacks.picker.smart({ filter = { cwd = true } })
+        end,
+        desc = "Smart Find Files",
+      },
+      {
+        "<Leader>h",
+        function()
+          Snacks.picker.help()
+        end,
+        desc = "Help Pages",
+      },
+      {
+        "<Leader>/",
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = "Live Grep",
+      },
+      {
+        "<Leader>:",
+        function()
+          Snacks.picker.command_history()
+        end,
+        desc = "Command History",
+      },
+      {
+        "<C-q>",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Close Buffer",
+      },
+      {
+        "<M-=>",
+        function()
+          Snacks.terminal.toggle()
+        end,
+        mode = { "n", "t" },
+        desc = "Terminal",
+      },
+      {
+        "<C-w>z",
+        function()
+          Snacks.zen.zoom()
+        end,
+        desc = "Zoom",
+      },
+      {
+        "<Leader>ut",
+        function()
+          Snacks.picker.undo()
+        end,
+        desc = "Undotree",
+      },
+      {
+        "<Leader>p/",
+        function()
+          Snacks.profiler.pick()
+        end,
+      },
+      {
         "<Leader>un",
         function()
           Snacks.notifier.hide()
@@ -396,27 +459,12 @@ return {
         desc = "Notifications",
       },
       {
-        "<C-q>",
-        function()
-          Snacks.bufdelete()
-        end,
-        desc = "Close Buffer",
-      },
-      {
         "<Leader>gf",
         function()
           Snacks.gitbrowse()
         end,
         mode = { "n", "x" },
         desc = "Git Browse",
-      },
-      {
-        "<M-=>",
-        function()
-          Snacks.terminal.toggle()
-        end,
-        mode = { "n", "t" },
-        desc = "Terminal",
       },
       {
         "<Leader>fs",
@@ -433,28 +481,7 @@ return {
         desc = "Explorer (Tree)",
       },
       {
-        "<C-w>z",
-        function()
-          Snacks.zen.zoom()
-        end,
-        desc = "Zoom",
-      },
-      {
-        "<Leader>h",
-        function()
-          Snacks.picker.help()
-        end,
-        desc = "Help Pages",
-      },
-      {
         "<Leader>ff",
-        function()
-          Snacks.picker.smart({ filter = { cwd = true } })
-        end,
-        desc = "Smart Find Files",
-      },
-      {
-        "<Leader>fF",
         function()
           Snacks.picker.files()
         end,
@@ -473,13 +500,6 @@ return {
           Snacks.picker.projects()
         end,
         desc = "Projects",
-      },
-      {
-        "<Leader>/",
-        function()
-          Snacks.picker.grep()
-        end,
-        desc = "Live Grep",
       },
       {
         "<Leader>sa",
@@ -552,13 +572,6 @@ return {
         desc = "Colorschemes",
       },
       {
-        "<Leader>sj",
-        function()
-          Snacks.picker.jumps()
-        end,
-        desc = "Jumplist",
-      },
-      {
         "<Leader>si",
         function()
           Snacks.picker.icons()
@@ -580,20 +593,6 @@ return {
         desc = "Zoxide",
       },
       {
-        "<Leader>sT",
-        function()
-          Snacks.picker.treesitter()
-        end,
-        desc = "Treesitter",
-      },
-      {
-        "<Leader>:",
-        function()
-          Snacks.picker.command_history()
-        end,
-        desc = "Command History",
-      },
-      {
         "<Leader>gl",
         function()
           Snacks.picker.git_log_file()
@@ -613,13 +612,6 @@ return {
           Snacks.picker.git_status()
         end,
         desc = "Git Status",
-      },
-      {
-        "<Leader>ut",
-        function()
-          Snacks.picker.undo()
-        end,
-        desc = "Undotree",
       },
       {
         "<Leader>bb",

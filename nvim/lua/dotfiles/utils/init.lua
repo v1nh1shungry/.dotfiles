@@ -18,7 +18,7 @@ setmetatable(M, {
 ---@field mode? string|string[]
 ---
 ---@param opts dotfiles.map.Opts
-M.map = function(opts)
+function M.map(opts)
   opts = vim.deepcopy(opts)
   local lhs, rhs, mode = opts[1], opts[2], opts.mode or "n"
   opts[1], opts[2], opts.mode = nil, nil, nil
@@ -36,18 +36,18 @@ end
 ---@param name string
 ---@param opts? vim.api.keyset.create_augroup
 ---@return integer
-M.augroup = function(name, opts)
+function M.augroup(name, opts)
   return vim.api.nvim_create_augroup("dotfiles." .. name, opts or {})
 end
 
 ---@param name string
 ---@return integer
-M.ns = function(name)
+function M.ns(name)
   return vim.api.nvim_create_namespace("dotfiles." .. name)
 end
 
 ---@return string?
-M.git_root = function()
+function M.git_root()
   return vim.fs.root(vim.fn.getcwd(), ".git")
 end
 

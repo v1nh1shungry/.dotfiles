@@ -66,9 +66,7 @@ vim.api.nvim_create_autocmd("TabEnter", {
     local tab = vim.api.nvim_get_current_tabpage()
     vim
       .iter(M[tab] or {})
-      :filter(function(b)
-        return vim.api.nvim_buf_is_valid(b)
-      end)
+      :filter(vim.api.nvim_buf_is_valid)
       :each(function(b)
         vim.bo[b].buflisted = true
       end)
@@ -81,9 +79,7 @@ vim.api.nvim_create_autocmd("TabLeave", {
     local tab = vim.api.nvim_get_current_tabpage()
     vim
       .iter(M[tab] or {})
-      :filter(function(b)
-        return vim.api.nvim_buf_is_valid(b)
-      end)
+      :filter(vim.api.nvim_buf_is_valid)
       :each(function(b)
         vim.bo[b].buflisted = false
       end)

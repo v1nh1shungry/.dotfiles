@@ -139,4 +139,17 @@ return {
     },
   },
   -- }}}
+  {
+    "cshuaimin/ssr.nvim",
+    keys = {
+      {
+        "<Leader>sr",
+        function()
+          require("ssr").open()
+        end,
+        mode = { "n", "x" },
+        desc = "Structural Search & Replace",
+      },
+    },
+  },
 }

@@ -170,7 +170,7 @@ return {
   },
   {
     "tpope/vim-fugitive",
-    cmd = { "Git", "Gedit", "Gvdiffsplit", "Gread", "Gwrite", "GMove", "GRename", "GDelete" },
+    cmd = { "Git", "Gedit", "Gread", "Gwrite", "GMove", "GRename", "GDelete" },
     keys = { { "<Leader>gd", "<Cmd>Gvdiffsplit<CR>", desc = "Diffthis" } },
   },
 }

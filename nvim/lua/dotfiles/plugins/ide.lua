@@ -1,59 +1,3 @@
--- Modified from https://github.com/nvimdev/lspsaga.nvim {{{
-local peek_stack = {}
-
--- FIXME: `q` keymap doesn't work after a few windows
--- TODO: open keymaps
-local function peek_definition()
-  local params = vim.lsp.util.make_position_params(0, "utf-8")
-  vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _)
-    if vim.islist(result) then
-      result = result[1]
-    end
-
-    local fname = vim.uri_to_fname(result.targetUri or result.uri)
-    local opts = { ---@type snacks.win.Config|{}
-      border = "rounded",
-      file = fname,
-      fixbuf = true,
-      height = math.floor(vim.o.lines * 0.5),
-      minimal = false,
-      style = "float",
-      title = fname,
-      title_pos = "center",
-      width = math.floor(vim.o.columns * 0.6),
-      zindex = 20,
-    }
-
-    if #peek_stack > 0 then
-      local prev_conf = vim.api.nvim_win_get_config(peek_stack[#peek_stack])
-      opts.col = prev_conf.col + 1
-      opts.height = prev_conf.height - 1
-      opts.row = prev_conf.row + 1
-      opts.width = prev_conf.width - 2
-    end
-
-    local win = Snacks.win(opts)
-    local range = result.targetSelectionRange or result.range
-    vim.api.nvim_win_set_cursor(win.win, {
-      range.start.line + 1,
-      vim.lsp.util._get_line_byte_from_position(win.buf, range.start, "utf-8"),
-    })
-
-    vim.api.nvim_create_autocmd("WinClosed", {
-      callback = function()
-        table.remove(peek_stack)
-        if #peek_stack > 0 then
-          vim.cmd(vim.api.nvim_win_get_number(peek_stack[#peek_stack]) .. " wincmd w")
-        end
-      end,
-      pattern = tostring(win.win),
-    })
-
-    peek_stack[#peek_stack + 1] = win.win
-  end)
-end
--- }}}
-
 ---@module "lazy.types"
 ---@type LazySpec[]
 return {
@@ -107,7 +51,6 @@ return {
               end,
               desc = "LSP Definitions",
             },
-            { "<Leader>cp", peek_definition, desc = "Peek Definition" },
           },
           ["textDocument/declaration"] = {
             { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },

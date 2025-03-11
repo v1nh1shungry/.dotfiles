@@ -44,13 +44,7 @@ return {
   },
   {
     "RRethy/nvim-treesitter-endwise",
-    -- TODO: remove pin after #42 is merged
-    build = "git pull origin refs/pull/42/head",
-    commit = "8b34305ffc28bd75a22f5a0a9928ee726a85c9a6",
     event = "InsertEnter",
-    main = "nvim-treesitter.configs",
-    opts = { endwise = { enable = true } },
-    pin = true,
   },
   -- Modified from https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/mini.lua {{{
   {

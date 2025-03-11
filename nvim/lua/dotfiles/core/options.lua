@@ -8,6 +8,7 @@ vim.opt.colorcolumn = "80"
 vim.opt.completeopt = "menu,menuone,popup,fuzzy"
 vim.opt.confirm = true
 vim.opt.cursorline = true
+vim.opt.diffopt:append("vertical")
 vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
 vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }

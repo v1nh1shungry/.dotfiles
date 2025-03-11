@@ -27,10 +27,18 @@ function M.map(opts)
     mode = vim.tbl_filter(function(m)
       return m ~= "c"
     end, mode)
-    vim.keymap.set("c", lhs, rhs, vim.tbl_extend("force", opts, { silent = false }))
+    vim.keymap.set("c", lhs, rhs, vim.tbl_deep_extend("force", opts, { silent = false }))
   end
   opts.silent = opts.silent ~= false
   vim.keymap.set(mode, lhs, rhs, opts)
+end
+
+---@param opts vim.keymap.set.Opts
+---@return fun(opts: dotfiles.map.Opts)
+function M.map_with(opts)
+  return function(mapping)
+    M.map(vim.tbl_deep_extend("force", opts, mapping))
+  end
 end
 
 ---@param name string

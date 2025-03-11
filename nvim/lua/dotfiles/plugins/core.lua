@@ -284,23 +284,6 @@ return {
     },
   },
   {
-    "chrisgrieser/nvim-recorder",
-    ---@module "recorder"
-    ---@type configObj|{}
-    opts = {
-      mapping = { switchSlot = "<M-q>" }, ---@type maps|{}
-      useNerdfontIcons = false,
-    },
-    keys = {
-      { "q", desc = "Start/Stop Recording" },
-      { "Q", desc = "Play Macro" },
-      { "<M-q>", desc = "Switch Macro Slot" },
-      { "cq", desc = "Edit Macro" },
-      { "dq", desc = "Delete All Macros" },
-      { "yq", desc = "Yank Macro" },
-    },
-  },
-  {
     "lambdalisue/suda.vim",
     cmd = { "SudaRead", "SudaWrite" },
   },
@@ -626,6 +609,13 @@ return {
           Snacks.picker.grep_buffers()
         end,
         desc = "Grep",
+      },
+      {
+        "<Leader>bo",
+        function()
+          Snacks.bufdelete.other()
+        end,
+        desc = "Only",
       },
     },
     opts = { ---@type snacks.Config

@@ -6,11 +6,7 @@ return {
     ---@param opts dotfiles.lspconfig.Config
     config = function(_, opts)
       Dotfiles.lsp.on_attach(function(client, bufnr)
-        ---@param key dotfiles.map.Opts
-        local map = function(key)
-          key.buffer = bufnr
-          Dotfiles.map(key)
-        end
+        local map = Dotfiles.map_with({ buffer = bufnr })
 
         local mappings = { ---@type table<string, dotfiles.map.Opts|dotfiles.map.Opts[]|fun()>
           ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },

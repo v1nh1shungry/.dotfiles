@@ -38,30 +38,13 @@ return {
     event = "VeryLazy",
     keys = {
       {
-        "]b",
+        "gb",
         function()
-          for _ = 1, vim.v.count1 do
-            vim.cmd("BufferLineCycleNext")
-          end
+          require("bufferline").go_to(vim.v.count1, true)
         end,
-        desc = "Next Buffer",
+        desc = "Goto `v:count1` Buffer",
       },
-      {
-        "[b",
-        function()
-          for _ = 1, vim.v.count1 do
-            vim.cmd("BufferLineCyclePrev")
-          end
-        end,
-        desc = "Previous Buffer",
-      },
-      { "<S-h>", "<Cmd>BufferLineCycleNext<CR>", desc = "Previous Buffer" },
-      { "<S-l>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Next Buffer" },
-      { "[B", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "First Buffer" },
-      { "]B", "<Cmd>BufferLineGoToBuffer -1<CR>", desc = "Last Buffer" },
-      { "gb", "<Cmd>execute 'BufferLineGoToBuffer ' .. v:count1<CR>", desc = "Goto Buffer" },
       { "gB", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
-      { "<Leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Only" },
     },
     opts = { ---@type bufferline.Config|{}
       options = {
@@ -169,6 +152,11 @@ return {
             {
               function()
                 return "%S"
+              end,
+            },
+            {
+              function()
+                return vim.fn.reg_recording() == "" and "" or ""
               end,
             },
             {
@@ -351,39 +339,6 @@ return {
     end,
     lazy = true,
     opts = {},
-  },
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
-    ft = { "markdown" },
-    keys = { { "<Leader>uc", "<Cmd>RenderMarkdown buf_toggle<CR>", desc = "Toggle Render Markdown", ft = "markdown" } },
-    ---@module "render-markdown"
-    ---@type render.md.UserConfig
-    opts = {
-      code = { sign = false, width = "block", right_pad = 1 },
-      heading = { sign = false, icons = {} },
-      checkbox = { enabled = false },
-      file_types = { "markdown" },
-    },
-    opts_extend = { "file_types" },
-    specs = {
-      {
-        "saghen/blink.cmp",
-        ---@module "blink.cmp.config.types_partial"
-        ---@type blink.cmp.Config
-        opts = {
-          sources = {
-            per_filetype = { markdown = { "markdown" } },
-            providers = {
-              markdown = {
-                name = "RenderMarkdown",
-                module = "render-markdown.integ.blink",
-              },
-            },
-          },
-        },
-      },
-    },
   },
   {
     "mcauley-penney/visual-whitespace.nvim",

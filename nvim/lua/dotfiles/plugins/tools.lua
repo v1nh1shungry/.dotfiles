@@ -14,12 +14,42 @@ return {
     opts = {},
   },
   {
-    "rest-nvim/rest.nvim",
+    "mistweaverco/kulala.nvim",
     ft = "http",
     keys = {
-      { "<CR>", "<Cmd>Rest run<CR>", desc = "Send Request", ft = "http" },
-      { "yr", "<Cmd>Rest curl yank<CR>", desc = "Copy Request", ft = "http" },
+      {
+        "<CR>",
+        function()
+          require("kulala").open()
+        end,
+        desc = "Send Request",
+        ft = "http",
+      },
+      {
+        "yr",
+        function()
+          require("kulala").copy()
+        end,
+        desc = "Copy Request",
+        ft = "http",
+      },
+      {
+        "]r",
+        function()
+          require("kulala").jump_next()
+        end,
+        desc = "Next Request",
+        ft = "http",
+      },
+      {
+        "[r",
+        function()
+          require("kulala").jump_prev()
+        end,
+        desc = "Previous Request",
+      },
     },
+    opts = { ui = { display_mode = "float" } },
   },
   {
     "v1nh1shungry/cppman.nvim",

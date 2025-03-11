@@ -17,11 +17,8 @@ return {
     ---@module "gitsigns.config"
     ---@type Gitsigns.Config|{}
     opts = {
-      on_attach = function(buffer)
-        local map = function(opts)
-          opts.buffer = buffer
-          Dotfiles.map(opts)
-        end
+      on_attach = function(bufnr)
+        local map = Dotfiles.map_with({ buffer = bufnr })
         map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
         map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Current Buffer" })
         map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo Staged Hunk" })
@@ -61,6 +58,7 @@ return {
         map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
         map({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
         map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Document Git Hunks" })
+        map({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
       end,
       attach_to_untracked = true,
       current_line_blame = true,
@@ -167,10 +165,5 @@ return {
         desc = "Git History",
       },
     },
-  },
-  {
-    "tpope/vim-fugitive",
-    cmd = { "Git", "Gedit", "Gread", "Gwrite", "GMove", "GRename", "GDelete" },
-    keys = { { "<Leader>gd", "<Cmd>Gvdiffsplit<CR>", desc = "Diffthis" } },
   },
 }

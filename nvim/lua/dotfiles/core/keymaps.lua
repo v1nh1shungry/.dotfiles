@@ -4,7 +4,7 @@ vim.g.mapleader = vim.keycode("<Space>")
 vim.g.maplocalleader = "\\"
 
 -- https://github.com/echasnovski/mini.operators {{{
----@param mapping dotfiles.map.Opts|{ [1]: string, mode?: string|string[] }
+---@param mapping { [1]: string, mode?: string|string[] }
 local function remove_lsp_mapping(mapping)
   mapping.mode = mapping.mode or { "n" }
 
@@ -258,3 +258,28 @@ vim.keymap.del("n", "<C-w><C-d>")
 
 map({ "<S-h>", "<Cmd>bprevious<CR>", desc = "Previous Buffer" })
 map({ "<S-l>", "<Cmd>bnext<CR>", desc = "Next Buffer" })
+
+-- Modified from https://github.com/chrisgrieser/nvim-recorder {{{
+map({
+  "q",
+  function()
+    return vim.fn.reg_recording() == "" and "qa" or "q"
+  end,
+  expr = true,
+  desc = "Record Macro",
+})
+map({
+  "cq",
+  function()
+    vim.ui.input({
+      prompt = "Edit Macro",
+      default = vim.api.nvim_replace_termcodes(vim.fn.keytrans(vim.fn.getreg("a")), true, true, true),
+    }, function(input)
+      if not input then
+        return
+      end
+      vim.fn.setreg("a", input, "c")
+    end)
+  end,
+})
+-- }}}

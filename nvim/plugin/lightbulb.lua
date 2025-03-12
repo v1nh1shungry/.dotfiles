@@ -65,4 +65,8 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
     })
   end
 end)
+
+Dotfiles.lsp.on_detach(function(_, buffer)
+  vim.api.nvim_clear_autocmds({ buffer = buffer, group = LIGHTBULB_AUGROUP })
+end)
 -- }}}

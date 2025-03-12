@@ -2,10 +2,6 @@
 ---@type LazySpec[]
 return {
   {
-    "nvim-lua/plenary.nvim",
-    lazy = true,
-  },
-  {
     "MagicDuck/grug-far.nvim",
     cmd = "GrugFar",
     keys = { { "<Leader>s/", "<Cmd>GrugFar<CR>", desc = "Search & Replace" } },
@@ -79,5 +75,18 @@ return {
     end,
     event = "VeryLazy",
     opts = { diff_time = 5000 }, ---@type lyricify.config.Opts|{}
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    build = function()
+      require("lazy").load({ plugins = { "markdown-preview.nvim" } })
+      vim.fn["mkdp#util#install"]()
+    end,
+    config = function()
+      vim.cmd("do FileType")
+    end,
+    keys = {
+      { "<Leader>up", "<Cmd>MarkdownPreviewToggle<CR>", desc = "Markdown Preview", ft = "markdown" },
+    },
   },
 }

@@ -538,4 +538,14 @@ return {
     "v1nh1shungry/error-lens.nvim",
     event = "LazyFile",
   },
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    config = function(_, opts)
+      vim.g.rainbow_delimiters = opts
+    end,
+    event = "LazyFile",
+    ---@module "rainbow-delimiters"
+    ---@type rainbow_delimiters.config
+    opts = { query = { lua = "rainbow-blocks", query = "rainbow-blocks" } },
+  },
 }

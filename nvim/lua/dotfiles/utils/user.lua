@@ -19,8 +19,6 @@ local M = {
 }
 
 local NVIMRC = vim.fs.joinpath(vim.env.HOME, ".nvimrc")
-if vim.fn.filereadable(NVIMRC) == 1 then
-  M = vim.tbl_deep_extend("force", M, dofile(NVIMRC))
-end
+if vim.fn.filereadable(NVIMRC) == 1 then M = vim.tbl_deep_extend("force", M, dofile(NVIMRC)) end
 
 return M

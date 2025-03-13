@@ -15,33 +15,25 @@ return {
     keys = {
       {
         "<CR>",
-        function()
-          require("kulala").open()
-        end,
+        function() require("kulala").open() end,
         desc = "Send Request",
         ft = "http",
       },
       {
         "yr",
-        function()
-          require("kulala").copy()
-        end,
+        function() require("kulala").copy() end,
         desc = "Copy Request",
         ft = "http",
       },
       {
         "]r",
-        function()
-          require("kulala").jump_next()
-        end,
+        function() require("kulala").jump_next() end,
         desc = "Next Request",
         ft = "http",
       },
       {
         "[r",
-        function()
-          require("kulala").jump_prev()
-        end,
+        function() require("kulala").jump_prev() end,
         desc = "Previous Request",
       },
     },
@@ -65,28 +57,11 @@ return {
 
       Snacks.toggle({
         name = "lyricify.nvim",
-        get = function()
-          return require("lyricify").enabled
-        end,
-        set = function()
-          vim.cmd("Lyricify toggle")
-        end,
+        get = function() return require("lyricify").enabled end,
+        set = function() vim.cmd("Lyricify toggle") end,
       }):map("<Leader>uL")
     end,
     event = "VeryLazy",
     opts = { diff_time = 5000 }, ---@type lyricify.config.Opts|{}
-  },
-  {
-    "iamcco/markdown-preview.nvim",
-    build = function()
-      require("lazy").load({ plugins = { "markdown-preview.nvim" } })
-      vim.fn["mkdp#util#install"]()
-    end,
-    config = function()
-      vim.cmd("do FileType")
-    end,
-    keys = {
-      { "<Leader>up", "<Cmd>MarkdownPreviewToggle<CR>", desc = "Markdown Preview", ft = "markdown" },
-    },
   },
 }

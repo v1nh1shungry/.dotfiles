@@ -1,8 +1,3 @@
-if not vim.env.AVANTE_NVIM_API_KEY then
-  vim.notify("`AVANTE_NVIM_API_KEY` is not set", vim.log.levels.WARN, { title = "Avante" })
-  return {}
-end
-
 ---@module "lazy.types"
 ---@type LazySpec[]
 return {
@@ -15,6 +10,13 @@ return {
       "folke/snacks.nvim",
       "echasnovski/mini.icons",
     },
+    enabled = function()
+      if not vim.env.AVANTE_NVIM_API_KEY then
+        vim.notify("`AVANTE_NVIM_API_KEY` is not set", vim.log.levels.WARN, { title = "Avante" })
+        return false
+      end
+      return true
+    end,
     event = "VeryLazy",
     ---@module "avante.config"
     ---@type avante.Config

@@ -10,9 +10,7 @@ function M.wrap(fn)
     local args = { ... }
     table.insert(args, function(r)
       ret = r
-      if coroutine.status(this) == "suspended" then
-        coroutine.resume(this)
-      end
+      if coroutine.status(this) == "suspended" then coroutine.resume(this) end
     end)
     fn(unpack(args))
     coroutine.yield()
@@ -21,17 +19,13 @@ function M.wrap(fn)
 end
 
 ---@param fn function
-function M.run(fn, ...)
-  assert(coroutine.resume(coroutine.create(fn), ...))
-end
+function M.run(fn, ...) assert(coroutine.resume(coroutine.create(fn), ...)) end
 
 ---@param fn function
 ---@return function
 function M.void(fn, ...)
   local args = vim.F.pack_len(...)
-  return function()
-    M.run(fn, vim.F.unpack_len(args))
-  end
+  return function() M.run(fn, vim.F.unpack_len(args)) end
 end
 
 M.system = M.wrap(vim.system) ---@type async fun(cmd: string[], opts?: vim.SystemOpts): vim.SystemCompleted
@@ -47,9 +41,7 @@ local function schedule_wrapper(t)
   return setmetatable({}, {
     __index = function(_, k)
       return function(...)
-        if vim.in_fast_event() then
-          M.schedule()
-        end
+        if vim.in_fast_event() then M.schedule() end
         return t[k](...)
       end
     end,

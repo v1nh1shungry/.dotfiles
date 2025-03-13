@@ -7,9 +7,7 @@ return {
     keys = {
       {
         "<Leader>xH",
-        function()
-          require("gitsigns").setqflist("all")
-        end,
+        function() require("gitsigns").setqflist("all") end,
         desc = "Workspace Git Hunks",
       },
       { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle Git Blame" },
@@ -29,30 +27,22 @@ return {
         map({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })
         map({
           "]h",
-          function()
-            require("gitsigns").nav_hunk("next", { navigation_message = false })
-          end,
+          function() require("gitsigns").nav_hunk("next", { navigation_message = false }) end,
           desc = "Next Git Hunk",
         })
         map({
           "[h",
-          function()
-            require("gitsigns").nav_hunk("prev", { navigation_message = false })
-          end,
+          function() require("gitsigns").nav_hunk("prev", { navigation_message = false }) end,
           desc = "Previous Git Hunk",
         })
         map({
           "]H",
-          function()
-            require("gitsigns").nav_hunk("last", { navigation_message = false })
-          end,
+          function() require("gitsigns").nav_hunk("last", { navigation_message = false }) end,
           desc = "Last Git Hunk",
         })
         map({
           "[H",
-          function()
-            require("gitsigns").nav_hunk("first", { navigation_message = false })
-          end,
+          function() require("gitsigns").nav_hunk("first", { navigation_message = false }) end,
           desc = "First Git Hunk",
         })
         map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
@@ -144,9 +134,7 @@ return {
           },
         },
         hooks = {
-          view_opened = function()
-            require("diffview.actions").toggle_files()
-          end,
+          view_opened = function() require("diffview.actions").toggle_files() end,
         },
       }
 
@@ -159,9 +147,7 @@ return {
       { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Git Diff Pane" },
       {
         "<Leader>gh",
-        function()
-          vim.cmd("DiffviewFileHistory" .. (vim.bo.buftype == "" and " %" or ""))
-        end,
+        function() vim.cmd("DiffviewFileHistory" .. (vim.bo.buftype == "" and " %" or "")) end,
         desc = "Git History",
       },
     },

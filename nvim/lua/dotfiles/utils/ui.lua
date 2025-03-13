@@ -18,21 +18,13 @@ local skip_check = assert(vim.uv.new_check())
 function M.foldexpr()
   local buf = vim.api.nvim_get_current_buf()
 
-  if skip_foldexpr[buf] then
-    return "0"
-  end
+  if skip_foldexpr[buf] then return "0" end
 
-  if vim.bo[buf].buftype ~= "" then
-    return "0"
-  end
+  if vim.bo[buf].buftype ~= "" then return "0" end
 
-  if vim.bo[buf].filetype == "" then
-    return "0"
-  end
+  if vim.bo[buf].filetype == "" then return "0" end
 
-  if pcall(vim.treesitter.get_parser, buf) then
-    return vim.treesitter.foldexpr()
-  end
+  if pcall(vim.treesitter.get_parser, buf) then return vim.treesitter.foldexpr() end
 
   skip_foldexpr[buf] = true
   skip_check:start(function()

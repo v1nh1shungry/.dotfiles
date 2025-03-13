@@ -1,16 +1,12 @@
 -- Inspired by https://github.com/keaising/im-select.nvim
-if vim.uv.os_uname().sysname ~= "Linux" then
-  return
-end
+if vim.uv.os_uname().sysname ~= "Linux" then return end
 
 local command = "fcitx-remote"
 local default_im = "1"
 
 if vim.fn.executable(command) == 0 then
   command = "fcitx5-remote"
-  if vim.fn.executable(command) == 0 then
-    return
-  end
+  if vim.fn.executable(command) == 0 then return end
 end
 
 local previous_im
@@ -29,9 +25,7 @@ end
 ---@async
 local function restore_previous_im()
   local ret = Dotfiles.co.system({ command }, { text = true })
-  if ret.stdout == previous_im then
-    return
-  end
+  if ret.stdout == previous_im then return end
   if previous_im == "1" then
     Dotfiles.co.system({ command, "-c" })
   elseif previous_im == "2" then

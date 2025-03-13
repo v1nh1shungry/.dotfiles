@@ -3,17 +3,13 @@ local LIGHTBULB_AUGROUP = Dotfiles.augroup("lsp.lightbulb")
 local NS_ID = Dotfiles.ns("lsp.lightbulb")
 
 Dotfiles.lsp.on_attach(function(client, bufnr)
-  local function clear_lightbulb()
-    vim.api.nvim_buf_clear_namespace(bufnr, NS_ID, 0, -1)
-  end
+  local function clear_lightbulb() vim.api.nvim_buf_clear_namespace(bufnr, NS_ID, 0, -1) end
 
   if client:supports_method("textDocument/codeAction") then
     vim.api.nvim_create_autocmd("CursorHold", {
       buffer = bufnr,
       callback = function()
-        if vim.bo[bufnr].buftype ~= "" then
-          return
-        end
+        if vim.bo[bufnr].buftype ~= "" then return end
 
         clear_lightbulb()
 
@@ -43,9 +39,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
               end
             end
 
-            if not has_action then
-              return
-            end
+            if not has_action then return end
 
             vim.api.nvim_buf_set_extmark(bufnr, NS_ID, params.range.start.line, params.range.start.character + 1, {
               strict = false,
@@ -66,7 +60,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
   end
 end)
 
-Dotfiles.lsp.on_detach(function(_, buffer)
-  vim.api.nvim_clear_autocmds({ buffer = buffer, group = LIGHTBULB_AUGROUP })
-end)
+Dotfiles.lsp.on_detach(
+  function(_, buffer) vim.api.nvim_clear_autocmds({ buffer = buffer, group = LIGHTBULB_AUGROUP }) end
+)
 -- }}}

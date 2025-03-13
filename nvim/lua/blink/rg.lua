@@ -47,9 +47,7 @@ local function get_prefix(context)
   return prefix
 end
 
-function M.new(opts)
-  return setmetatable(opts or {}, { __index = M })
-end
+function M.new(opts) return setmetatable(opts or {}, { __index = M }) end
 
 ---@param context blink.cmp.Context
 ---@param resolve fun(response?: blink.cmp.CompletionResponse)
@@ -95,16 +93,12 @@ function M:get_completions(context, resolve)
       text = true,
       timeout = self.timeout,
       stdout = vim.schedule_wrap(function(_, data)
-        if not data or data == "" then
-          return
-        end
+        if not data or data == "" then return end
 
         local lines = vim.split(data, "\n", { trimempty = true })
         for _, line in ipairs(lines) do
           local json = vim.F.npcall(vim.json.decode, line)
-          if not json then
-            json = vim.F.npcall(vim.json.decode, last_line .. line)
-          end
+          if not json then json = vim.F.npcall(vim.json.decode, last_line .. line) end
 
           if json then
             if json.type == "begin" then
@@ -138,9 +132,7 @@ function M:get_completions(context, resolve)
                 local end_line = match.line_number + self.context
                 for i = start_line, end_line do
                   local l = file.lines[i]
-                  if l then
-                    table.insert(match.context_preview, { text = l:gsub("%s*$", ""), line_number = i })
-                  end
+                  if l then table.insert(match.context_preview, { text = l:gsub("%s*$", ""), line_number = i }) end
                 end
               end
               file.lines = {}
@@ -163,17 +155,13 @@ function M:get_completions(context, resolve)
       for filename, file in pairs(files) do
         for _, match in ipairs(file.matches) do
           -- this item is incomplete, and following items are likely incomplete too
-          if #match.context_preview == 0 then
-            break
-          end
+          if #match.context_preview == 0 then break end
 
           if not items[match.match] then
             items[match.match] = {
               documentation = {
                 kind = "markdown",
-                value = vim.iter(match.context_preview):fold("", function(acc, v)
-                  return acc .. v.text .. "\n"
-                end),
+                value = vim.iter(match.context_preview):fold("", function(acc, v) return acc .. v.text .. "\n" end),
                 ---@param opts blink.cmp.CompletionDocumentationDrawOpts
                 draw = function(opts)
                   local bufnr = opts.window:get_buf()
@@ -183,18 +171,10 @@ function M:get_completions(context, resolve)
                     0,
                     -1,
                     true,
-                    vim.list_extend(
-                      {
-                        vim.fs.relpath(vim.fn.getcwd(), filename),
-                        "",
-                      },
-                      vim
-                        .iter(match.context_preview)
-                        :map(function(v)
-                          return v.text
-                        end)
-                        :totable()
-                    )
+                    vim.list_extend({
+                      vim.fs.relpath(vim.fn.getcwd(), filename),
+                      "",
+                    }, vim.iter(match.context_preview):map(function(v) return v.text end):totable())
                   )
                   vim.bo[bufnr].modified = false
 
@@ -216,9 +196,7 @@ function M:get_completions(context, resolve)
                     )
                   else
                     vim.bo[bufnr].filetype = file.lang
-                    vim.api.nvim_buf_call(bufnr, function()
-                      vim.cmd("syntax on")
-                    end)
+                    vim.api.nvim_buf_call(bufnr, function() vim.cmd("syntax on") end)
                   end
 
                   local line_in_doc
@@ -253,9 +231,7 @@ function M:get_completions(context, resolve)
     end)
   )
 
-  return function()
-    job:kill(9)
-  end
+  return function() job:kill(9) end
 end
 
 return M

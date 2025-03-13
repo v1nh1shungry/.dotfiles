@@ -14,27 +14,21 @@ return {
           ["textDocument/documentSymbol"] = {
             {
               "<Leader>ss",
-              function()
-                Snacks.picker.lsp_symbols({ tree = false })
-              end,
+              function() Snacks.picker.lsp_symbols({ tree = false }) end,
               desc = "LSP Symbols (Document)",
             },
             { "gO", "<Cmd>Outline<CR>", desc = "Symbol Outline" },
           },
           ["workspace/symbol"] = {
             "<Leader>sS",
-            function()
-              Snacks.picker.lsp_workspace_symbols({ tree = false })
-            end,
+            function() Snacks.picker.lsp_workspace_symbols({ tree = false }) end,
             desc = "LSP Symbols (Workspace)",
           },
           ["textDocument/references"] = {
             { "gR", vim.lsp.buf.references, desc = "Goto References" },
             {
               "<Leader>sR",
-              function()
-                Snacks.picker.lsp_references()
-              end,
+              function() Snacks.picker.lsp_references() end,
               desc = "LSP References",
             },
           },
@@ -42,9 +36,7 @@ return {
             { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
             {
               "<Leader>sd",
-              function()
-                Snacks.picker.lsp_definitions()
-              end,
+              function() Snacks.picker.lsp_definitions() end,
               desc = "LSP Definitions",
             },
           },
@@ -52,9 +44,7 @@ return {
             { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
             {
               "<Leader>sD",
-              function()
-                Snacks.picker.lsp_declarations()
-              end,
+              function() Snacks.picker.lsp_declarations() end,
               desc = "LSP Declarations",
             },
           },
@@ -62,9 +52,7 @@ return {
             { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
             {
               "<Leader>sy",
-              function()
-                Snacks.picker.lsp_type_definitions()
-              end,
+              function() Snacks.picker.lsp_type_definitions() end,
               desc = "LSP Type Definitions",
             },
           },
@@ -72,44 +60,32 @@ return {
             { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
             {
               "<Leader>sI",
-              function()
-                Snacks.picker.lsp_implementations()
-              end,
+              function() Snacks.picker.lsp_implementations() end,
               desc = "LSP Implementations",
             },
           },
           ["callHierarchy/incomingCalls"] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
           ["callHierarchy/outgoingCalls"] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
-          ["textDocument/inlayHint"] = function()
-            Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
-          end,
+          ["textDocument/inlayHint"] = function() Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr }) end,
           ["typeHierarchy/subtypes"] = {
             "<Leader>cs",
-            function()
-              vim.lsp.buf.typehierarchy("subtypes")
-            end,
+            function() vim.lsp.buf.typehierarchy("subtypes") end,
             desc = "LSP Subtypes",
           },
           ["typeHierarchy/supertypes"] = {
             "<Leader>cS",
-            function()
-              vim.lsp.buf.typehierarchy("supertypes")
-            end,
+            function() vim.lsp.buf.typehierarchy("supertypes") end,
             desc = "LSP Supertypes",
           },
           ["textDocument/documentHighlight"] = {
             {
               "]]",
-              function()
-                Snacks.words.jump(vim.v.count1)
-              end,
+              function() Snacks.words.jump(vim.v.count1) end,
               desc = "Next Reference",
             },
             {
               "[[",
-              function()
-                Snacks.words.jump(-vim.v.count1)
-              end,
+              function() Snacks.words.jump(-vim.v.count1) end,
               desc = "Previous Reference",
             },
           },
@@ -172,22 +148,16 @@ return {
       )
 
       local function setup(server)
-        if not opts.servers[server] then
-          return
-        end
+        if not opts.servers[server] then return end
 
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, opts.servers[server])
 
         if opts.setup[server] then
-          if opts.setup[server](server, server_opts) then
-            return
-          end
+          if opts.setup[server](server, server_opts) then return end
         elseif opts.setup["*"] then
-          if opts.setup["*"](server, server_opts) then
-            return
-          end
+          if opts.setup["*"](server, server_opts) then return end
         end
 
         require("lspconfig")[server].setup(server_opts)
@@ -331,12 +301,15 @@ return {
 
       local mr = require("mason-registry")
       mr:on("package:install:success", function()
-        vim.defer_fn(function()
-          require("lazy.core.handler.event").trigger({
-            event = "FileType",
-            buf = vim.api.nvim_get_current_buf(),
-          })
-        end, 100)
+        vim.defer_fn(
+          function()
+            require("lazy.core.handler.event").trigger({
+              event = "FileType",
+              buf = vim.api.nvim_get_current_buf(),
+            })
+          end,
+          100
+        )
       end)
       mr.refresh(function()
         for _, tool in ipairs(opts.ensure_installed) do
@@ -353,9 +326,7 @@ return {
         local ensure_installed = vim.list_extend(
           vim
             .iter(require("mason-lspconfig.settings").current.ensure_installed)
-            :map(function(p)
-              return require("mason-lspconfig.mappings.server").lspconfig_to_package[p]
-            end)
+            :map(function(p) return require("mason-lspconfig.mappings.server").lspconfig_to_package[p] end)
             :totable(),
           opts.ensure_installed
         )
@@ -439,9 +410,7 @@ return {
   },
   {
     "stevearc/conform.nvim",
-    init = function()
-      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-    end,
+    init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
     dependencies = {
       "williamboman/mason.nvim",
       opts = { ensure_installed = { "shfmt", "stylua" } }, ---@type dotfiles.mason.Config
@@ -449,9 +418,7 @@ return {
     keys = {
       {
         "<Leader>cf",
-        function()
-          require("conform").format({ timeout_ms = 3000, async = false, quiet = false, lsp_fallback = true })
-        end,
+        function() require("conform").format({ timeout_ms = 3000, async = false, quiet = false, lsp_fallback = true }) end,
         desc = "Format Document",
         mode = { "n", "v" },
       },
@@ -468,9 +435,7 @@ return {
       formatters = {
         injected = { options = { ignore_errors = true } },
         stylua = {
-          condition = function(_, ctx)
-            return vim.fs.root(ctx.filename, "stylua.toml") ~= nil
-          end,
+          condition = function(_, ctx) return vim.fs.root(ctx.filename, "stylua.toml") ~= nil end,
         },
       },
     },
@@ -485,9 +450,7 @@ return {
       for name, linter in pairs(opts.linters or {}) do
         if type(linter) == "table" and type(lint.linters[name]) == "table" then
           lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
-          if type(linter.prepend_args) == "table" then
-            vim.list_extend(lint.linters[name].args, linter.prepend_args)
-          end
+          if type(linter.prepend_args) == "table" then vim.list_extend(lint.linters[name].args, linter.prepend_args) end
         else
           lint.linters[name] = linter
         end
@@ -508,20 +471,14 @@ return {
       function M.lint()
         local names = lint._resolve_linter_by_ft(vim.bo.filetype)
         names = vim.list_extend({}, names)
-        if #names == 0 then
-          vim.list_extend(names, lint.linters_by_ft["_"] or {})
-        end
+        if #names == 0 then vim.list_extend(names, lint.linters_by_ft["_"] or {}) end
         vim.list_extend(names, lint.linters_by_ft["*"] or {})
         names = vim.tbl_filter(function(name)
           local linter = lint.linters[name]
-          if not linter then
-            vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
-          end
+          if not linter then vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" }) end
           return linter and not (type(linter) == "table" and linter.cond and not linter.cond())
         end, names)
-        if #names > 0 then
-          lint.try_lint(names)
-        end
+        if #names > 0 then lint.try_lint(names) end
       end
 
       vim.api.nvim_create_autocmd(opts.events, {
@@ -554,9 +511,7 @@ return {
         down_and_jump = "<C-n>",
       },
       symbols = {
-        icon_fetcher = function(kind, _)
-          return require("mini.icons").get("lsp", kind)
-        end,
+        icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end,
       },
     },
   },

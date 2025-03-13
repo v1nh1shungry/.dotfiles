@@ -48,36 +48,16 @@ config = vim.tbl_deep_extend("force", config, Dotfiles.user.task)
 ---@return string
 local function cook_variable(line)
   local variables = {
-    ["${file}"] = function()
-      return vim.fn.expand("%:p")
-    end,
-    ["${relativeFile}"] = function()
-      return vim.fn.expand("%")
-    end,
-    ["${relativeFileDirname}"] = function()
-      return vim.fn.expand("%:h")
-    end,
-    ["${fileBasename}"] = function()
-      return vim.fn.expand("%:t")
-    end,
-    ["${fileBasenameNoExtension}"] = function()
-      return vim.fn.expand("%:t:r")
-    end,
-    ["${fileExtname}"] = function()
-      return vim.fn.expand("%:e")
-    end,
-    ["${fileDirname}"] = function()
-      return vim.fs.dirname(vim.fn.expand("%:p:h"))
-    end,
-    ["${fileDirnameBasename}"] = function()
-      return vim.fn.expand("%:p:h:t")
-    end,
-    ["${cwd}"] = function()
-      return vim.fn.getcwd()
-    end,
-    ["${/}"] = function()
-      return "/"
-    end,
+    ["${file}"] = function() return vim.fn.expand("%:p") end,
+    ["${relativeFile}"] = function() return vim.fn.expand("%") end,
+    ["${relativeFileDirname}"] = function() return vim.fn.expand("%:h") end,
+    ["${fileBasename}"] = function() return vim.fn.expand("%:t") end,
+    ["${fileBasenameNoExtension}"] = function() return vim.fn.expand("%:t:r") end,
+    ["${fileExtname}"] = function() return vim.fn.expand("%:e") end,
+    ["${fileDirname}"] = function() return vim.fs.dirname(vim.fn.expand("%:p:h")) end,
+    ["${fileDirnameBasename}"] = function() return vim.fn.expand("%:p:h:t") end,
+    ["${cwd}"] = function() return vim.fn.getcwd() end,
+    ["${/}"] = function() return "/" end,
   }
 
   for k, v in pairs(variables) do
@@ -89,9 +69,7 @@ end
 
 ---@param cmd string[]
 ---@return string[]
-local function cook_command(cmd)
-  return vim.iter(vim.deepcopy(cmd)):map(cook_variable):totable()
-end
+local function cook_command(cmd) return vim.iter(vim.deepcopy(cmd)):map(cook_variable):totable() end
 
 for ft, cmd in pairs(config.compile) do
   vim.api.nvim_create_autocmd("FileType", {
@@ -146,9 +124,7 @@ for ft, cmd in pairs(config.execute) do
 
           cmd = cook_command(cmd)
 
-          if term and term:valid() then
-            term:close()
-          end
+          if term and term:valid() then term:close() end
 
           term = Snacks.terminal.open(cmd, {
             win = { position = "bottom" },

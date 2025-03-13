@@ -1,6 +1,4 @@
-if not Dotfiles.user.nightly then
-  return
-end
+if not Dotfiles.user.nightly then return end
 
 ---@class dotfiles.nightly.Metadata
 ---@field last_update integer
@@ -24,9 +22,7 @@ local USR_LOCAL_DIRECTORY = vim.fs.joinpath(vim.env.HOME, ".local")
 local USR_BIN_DIRECTORY = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "bin")
 
 local GITHUB_REPO_NAME = "neovim"
-if vim.version.cmp(ffi.string(ffi.C.gnu_get_libc_version()), "2.31") <= 0 then
-  GITHUB_REPO_NAME = "neovim-releases"
-end
+if vim.version.cmp(ffi.string(ffi.C.gnu_get_libc_version()), "2.31") <= 0 then GITHUB_REPO_NAME = "neovim-releases" end
 
 local ASSET_NAME = "nvim-linux-x86_64"
 local ASSET_PACKAGE_NAME = ASSET_NAME .. ".tar.gz"
@@ -38,22 +34,16 @@ local F_ULOCK = 0
 
 local LOCK_FD = vim.uv.fs_open(LOCKFILE, "w", tonumber("0644", 8))
 
-if vim.fn.isdirectory(NIGHTLY_DIRECTORY) == 0 then
-  vim.fn.mkdir(NIGHTLY_DIRECTORY)
-end
+if vim.fn.isdirectory(NIGHTLY_DIRECTORY) == 0 then vim.fn.mkdir(NIGHTLY_DIRECTORY) end
 
-local function unlock()
-  ffi.C.lockf(LOCK_FD, F_ULOCK, 0)
-end
+local function unlock() ffi.C.lockf(LOCK_FD, F_ULOCK, 0) end
 
 ---@async
 ---@param force? boolean
 ---@return boolean
 local function lock(force)
   if ffi.C.lockf(LOCK_FD, F_TLOCK, 0) == -1 then
-    if force then
-      Snacks.notify.warn("There is another session holding the lock, please wait for it")
-    end
+    if force then Snacks.notify.warn("There is another session holding the lock, please wait for it") end
 
     return false
   end
@@ -173,9 +163,7 @@ end
 ---@async
 ---@param force? boolean
 local function update(force)
-  if not lock(force) then
-    return
-  end
+  if not lock(force) then return end
 
   local metadata = read_metadata() or {}
   if not force and metadata.last_update and os.time() - metadata.last_update < TIMEOUT_SECS then
@@ -194,9 +182,7 @@ local function update(force)
   if metadata.latest and metadata.latest == release.id then
     Snacks.notify.info("No update for nightly neovim")
 
-    if metadata.current ~= metadata.latest and install(metadata.latest) then
-      metadata.current = metadata.latest
-    end
+    if metadata.current ~= metadata.latest and install(metadata.latest) then metadata.current = metadata.latest end
 
     write_metadata(metadata)
 
@@ -264,9 +250,7 @@ end
 
 ---@async
 local function rollback()
-  if not lock(true) then
-    return
-  end
+  if not lock(true) then return end
 
   local metadata = read_metadata() or {}
   if not metadata.rollback or metadata.current == metadata.rollback then

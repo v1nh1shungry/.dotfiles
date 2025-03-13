@@ -18,9 +18,7 @@ local function remove_lsp_mapping(mapping)
     ipairs(mapping.mode --[=[@as string[]]=])
   do
     local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
-    if map_desc and string.find(map_desc, "vim%.lsp") then
-      vim.keymap.del(m, mapping[1])
-    end
+    if map_desc and string.find(map_desc, "vim%.lsp") then vim.keymap.del(m, mapping[1]) end
   end
 end
 
@@ -87,9 +85,7 @@ map({
   "<Leader>xl",
   function()
     local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
-    if not success and err then
-      vim.notify(err, vim.log.levels.ERROR)
-    end
+    if not success and err then vim.notify(err, vim.log.levels.ERROR) end
   end,
   desc = "Toggle Location List",
 })
@@ -97,9 +93,7 @@ map({
   "<Leader>xq",
   function()
     local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
-    if not success and err then
-      vim.notify(err, vim.log.levels.ERROR)
-    end
+    if not success and err then vim.notify(err, vim.log.levels.ERROR) end
   end,
   desc = "Toggle Quickfix List",
 })
@@ -113,16 +107,12 @@ map({ "[<S-Tab>", "<Cmd>tabfirst<CR>", desc = "First Tab" })
 map({ "]<S-Tab>", "<Cmd>tablast<CR>", desc = "Last Tab" })
 map({
   "]<Tab>",
-  function()
-    vim.cmd("+" .. vim.v.count1 .. "tabnext")
-  end,
+  function() vim.cmd("+" .. vim.v.count1 .. "tabnext") end,
   desc = "Next Tab",
 })
 map({
   "[<Tab>",
-  function()
-    vim.cmd("-" .. vim.v.count1 .. "tabnext")
-  end,
+  function() vim.cmd("-" .. vim.v.count1 .. "tabnext") end,
   desc = "Previous Tab",
 })
 
@@ -206,9 +196,7 @@ map({
   function()
     local cur_ln = vim.api.nvim_win_get_cursor(0)
     for _, mark in ipairs(vim.fn.getmarklist(vim.api.nvim_get_current_buf())) do
-      if cur_ln[1] == mark.pos[2] then
-        vim.cmd("delmark " .. mark.mark:sub(2, 2))
-      end
+      if cur_ln[1] == mark.pos[2] then vim.cmd("delmark " .. mark.mark:sub(2, 2)) end
     end
     vim.cmd("redraw!")
   end,
@@ -217,9 +205,7 @@ map({
 map({ "dm<Space>", "<Cmd>delm!<Bar>redraw!<CR>", desc = "Delete All Marks" })
 
 -- https://github.com/chrisgrieser/nvim-origami/blob/main/lua/origami/fold-keymaps.lua {{{
-local function normal(expr)
-  return vim.cmd("normal! " .. expr)
-end
+local function normal(expr) return vim.cmd("normal! " .. expr) end
 
 map({
   "h",
@@ -228,9 +214,7 @@ map({
     for _ = 1, count do
       if vim.api.nvim_win_get_cursor(0)[2] == 0 then
         local ok = pcall(normal, "zc")
-        if not ok then
-          normal("h")
-        end
+        if not ok then normal("h") end
       else
         normal("h")
       end
@@ -262,9 +246,7 @@ map({ "<S-l>", "<Cmd>bnext<CR>", desc = "Next Buffer" })
 -- Modified from https://github.com/chrisgrieser/nvim-recorder {{{
 map({
   "q",
-  function()
-    return vim.fn.reg_recording() == "" and "qa" or "q"
-  end,
+  function() return vim.fn.reg_recording() == "" and "qa" or "q" end,
   expr = true,
   desc = "Record Macro",
 })
@@ -275,9 +257,7 @@ map({
       prompt = "Edit Macro",
       default = vim.api.nvim_replace_termcodes(vim.fn.keytrans(vim.fn.getreg("a")), true, true, true),
     }, function(input)
-      if not input then
-        return
-      end
+      if not input then return end
       vim.fn.setreg("a", input, "c")
     end)
   end,

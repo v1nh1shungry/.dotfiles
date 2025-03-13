@@ -10,9 +10,7 @@ local function on(event)
     vim.api.nvim_create_autocmd(event, {
       callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client then
-          callback(client, args.buf)
-        end
+        if client then callback(client, args.buf) end
       end,
       group = AUGROUP,
     })

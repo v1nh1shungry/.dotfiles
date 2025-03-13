@@ -3,27 +3,19 @@ local match_group = "DotfilesTrailer"
 
 local function get_match_id()
   for _, match in ipairs(vim.fn.getmatches()) do
-    if match.group == match_group then
-      return match.id
-    end
+    if match.group == match_group then return match.id end
   end
 end
 
-local function unhighlight()
-  pcall(vim.fn.matchdelete, get_match_id())
-end
+local function unhighlight() pcall(vim.fn.matchdelete, get_match_id()) end
 
 local function highlight()
   if vim.fn.mode() ~= "n" then
     unhighlight()
     return
   end
-  if get_match_id() then
-    return
-  end
-  if vim.bo.buftype ~= "" then
-    return
-  end
+  if get_match_id() then return end
+  if vim.bo.buftype ~= "" then return end
   vim.fn.matchadd(match_group, [[\s\+$]])
 end
 

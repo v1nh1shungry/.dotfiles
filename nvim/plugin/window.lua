@@ -59,29 +59,21 @@ end
 
 Dotfiles.map({
   "<C-w><",
-  function()
-    resize("h")
-  end,
+  function() resize("h") end,
   desc = "Left Shift",
 })
 Dotfiles.map({
   "<C-w>>",
-  function()
-    resize("l")
-  end,
+  function() resize("l") end,
   desc = "Right Shift",
 })
 Dotfiles.map({
   "<C-w>+",
-  function()
-    resize("k")
-  end,
+  function() resize("k") end,
   desc = "Up Shift",
 })
 Dotfiles.map({
   "<C-w>-",
-  function()
-    resize("j")
-  end,
+  function() resize("j") end,
   desc = "Down Shift",
 })

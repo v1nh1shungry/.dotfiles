@@ -9,9 +9,7 @@ return {
       { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIXME<CR>", desc = "Todo" },
       {
         "<leader>st",
-        function()
-          Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } })
-        end,
+        function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end,
         desc = "Todo",
       },
     },
@@ -27,9 +25,7 @@ return {
       -- https://www.lazyvim.org/plugins/ui#bufferlinenvim {{{
       vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
-          vim.schedule(function()
-            pcall(nvim_bufferline)
-          end)
+          vim.schedule(function() pcall(nvim_bufferline) end)
         end,
         group = Dotfiles.augroup("bufferline"),
       })
@@ -39,21 +35,15 @@ return {
     keys = {
       {
         "gb",
-        function()
-          require("bufferline").go_to(vim.v.count1, true)
-        end,
+        function() require("bufferline").go_to(vim.v.count1, true) end,
         desc = "Goto `v:count1` Buffer",
       },
       { "gB", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
     },
     opts = { ---@type bufferline.Config|{}
       options = {
-        close_command = function(b)
-          Snacks.bufdelete(b)
-        end,
-        right_mouse_command = function(b)
-          Snacks.bufdelete(b)
-        end,
+        close_command = function(b) Snacks.bufdelete(b) end,
+        right_mouse_command = function(b) Snacks.bufdelete(b) end,
         numbers = "ordinal",
         diagnostics = "nvim_lsp",
         themable = true,
@@ -69,28 +59,20 @@ return {
       ---@return string
       local function git_branch_state()
         local cwd = vim.fn.getcwd()
-        if not cwd then
-          return ""
-        end
+        if not cwd then return "" end
 
         local allBranchInfo = vim.system({ "git", "-C", cwd, "branch", "--verbose" }):wait()
-        if allBranchInfo.code ~= 0 then
-          return ""
-        end
+        if allBranchInfo.code ~= 0 then return "" end
 
         local branches = vim.split(allBranchInfo.stdout, "\n")
         local currentBranchInfo
 
         for _, line in pairs(branches) do
           currentBranchInfo = line:match("^%* .*")
-          if currentBranchInfo then
-            break
-          end
+          if currentBranchInfo then break end
         end
 
-        if not currentBranchInfo then
-          return ""
-        end
+        if not currentBranchInfo then return "" end
 
         local ahead = currentBranchInfo:match("ahead (%d+)")
         local behind = currentBranchInfo:match("behind (%d+)")
@@ -106,9 +88,7 @@ return {
         return ""
       end
 
-      local function refresh_branch_state()
-        vim.b.dotfiles_git_branch_state = git_branch_state()
-      end
+      local function refresh_branch_state() vim.b.dotfiles_git_branch_state = git_branch_state() end
 
       vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
         callback = refresh_branch_state,
@@ -132,9 +112,7 @@ return {
           lualine_c = {
             { "branch", icon = "" },
             {
-              function()
-                return vim.b.dotfiles_git_branch_state or ""
-              end,
+              function() return vim.b.dotfiles_git_branch_state or "" end,
             },
             {
               "diagnostics",
@@ -143,21 +121,15 @@ return {
             },
             {
               "mode",
-              fmt = function(str)
-                return "-- " .. str .. " --"
-              end,
+              fmt = function(str) return "-- " .. str .. " --" end,
             },
           },
           lualine_x = {
             {
-              function()
-                return "%S"
-              end,
+              function() return "%S" end,
             },
             {
-              function()
-                return vim.fn.reg_recording() == "" and "" or ""
-              end,
+              function() return vim.fn.reg_recording() == "" and "" or "" end,
             },
             {
               function()
@@ -166,15 +138,11 @@ return {
               end,
             },
             {
-              function()
-                return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop)
-              end,
+              function() return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop) end,
             },
             {
               "encoding",
-              fmt = function(str)
-                return string.upper(str)
-              end,
+              fmt = function(str) return string.upper(str) end,
             },
             {
               "fileformat",
@@ -210,16 +178,12 @@ return {
     keys = {
       {
         "<Leader>bk",
-        function()
-          require("which-key").show({ global = false })
-        end,
+        function() require("which-key").show({ global = false }) end,
         desc = "Keymaps",
       },
       {
         "<C-w><Space>",
-        function()
-          require("which-key").show({ keys = "<C-w>", loop = true })
-        end,
+        function() require("which-key").show({ keys = "<C-w>", loop = true }) end,
         desc = "Window Hydra Mode",
       },
     },
@@ -263,9 +227,7 @@ return {
       -- HACK: noice shows messages from before it was enabled,
       -- but this is not ideal when Lazy is installing plugins,
       -- so clear the messages in this case.
-      if vim.o.filetype == "lazy" then
-        vim.cmd("messages clear")
-      end
+      if vim.o.filetype == "lazy" then vim.cmd("messages clear") end
       -- }}}
       require("noice").setup(opts)
     end,
@@ -274,9 +236,7 @@ return {
       {
         "<C-f>",
         function()
-          if not require("noice.lsp").scroll(4) then
-            return "<C-f>"
-          end
+          if not require("noice.lsp").scroll(4) then return "<C-f>" end
         end,
         silent = true,
         expr = true,
@@ -286,9 +246,7 @@ return {
       {
         "<C-b>",
         function()
-          if not require("noice.lsp").scroll(-4) then
-            return "<C-b>"
-          end
+          if not require("noice.lsp").scroll(-4) then return "<C-b>" end
         end,
         silent = true,
         expr = true,
@@ -358,30 +316,22 @@ return {
       keys = {
         {
           ">",
-          function()
-            require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
-          end,
+          function() require("quicker").expand({ before = 2, after = 2, add_to_existing = true }) end,
           desc = "Expand Context",
         },
         {
           "<",
-          function()
-            require("quicker").collapse()
-          end,
+          function() require("quicker").collapse() end,
           desc = "Collapse Context",
         },
         {
           "<Leader>xq",
-          function()
-            require("quicker").toggle()
-          end,
+          function() require("quicker").toggle() end,
           desc = "Toggle Quickfix List",
         },
         {
           "<Leader>xl",
-          function()
-            require("quicker").toggle({ loclist = true })
-          end,
+          function() require("quicker").toggle({ loclist = true }) end,
           desc = "Toggle Location List",
         },
       },
@@ -403,9 +353,7 @@ return {
       }
       local ignored = {} ---@type table<string, boolean>
 
-      local function filter_show(_)
-        return true
-      end
+      local function filter_show(_) return true end
 
       local function update_ignored(path)
         local items = {}
@@ -419,9 +367,7 @@ return {
           end
         end
 
-        if not Dotfiles.git_root() then
-          return
-        end
+        if not Dotfiles.git_root() then return end
 
         local ret = vim.fn.system(vim.list_extend({ "git", "-C", path, "check-ignore" }, items))
         for _, name in ipairs(vim.split(ret, "\n", { trimempty = true })) do
@@ -431,13 +377,9 @@ return {
 
       local function filter_hide(fs_entry)
         local parent = vim.fs.dirname(fs_entry.path)
-        if ignored[parent] then
-          return false
-        end
+        if ignored[parent] then return false end
 
-        if ignored[fs_entry.path] == nil then
-          update_ignored(parent)
-        end
+        if ignored[fs_entry.path] == nil then update_ignored(parent) end
 
         return not ignored[fs_entry.path]
       end
@@ -463,9 +405,7 @@ return {
         callback = function(args)
           vim.api.nvim_buf_clear_namespace(args.data.buf_id, NS, 0, -1)
 
-          if not show_hidden then
-            return
-          end
+          if not show_hidden then return end
 
           for i = 1, vim.api.nvim_buf_line_count(args.data.buf_id) do
             local entry = require("mini.files").get_fs_entry(args.data.buf_id, i)
@@ -482,9 +422,7 @@ return {
 
       require("mini.files").setup({
         content = {
-          filter = function(fs_entry)
-            return show_hidden and filter_show(fs_entry) or filter_hide(fs_entry)
-          end,
+          filter = function(fs_entry) return show_hidden and filter_show(fs_entry) or filter_hide(fs_entry) end,
         },
       })
     end,
@@ -494,9 +432,7 @@ return {
       {
         "<Leader>e",
         function()
-          if not MiniFiles.close() then
-            MiniFiles.open()
-          end
+          if not MiniFiles.close() then MiniFiles.open() end
         end,
         desc = "Explorer",
       },
@@ -504,7 +440,6 @@ return {
   },
   {
     "tzachar/highlight-undo.nvim",
-    -- NOTE: current HEAD will highlight all changes, very noisy
     commit = "795fc36f8bb7e4cf05e31bd7e354b86d27643a9e",
     keys = {
       { "u", desc = "Undo" },
@@ -540,9 +475,7 @@ return {
   },
   {
     "HiPhish/rainbow-delimiters.nvim",
-    config = function(_, opts)
-      vim.g.rainbow_delimiters = opts
-    end,
+    config = function(_, opts) vim.g.rainbow_delimiters = opts end,
     event = "LazyFile",
     ---@module "rainbow-delimiters"
     ---@type rainbow_delimiters.config

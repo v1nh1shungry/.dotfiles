@@ -57,23 +57,7 @@ local function resize(direction)
   vim.cmd(commands[direction])
 end
 
-Dotfiles.map({
-  "<C-w><",
-  function() resize("h") end,
-  desc = "Left Shift",
-})
-Dotfiles.map({
-  "<C-w>>",
-  function() resize("l") end,
-  desc = "Right Shift",
-})
-Dotfiles.map({
-  "<C-w>+",
-  function() resize("k") end,
-  desc = "Up Shift",
-})
-Dotfiles.map({
-  "<C-w>-",
-  function() resize("j") end,
-  desc = "Down Shift",
-})
+Dotfiles.map({ "<C-w><", function() resize("h") end, desc = "Left Shift" })
+Dotfiles.map({ "<C-w>>", function() resize("l") end, desc = "Right Shift" })
+Dotfiles.map({ "<C-w>+", function() resize("k") end, desc = "Up Shift" })
+Dotfiles.map({ "<C-w>-", function() resize("j") end, desc = "Down Shift" })

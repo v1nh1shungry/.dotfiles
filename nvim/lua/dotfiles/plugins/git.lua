@@ -5,11 +5,7 @@ return {
     "lewis6991/gitsigns.nvim",
     event = "LazyFile",
     keys = {
-      {
-        "<Leader>xH",
-        function() require("gitsigns").setqflist("all") end,
-        desc = "Workspace Git Hunks",
-      },
+      { "<Leader>xH", function() require("gitsigns").setqflist("all") end, desc = "Workspace Git Hunks" },
       { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle Git Blame" },
     },
     ---@module "gitsigns.config"
@@ -20,7 +16,7 @@ return {
         map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
         map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Current Buffer" })
         map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo Staged Hunk" })
-        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk_inline<CR>", desc = "Preview Hunk" })
+        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" })
         map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset Hunk" })
         map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Current Buffer" })
         map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this Line" })
@@ -77,65 +73,23 @@ return {
             ["<leader>ct"] = false,
             ["<leader>cb"] = false,
             ["<leader>ca"] = false,
-            {
-              "n",
-              "<Leader>gxo",
-              actions.conflict_choose("ours"),
-              { desc = "Choose OURS" },
-            },
-            {
-              "n",
-              "<Leader>gxt",
-              actions.conflict_choose("theirs"),
-              { desc = "Choose THEIRS" },
-            },
-            {
-              "n",
-              "<Leader>gxb",
-              actions.conflict_choose("base"),
-              { desc = "Choose BASE" },
-            },
-            {
-              "n",
-              "<Leader>gxa",
-              actions.conflict_choose("all"),
-              { desc = "Choose All" },
-            },
+            { "n", "<Leader>gxo", actions.conflict_choose("ours"), { desc = "Choose OURS" } },
+            { "n", "<Leader>gxt", actions.conflict_choose("theirs"), { desc = "Choose THEIRS" } },
+            { "n", "<Leader>gxb", actions.conflict_choose("base"), { desc = "Choose BASE" } },
+            { "n", "<Leader>gxa", actions.conflict_choose("all"), { desc = "Choose All" } },
           },
           file_panel = {
             ["<leader>cO"] = false,
             ["<leader>cT"] = false,
             ["<leader>cB"] = false,
             ["<leader>cA"] = false,
-            {
-              "n",
-              "<Leader>gxO",
-              actions.conflict_choose_all("ours"),
-              { desc = "Choose OURS (File)" },
-            },
-            {
-              "n",
-              "<Leader>gxT",
-              actions.conflict_choose_all("theirs"),
-              { desc = "Choose THEIRS (File)" },
-            },
-            {
-              "n",
-              "<Leader>gxB",
-              actions.conflict_choose_all("base"),
-              { desc = "Choose BASE (File)" },
-            },
-            {
-              "n",
-              "<Leader>gxA",
-              actions.conflict_choose_all("all"),
-              { desc = "Choose All (File)" },
-            },
+            { "n", "<Leader>gxO", actions.conflict_choose_all("ours"), { desc = "Choose OURS (File)" } },
+            { "n", "<Leader>gxT", actions.conflict_choose_all("theirs"), { desc = "Choose THEIRS (File)" } },
+            { "n", "<Leader>gxB", actions.conflict_choose_all("base"), { desc = "Choose BASE (File)" } },
+            { "n", "<Leader>gxA", actions.conflict_choose_all("all"), { desc = "Choose All (File)" } },
           },
         },
-        hooks = {
-          view_opened = function() require("diffview.actions").toggle_files() end,
-        },
+        hooks = { view_opened = function() require("diffview.actions").toggle_files() end },
       }
 
       opts.keymaps.file_panel = vim.tbl_deep_extend("force", opts.keymaps.file_panel, opts.keymaps.file_history_panel)

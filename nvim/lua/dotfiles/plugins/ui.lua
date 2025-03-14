@@ -7,14 +7,10 @@ return {
     event = "LazyFile",
     keys = {
       { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIXME<CR>", desc = "Todo" },
-      {
-        "<leader>st",
-        function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end,
-        desc = "Todo",
-      },
+      { "<leader>st", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end, desc = "Todo" },
     },
     ---@module "todo-comments.config"
-    ---@type TodoOptions
+    ---@type TodoOptions|{}
     opts = { signs = false },
   },
   {
@@ -33,11 +29,7 @@ return {
     end,
     event = "VeryLazy",
     keys = {
-      {
-        "gb",
-        function() require("bufferline").go_to(vim.v.count1, true) end,
-        desc = "Goto `v:count1` Buffer",
-      },
+      { "gb", function() require("bufferline").go_to(vim.v.count1, true) end, desc = "Goto `v:count1` Buffer" },
       { "gB", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
     },
     opts = { ---@type bufferline.Config|{}
@@ -99,11 +91,7 @@ return {
       -- }}}
 
       require("lualine").setup({
-        options = {
-          globalstatus = true,
-          component_separators = "",
-          section_separators = "",
-        },
+        options = { globalstatus = true, component_separators = "", section_separators = "" },
         sections = {
           lualine_a = {},
           lualine_b = {},
@@ -111,39 +99,21 @@ return {
           lualine_z = {},
           lualine_c = {
             { "branch", icon = "" },
-            {
-              function() return vim.b.dotfiles_git_branch_state or "" end,
-            },
-            {
-              "diagnostics",
-              colored = false,
-              always_visible = true,
-            },
-            {
-              "mode",
-              fmt = function(str) return "-- " .. str .. " --" end,
-            },
+            { function() return vim.b.dotfiles_git_branch_state or "" end },
+            { "diagnostics", colored = false, always_visible = true },
+            { "mode", fmt = function(str) return "-- " .. str .. " --" end },
           },
           lualine_x = {
-            {
-              function() return "%S" end,
-            },
-            {
-              function() return vim.fn.reg_recording() == "" and "" or "" end,
-            },
+            { function() return "%S" end },
+            { function() return vim.fn.reg_recording() == "" and "" or "" end },
             {
               function()
                 local row, col = unpack(vim.api.nvim_win_get_cursor(0))
                 return string.format("Ln %s,Col %s", row, col + 1)
               end,
             },
-            {
-              function() return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop) end,
-            },
-            {
-              "encoding",
-              fmt = function(str) return string.upper(str) end,
-            },
+            { function() return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop) end },
+            { "encoding", fmt = function(str) return string.upper(str) end },
             {
               "fileformat",
               icons_enabled = true,
@@ -176,11 +146,7 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     keys = {
-      {
-        "<Leader>bk",
-        function() require("which-key").show({ global = false }) end,
-        desc = "Keymaps",
-      },
+      { "<Leader>bk", function() require("which-key").show({ global = false }) end, desc = "Keymaps" },
       {
         "<C-w><Space>",
         function() require("which-key").show({ keys = "<C-w>", loop = true }) end,
@@ -256,11 +222,7 @@ return {
     },
     opts = { ---@type NoiceConfig|{}
       views = { split = { enter = true } },
-      presets = {
-        long_message_to_split = true,
-        bottom_search = true,
-        command_palette = true,
-      },
+      presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
       lsp = {
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -319,21 +281,9 @@ return {
           function() require("quicker").expand({ before = 2, after = 2, add_to_existing = true }) end,
           desc = "Expand Context",
         },
-        {
-          "<",
-          function() require("quicker").collapse() end,
-          desc = "Collapse Context",
-        },
-        {
-          "<Leader>xq",
-          function() require("quicker").toggle() end,
-          desc = "Toggle Quickfix List",
-        },
-        {
-          "<Leader>xl",
-          function() require("quicker").toggle({ loclist = true }) end,
-          desc = "Toggle Location List",
-        },
+        { "<", function() require("quicker").collapse() end, desc = "Collapse Context" },
+        { "<Leader>xq", function() require("quicker").toggle() end, desc = "Toggle Quickfix List" },
+        { "<Leader>xl", function() require("quicker").toggle({ loclist = true }) end, desc = "Toggle Location List" },
       },
     },
   },

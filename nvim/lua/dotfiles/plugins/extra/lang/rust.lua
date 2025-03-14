@@ -62,24 +62,15 @@ return {
             },
           },
           on_attach = function(_, bufnr)
-            Dotfiles.map({ "<Leader>cR", "<Cmd>RustLsp! runnables<CR>", buffer = bufnr, desc = "Execute" })
-            Dotfiles.map({ "<Leader>cT", "<Cmd>RustLsp! testables<CR>", buffer = bufnr, desc = "Run Test" })
-            Dotfiles.map({ "<C-j>", "<Cmd>RustLsp moveItem down<CR>", buffer = bufnr, desc = "Move Down" })
-            Dotfiles.map({ "<C-k>", "<Cmd>RustLsp moveItem up<CR>", buffer = bufnr, desc = "Move Up" })
-            Dotfiles.map({
-              "<Leader>ce",
-              "<Cmd>RustLsp explainError current<CR>",
-              buffer = bufnr,
-              desc = "Explain Error",
-            })
-            Dotfiles.map({
-              "<C-w>d",
-              "<Cmd>RustLsp renderDiagnostic current<CR>",
-              buffer = bufnr,
-              desc = "Show Diagnostics",
-            })
-            Dotfiles.map({ "gX", "<Cmd>RustLsp openDocs<CR>", buffer = bufnr, desc = "Open docs.rs" })
-            Dotfiles.map({ "J", "<Cmd>RustLsp joinLines<CR>", buffer = bufnr, desc = "Join" })
+            local map = Dotfiles.map_with({ buffer = bufnr })
+            map({ "<Leader>cR", "<Cmd>RustLsp! runnables<CR>", desc = "Execute" })
+            map({ "<Leader>cT", "<Cmd>RustLsp! testables<CR>", desc = "Run Test" })
+            map({ "<C-j>", "<Cmd>RustLsp moveItem down<CR>", desc = "Move Down" })
+            map({ "<C-k>", "<Cmd>RustLsp moveItem up<CR>", desc = "Move Up" })
+            map({ "<C-w>d", "<Cmd>RustLsp renderDiagnostic current<CR>", desc = "Show Diagnostics" })
+            map({ "<C-w><C-d>", "<Cmd>RustLsp explainError current<CR>", desc = "Explain Error" })
+            map({ "J", "<Cmd>RustLsp joinLines<CR>", desc = "Join" })
+            map({ "<Leader>sr", "<Cmd>RustLsp ssr<CR>", desc = "Structural Search & Replace" })
           end,
         },
       }

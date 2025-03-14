@@ -105,16 +105,8 @@ map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close Tab" })
 map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New Tab" })
 map({ "[<S-Tab>", "<Cmd>tabfirst<CR>", desc = "First Tab" })
 map({ "]<S-Tab>", "<Cmd>tablast<CR>", desc = "Last Tab" })
-map({
-  "]<Tab>",
-  function() vim.cmd("+" .. vim.v.count1 .. "tabnext") end,
-  desc = "Next Tab",
-})
-map({
-  "[<Tab>",
-  function() vim.cmd("-" .. vim.v.count1 .. "tabnext") end,
-  desc = "Previous Tab",
-})
+map({ "]<Tab>", function() vim.cmd("+" .. vim.v.count1 .. "tabnext") end, desc = "Next Tab" })
+map({ "[<Tab>", function() vim.cmd("-" .. vim.v.count1 .. "tabnext") end, desc = "Previous Tab" })
 
 map({ "<Leader>bn", "<Cmd>enew<CR>", desc = "New Buffer" })
 
@@ -244,12 +236,7 @@ map({ "<S-h>", "<Cmd>bprevious<CR>", desc = "Previous Buffer" })
 map({ "<S-l>", "<Cmd>bnext<CR>", desc = "Next Buffer" })
 
 -- Modified from https://github.com/chrisgrieser/nvim-recorder {{{
-map({
-  "q",
-  function() return vim.fn.reg_recording() == "" and "qa" or "q" end,
-  expr = true,
-  desc = "Record Macro",
-})
+map({ "q", function() return vim.fn.reg_recording() == "" and "qa" or "q" end, expr = true, desc = "Record Macro" })
 map({
   "cq",
   function()

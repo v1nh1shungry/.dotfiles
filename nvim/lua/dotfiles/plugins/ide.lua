@@ -26,43 +26,23 @@ return {
           },
           ["textDocument/references"] = {
             { "gR", vim.lsp.buf.references, desc = "Goto References" },
-            {
-              "<Leader>sR",
-              function() Snacks.picker.lsp_references() end,
-              desc = "LSP References",
-            },
+            { "<Leader>sR", function() Snacks.picker.lsp_references() end, desc = "LSP References" },
           },
           ["textDocument/definition"] = {
             { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
-            {
-              "<Leader>sd",
-              function() Snacks.picker.lsp_definitions() end,
-              desc = "LSP Definitions",
-            },
+            { "<Leader>sd", function() Snacks.picker.lsp_definitions() end, desc = "LSP Definitions" },
           },
           ["textDocument/declaration"] = {
             { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
-            {
-              "<Leader>sD",
-              function() Snacks.picker.lsp_declarations() end,
-              desc = "LSP Declarations",
-            },
+            { "<Leader>sD", function() Snacks.picker.lsp_declarations() end, desc = "LSP Declarations" },
           },
           ["textDocument/typeDefinition*"] = {
             { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
-            {
-              "<Leader>sy",
-              function() Snacks.picker.lsp_type_definitions() end,
-              desc = "LSP Type Definitions",
-            },
+            { "<Leader>sy", function() Snacks.picker.lsp_type_definitions() end, desc = "LSP Type Definitions" },
           },
           ["textDocument/implementation*"] = {
             { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
-            {
-              "<Leader>sI",
-              function() Snacks.picker.lsp_implementations() end,
-              desc = "LSP Implementations",
-            },
+            { "<Leader>sI", function() Snacks.picker.lsp_implementations() end, desc = "LSP Implementations" },
           },
           ["callHierarchy/incomingCalls"] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
           ["callHierarchy/outgoingCalls"] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
@@ -78,16 +58,8 @@ return {
             desc = "LSP Supertypes",
           },
           ["textDocument/documentHighlight"] = {
-            {
-              "]]",
-              function() Snacks.words.jump(vim.v.count1) end,
-              desc = "Next Reference",
-            },
-            {
-              "[[",
-              function() Snacks.words.jump(-vim.v.count1) end,
-              desc = "Previous Reference",
-            },
+            { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
+            { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous Reference" },
           },
         }
 
@@ -235,24 +207,6 @@ return {
           },
         },
         bashls = {},
-        yamlls = {
-          on_new_config = function(new_config)
-            new_config.settings.yaml.schemas = vim.tbl_deep_extend(
-              "force",
-              new_config.settings.yaml.schemas or {},
-              require("schemastore").yaml.schemas()
-            )
-          end,
-          settings = {
-            redhat = { telemetry = { enabled = false } },
-            yaml = {
-              keyOrdering = false,
-              format = { enable = true },
-              validate = true,
-              schemaStore = { enable = false, url = "" },
-            },
-          },
-        },
       },
       setup = {},
     },
@@ -434,9 +388,7 @@ return {
       },
       formatters = {
         injected = { options = { ignore_errors = true } },
-        stylua = {
-          condition = function(_, ctx) return vim.fs.root(ctx.filename, "stylua.toml") ~= nil end,
-        },
+        stylua = { condition = function(_, ctx) return vim.fs.root(ctx.filename, "stylua.toml") ~= nil end },
       },
     },
   },
@@ -510,9 +462,7 @@ return {
         up_and_jump = "<C-p>",
         down_and_jump = "<C-n>",
       },
-      symbols = {
-        icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end,
-      },
+      symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
   },
 }

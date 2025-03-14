@@ -9,6 +9,7 @@ vim.opt.completeopt = "menu,menuone,popup,fuzzy"
 vim.opt.confirm = true
 vim.opt.cursorline = true
 vim.opt.diffopt:append("vertical")
+vim.opt.diffopt:remove("linematch:40")
 vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
 vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }
@@ -58,7 +59,5 @@ vim.opt.timeoutlen = 300
 vim.opt.updatetime = 200
 vim.opt.virtualedit = "block"
 vim.opt.wildmode = "longest:full,full"
--- FIXME: cause `snacks.image` disappears
--- vim.opt.winblend = Dotfiles.user.ui.blend
 vim.opt.winminwidth = 5
 vim.opt.wrap = false

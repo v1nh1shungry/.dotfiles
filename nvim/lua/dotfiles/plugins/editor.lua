@@ -95,17 +95,11 @@ return {
         return closeopen(pair, neigh_pattern)
       end
 
-      ---@param lhs string
-      ---@param rhs string|fun(): string
-      ---@param desc string
-      local function map(lhs, rhs, desc)
-        Dotfiles.map({ lhs, rhs, expr = true, mode = "i", replace_keycodes = false, desc = desc })
-      end
-
-      map("<C-h>", "v:lua.MiniPairs.bs()", "Backspace")
-      map("<C-w>", 'v:lua.MiniPairs.bs("\23")', "Delete Word Before Cursor")
-      map("<C-u>", 'v:lua.MiniPairs.bs("\21")', "Delete All Before Cursor")
-      map("<C-j>", "v:lua.MiniPairs.cr()", "New Line")
+      local map = Dotfiles.map_with({ expr = true, mode = "i", replace_keycodes = false })
+      map({ "<C-h>", "v:lua.MiniPairs.bs()", desc = "Backspace" })
+      map({ "<C-w>", 'v:lua.MiniPairs.bs("\23")', desc = "Delete Word Before Cursor" })
+      map({ "<C-u>", 'v:lua.MiniPairs.bs("\21")', desc = "Delete All Before Cursor" })
+      map({ "<C-j>", "v:lua.MiniPairs.cr()", desc = "New Line" })
     end,
     event = "InsertEnter",
     opts = {
@@ -121,13 +115,6 @@ return {
   -- }}}
   {
     "cshuaimin/ssr.nvim",
-    keys = {
-      {
-        "<Leader>sr",
-        function() require("ssr").open() end,
-        mode = { "n", "x" },
-        desc = "Structural Search & Replace",
-      },
-    },
+    keys = { { "<Leader>sr", function() require("ssr").open() end, mode = { "n", "x" }, desc = "Structural Search & Replace" } },
   },
 }

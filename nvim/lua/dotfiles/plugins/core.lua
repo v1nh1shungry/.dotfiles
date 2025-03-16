@@ -143,7 +143,15 @@ return {
       require("nvim-treesitter.configs").setup(opts)
 
       -- clean unused parsers
-      local ensure_installed_parsers = require("nvim-treesitter.configs").get_ensure_installed_parsers() ---@cast ensure_installed_parsers string[]
+      local ensure_installed_parsers = vim.list_extend({
+        "c",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "query",
+        "vim",
+        "vimdoc",
+      }, require("nvim-treesitter.configs").get_ensure_installed_parsers() --[=[@as string[]]=])
       local unused_parsers = {}
       for _, parser in ipairs(require("nvim-treesitter.info").installed_parsers()) do
         if not vim.list_contains(ensure_installed_parsers, parser) then table.insert(unused_parsers, parser) end
@@ -165,7 +173,6 @@ return {
     opts = { ---@type TSConfig|{}
       ensure_installed = {
         "bash",
-        "c",
         "cmake",
         "cpp",
         "diff",
@@ -176,17 +183,11 @@ return {
         "http",
         "json",
         "just",
-        "lua",
         "luadoc",
         "luap",
         "make",
-        "markdown",
-        "markdown_inline",
         "printf",
-        "query",
         "regex",
-        "vim",
-        "vimdoc",
         "yaml",
       },
       highlight = { enable = true },

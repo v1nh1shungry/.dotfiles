@@ -22,14 +22,14 @@ Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 
 require("lazy").setup("dotfiles.plugins", {
   checker = { enabled = true },
-  local_spec = false,
-  install = { colorscheme = { Dotfiles.user.ui.colorscheme } },
   dev = {
+    fallback = true,
     path = vim.fs.joinpath(vim.env.HOME, "Documents", "repos"),
     patterns = { "v1nh1shungry" },
-    fallback = true,
   },
   diff = { cmd = "diffview.nvim" },
+  install = { colorscheme = { Dotfiles.user.ui.colorscheme } },
+  local_spec = false,
   performance = {
     rtp = {
       disabled_plugins = {
@@ -47,4 +47,5 @@ require("lazy").setup("dotfiles.plugins", {
       },
     },
   },
+  rocks = { enabled = false },
 })

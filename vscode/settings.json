@@ -1,6 +1,5 @@
 {
     "workbench.startupEditor": "none",
-    "editor.fontFamily": "JetBrainsMono Nerd Font Mono",
     "editor.fontLigatures": true,
     "editor.smoothScrolling": true,
     "workbench.list.smoothScrolling": true,

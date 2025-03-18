@@ -363,7 +363,7 @@ return {
  \▓▓   \▓▓    \▓    \▓▓▓▓▓▓\▓▓      \▓▓ \▓▓▓▓▓▓ \▓▓   \▓▓\▓▓   \▓▓\▓▓         \▓▓   
           ]],
           keys = {
-            { icon = " ", key = "f", desc = "Find File", action = "<Leader>ff" },
+            { icon = " ", key = "f", desc = "Find File", action = "<Leader><Space>" },
             { icon = " ", key = "r", desc = "Recent Files", action = "<Leader>fr" },
             { icon = " ", key = "/", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
             { icon = " ", key = "c", desc = "Config", action = "<Leader>fc" },
@@ -372,7 +372,6 @@ return {
           },
         },
       },
-      image = { doc = { enabled = false } },
       indent = {
         scope = {
           hl = {

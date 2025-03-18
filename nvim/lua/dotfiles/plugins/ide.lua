@@ -319,11 +319,10 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
-    event = "InsertEnter",
+    event = { "CmdlineEnter", "InsertEnter" },
     opts = { ---@type blink.cmp.Config
-      appearance = { use_nvim_cmp_as_default = false, nerd_font_variant = "mono" },
       completion = {
-        accept = { auto_brackets = { enabled = true } },
+        keyword = { range = "full" },
         menu = {
           draw = {
             align_to = "none",
@@ -342,8 +341,13 @@ return {
             },
             treesitter = { "lsp" },
           },
+          winblend = Dotfiles.user.ui.blend,
         },
-        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+          window = { winblend = Dotfiles.user.ui.blend },
+        },
       },
       sources = {
         default = { "lsp", "snippets", "path", "buffer", "rg" },
@@ -356,7 +360,6 @@ return {
           },
         },
       },
-      cmdline = { enabled = false },
       keymap = { preset = "super-tab" },
       fuzzy = { prebuilt_binaries = { download = false } },
     },

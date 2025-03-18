@@ -117,19 +117,13 @@ map({
     vim.cmd("edit " .. NVIMRC)
 
     if vim.fn.filereadable(NVIMRC) == 0 then
-      local lines = vim.split(vim.inspect(Dotfiles.user), "\n")
-      lines[1] = "return " .. lines[1] .. " ---@type dotfiles.user.Config"
-      vim.api.nvim_buf_set_lines(
-        0,
-        0,
-        -1,
-        false,
-        vim.list_extend({
-          '---@module "dotfiles.utils"',
-          '---@module "lazy.types"',
-          "",
-        }, lines)
-      )
+      vim.api.nvim_buf_set_lines(0, 0, -1, false, {
+        '---@module "dotfiles.utils"',
+        '---@module "lazy.types"',
+        "",
+        "return { ---@type dotfiles.user.Config",
+        "}",
+      })
     end
   end,
   desc = "Edit Local Configuration",

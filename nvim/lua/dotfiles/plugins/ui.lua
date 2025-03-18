@@ -227,7 +227,6 @@ return {
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
         },
       },
       routes = {
@@ -335,17 +334,15 @@ return {
       end
 
       vim.api.nvim_create_autocmd("User", {
-        callback = function(event)
-          Dotfiles.map({
-            "g.",
-            function()
+        callback = function(args)
+          Snacks.toggle({
+            name = "Hidden Files",
+            get = function() return show_hidden end,
+            set = function()
               show_hidden = not show_hidden
-              Snacks.notify.info((show_hidden and "Show" or "Hide") .. " hidden files")
               require("mini.files").refresh({ content = { filter = show_hidden and filter_show or filter_hide } })
             end,
-            buffer = event.data.buf_id,
-            desc = "Toggle Hidden Files",
-          })
+          }):map("g.", { buffer = args.data.buf_id })
         end,
         group = AUGROUP,
         pattern = "MiniFilesBufferCreate",

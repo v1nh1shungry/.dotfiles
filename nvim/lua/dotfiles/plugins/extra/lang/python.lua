@@ -9,7 +9,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    opts = { ---@type dotfiles.lspconfig.Config|{}
+    opts = { ---@type dotfiles.plugins.ide.lspconfig.Config|{}
       servers = {
         basedpyright = {},
         ruff = { on_attach = function(client) client.server_capabilities.hoverProvider = false end },

@@ -11,7 +11,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     ---@module "lspconfig"
-    ---@type dotfiles.lspconfig.Config
+    ---@type dotfiles.plugins.ide.lspconfig.Config
     opts = {
       servers = {
         vtsls = {

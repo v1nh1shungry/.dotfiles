@@ -90,7 +90,7 @@ return {
         if vim.fn.getcmdline() ~= "" then return closeopen(pair, neigh_pattern) end
 
         local o = pair:sub(1, 1)
-        if MiniPairs.config.mappings[o].cond and not MiniPairs.config.mappings[o].cond() then return o end
+        if MiniPairs.config.mappings[o].condition and not MiniPairs.config.mappings[o].condition() then return o end
 
         return closeopen(pair, neigh_pattern)
       end
@@ -105,9 +105,7 @@ return {
     opts = {
       mappings = {
         [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" },
-        ["'"] = {
-          cond = function() return not vim.list_contains({ "rust" }, vim.bo.filetype) end,
-        },
+        ["'"] = { condition = function() return not vim.list_contains({ "rust" }, vim.bo.filetype) end },
       },
       modes = { command = true },
     },
@@ -115,6 +113,8 @@ return {
   -- }}}
   {
     "cshuaimin/ssr.nvim",
-    keys = { { "<Leader>sr", function() require("ssr").open() end, mode = { "n", "x" }, desc = "Structural Search & Replace" } },
+    keys = {
+      { "<Leader>sr", function() require("ssr").open() end, mode = { "n", "x" }, desc = "Structural Search & Replace" },
+    },
   },
 }

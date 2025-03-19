@@ -121,7 +121,7 @@ map({
         '---@module "dotfiles.utils"',
         '---@module "lazy.types"',
         "",
-        "return { ---@type dotfiles.user.Config",
+        "return { ---@type dotfiles.utils.User",
         "}",
       })
     end

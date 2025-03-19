@@ -2,7 +2,7 @@
 ---@field co dotfiles.utils.Co
 ---@field lsp dotfiles.utils.LSP
 ---@field ui dotfiles.utils.UI
----@field user dotfiles.user.Config
+---@field user dotfiles.utils.User
 local M = {}
 
 setmetatable(M, {
@@ -12,12 +12,12 @@ setmetatable(M, {
   end,
 })
 
----@class dotfiles.map.Opts: vim.keymap.set.Opts
+---@class dotfiles.utils.map.Opts: vim.keymap.set.Opts
 ---@field [1] string
 ---@field [2] string|function
 ---@field mode? string|string[]
 ---
----@param opts dotfiles.map.Opts
+---@param opts dotfiles.utils.map.Opts
 function M.map(opts)
   opts = vim.deepcopy(opts)
   local lhs, rhs, mode = opts[1], opts[2], opts.mode or "n"
@@ -32,7 +32,7 @@ function M.map(opts)
 end
 
 ---@param opts vim.keymap.set.Opts
----@return fun(opts: dotfiles.map.Opts)
+---@return fun(opts: dotfiles.utils.map.Opts)
 function M.map_with(opts)
   return function(mapping) M.map(vim.tbl_deep_extend("force", opts, mapping)) end
 end

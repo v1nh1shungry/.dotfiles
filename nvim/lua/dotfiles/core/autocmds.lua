@@ -54,9 +54,7 @@ local function setup_minimal_ui(args)
     vim.opt_local.signcolumn = "no"
 
     local ret = vim.fn.maparg("q", "n", false, true)
-    if ret.buffer ~= 1 then
-      Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = args.buf, desc = "Close" })
-    end
+    if ret.buffer ~= 1 then Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = args.buf, desc = "Close" }) end
   end
 end
 

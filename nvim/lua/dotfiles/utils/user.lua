@@ -1,6 +1,6 @@
 ---@module "lazy.types"
 ---
----@class dotfiles.user.Config
+---@class dotfiles.utils.User
 ---@field extra? LazySpec[]
 ---@field ui? { blend: integer, colorscheme: string }
 ---@field task? { compile?: table<string, string[]>, execute?: table<string, string[]> }

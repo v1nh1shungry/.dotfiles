@@ -3,12 +3,12 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    ---@param opts dotfiles.lspconfig.Config
+    ---@param opts dotfiles.plugins.ide.lspconfig.Config
     config = function(_, opts)
       Dotfiles.lsp.on_attach(function(client, bufnr)
         local map = Dotfiles.map_with({ buffer = bufnr })
 
-        local mappings = { ---@type table<string, dotfiles.map.Opts|dotfiles.map.Opts[]|fun()>
+        local mappings = { ---@type table<string, dotfiles.utils.map.Opts|dotfiles.utils.map.Opts[]|fun()>
           ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
           ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
           ["textDocument/documentSymbol"] = {
@@ -71,7 +71,7 @@ return {
               map(keys)
             else
               for _, k in
-                ipairs(keys --[=[@as dotfiles.map.Opts[]]=])
+                ipairs(keys --[=[@as dotfiles.utils.map.Opts[]]=])
               do
                 map(k)
               end
@@ -157,8 +157,8 @@ return {
       },
     },
     event = "LazyFile",
-    ---@class dotfiles.lspconfig.Config
-    ---@field servers table<string, lspconfig.Config|{ keys: dotfiles.map.Opts[], mason: boolean }>
+    ---@class dotfiles.plugins.ide.lspconfig.Config
+    ---@field servers table<string, lspconfig.Config|{ keys: dotfiles.utils.map.Opts[], mason: boolean }>
     ---@field setup table<string, fun(server: string, opts: lspconfig.Config): boolean?>
     opts = {
       servers = {
@@ -206,7 +206,6 @@ return {
             },
           },
         },
-        bashls = {},
       },
       setup = {},
     },
@@ -322,7 +321,6 @@ return {
     event = { "CmdlineEnter", "InsertEnter" },
     opts = { ---@type blink.cmp.Config
       completion = {
-        keyword = { range = "full" },
         menu = {
           draw = {
             align_to = "none",
@@ -370,7 +368,7 @@ return {
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
     dependencies = {
       "williamboman/mason.nvim",
-      opts = { ensure_installed = { "shfmt", "stylua" } }, ---@type dotfiles.mason.Config
+      opts = { ensure_installed = { "stylua" } }, ---@type dotfiles.mason.Config
     },
     keys = {
       {
@@ -387,7 +385,6 @@ return {
         lua = { "stylua" },
         markdown = { "injected" },
         query = { "format-queries" },
-        sh = { "shfmt" },
       },
       formatters = {
         injected = { options = { ignore_errors = true } },
@@ -399,20 +396,18 @@ return {
   {
     "mfussenegger/nvim-lint",
     config = function(_, opts)
-      local M = {}
-
       local lint = require("lint")
+
       for name, linter in pairs(opts.linters or {}) do
         if type(linter) == "table" and type(lint.linters[name]) == "table" then
-          lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
-          if type(linter.prepend_args) == "table" then vim.list_extend(lint.linters[name].args, linter.prepend_args) end
+          lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name] --[[@as lint.Linter]], linter)
         else
           lint.linters[name] = linter
         end
       end
       lint.linters_by_ft = opts.linters_by_ft
 
-      function M.debounce(ms, fn)
+      local function debounce(ms, fn)
         local timer = assert(vim.uv.new_timer())
         return function(...)
           local argv = { ... }
@@ -423,27 +418,30 @@ return {
         end
       end
 
-      function M.lint()
+      ---@class dotfiles.plugins.ide.lint.Linter: lint.Linter
+      ---@field condition fun(): boolean
+
+      local function run()
         local names = lint._resolve_linter_by_ft(vim.bo.filetype)
         names = vim.list_extend({}, names)
         if #names == 0 then vim.list_extend(names, lint.linters_by_ft["_"] or {}) end
         vim.list_extend(names, lint.linters_by_ft["*"] or {})
         names = vim.tbl_filter(function(name)
-          local linter = lint.linters[name]
+          local linter = lint.linters[name] ---@cast linter dotfiles.plugins.ide.lint.Linter
           if not linter then vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" }) end
-          return linter and not (type(linter) == "table" and linter.cond and not linter.cond())
+          return linter and not (type(linter) == "table" and linter.condition and not linter.condition())
         end, names)
         if #names > 0 then lint.try_lint(names) end
       end
 
       vim.api.nvim_create_autocmd(opts.events, {
-        callback = M.debounce(100, M.lint),
+        callback = debounce(100, run),
         group = Dotfiles.augroup("lint"),
       })
     end,
     event = "LazyFile",
     opts = {
-      events = { "BufWritePost", "BufReadPost" },
+      events = { "BufWritePost", "BufReadPost", "InsertLeave" },
       linters_by_ft = {
         bash = { "bash" },
         fish = { "fish" },

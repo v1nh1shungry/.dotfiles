@@ -42,5 +42,4 @@ return {
     },
   },
   { "rebelot/kanagawa.nvim", lazy = true },
-  { "EdenEast/nightfox.nvim", lazy = true },
 }

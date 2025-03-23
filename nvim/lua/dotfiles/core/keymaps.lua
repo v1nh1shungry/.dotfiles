@@ -113,10 +113,9 @@ map({ "<Leader>bn", "<Cmd>enew<CR>", desc = "New Buffer" })
 map({
   "<Leader>fc",
   function()
-    local NVIMRC = vim.fs.joinpath(os.getenv("HOME"), ".nvimrc")
-    vim.cmd("edit " .. NVIMRC)
+    vim.cmd("edit " .. Dotfiles.user.PATH)
 
-    if vim.fn.filereadable(NVIMRC) == 0 then
+    if vim.fn.filereadable(Dotfiles.user.PATH) == 0 then
       vim.api.nvim_buf_set_lines(0, 0, -1, false, {
         '---@module "dotfiles.utils"',
         '---@module "lazy.types"',

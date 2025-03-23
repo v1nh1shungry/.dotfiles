@@ -1,6 +1,7 @@
 ---@module "lazy.types"
 ---@type LazySpec[]
 return {
+  -- TODO: refactor
   {
     "neovim/nvim-lspconfig",
     ---@param opts dotfiles.plugins.ide.lspconfig.Config
@@ -383,7 +384,7 @@ return {
         fish = { "fish_indent" },
         just = { "just" },
         lua = { "stylua" },
-        markdown = { "injected" },
+        markdown = { "autocorrect", "injected" },
         query = { "format-queries" },
       },
       formatters = {

@@ -1,7 +1,7 @@
 _G.Dotfiles = require("dotfiles.utils")
 
 vim.filetype.add({
-  filename = { [".nvimrc"] = "lua" },
+  filename = { ["nvim.user"] = "lua" },
   pattern = {
     [".*/kitty/.+%.conf"] = "kitty",
     ["%.env%.[%w_.-]+"] = "sh",

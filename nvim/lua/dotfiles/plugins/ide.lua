@@ -179,13 +179,8 @@ return {
         clangd = {
           cmd = {
             "clangd",
-            "--all-scopes-completion",
-            "--background-index",
-            "--clang-tidy",
-            "--completion-style=detailed",
-            "--experimental-modules-support",
             "--fallback-style=llvm",
-            "--header-insertion=never",
+            "-j=" .. vim.uv.available_parallelism(),
           },
           keys = { { "<Leader>cs", "<Cmd>ClangdSwitchSourceHeader<CR>", desc = "Switch Header/Source" } },
         },

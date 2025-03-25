@@ -7,8 +7,7 @@ vim.opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
 vim.opt.colorcolumn = "80"
 vim.opt.confirm = true
 vim.opt.cursorline = true
-vim.opt.diffopt:append("vertical")
-vim.opt.diffopt:remove("linematch:40")
+vim.opt.diffopt = "internal,filler,closeoff,vertical"
 vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
 vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }

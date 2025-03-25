@@ -50,8 +50,8 @@ end
 check:start(function()
   if vim.notify ~= temp then replay() end
 end)
--- or if it took more than 500ms, then something went wrong
-timer:start(500, 0, replay)
+-- or if it took more than 1s, then something went wrong
+timer:start(1000, 0, replay)
 -- }}}
 
 ---@diagnostic disable-next-line: duplicate-set-field

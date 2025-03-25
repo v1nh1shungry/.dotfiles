@@ -250,10 +250,10 @@ return {
   {
     "numToStr/Navigator.nvim",
     keys = {
-      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Left Window", mode = { "i", "n", "t" } },
-      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Right window", mode = { "i", "n", "t" } },
-      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Lower Window", mode = { "i", "n", "t" } },
-      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Upper Window", mode = { "i", "n", "t" } },
+      { "<M-h>", "<Cmd>NavigatorLeft<CR>", desc = "Left Window", mode = { "n", "t" } },
+      { "<M-l>", "<Cmd>NavigatorRight<CR>", desc = "Right window", mode = { "n", "t" } },
+      { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Lower Window", mode = { "n", "t" } },
+      { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Upper Window", mode = { "n", "t" } },
     },
     ---@module "Navigator"
     ---@type Config|{}
@@ -398,5 +398,10 @@ return {
       words = { enabled = true },
     },
     priority = 1000,
+  },
+  {
+    "mikesmithgh/kitty-scrollback.nvim",
+    event = "User KittyScrollbackLaunch",
+    opts = {},
   },
 }

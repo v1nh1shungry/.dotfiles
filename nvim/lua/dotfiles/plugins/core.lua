@@ -340,6 +340,7 @@ return {
       { "<Leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
       { "<Leader>sp", function() Snacks.picker.lazy() end, desc = "Plugins" },
       { "<Leader>sz", function() Snacks.picker.zoxide() end, desc = "Zoxide" },
+      { "<Leader>s:", function() Snacks.picker.commands() end, desc = "Commands" },
       { "<Leader>gl", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
       { "<Leader>gL", function() Snacks.picker.git_log() end, desc = "Git Log" },
       { "<Leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },

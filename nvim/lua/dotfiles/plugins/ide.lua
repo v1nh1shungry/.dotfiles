@@ -180,6 +180,7 @@ return {
           cmd = {
             "clangd",
             "--fallback-style=llvm",
+            "--header-insertion=never",
             "-j=" .. vim.uv.available_parallelism(),
           },
           keys = { { "<Leader>cs", "<Cmd>ClangdSwitchSourceHeader<CR>", desc = "Switch Header/Source" } },

@@ -65,13 +65,23 @@ return {
             local map = Dotfiles.map_with({ buffer = bufnr })
             map({ "<Leader>cR", "<Cmd>RustLsp! runnables<CR>", desc = "Execute" })
             map({ "<Leader>cT", "<Cmd>RustLsp! testables<CR>", desc = "Run Test" })
-            map({ "<C-j>", "<Cmd>RustLsp moveItem down<CR>", desc = "Move Down" })
-            map({ "<C-k>", "<Cmd>RustLsp moveItem up<CR>", desc = "Move Up" })
-            map({ "<C-w>d", "<Cmd>RustLsp renderDiagnostic current<CR>", desc = "Show Diagnostics" })
+            map({ "<C-w>D", "<Cmd>RustLsp renderDiagnostic current<CR>", desc = "Show Diagnostics" })
             map({ "<C-w><C-d>", "<Cmd>RustLsp explainError current<CR>", desc = "Explain Error" })
             map({ "J", "<Cmd>RustLsp joinLines<CR>", desc = "Join" })
             map({ "<Leader>sr", "<Cmd>RustLsp ssr<CR>", desc = "Structural Search & Replace" })
           end,
+        },
+        tools = {
+          executor = {
+            execute_command = function(cmd, args, cwd, _)
+              Snacks.terminal(vim.list_extend({ cmd }, args), {
+                cwd = cwd,
+                interactive = false,
+                win = { position = "bottom" },
+              })
+            end,
+          },
+          test_executor = "background",
         },
       }
     end,

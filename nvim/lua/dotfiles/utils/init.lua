@@ -16,18 +16,35 @@ setmetatable(M, {
 ---@field [1] string
 ---@field [2] string|function
 ---@field mode? string|string[]
+---@field ft? string|string[]
 ---
 ---@param opts dotfiles.utils.map.Opts
 function M.map(opts)
   opts = vim.deepcopy(opts)
+
+  if opts.ft then
+    local pattern = opts.ft
+    opts.ft = nil
+
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function(args) Dotfiles.map_with({ buffer = args.buf })(opts) end,
+      pattern = pattern,
+    })
+
+    return
+  end
+
   local lhs, rhs, mode = opts[1], opts[2], opts.mode or "n"
   opts[1], opts[2], opts.mode = nil, nil, nil
+
   mode = type(mode) == "table" and mode or { mode }
   if vim.list_contains(mode, "c") then
     mode = vim.tbl_filter(function(m) return m ~= "c" end, mode)
     vim.keymap.set("c", lhs, rhs, vim.tbl_deep_extend("force", opts, { silent = false }))
   end
+
   opts.silent = opts.silent ~= false
+
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 

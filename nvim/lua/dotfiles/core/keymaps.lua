@@ -243,3 +243,5 @@ map({
   end,
 })
 -- }}}
+
+map({ "<CR>", "<Cmd>source<CR>", desc = ":source", ft = { "lua", "vim" } })

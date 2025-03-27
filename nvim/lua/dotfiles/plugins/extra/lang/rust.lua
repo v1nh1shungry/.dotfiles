@@ -71,18 +71,7 @@ return {
             map({ "<Leader>sr", "<Cmd>RustLsp ssr<CR>", desc = "Structural Search & Replace" })
           end,
         },
-        tools = {
-          executor = {
-            execute_command = function(cmd, args, cwd, _)
-              Snacks.terminal(vim.list_extend({ cmd }, args), {
-                cwd = cwd,
-                interactive = false,
-                win = { position = "bottom" },
-              })
-            end,
-          },
-          test_executor = "background",
-        },
+        tools = { test_executor = "background" },
       }
     end,
     ft = "rust",

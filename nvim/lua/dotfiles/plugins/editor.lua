@@ -101,7 +101,8 @@ return {
       map({ "<C-u>", 'v:lua.MiniPairs.bs("\21")', desc = "Delete All Before Cursor" })
       map({ "<C-j>", "v:lua.MiniPairs.cr()", desc = "New Line" })
     end,
-    event = "InsertEnter",
+    -- NOTE: #1585
+    event = "VeryLazy",
     opts = {
       mappings = {
         [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" },

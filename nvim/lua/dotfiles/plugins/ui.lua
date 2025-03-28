@@ -15,22 +15,15 @@ return {
   },
   {
     "akinsho/bufferline.nvim",
-    config = function(_, opts)
-      require("bufferline").setup(opts)
-
-      -- https://www.lazyvim.org/plugins/ui#bufferlinenvim {{{
-      vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
-        callback = function()
-          vim.schedule(function() pcall(nvim_bufferline) end)
-        end,
-        group = Dotfiles.augroup("bufferline"),
-      })
-      -- }}}
-    end,
     event = "VeryLazy",
     keys = {
-      { "gb", function() require("bufferline").go_to(vim.v.count1, true) end, desc = "Goto `v:count1` Buffer" },
-      { "gB", "<Cmd>BufferLinePick<CR>", desc = "Pick Buffer" },
+      {
+        "gb",
+        function()
+          if vim.v.count ~= 0 then require("bufferline").go_to(vim.v.count, true) end
+        end,
+        desc = "Goto `v:count1` Buffer",
+      },
     },
     opts = { ---@type bufferline.Config|{}
       options = {
@@ -38,109 +31,56 @@ return {
         right_mouse_command = function(b) Snacks.bufdelete(b) end,
         numbers = "ordinal",
         diagnostics = "nvim_lsp",
-        themable = true,
       },
     },
   },
   {
     "nvim-lualine/lualine.nvim",
-    config = function()
+    config = function(_, opts)
       require("lualine_require").require = require
-
-      -- https://github.com/chrisgrieser/nvim-tinygit/blob/main/lua/tinygit/statusline/branch-state.lua {{{
-      ---@return string
-      local function git_branch_state()
-        local cwd = vim.fn.getcwd()
-        if not cwd then return "" end
-
-        local allBranchInfo = vim.system({ "git", "-C", cwd, "branch", "--verbose" }):wait()
-        if allBranchInfo.code ~= 0 then return "" end
-
-        local branches = vim.split(allBranchInfo.stdout, "\n")
-        local currentBranchInfo
-
-        for _, line in pairs(branches) do
-          currentBranchInfo = line:match("^%* .*")
-          if currentBranchInfo then break end
-        end
-
-        if not currentBranchInfo then return "" end
-
-        local ahead = currentBranchInfo:match("ahead (%d+)")
-        local behind = currentBranchInfo:match("behind (%d+)")
-
-        if ahead and behind then
-          return ("󰃻" .. " %s/%s"):format(ahead, behind)
-        elseif ahead then
-          return "󰶣" .. ahead
-        elseif behind then
-          return "󰶡" .. behind
-        end
-
-        return ""
-      end
-
-      local function refresh_branch_state() vim.b.dotfiles_git_branch_state = git_branch_state() end
-
-      vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged", "FocusGained" }, {
-        callback = refresh_branch_state,
-        group = Dotfiles.augroup("lualine.git_branch_state"),
-      })
-
-      refresh_branch_state()
-      -- }}}
-
-      require("lualine").setup({
-        options = { globalstatus = true, component_separators = "", section_separators = "" },
-        sections = {
-          lualine_a = {},
-          lualine_b = {},
-          lualine_y = {},
-          lualine_z = {},
-          lualine_c = {
-            { "branch", icon = "" },
-            { function() return vim.b.dotfiles_git_branch_state or "" end },
-            { "diagnostics", colored = false, always_visible = true },
-            { "mode", fmt = function(str) return "-- " .. str .. " --" end },
-          },
-          lualine_x = {
-            { function() return "%S" end },
-            { function() return vim.fn.reg_recording() == "" and "" or "" end },
-            {
-              function()
-                local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-                return string.format("Ln %s,Col %s", row, col + 1)
-              end,
-            },
-            { function() return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop) end },
-            { "encoding", fmt = function(str) return string.upper(str) end },
-            {
-              "fileformat",
-              icons_enabled = true,
-              symbols = { unix = "LF", dos = "CRLF", mac = "CR" },
-            },
-            { "filetype", icons_enabled = false },
-          },
-        },
-        inactive_sections = {
-          lualine_a = {},
-          lualine_b = {},
-          lualine_y = {},
-          lualine_z = {},
-          lualine_c = {},
-          lualine_x = {},
-        },
-        extensions = {
-          "fugitive",
-          "lazy",
-          "man",
-          "mason",
-          "nvim-dap-ui",
-          "quickfix",
-        },
-      })
+      require("lualine").setup(opts)
     end,
     event = "VeryLazy",
+    opts = {
+      options = { globalstatus = true, component_separators = "", section_separators = "" },
+      sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_y = {},
+        lualine_z = {},
+        lualine_c = {
+          { "branch", icon = "" },
+          { "diagnostics", always_visible = true },
+          { "mode", fmt = function(str) return "-- " .. str .. " --" end },
+        },
+        lualine_x = {
+          { function() return "%S" end },
+          { function() return vim.fn.reg_recording() == "" and "" or "" end },
+          {
+            function()
+              local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+              return string.format("Ln %s,Col %s", row, col + 1)
+            end,
+          },
+          { function() return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop) end },
+          { "encoding", fmt = function(str) return string.upper(str) end },
+          {
+            "fileformat",
+            icons_enabled = true,
+            symbols = { unix = "LF", dos = "CRLF", mac = "CR" },
+          },
+          { "filetype", icons_enabled = false },
+        },
+      },
+      extensions = {
+        "fugitive",
+        "lazy",
+        "man",
+        "mason",
+        "nvim-dap-ui",
+        "quickfix",
+      },
+    },
   },
   {
     "folke/which-key.nvim",
@@ -374,12 +314,22 @@ return {
       })
     end,
     dependencies = "echasnovski/mini.icons",
-    lazy = not (vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1),
+    lazy = not (
+        vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0) --[[@as string]]) == 1
+      ),
     keys = {
       {
         "<Leader>e",
         function()
-          if not MiniFiles.close() then MiniFiles.open() end
+          if not MiniFiles.close() then
+            local path = vim.api.nvim_buf_get_name(0)
+            if vim.fn.filereadable(path) == 1 then
+              MiniFiles.open(path)
+            else
+              MiniFiles.open(MiniFiles.get_latest_path())
+            end
+            MiniFiles.reveal_cwd()
+          end
         end,
         desc = "Explorer",
       },
@@ -402,10 +352,6 @@ return {
       },
     },
     pin = true,
-  },
-  {
-    "lewis6991/satellite.nvim",
-    event = "LazyFile",
   },
   {
     "Bekaboo/dropbar.nvim",

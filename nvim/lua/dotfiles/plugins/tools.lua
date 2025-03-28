@@ -29,20 +29,4 @@ return {
     ---@type cppman.Config|{}
     opts = { picker = "snacks" },
   },
-  {
-    "v1nh1shungry/lyricify.nvim",
-    -- TODO: use `main` branch after the branch is stable and merged
-    branch = "feature/playerctl",
-    config = function(_, opts)
-      require("lyricify").setup(opts)
-
-      Snacks.toggle({
-        name = "lyricify.nvim",
-        get = function() return require("lyricify").enabled end,
-        set = function() vim.cmd("Lyricify toggle") end,
-      }):map("<Leader>uL")
-    end,
-    event = "VeryLazy",
-    opts = { diff_time = 5000 }, ---@type lyricify.config.Opts|{}
-  },
 }

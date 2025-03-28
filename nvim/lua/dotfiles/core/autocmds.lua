@@ -58,12 +58,14 @@ local function setup_minimal_ui(args)
   end
 end
 
+local minimal_ui_augroup = Dotfiles.augroup("minimal_ui")
 vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
   callback = setup_minimal_ui,
-  group = Dotfiles.augroup("minimal_ui"),
+  group = minimal_ui_augroup,
 })
 vim.api.nvim_create_autocmd({ "OptionSet" }, {
   callback = setup_minimal_ui,
+  group = minimal_ui_augroup,
   pattern = "buftype",
 })
 

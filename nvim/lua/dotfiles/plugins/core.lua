@@ -400,9 +400,4 @@ return {
     },
     priority = 1000,
   },
-  {
-    "mikesmithgh/kitty-scrollback.nvim",
-    event = "User KittyScrollbackLaunch",
-    opts = {},
-  },
 }

@@ -1,7 +1,6 @@
 ---@class dotfiles.utils
 ---@field co dotfiles.utils.Co
 ---@field lsp dotfiles.utils.LSP
----@field ui dotfiles.utils.UI
 ---@field user dotfiles.utils.User
 local M = {}
 

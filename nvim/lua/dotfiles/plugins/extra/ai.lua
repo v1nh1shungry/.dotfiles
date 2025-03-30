@@ -21,22 +21,13 @@ return {
     ---@module "avante.config"
     ---@type avante.Config
     opts = {
-      provider = "deepseek",
-      cursor_applying_provider = "qwen",
+      provider = "qwen",
       vendors = {
-        deepseek = {
-          __inherited_from = "openai",
-          api_key_name = "AVANTE_NVIM_API_KEY",
-          endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
-          model = "deepseek-r1",
-          disable_tools = true,
-        },
         qwen = {
           __inherited_from = "openai",
           api_key_name = "AVANTE_NVIM_API_KEY",
           endpoint = "https://dashscope.aliyuncs.com/compatible-mode/v1",
-          model = "qwen-max-latest",
-          disable_tools = true,
+          model = "qwq-32b",
         },
       },
       behaviour = { enable_cursor_planning_mode = true },

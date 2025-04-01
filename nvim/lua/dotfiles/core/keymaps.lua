@@ -38,14 +38,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = Dotfiles.augroup("lsp.disable_default_mappings"),
 })
 
-map({ "<C-q>", "<Cmd>bd<CR>", desc = "Close Buffer" })
+map({ "<C-q>", "<Cmd>bd<CR>", desc = ":bdelete" })
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
 
-map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = "Save", mode = { "i", "x", "n", "s" } })
+map({ "<C-s>", "<Cmd>w<CR><Esc>", desc = ":write", mode = { "i", "x", "n", "s" } })
 
 -- Modified from https://github.com/LazyVim/LazyVim {{{
-map({ "<", "<gv", mode = "v" })
-map({ ">", ">gv", mode = "v" })
+map({ "<", "<gv", mode = "v", desc = "Indent Left" })
+map({ ">", ">gv", mode = "v", desc = "Indent Right" })
 
 map({ ",", ",<C-g>u", mode = "i" })
 map({ ".", ".<C-g>u", mode = "i" })
@@ -101,14 +101,14 @@ map({
 
 map({ "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', expr = true, desc = "Select Changed Text" })
 
-map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = "Close Tab" })
-map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = "New Tab" })
-map({ "[<S-Tab>", "<Cmd>tabfirst<CR>", desc = "First Tab" })
-map({ "]<S-Tab>", "<Cmd>tablast<CR>", desc = "Last Tab" })
+map({ "<Leader><Tab>q", "<Cmd>tabclose<CR>", desc = ":tabclose" })
+map({ "<Leader><Tab><Tab>", "<Cmd>tabnew<CR>", desc = ":tabnew" })
+map({ "[<S-Tab>", "<Cmd>tabfirst<CR>", desc = ":tabfirst" })
+map({ "]<S-Tab>", "<Cmd>tablast<CR>", desc = ":tablast" })
 map({ "]<Tab>", function() vim.cmd("+" .. vim.v.count1 .. "tabnext") end, desc = "Next Tab" })
 map({ "[<Tab>", function() vim.cmd("-" .. vim.v.count1 .. "tabnext") end, desc = "Previous Tab" })
 
-map({ "<Leader>bn", "<Cmd>enew<CR>", desc = "New Buffer" })
+map({ "<Leader>bn", "<Cmd>enew<CR>", desc = ":enew" })
 
 map({
   "<Leader>fc",
@@ -125,7 +125,7 @@ map({
       })
     end
   end,
-  desc = "Edit Local Configuration",
+  desc = "Edit User Configuration",
 })
 
 map({ "<Leader>pl", "<Cmd>Lazy home<CR>", desc = "Lazy" })
@@ -134,8 +134,8 @@ map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Drop Modifications" })
 
 map({ "$", "g_", mode = "x", desc = "End of Line" })
 
-map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = "Inspect Position" })
-map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = "Treesitter Tree" })
+map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = ":Inspect" })
+map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = ":InspectTree" })
 
 ---@param severity string
 ---@param next? boolean
@@ -224,9 +224,6 @@ map({
 map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search Selection" })
 
 vim.keymap.del("n", "<C-w><C-d>")
-
-map({ "<S-h>", "<Cmd>bprevious<CR>", desc = "Previous Buffer" })
-map({ "<S-l>", "<Cmd>bnext<CR>", desc = "Next Buffer" })
 
 -- Modified from https://github.com/chrisgrieser/nvim-recorder {{{
 map({ "q", function() return vim.fn.reg_recording() == "" and "qa" or "q" end, expr = true, desc = "Record Macro" })

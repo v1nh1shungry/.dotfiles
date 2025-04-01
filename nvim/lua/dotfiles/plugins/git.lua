@@ -5,7 +5,7 @@ return {
     "lewis6991/gitsigns.nvim",
     event = "LazyFile",
     keys = {
-      { "<Leader>xH", function() require("gitsigns").setqflist("all") end, desc = "Workspace Git Hunks" },
+      { "<Leader>xH", function() require("gitsigns").setqflist("all") end, desc = "Git Hunks (Workspace)" },
       { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle Git Blame" },
     },
     ---@module "gitsigns.config"
@@ -14,11 +14,11 @@ return {
       on_attach = function(bufnr)
         local map = Dotfiles.map_with({ buffer = bufnr })
         map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
-        map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Current Buffer" })
+        map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Whole Buffer" })
         map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo Staged Hunk" })
         map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" })
         map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset Hunk" })
-        map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Current Buffer" })
+        map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Whole Buffer" })
         map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this Line" })
         map({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })
         map({
@@ -43,7 +43,7 @@ return {
         })
         map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
         map({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
-        map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Document Git Hunks" })
+        map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Git Hunks (Document)" })
         map({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
       end,
       attach_to_untracked = true,
@@ -98,11 +98,11 @@ return {
       require("diffview").setup(opts)
     end,
     keys = {
-      { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Git Diff Pane" },
+      { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Diff Pane" },
       {
         "<Leader>gh",
         function() vim.cmd("DiffviewFileHistory" .. (vim.bo.buftype == "" and " %" or "")) end,
-        desc = "Git History",
+        desc = "History",
       },
     },
   },

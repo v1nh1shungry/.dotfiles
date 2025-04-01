@@ -74,5 +74,5 @@ local function pickaxe()
   })
 end
 
-Dotfiles.map({ "<Leader>g/", Dotfiles.co.void(pickaxe), desc = "Git Pickaxe" })
+Dotfiles.map({ "<Leader>g/", Dotfiles.co.void(pickaxe), desc = "Pickaxe" })
 -- }}}

@@ -50,7 +50,7 @@ return {
         lualine_z = {},
         lualine_c = {
           { "branch", icon = "" },
-          { "diagnostics", always_visible = true },
+          { "diagnostics", colored = false, always_visible = true },
           { "mode", fmt = function(str) return "-- " .. str .. " --" end },
         },
         lualine_x = {
@@ -321,15 +321,7 @@ return {
       {
         "<Leader>e",
         function()
-          if not MiniFiles.close() then
-            local path = vim.api.nvim_buf_get_name(0)
-            if vim.fn.filereadable(path) == 1 then
-              MiniFiles.open(path)
-            else
-              MiniFiles.open(MiniFiles.get_latest_path())
-            end
-            MiniFiles.reveal_cwd()
-          end
+          if not MiniFiles.close() then MiniFiles.open() end
         end,
         desc = "Explorer",
       },
@@ -361,10 +353,6 @@ return {
     "fei6409/log-highlight.nvim",
     event = "BufRead *.log",
     opts = {},
-  },
-  {
-    "v1nh1shungry/error-lens.nvim",
-    event = "LazyFile",
   },
   {
     "HiPhish/rainbow-delimiters.nvim",

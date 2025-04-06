@@ -14,73 +14,16 @@ return {
     opts = { signs = false },
   },
   {
-    "akinsho/bufferline.nvim",
+    "echasnovski/mini.tabline",
+    dependencies = "echasnovski/mini.icons",
     event = "VeryLazy",
-    keys = {
-      {
-        "gb",
-        function()
-          if vim.v.count ~= 0 then require("bufferline").go_to(vim.v.count, true) end
-        end,
-        desc = "Goto `v:count1` Buffer",
-      },
-    },
-    opts = { ---@type bufferline.Config|{}
-      options = {
-        close_command = function(b) Snacks.bufdelete(b) end,
-        right_mouse_command = function(b) Snacks.bufdelete(b) end,
-        numbers = "ordinal",
-        diagnostics = "nvim_lsp",
-      },
-    },
+    opts = {},
   },
   {
-    "nvim-lualine/lualine.nvim",
-    config = function(_, opts)
-      require("lualine_require").require = require
-      require("lualine").setup(opts)
-    end,
+    "echasnovski/mini.statusline",
+    dependencies = "echasnovski/mini.icons",
     event = "VeryLazy",
-    opts = {
-      options = { globalstatus = true, component_separators = "", section_separators = "" },
-      sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_y = {},
-        lualine_z = {},
-        lualine_c = {
-          { "branch", icon = "" },
-          { "diagnostics", colored = false, always_visible = true },
-          { "mode", fmt = function(str) return "-- " .. str .. " --" end },
-        },
-        lualine_x = {
-          { function() return "%S" end },
-          { function() return vim.fn.reg_recording() == "" and "" or "" end },
-          {
-            function()
-              local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-              return string.format("Ln %s,Col %s", row, col + 1)
-            end,
-          },
-          { function() return "Spaces: " .. (vim.bo.expandtab and vim.bo.shiftwidth or vim.bo.softtabstop) end },
-          { "encoding", fmt = function(str) return string.upper(str) end },
-          {
-            "fileformat",
-            icons_enabled = true,
-            symbols = { unix = "LF", dos = "CRLF", mac = "CR" },
-          },
-          { "filetype", icons_enabled = false },
-        },
-      },
-      extensions = {
-        "fugitive",
-        "lazy",
-        "man",
-        "mason",
-        "nvim-dap-ui",
-        "quickfix",
-      },
-    },
+    opts = {},
   },
   {
     "folke/which-key.nvim",
@@ -137,37 +80,13 @@ return {
       -- }}}
       require("noice").setup(opts)
     end,
-    keys = {
-      { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" },
-      {
-        "<C-f>",
-        function()
-          if not require("noice.lsp").scroll(4) then return "<C-f>" end
-        end,
-        silent = true,
-        expr = true,
-        desc = "Scroll Forward",
-        mode = { "i", "n", "s" },
-      },
-      {
-        "<C-b>",
-        function()
-          if not require("noice.lsp").scroll(-4) then return "<C-b>" end
-        end,
-        silent = true,
-        expr = true,
-        desc = "Scroll Backward",
-        mode = { "i", "n", "s" },
-      },
-    },
+    keys = { { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" } },
     opts = { ---@type NoiceConfig|{}
       views = { split = { enter = true } },
       presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
       lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-        },
+        signature = { enabled = false },
+        hover = { enabled = false },
       },
       routes = {
         {
@@ -353,13 +272,5 @@ return {
     "fei6409/log-highlight.nvim",
     event = "BufRead *.log",
     opts = {},
-  },
-  {
-    "HiPhish/rainbow-delimiters.nvim",
-    config = function(_, opts) vim.g.rainbow_delimiters = opts end,
-    event = "LazyFile",
-    ---@module "rainbow-delimiters"
-    ---@type rainbow_delimiters.config
-    opts = { query = { lua = "rainbow-blocks", query = "rainbow-blocks" } },
   },
 }

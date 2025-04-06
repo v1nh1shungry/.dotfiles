@@ -99,6 +99,10 @@ return {
             callback = vim.lsp.codelens.refresh,
           })
         end
+
+        if client:supports_method("textDocument/foldingRange") then
+          vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+        end
       end)
 
       -- https://www.lazyvim.org/plugins/lsp {{{
@@ -343,6 +347,11 @@ return {
           auto_show_delay_ms = 200,
           window = { winblend = Dotfiles.user.ui.blend },
         },
+        list = {
+          selection = {
+            preselect = function() return not require("blink.cmp").snippet_active({ direction = 1 }) end,
+          },
+        },
       },
       sources = {
         default = { "lsp", "snippets", "path", "buffer", "rg" },
@@ -357,6 +366,7 @@ return {
       },
       keymap = { preset = "super-tab" },
       fuzzy = { prebuilt_binaries = { download = false } },
+      signature = { enabled = true },
     },
     opts_extend = { "sources.default", "sources.compat" },
   },

@@ -260,20 +260,9 @@ return {
     opts = {},
   },
   {
-    "folke/flash.nvim",
-    keys = {
-      "f",
-      "F",
-      "t",
-      "T",
-      ",",
-      ";",
-      { "gs", function() require("flash").jump() end, mode = { "n", "x", "o" }, desc = "Jump" },
-      { "r", function() require("flash").remote() end, mode = "o", desc = "Jump" },
-    },
-    ---@module "flash.config"
-    ---@type Flash.Config|{}
-    opts = { modes = { char = { highlight = { backdrop = false } } } },
+    "echasnovski/mini.jump",
+    keys = { "f", "F", "t", "T", ",", ";" },
+    opts = {},
   },
   {
     "folke/snacks.nvim",
@@ -373,19 +362,7 @@ return {
           },
         },
       },
-      indent = {
-        scope = {
-          hl = {
-            "RainbowDelimiterRed",
-            "RainbowDelimiterYellow",
-            "RainbowDelimiterBlue",
-            "RainbowDelimiterOrange",
-            "RainbowDelimiterGreen",
-            "RainbowDelimiterViolet",
-            "RainbowDelimiterCyan",
-          },
-        },
-      },
+      indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },
       picker = {

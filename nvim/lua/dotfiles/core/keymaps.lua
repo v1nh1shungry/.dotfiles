@@ -242,3 +242,10 @@ map({
 -- }}}
 
 map({ "<CR>", "<Cmd>source<CR>", desc = ":source", ft = { "lua", "vim" } })
+
+map({ "<C-f>", "<Right>", mode = { "i", "c" }, desc = "Forward" })
+map({ "<C-b>", "<Left>", mode = { "i", "c" }, desc = "Backward" })
+map({ "<C-a>", "<Home>", mode = { "i", "c" }, desc = "Begin of Line" })
+map({ "<C-e>", "<End>", mode = { "i", "c" }, desc = "End of Line" })
+map({ "<M-f>", "<S-Right>", mode = { "i", "c" }, desc = "Word Forward" })
+map({ "<M-b>", "<S-Left>", mode = { "i", "c" }, desc = "Word Backward" })

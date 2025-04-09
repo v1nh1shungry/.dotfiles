@@ -321,23 +321,11 @@ return {
     end,
     event = { "CmdlineEnter", "InsertEnter" },
     opts = { ---@type blink.cmp.Config
+      cmdline = { enabled = false },
       completion = {
         menu = {
           draw = {
             align_to = "none",
-            components = {
-              kind_icon = {
-                ellipsis = false,
-                text = function(ctx)
-                  local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                  return kind_icon
-                end,
-                highlight = function(ctx)
-                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                  return hl
-                end,
-              },
-            },
             treesitter = { "lsp" },
           },
           winblend = Dotfiles.user.ui.blend,
@@ -347,28 +335,15 @@ return {
           auto_show_delay_ms = 200,
           window = { winblend = Dotfiles.user.ui.blend },
         },
-        list = {
-          selection = {
-            preselect = function() return not require("blink.cmp").snippet_active({ direction = 1 }) end,
-          },
-        },
       },
-      sources = {
-        default = { "lsp", "snippets", "path", "buffer", "rg" },
-        compat = {},
-        providers = {
-          rg = {
-            module = "blink.rg",
-            name = "Ripgrep",
-            score_offset = -100,
-          },
-        },
-      },
-      keymap = { preset = "super-tab" },
       fuzzy = { prebuilt_binaries = { download = false } },
-      signature = { enabled = true },
+      keymap = { preset = "super-tab" },
+      sources = {
+        compat = {},
+        default = { "lsp", "snippets", "path", "buffer" },
+      },
     },
-    opts_extend = { "sources.default", "sources.compat" },
+    opts_extend = { "sources.compat", "sources.default" },
   },
   {
     "stevearc/conform.nvim",
@@ -378,14 +353,10 @@ return {
       opts = { ensure_installed = { "stylua" } }, ---@type dotfiles.mason.Config
     },
     keys = {
-      {
-        "<Leader>cf",
-        function() require("conform").format({ timeout_ms = 3000, async = false, quiet = false, lsp_fallback = true }) end,
-        desc = "Format Document",
-        mode = { "n", "v" },
-      },
+      { "<Leader>cf", function() require("conform").format() end, desc = "Format Document", mode = { "n", "x" } },
     },
     opts = { ---@type conform.setupOpts
+      default_format_opts = { lsp_format = "fallback" },
       formatters_by_ft = {
         fish = { "fish_indent" },
         just = { "just" },

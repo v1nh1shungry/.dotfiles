@@ -261,7 +261,7 @@ return {
   },
   {
     "echasnovski/mini.jump",
-    keys = { "f", "F", "t", "T", ",", ";" },
+    keys = vim.iter({ "f", "F", "t", "T", ",", ";" }):map(function(m) return { m, mode = { "n", "x" } } end):totable(),
     opts = {},
   },
   {

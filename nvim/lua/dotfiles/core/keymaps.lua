@@ -249,3 +249,17 @@ map({ "<C-a>", "<Home>", mode = { "i", "c" }, desc = "Begin of Line" })
 map({ "<C-e>", "<End>", mode = { "i", "c" }, desc = "End of Line" })
 map({ "<M-f>", "<S-Right>", mode = { "i", "c" }, desc = "Word Forward" })
 map({ "<M-b>", "<S-Left>", mode = { "i", "c" }, desc = "Word Backward" })
+map({ "<M-d>", "<C-o>dw", mode = "i", desc = "Delete Word Forward" })
+map({ "<M-d>", "<S-Right><C-w>", mode = "c", desc = "Delete Word Forward" })
+
+map({
+  "gb",
+  function()
+    if vim.v.count == 0 then return end
+    local bufs = vim.iter(vim.api.nvim_list_bufs()):filter(function(b) return vim.bo[b].buflisted end):totable()
+    if vim.v.count > #bufs then return end
+    table.sort(bufs)
+    vim.api.nvim_set_current_buf(bufs[vim.v.count])
+  end,
+  desc = "Goto Nth Buffer",
+})

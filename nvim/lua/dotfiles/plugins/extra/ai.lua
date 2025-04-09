@@ -35,23 +35,6 @@ return {
     },
   },
   {
-    "saghen/blink.cmp",
-    dependencies = "Kaiser-Yang/blink-cmp-avante",
-    ---@module "blink.cmp.config.types_partial"
-    ---@type blink.cmp.Config
-    opts = {
-      sources = {
-        per_filetype = { AvanteInput = { "avante" } },
-        providers = {
-          avante = {
-            module = "blink-cmp-avante",
-            name = "Avante",
-          },
-        },
-      },
-    },
-  },
-  {
     "folke/which-key.nvim",
     ---@module "which-key.config"
     ---@type wk.Opts|{}

@@ -18,6 +18,7 @@ vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
+vim.opt.foldtext = ""
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.laststatus = 3
@@ -36,6 +37,7 @@ vim.opt.shiftwidth = 2
 vim.opt.shortmess:append({ I = true, W = true, c = true })
 vim.opt.showcmdloc = "statusline"
 vim.opt.showmode = false
+vim.opt.showtabline = 2
 vim.opt.sidescrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.smartcase = true

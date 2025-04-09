@@ -84,10 +84,7 @@ return {
     opts = { ---@type NoiceConfig|{}
       views = { split = { enter = true } },
       presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
-      lsp = {
-        signature = { enabled = false },
-        hover = { enabled = false },
-      },
+      lsp = { hover = { enabled = false } },
       routes = {
         {
           filter = {

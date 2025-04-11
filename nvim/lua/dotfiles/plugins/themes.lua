@@ -10,7 +10,6 @@ return {
     ---@type CatppuccinOptions
     opts = {
       integrations = {
-        avante = { enabled = true },
         blink_cmp = true,
         dadbod_ui = true,
         diffview = true,
@@ -26,7 +25,7 @@ return {
           },
         },
         noice = true,
-        snacks = true,
+        snacks = { enabled = true },
         which_key = true,
       },
     },

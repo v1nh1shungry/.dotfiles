@@ -12,19 +12,22 @@ vim.treesitter.language.register("bash", "kitty")
 
 vim.diagnostic.config({
   severity_sort = true,
-  signs = false,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "",
+      [vim.diagnostic.severity.WARN] = "",
+      [vim.diagnostic.severity.HINT] = "",
+      [vim.diagnostic.severity.INFO] = "",
+    },
+  },
   jump = { float = true },
   virtual_text = true,
 })
 
-for name, icon in pairs({
-  Error = "",
-  Warn = "",
-  Hint = "",
-  Info = "",
-}) do
+for severity, icon in pairs(vim.diagnostic.config().signs.text) do
+  local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
   name = "DiagnosticSign" .. name
-  vim.fn.sign_define(name, { texthl = name, text = icon, numhl = "" })
+  vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
 end
 
 -- https://www.lazyvim.org/ {{{

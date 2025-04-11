@@ -113,9 +113,11 @@ map({ "<Leader>bn", "<Cmd>enew<CR>", desc = ":enew" })
 map({
   "<Leader>fc",
   function()
-    vim.cmd("edit " .. Dotfiles.user.PATH)
+    local PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "nvim.user")
 
-    if vim.fn.filereadable(Dotfiles.user.PATH) == 0 then
+    vim.cmd("edit " .. PATH)
+
+    if vim.fn.filereadable(PATH) == 0 then
       vim.api.nvim_buf_set_lines(0, 0, -1, false, {
         '---@module "dotfiles.utils"',
         '---@module "lazy.types"',

@@ -1,13 +1,9 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   { "folke/tokyonight.nvim", lazy = true },
   {
     "catppuccin/nvim",
     lazy = true,
     name = "catppuccin",
-    ---@module "catppuccin.types"
-    ---@type CatppuccinOptions
     opts = {
       integrations = {
         blink_cmp = true,
@@ -16,7 +12,7 @@ return {
         dropbar = { enabled = true, color_mode = true },
         grug_far = true,
         mason = true,
-        native_lsp = { ---@type CtpIntegrationNativeLsp|{}
+        native_lsp = {
           underlines = {
             errors = { "undercurl" },
             hints = { "undercurl" },

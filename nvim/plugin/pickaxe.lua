@@ -3,12 +3,12 @@
 ---@async
 ---@return boolean
 local function is_normal_git_repo()
-  if not Dotfiles.git_root() then
+  if not Dotfiles.git.root() then
     Snacks.notify.error("Aborting: not a git repository")
     return false
   end
 
-  if vim.trim(Dotfiles.co.system({ "git", "rev-parse", "--is-shallow-repository" }).stdout) == "true" then
+  if Dotfiles.git.shallow() then
     Snacks.notify.error("Aborting: repository is shallow")
     return false
   end
@@ -62,7 +62,7 @@ local function pickaxe()
       Snacks.picker.preview.cmd({
         "git",
         "-C",
-        Dotfiles.git_root(),
+        Dotfiles.git.root(),
         "--no-pager",
         "show",
         ctx.item.sha,

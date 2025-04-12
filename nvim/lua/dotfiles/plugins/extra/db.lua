@@ -1,10 +1,6 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    ---@module "nvim-treesitter.configs"
-    ---@type TSConfig|{}
     opts = { ensure_installed = { "sql" } },
   },
   {
@@ -24,8 +20,6 @@ return {
   },
   {
     "saghen/blink.cmp",
-    ---@module "blink.cmp.config.types_partial"
-    ---@type blink.cmp.Config
     opts = {
       sources = {
         per_filetype = { sql = { "dadbod" } },

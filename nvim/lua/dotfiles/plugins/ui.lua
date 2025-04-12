@@ -1,5 +1,3 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "folke/todo-comments.nvim",
@@ -9,8 +7,6 @@ return {
       { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIXME<CR>", desc = "Todo" },
       { "<leader>st", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end, desc = "Todo" },
     },
-    ---@module "todo-comments.config"
-    ---@type TodoOptions|{}
     opts = { signs = false },
   },
   {
@@ -36,7 +32,7 @@ return {
         desc = "Window Hydra Mode",
       },
     },
-    opts = { ---@type wk.Opts|{}
+    opts = {
       preset = "helix",
       spec = {
         {
@@ -81,7 +77,7 @@ return {
       require("noice").setup(opts)
     end,
     keys = { { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" } },
-    opts = { ---@type NoiceConfig|{}
+    opts = {
       views = { split = { enter = true } },
       presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
       lsp = { hover = { enabled = false } },
@@ -156,37 +152,12 @@ return {
         "build",
         "node_modules",
       }
-      local ignored = {} ---@type table<string, boolean>
 
       local function filter_show(_) return true end
 
-      local function update_ignored(path)
-        local items = {}
-
-        for name, _ in vim.fs.dir(path) do
-          if vim.list_contains(IGNORED_PATTERN, name) then
-            ignored[vim.fs.joinpath(path, name)] = true
-          else
-            ignored[vim.fs.joinpath(path, name)] = false
-            table.insert(items, name)
-          end
-        end
-
-        if not Dotfiles.git_root() then return end
-
-        local ret = vim.fn.system(vim.list_extend({ "git", "-C", path, "check-ignore" }, items))
-        for _, name in ipairs(vim.split(ret, "\n", { trimempty = true })) do
-          ignored[vim.fs.joinpath(path, name)] = true
-        end
-      end
-
       local function filter_hide(fs_entry)
-        local parent = vim.fs.dirname(fs_entry.path)
-        if ignored[parent] then return false end
-
-        if ignored[fs_entry.path] == nil then update_ignored(parent) end
-
-        return not ignored[fs_entry.path]
+        return not vim.list_contains(IGNORED_PATTERN, vim.fs.basename(fs_entry.path))
+          and not Dotfiles.git.ignored(fs_entry.path)
       end
 
       vim.api.nvim_create_autocmd("User", {
@@ -196,7 +167,7 @@ return {
             get = function() return show_hidden end,
             set = function()
               show_hidden = not show_hidden
-              require("mini.files").refresh({ content = { filter = show_hidden and filter_show or filter_hide } })
+              MiniFiles.refresh({ content = { filter = show_hidden and filter_show or filter_hide } })
             end,
           }):map("g.", { buffer = args.data.buf_id })
         end,
@@ -211,7 +182,7 @@ return {
           if not show_hidden then return end
 
           for i = 1, vim.api.nvim_buf_line_count(args.data.buf_id) do
-            local entry = require("mini.files").get_fs_entry(args.data.buf_id, i)
+            local entry = MiniFiles.get_fs_entry(args.data.buf_id, i)
             if entry and not filter_hide(entry) then
               vim.api.nvim_buf_set_extmark(args.data.buf_id, NS, i - 1, 0, {
                 line_hl_group = "DiagnosticUnnecessary",

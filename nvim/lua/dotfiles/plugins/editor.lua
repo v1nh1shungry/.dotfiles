@@ -1,5 +1,3 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "Wansmer/treesj",
@@ -17,8 +15,6 @@ return {
   {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
-    ---@module "ts-comments.config"
-    ---@type TSCommentsOptions
     opts = {
       lang = {
         c = { "// %s", "/* %s */" },

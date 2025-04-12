@@ -1,18 +1,12 @@
 -- https://www.lazyvim.org/extras/lang/rust {{{
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    ---@module "nvim-treesitter.configs"
-    ---@type TSConfig|{}
     opts = { ensure_installed = { "rust", "toml" } },
   },
   {
     "Saecki/crates.nvim",
     event = "BufRead Cargo.toml",
-    ---@module "crates.types"
-    ---@type crates.UserConfig
     opts = {
       completion = { crates = { enabled = true } },
       lsp = {
@@ -26,8 +20,6 @@ return {
   {
     "mrcjkb/rustaceanvim",
     config = function()
-      ---@module "rustaceanvim.config"
-      ---@type rustaceanvim.Opts
       vim.g.rustaceanvim = {
         server = {
           default_settings = {

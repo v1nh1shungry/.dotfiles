@@ -1,5 +1,3 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "junegunn/fzf",

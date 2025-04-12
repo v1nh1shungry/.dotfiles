@@ -1,12 +1,8 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "MagicDuck/grug-far.nvim",
     cmd = "GrugFar",
     keys = { { "<Leader>s/", "<Cmd>GrugFar<CR>", desc = "Search & Replace" } },
-    ---@module "grug-far.opts"
-    ---@type GrugFarOptionsOverride
     opts = {},
   },
   {
@@ -25,8 +21,6 @@ return {
     cmd = "Cppman",
     enabled = vim.fn.executable("cppman") == 1,
     keys = { { "<Leader>sc", "<Cmd>Cppman<CR>", desc = "Cppman" } },
-    ---@module "cppman.config"
-    ---@type cppman.Config|{}
     opts = { picker = "snacks" },
   },
 }

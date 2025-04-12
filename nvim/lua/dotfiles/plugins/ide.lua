@@ -1,5 +1,3 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "b0o/SchemaStore.nvim",
@@ -8,8 +6,6 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    ---@module "lazydev.config"
-    ---@type lazydev.Config|{}
     opts = {
       library = {
         { path = "snacks.nvim", words = { "Snacks" } },
@@ -18,8 +14,6 @@ return {
     specs = {
       {
         "saghen/blink.cmp",
-        ---@module "blink.cmp.config.types_partial"
-        ---@type blink.cmp.Config
         opts = {
           sources = {
             per_filetype = { lua = { "lazydev" } },
@@ -104,7 +98,7 @@ return {
       require("blink.cmp").setup(opts)
     end,
     event = { "CmdlineEnter", "InsertEnter" },
-    opts = { ---@type blink.cmp.Config
+    opts = {
       cmdline = { enabled = false },
       completion = {
         menu = {
@@ -139,7 +133,7 @@ return {
     keys = {
       { "<Leader>cf", function() require("conform").format() end, desc = "Format Document", mode = { "n", "x" } },
     },
-    opts = { ---@type conform.setupOpts
+    opts = {
       default_format_opts = { lsp_format = "fallback" },
       formatters_by_ft = {
         fish = { "fish_indent" },

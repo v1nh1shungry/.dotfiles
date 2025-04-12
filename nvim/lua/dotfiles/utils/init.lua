@@ -1,5 +1,6 @@
 ---@class dotfiles.utils
 ---@field co dotfiles.utils.Co
+---@field git dotfiles.utils.Git
 ---@field lsp dotfiles.utils.LSP
 ---@field user dotfiles.utils.User
 local M = {}
@@ -61,8 +62,5 @@ function M.augroup(name, opts) return vim.api.nvim_create_augroup("dotfiles." ..
 ---@param name string
 ---@return integer
 function M.ns(name) return vim.api.nvim_create_namespace("dotfiles." .. name) end
-
----@return string?
-function M.git_root() return vim.fs.root(vim.fn.getcwd(), ".git") end
 
 return M

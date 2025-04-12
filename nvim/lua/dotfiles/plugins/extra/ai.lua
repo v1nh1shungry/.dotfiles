@@ -1,5 +1,3 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "olimorris/codecompanion.nvim",

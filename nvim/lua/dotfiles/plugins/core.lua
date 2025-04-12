@@ -1,5 +1,3 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "andymass/vim-matchup",
@@ -13,8 +11,6 @@ return {
   {
     "nmac427/guess-indent.nvim",
     event = "LazyFile",
-    ---@module "guess-indent.config"
-    ---@type GuessIndentConfig
     opts = {},
   },
   -- https://www.lazyvim.org/plugins/coding#miniai {{{
@@ -170,7 +166,7 @@ return {
       require("nvim-treesitter.query_predicates")
     end,
     -- }}}
-    opts = { ---@type TSConfig|{}
+    opts = {
       ensure_installed = {
         "bash",
         "cmake",
@@ -255,8 +251,6 @@ return {
       { "<M-j>", "<Cmd>NavigatorDown<CR>", desc = "Lower Window", mode = { "n", "t" } },
       { "<M-k>", "<Cmd>NavigatorUp<CR>", desc = "Upper Window", mode = { "n", "t" } },
     },
-    ---@module "Navigator"
-    ---@type Config|{}
     opts = {},
   },
   {
@@ -337,7 +331,7 @@ return {
       { "<Leader>b/", function() Snacks.picker.grep_buffers() end, desc = "Grep" },
       { "<Leader>bo", function() Snacks.bufdelete.other() end, desc = "Only" },
     },
-    opts = { ---@type snacks.Config
+    opts = {
       bigfile = { enabled = true },
       dashboard = {
         preset = {

@@ -1,5 +1,3 @@
----@module "lazy.types"
----@type LazySpec[]
 return {
   {
     "lewis6991/gitsigns.nvim",
@@ -8,8 +6,6 @@ return {
       { "<Leader>xH", function() require("gitsigns").setqflist("all") end, desc = "Git Hunks (Workspace)" },
       { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle Git Blame" },
     },
-    ---@module "gitsigns.config"
-    ---@type Gitsigns.Config|{}
     opts = {
       on_attach = function(bufnr)
         local map = Dotfiles.map_with({ buffer = bufnr })
@@ -56,7 +52,7 @@ return {
     config = function()
       local actions = require("diffview.actions")
 
-      local opts = { ---@type DiffviewConfig
+      local opts = {
         enhanced_diff_hl = true,
         view = {
           default = { disable_diagnostics = true, winbar_info = true },

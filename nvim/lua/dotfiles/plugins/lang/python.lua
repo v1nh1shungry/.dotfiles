@@ -1,10 +1,8 @@
----@module "lazy.types"
----@type LazySpec[]
+vim.lsp.enable({ "basedpyright", "ruff" })
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    ---@module "nvim-treesitter.configs"
-    ---@type TSConfig|{}
     opts = { ensure_installed = { "python", "rst" } },
   },
   {

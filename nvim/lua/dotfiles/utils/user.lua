@@ -2,10 +2,12 @@
 ---
 ---@class dotfiles.utils.User
 ---@field extra? LazySpec[]
+---@field lang? string[]
 ---@field ui? { blend: integer, colorscheme: string }
 ---@field nightly? boolean|integer
 local M = {
   extra = {},
+  lang = {},
   ui = {
     blend = 10,
     colorscheme = "tokyonight",

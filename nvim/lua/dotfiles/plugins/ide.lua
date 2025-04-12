@@ -1,216 +1,6 @@
 ---@module "lazy.types"
 ---@type LazySpec[]
 return {
-  -- TODO: refactor
-  {
-    "neovim/nvim-lspconfig",
-    ---@param opts dotfiles.plugins.ide.lspconfig.Config
-    config = function(_, opts)
-      Dotfiles.lsp.on_attach(function(client, bufnr)
-        local map = Dotfiles.map_with({ buffer = bufnr })
-
-        local mappings = { ---@type table<string, dotfiles.utils.map.Opts|dotfiles.utils.map.Opts[]|fun()>
-          ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
-          ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
-          ["textDocument/documentSymbol"] = {
-            {
-              "<Leader>ss",
-              function() Snacks.picker.lsp_symbols({ tree = false }) end,
-              desc = "LSP Symbols (Document)",
-            },
-            { "gO", "<Cmd>Outline<CR>", desc = "Symbol Outline" },
-          },
-          ["workspace/symbol"] = {
-            "<Leader>sS",
-            function() Snacks.picker.lsp_workspace_symbols({ tree = false }) end,
-            desc = "LSP Symbols (Workspace)",
-          },
-          ["textDocument/references"] = {
-            { "gR", vim.lsp.buf.references, desc = "Goto References" },
-            { "<Leader>sR", function() Snacks.picker.lsp_references() end, desc = "LSP References" },
-          },
-          ["textDocument/definition"] = {
-            { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
-            { "<Leader>sd", function() Snacks.picker.lsp_definitions() end, desc = "LSP Definitions" },
-          },
-          ["textDocument/declaration"] = {
-            { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
-            { "<Leader>sD", function() Snacks.picker.lsp_declarations() end, desc = "LSP Declarations" },
-          },
-          ["textDocument/typeDefinition*"] = {
-            { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
-            { "<Leader>sy", function() Snacks.picker.lsp_type_definitions() end, desc = "LSP Type Definitions" },
-          },
-          ["textDocument/implementation*"] = {
-            { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
-            { "<Leader>sI", function() Snacks.picker.lsp_implementations() end, desc = "LSP Implementations" },
-          },
-          ["callHierarchy/incomingCalls"] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
-          ["callHierarchy/outgoingCalls"] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
-          ["textDocument/inlayHint"] = function() Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr }) end,
-          ["typeHierarchy/subtypes"] = {
-            "<Leader>cs",
-            function() vim.lsp.buf.typehierarchy("subtypes") end,
-            desc = "LSP Subtypes",
-          },
-          ["typeHierarchy/supertypes"] = {
-            "<Leader>cS",
-            function() vim.lsp.buf.typehierarchy("supertypes") end,
-            desc = "LSP Supertypes",
-          },
-          ["textDocument/documentHighlight"] = {
-            { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
-            { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous Reference" },
-          },
-        }
-
-        for method, keys in pairs(mappings) do
-          if client:supports_method(method) then
-            if type(keys) == "function" then
-              keys()
-            elseif type(keys[1]) == "string" then
-              map(keys)
-            else
-              for _, k in
-                ipairs(keys --[=[@as dotfiles.utils.map.Opts[]]=])
-              do
-                map(k)
-              end
-            end
-          end
-        end
-
-        for _, key in ipairs(opts.servers[client.name] and opts.servers[client.name].keys or {}) do
-          map(key)
-        end
-
-        if
-          client:supports_method("textDocument/inlayHint")
-          and vim.api.nvim_buf_is_valid(bufnr)
-          and vim.bo[bufnr].buftype == ""
-        then
-          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-        end
-
-        if client:supports_method("textDocument/codeLens") then
-          vim.lsp.codelens.refresh()
-          vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-            buffer = bufnr,
-            callback = vim.lsp.codelens.refresh,
-          })
-        end
-
-        if client:supports_method("textDocument/foldingRange") then
-          vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-        end
-      end)
-
-      -- https://www.lazyvim.org/plugins/lsp {{{
-      local all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
-      local ensure_installed = {}
-
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        require("blink.cmp").get_lsp_capabilities(),
-        {
-          workspace = {
-            fileOperations = {
-              didRename = true,
-              willRename = true,
-            },
-          },
-        }
-      )
-
-      local function setup(server)
-        if not opts.servers[server] then return end
-
-        local server_opts = vim.tbl_deep_extend("force", {
-          capabilities = vim.deepcopy(capabilities),
-        }, opts.servers[server])
-
-        if opts.setup[server] then
-          if opts.setup[server](server, server_opts) then return end
-        elseif opts.setup["*"] then
-          if opts.setup["*"](server, server_opts) then return end
-        end
-
-        require("lspconfig")[server].setup(server_opts)
-      end
-
-      for server, server_opts in pairs(opts.servers) do
-        if server_opts.mason == false or not vim.list_contains(all_mslp_servers, server) then
-          setup(server)
-        else
-          ensure_installed[#ensure_installed + 1] = server
-        end
-      end
-
-      ---@diagnostic disable-next-line: missing-fields
-      require("mason-lspconfig").setup({
-        ensure_installed = ensure_installed,
-        handlers = { setup },
-      })
-      -- }}}
-    end,
-    dependencies = {
-      {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = "williamboman/mason.nvim",
-      },
-    },
-    event = "LazyFile",
-    ---@class dotfiles.plugins.ide.lspconfig.Config
-    ---@field servers table<string, lspconfig.Config|{ keys: dotfiles.utils.map.Opts[], mason: boolean }>
-    ---@field setup table<string, fun(server: string, opts: lspconfig.Config): boolean?>
-    opts = {
-      servers = {
-        jsonls = {
-          on_new_config = function(new_config)
-            new_config.settings.json.schemas = new_config.settings.json.schemas or {}
-            vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
-          end,
-          settings = {
-            json = {
-              format = { enable = true },
-              validate = { enable = true },
-            },
-          },
-        },
-        neocmake = {},
-        clangd = {
-          cmd = {
-            "clangd",
-            "--fallback-style=llvm",
-            "--header-insertion=never",
-            "-j=" .. vim.uv.available_parallelism(),
-          },
-          keys = { { "<Leader>cs", "<Cmd>ClangdSwitchSourceHeader<CR>", desc = "Switch Header/Source" } },
-        },
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = { callSnippet = "Replace", autoRequire = false },
-              telemetry = { enable = false },
-              workspace = { checkThirdParty = false },
-              doc = { privateName = { "^_" } },
-              hint = {
-                enable = true,
-                setType = false,
-                paramType = true,
-                paramName = "Disable",
-                semicolon = "Disable",
-                arrayIndex = "Disable",
-              },
-            },
-          },
-        },
-      },
-      setup = {},
-    },
-  },
   {
     "b0o/SchemaStore.nvim",
     lazy = true,
@@ -248,7 +38,6 @@ return {
   -- https://www.lazyvim.org/plugins/lsp#masonnvim-1 {{{
   {
     "williamboman/mason.nvim",
-    ---@param opts dotfiles.mason.Config
     config = function(_, opts)
       require("mason").setup(opts)
 
@@ -274,28 +63,24 @@ return {
         end
       end)
 
-      Snacks.util.on_module("mason-lspconfig", function()
-        local installed = mr.get_installed_packages()
-        local ensure_installed = vim.list_extend(
-          vim
-            .iter(require("mason-lspconfig.settings").current.ensure_installed)
-            :map(function(p) return require("mason-lspconfig.mappings.server").lspconfig_to_package[p] end)
-            :totable(),
-          opts.ensure_installed
-        )
-
-        for _, p in ipairs(installed) do
-          if not vim.list_contains(ensure_installed, p.name) then
-            Snacks.notify.info("Uninstall unused package " .. p.name)
-            p:uninstall()
-          end
+      local installed = mr.get_installed_packages()
+      for _, p in ipairs(installed) do
+        if not vim.list_contains(opts.ensure_installed, p.name) then
+          Snacks.notify.info("Uninstall unused package " .. p.name)
+          p:uninstall()
         end
-      end)
+      end
     end,
+    event = "VeryLazy",
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    ---@alias dotfiles.mason.Config MasonSettings|{ ensure_installed: string[] }
-    ---@type dotfiles.mason.Config
-    opts = { ensure_installed = {} },
+    opts = {
+      ensure_installed = {
+        "clangd",
+        "json-lsp",
+        "lua-language-server",
+        "neocmakelsp",
+      },
+    },
     opts_extend = { "ensure_installed" },
   },
   -- }}}
@@ -312,7 +97,7 @@ return {
 
       opts.sources.compat = nil
 
-      for _, sources in pairs(opts.sources.per_filetype) do
+      for _, sources in pairs(opts.sources.per_filetype or {}) do
         vim.list_extend(sources, opts.sources.default)
       end
 
@@ -349,7 +134,7 @@ return {
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
     dependencies = {
       "williamboman/mason.nvim",
-      opts = { ensure_installed = { "stylua" } }, ---@type dotfiles.mason.Config
+      opts = { ensure_installed = { "stylua" } },
     },
     keys = {
       { "<Leader>cf", function() require("conform").format() end, desc = "Format Document", mode = { "n", "x" } },

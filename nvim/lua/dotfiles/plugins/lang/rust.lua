@@ -78,7 +78,7 @@ return {
   },
   {
     "williamboman/mason.nvim",
-    opts = { ensure_installed = { "rust-analyzer" } }, ---@type dotfiles.mason.Config
+    opts = { ensure_installed = { "rust-analyzer" } },
   },
 }
 -- }}}

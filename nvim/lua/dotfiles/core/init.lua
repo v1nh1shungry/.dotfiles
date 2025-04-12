@@ -69,6 +69,7 @@ require("dotfiles.core.autocmds")
 require("dotfiles.core.keymaps")
 require("dotfiles.core.options")
 require("dotfiles.core.lazy")
+require("dotfiles.core.lsp")
 
 -- should execute after colorscheme plugins are loaded
 vim.cmd("colorscheme " .. Dotfiles.user.ui.colorscheme)

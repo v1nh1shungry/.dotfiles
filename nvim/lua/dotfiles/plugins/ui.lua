@@ -38,7 +38,7 @@ return {
         {
           mode = { "n", "v" },
           { "g", group = "goto" },
-          { "s", group = "surround" },
+          { "gs", group = "surround" },
           { "]", group = "next" },
           { "[", group = "prev" },
           { "z", group = "fold" },

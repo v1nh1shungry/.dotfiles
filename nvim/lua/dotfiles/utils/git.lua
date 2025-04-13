@@ -19,7 +19,7 @@ int git_repository_is_shallow(git_repository *repo);
 
 local repo
 
-local libgit2 = assert(vim.F.npcall(ffi.load, "git2"))
+local libgit2 = ffi.load("git2")
 libgit2.git_libgit2_init()
 
 local function load_git_repo()

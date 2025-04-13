@@ -37,11 +37,12 @@ vim.api.nvim_create_autocmd("BufDelete", {
 })
 
 vim.api.nvim_create_autocmd("OptionSet", {
-  callback = function(args)
-    if vim.bo[args.buf] then
-      M:add(args.buf)
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    if vim.v.option_new == 1 then
+      M:add(bufnr)
     else
-      M:del(args.buf)
+      M:del(bufnr)
     end
   end,
   group = augroup,

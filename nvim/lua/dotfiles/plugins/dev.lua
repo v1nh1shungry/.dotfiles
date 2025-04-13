@@ -65,8 +65,8 @@ return {
         end
       end
     end,
-    event = "VeryLazy",
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
+    lazy = false,
     opts = {
       ensure_installed = {
         "clangd",
@@ -101,6 +101,16 @@ return {
     opts = {
       cmdline = { enabled = false },
       completion = {
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+          window = { winblend = Dotfiles.user.ui.blend },
+        },
+        list = {
+          selection = {
+            preselect = function() return not require("blink.cmp").snippet_active({ direction = 1 }) end,
+          },
+        },
         menu = {
           draw = {
             align_to = "none",
@@ -108,17 +118,19 @@ return {
           },
           winblend = Dotfiles.user.ui.blend,
         },
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 200,
-          window = { winblend = Dotfiles.user.ui.blend },
-        },
       },
       fuzzy = { prebuilt_binaries = { download = false } },
       keymap = { preset = "super-tab" },
       sources = {
         compat = {},
         default = { "lsp", "snippets", "path", "buffer" },
+        providers = {
+          snippets = {
+            opts = {
+              search_paths = { vim.fs.joinpath(vim.fn.stdpath("config"), "snippets") },
+            },
+          },
+        },
       },
     },
     opts_extend = { "sources.compat", "sources.default" },
@@ -221,5 +233,10 @@ return {
       },
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
+  },
+  {
+    "chrisgrieser/nvim-scissors",
+    cmd = { "ScissorsAddNewSnippet", "ScissorsEditSnippet" },
+    opts = { jsonFormatter = "jq" },
   },
 }

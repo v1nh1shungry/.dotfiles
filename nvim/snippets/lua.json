@@ -1,0 +1,11 @@
+{
+  "autocmd": {
+    "body": [
+      "vim.api.nvim_create_autocmd($1, {",
+      "  $2,",
+      "  group = $3,",
+      "})"
+    ],
+    "prefix": "autocmd"
+  }
+}

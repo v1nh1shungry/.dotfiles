@@ -20,7 +20,6 @@ int git_repository_is_shallow(git_repository *repo);
 local repo
 
 local libgit2 = ffi.load("git2")
-libgit2.git_libgit2_init()
 
 local function load_git_repo()
   if repo then
@@ -31,16 +30,17 @@ local function load_git_repo()
   local root = M.root()
   if root then
     local out = ffi.new("git_repository *[1]")
-    assert(libgit2.git_repository_open(out, root) == 0)
-    repo = out[0]
+    -- FIXME: can't handle partial-clone repositories
+    if libgit2.git_repository_open(out, root) == 0 then repo = out[0] end
   end
 end
 
 vim.api.nvim_create_autocmd("DirChanged", {
   callback = load_git_repo,
-  group = Dotfiles.augroup("utils.git"),
+  group = Dotfiles.augroup("libgit2"),
 })
 
+assert(libgit2.git_libgit2_init() == 1)
 load_git_repo()
 
 ---@param path string
@@ -54,8 +54,6 @@ function M.ignored(path)
 end
 
 ---@return boolean
-function M.shallow()
-  return repo and libgit2.git_repository_is_shallow(repo) == 1
-end
+function M.shallow() return repo and libgit2.git_repository_is_shallow(repo) == 1 end
 
 return M

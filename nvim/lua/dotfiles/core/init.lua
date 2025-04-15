@@ -21,7 +21,6 @@ vim.diagnostic.config({
     },
   },
   jump = { float = true },
-  virtual_text = true,
 })
 
 for severity, icon in pairs(vim.diagnostic.config().signs.text) do

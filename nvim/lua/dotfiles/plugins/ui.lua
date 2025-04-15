@@ -241,4 +241,9 @@ return {
     event = "BufRead *.log",
     opts = {},
   },
+  {
+    "echasnovski/mini.trailspace",
+    event = "LazyFile",
+    opts = {},
+  },
 }

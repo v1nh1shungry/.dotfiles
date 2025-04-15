@@ -386,4 +386,14 @@ return {
     },
     priority = 1000,
   },
+  {
+    "tiagovla/scope.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "mikesmithgh/kitty-scrollback.nvim",
+    event = "User KittyScrollbackLaunch",
+    opts = {},
+  },
 }

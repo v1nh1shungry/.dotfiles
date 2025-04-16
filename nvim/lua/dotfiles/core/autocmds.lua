@@ -50,7 +50,6 @@ local function setup_minimal_ui(args)
     vim.opt_local.relativenumber = false
     vim.opt_local.cc = ""
     vim.opt_local.stc = ""
-    vim.opt_local.foldcolumn = "0"
     vim.opt_local.signcolumn = "no"
 
     local ret = vim.fn.maparg("q", "n", false, true)

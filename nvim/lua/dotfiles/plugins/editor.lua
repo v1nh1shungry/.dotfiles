@@ -32,16 +32,6 @@ return {
     },
   },
   {
-    "folke/ts-comments.nvim",
-    event = "VeryLazy",
-    opts = {
-      lang = {
-        c = { "// %s", "/* %s */" },
-        cpp = { "// %s", "/* %s */" },
-      },
-    },
-  },
-  {
     "echasnovski/mini.align",
     keys = {
       { "ga", mode = { "n", "x" }, desc = "Align" },

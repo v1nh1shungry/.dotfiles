@@ -97,7 +97,7 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
-    event = { "CmdlineEnter", "InsertEnter" },
+    event = "InsertEnter",
     opts = {
       cmdline = { enabled = false },
       completion = {

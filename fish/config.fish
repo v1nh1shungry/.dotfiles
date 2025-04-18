@@ -40,8 +40,8 @@ if status is-interactive
     alias ll 'ls -al'
 
     if command -q eza
-        alias ls 'eza --icons'
-        alias tree 'eza -T --icons'
+        alias ls 'eza --icons --hyperlink'
+        alias tree 'ls -T'
     end
 
     if command -q zoxide
@@ -54,8 +54,8 @@ if status is-interactive
         alias kitty-update "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
     end
 
-    if command -q kitty
-        alias icat 'kitty +kitten icat'
+    if command -q kitten
+        alias icat 'kitten icat'
     end
 
     if command -q yazi

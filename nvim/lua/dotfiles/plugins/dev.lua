@@ -65,9 +65,12 @@ return {
         end
       end
     end,
+    event = "VeryLazy",
+    -- NOTE: manually setup $PATH to speed up startup
+    init = function() vim.env.PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin") .. ":" .. vim.env.PATH end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
-    lazy = false,
     opts = {
+      PATH = "skip",
       ensure_installed = {
         "clangd",
         "json-lsp",
@@ -97,7 +100,6 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
-    event = "InsertEnter",
     opts = {
       cmdline = { enabled = false },
       completion = {

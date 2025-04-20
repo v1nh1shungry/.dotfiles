@@ -3,8 +3,6 @@ if status is-interactive
     set -gx LANGUAGE "en_US.UTF-8"
     set -gx LC_ALL "en_US.UTF-8"
 
-    set -gx EDITOR nvim
-
     set fish_greeting
 
     if test -d ~/.local/bin
@@ -31,17 +29,21 @@ if status is-interactive
     end
 
     if command -q nvim
+        set -gx EDITOR nvim
+
         alias vi nvim
         alias vim nvim
+
+        set -gx MANPAGER "nvim +Man!"
     end
 
     alias l ls
-    alias la 'ls -a'
-    alias ll 'ls -al'
+    alias la "ls -a"
+    alias ll "ls -al"
 
     if command -q eza
-        alias ls 'eza --icons --hyperlink'
-        alias tree 'ls -T'
+        alias ls "eza --icons --hyperlink"
+        alias tree "ls -T"
     end
 
     if command -q zoxide
@@ -55,7 +57,7 @@ if status is-interactive
     end
 
     if command -q kitten
-        alias icat 'kitten icat'
+        alias icat "kitten icat"
     end
 
     if command -q yazi

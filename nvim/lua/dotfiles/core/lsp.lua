@@ -1,11 +1,22 @@
+---@param delta integer
+---@return boolean
+local function scroll(delta)
+  if not vim.b.lsp_floating_preview then
+    return false
+  end
+  require("noice.util.nui").scroll(vim.b.lsp_floating_preview, delta)
+  return true
+end
+
 Dotfiles.lsp.on_attach(function(client, bufnr)
   local map = Dotfiles.map_with({ buffer = bufnr })
+  local ms = vim.lsp.protocol.Methods
 
   -- TODO: separate plugin-driven mappings
   local mappings = { ---@type table<string, dotfiles.utils.map.Opts|dotfiles.utils.map.Opts[]>
-    ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
-    ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
-    ["textDocument/documentSymbol"] = {
+    [ms.textDocument_rename] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
+    [ms.textDocument_codeAction] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
+    [ms.textDocument_documentSymbol] = {
       {
         "<Leader>ss",
         function() Snacks.picker.lsp_symbols({ tree = false }) end,
@@ -13,46 +24,50 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
       },
       { "gO", "<Cmd>Outline<CR>", desc = "Symbol Outline" },
     },
-    ["workspace/symbol"] = {
+    [ms.workspace_symbol] = {
       "<Leader>sS",
       function() Snacks.picker.lsp_workspace_symbols({ tree = false }) end,
       desc = "LSP Symbols (Workspace)",
     },
-    ["textDocument/references"] = {
+    [ms.textDocument_references] = {
       { "gR", vim.lsp.buf.references, desc = "Goto References" },
       { "<Leader>sR", function() Snacks.picker.lsp_references() end, desc = "LSP References" },
     },
-    ["textDocument/definition"] = {
+    [ms.textDocument_definition] = {
       { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
       { "<Leader>sd", function() Snacks.picker.lsp_definitions() end, desc = "LSP Definitions" },
     },
-    ["textDocument/declaration"] = {
+    [ms.textDocument_declaration] = {
       { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
       { "<Leader>sD", function() Snacks.picker.lsp_declarations() end, desc = "LSP Declarations" },
     },
-    ["textDocument/typeDefinition*"] = {
+    [ms.textDocument_typeDefinition] = {
       { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
       { "<Leader>sy", function() Snacks.picker.lsp_type_definitions() end, desc = "LSP Type Definitions" },
     },
-    ["textDocument/implementation*"] = {
+    [ms.textDocument_implementation] = {
       { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
       { "<Leader>sI", function() Snacks.picker.lsp_implementations() end, desc = "LSP Implementations" },
     },
-    ["callHierarchy/incomingCalls"] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
-    ["callHierarchy/outgoingCalls"] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
-    ["typeHierarchy/subtypes"] = {
+    [ms.callHierarchy_incomingCalls] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
+    [ms.callHierarchy_outgoingCalls] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
+    [ms.typeHierarchy_subtypes] = {
       "<Leader>cs",
       function() vim.lsp.buf.typehierarchy("subtypes") end,
       desc = "LSP Subtypes",
     },
-    ["typeHierarchy/supertypes"] = {
+    [ms.typeHierarchy_supertypes] = {
       "<Leader>cS",
       function() vim.lsp.buf.typehierarchy("supertypes") end,
       desc = "LSP Supertypes",
     },
-    ["textDocument/documentHighlight"] = {
+    [ms.textDocument_documentHighlight] = {
       { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
       { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous Reference" },
+    },
+    [ms.textDocument_hover] = {
+      { "<C-f>", function() scroll(5) end, desc = "Scroll Down Document" },
+      { "<C-b>", function() scroll(-5) end, desc = "Scroll Up Document" },
     },
   }
 
@@ -71,7 +86,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
   end
 
   if
-    client:supports_method("textDocument/inlayHint")
+    client:supports_method(ms.textDocument_inlayHint)
     and vim.api.nvim_buf_is_valid(bufnr)
     and vim.bo[bufnr].buftype == ""
   then
@@ -79,7 +94,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
     Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
   end
 
-  if client:supports_method("textDocument/codeLens") then
+  if client:supports_method(ms.textDocument_codeLens) then
     vim.lsp.codelens.refresh()
     vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
       buffer = bufnr,
@@ -87,7 +102,7 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
     })
   end
 
-  if client:supports_method("textDocument/foldingRange") then
+  if client:supports_method(ms.textDocument_foldingRange) then
     vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
   end
 end)

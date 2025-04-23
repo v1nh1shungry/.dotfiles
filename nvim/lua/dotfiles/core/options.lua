@@ -24,7 +24,7 @@ vim.opt.ignorecase = true
 vim.opt.laststatus = 3
 vim.opt.linebreak = true
 vim.opt.list = true
-vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "→ " }
+vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "  " }
 vim.opt.number = true
 vim.opt.pumblend = Dotfiles.user.ui.blend
 vim.opt.pumheight = 10

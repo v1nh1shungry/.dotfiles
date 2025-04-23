@@ -49,7 +49,7 @@ return {
   },
   {
     "RRethy/nvim-treesitter-endwise",
-    event = "InsertEnter",
+    event = "LazyFile",
   },
   -- Modified from https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/mini.lua {{{
   {

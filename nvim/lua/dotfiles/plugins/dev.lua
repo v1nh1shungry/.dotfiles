@@ -100,6 +100,7 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
+    event = "VeryLazy",
     opts = {
       cmdline = { enabled = false },
       completion = {

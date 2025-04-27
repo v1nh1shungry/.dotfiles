@@ -123,4 +123,15 @@ return {
       { "<Leader>sr", function() require("ssr").open() end, mode = { "n", "x" }, desc = "Structural Search & Replace" },
     },
   },
+  {
+    "bullets-vim/bullets.vim",
+    config = function() vim.g.bullets_set_mappings = false end,
+    ft = "markdown",
+    keys = {
+      { "<CR>", "<Plug>(bullets-newline)", mode = "i", desc = "Enter New Line", ft = "markdown" },
+      { "o", "<Plug>(bullets-newline)", desc = "New Line Below", ft = "markdown" },
+      { "<Tab>", "<Plug>(bullets-demote)", mode = "i", desc = "Increase Indent", ft = "markdown" },
+      { "<S-Tab>", "<Plug>(bullets-promote)", mode = "i", desc = "Decrease Indent", ft = "markdown" },
+    },
+  },
 }

@@ -55,6 +55,8 @@ map({ "j", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down", mode = { "n"
 map({ "k", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up", mode = { "n", "x" } })
 map({ "<Down>", "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Down", mode = { "n", "x" } })
 map({ "<Up>", "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Up", mode = { "n", "x" } })
+map({ "0", "&wrap == 0 ? '0' : 'g0'", expr = true, desc = "Begin of Line", mode = { "n", "x" } })
+map({ "$", "&wrap == 0 ? '$' : 'g$'", expr = true, desc = "End of Line", mode = { "n", "x" } })
 
 map({ "<C-j>", "<cmd>execute 'move .+' . v:count1<cr>==", desc = "Move Down" })
 map({ "<C-k>", "<cmd>execute 'move .-' . (v:count1 + 1)<cr>==", desc = "Move Up" })
@@ -223,7 +225,7 @@ map({
 })
 -- }}}
 
-map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search Selection" })
+map({ "/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search Selection" })
 
 vim.keymap.del("n", "<C-w><C-d>")
 

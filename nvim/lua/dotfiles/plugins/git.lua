@@ -1,7 +1,8 @@
 return {
   {
     "lewis6991/gitsigns.nvim",
-    event = "LazyFile",
+    -- NOTE: #1291
+    event = "VeryLazy",
     keys = {
       { "<Leader>xH", function() require("gitsigns").setqflist("all") end, desc = "Git Hunks (Workspace)" },
       { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle Git Blame" },

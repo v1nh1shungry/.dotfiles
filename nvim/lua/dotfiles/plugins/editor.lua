@@ -89,17 +89,6 @@ return {
         return open(pair, neigh_pattern)
       end
 
-      local closeopen = pairs.closeopen
-      ---@diagnostic disable-next-line: duplicate-set-field
-      pairs.closeopen = function(pair, neigh_pattern)
-        if vim.fn.getcmdline() ~= "" then return closeopen(pair, neigh_pattern) end
-
-        local o = pair:sub(1, 1)
-        if MiniPairs.config.mappings[o].condition and not MiniPairs.config.mappings[o].condition() then return o end
-
-        return closeopen(pair, neigh_pattern)
-      end
-
       local map = Dotfiles.map_with({ expr = true, mode = "i", replace_keycodes = false })
       map({ "<C-h>", "v:lua.MiniPairs.bs()", desc = "Backspace" })
       map({ "<C-w>", 'v:lua.MiniPairs.bs("\23")', desc = "Delete Word Before Cursor" })
@@ -109,10 +98,7 @@ return {
     -- NOTE: #1585
     event = "VeryLazy",
     opts = {
-      mappings = {
-        [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" },
-        ["'"] = { condition = function() return not vim.list_contains({ "rust" }, vim.bo.filetype) end },
-      },
+      mappings = { [" "] = { action = "open", pair = "  ", neigh_pattern = "[%(%[{][%)%]}]" } },
       modes = { command = true },
     },
   },
@@ -126,12 +112,11 @@ return {
   {
     "bullets-vim/bullets.vim",
     config = function() vim.g.bullets_set_mappings = false end,
-    ft = "markdown",
     keys = {
       { "<CR>", "<Plug>(bullets-newline)", mode = "i", desc = "Enter New Line", ft = "markdown" },
       { "o", "<Plug>(bullets-newline)", desc = "New Line Below", ft = "markdown" },
-      { "<Tab>", "<Plug>(bullets-demote)", mode = "i", desc = "Increase Indent", ft = "markdown" },
-      { "<S-Tab>", "<Plug>(bullets-promote)", mode = "i", desc = "Decrease Indent", ft = "markdown" },
+      { "<C-t>", "<Plug>(bullets-demote)", mode = "i", desc = "Increase Indent", ft = "markdown" },
+      { "<C-d>", "<Plug>(bullets-promote)", mode = "i", desc = "Decrease Indent", ft = "markdown" },
     },
   },
 }

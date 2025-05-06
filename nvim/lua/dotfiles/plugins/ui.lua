@@ -80,7 +80,10 @@ return {
     opts = {
       views = { split = { enter = true } },
       presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
-      lsp = { hover = { enabled = false } },
+      lsp = {
+        hover = { enabled = false },
+        signature = { enabled = false },
+      },
       routes = {
         {
           filter = {

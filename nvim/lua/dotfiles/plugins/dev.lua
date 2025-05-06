@@ -124,6 +124,7 @@ return {
       },
       fuzzy = { prebuilt_binaries = { download = false } },
       keymap = { preset = "super-tab" },
+      signature = { enabled = true },
       sources = {
         compat = {},
         default = { "lsp", "snippets", "path", "buffer" },

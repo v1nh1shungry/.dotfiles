@@ -8,11 +8,9 @@
 
 ## Requirements
 
-* [JetBriansMono Nerd Font Mono](https://github.com/ryanoasis/nerd-fonts)
 * [Motrix](https://motrix.app/)
 * [Neovim](https://github.com/neovim/neovim)
 * [Spotify](https://open.spotify.com/)
-* [Visual Studio Code](https://code.visualstudio.com/)
 * [WeChat](https://weixin.qq.com/)
 * [bat](https://github.com/sharkdp/bat)
 * [btop](https://github.com/aristocratos/btop)
@@ -31,7 +29,6 @@
 * [just](https://github.com/casey/just)
 * [kitty](https://sw.kovidgoyal.net/kitty/)
 * [listen1](https://listen1.github.io/listen1/)
-* [pipx](https://pipx.pypa.io/stable/)
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 * [spicetify](https://spicetify.app/)
 * [starship](https://github.com/starship/starship)

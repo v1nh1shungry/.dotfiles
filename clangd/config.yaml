@@ -1,8 +1,0 @@
-Diagnostics:
-  ClangTidy:
-    FastCheckFilter: Loose
-  Includes:
-    AnalyzeAngledIncludes: true
-
-Index:
-  StandardLibrary: Yes

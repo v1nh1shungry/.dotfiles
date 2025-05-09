@@ -23,12 +23,6 @@ vim.diagnostic.config({
   jump = { float = true },
 })
 
-for severity, icon in pairs(vim.diagnostic.config().signs.text) do
-  local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
-  name = "DiagnosticSign" .. name
-  vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-end
-
 -- https://www.lazyvim.org/ {{{
 local notifs = {}
 local function temp(...) table.insert(notifs, vim.F.pack_len(...)) end

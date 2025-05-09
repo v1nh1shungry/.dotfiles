@@ -1,6 +1,6 @@
 Dotfiles.lsp.on_attach(function(client, bufnr)
   Dotfiles.map({
-    "<Leader>cs",
+    "<Leader>ch",
     function()
       local params = vim.lsp.util.make_text_document_params(bufnr)
       client:request("textDocument/switchSourceHeader", params, function(err, result)

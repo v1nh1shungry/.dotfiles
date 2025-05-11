@@ -31,7 +31,7 @@ return {
   },
   -- https://www.lazyvim.org/plugins/lsp#masonnvim-1 {{{
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     config = function(_, opts)
       require("mason").setup(opts)
 
@@ -237,10 +237,5 @@ return {
       },
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
-  },
-  {
-    "chrisgrieser/nvim-scissors",
-    cmd = { "ScissorsAddNewSnippet", "ScissorsEditSnippet" },
-    opts = { jsonFormatter = "jq" },
   },
 }

@@ -277,18 +277,9 @@ return {
   },
   {
     "folke/snacks.nvim",
-    -- https://www.lazyvim.org/ {{{
-    config = function(_, opts)
+    init = function()
       vim.g.snacks_animate = false
 
-      local notify = vim.notify
-      require("snacks").setup(opts)
-      -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
-      -- this is needed to have early notifications show up in noice history
-      vim.notify = notify
-    end,
-    -- }}}
-    init = function()
       vim.api.nvim_create_autocmd("User", {
         callback = function()
           vim.print = Snacks.debug.inspect

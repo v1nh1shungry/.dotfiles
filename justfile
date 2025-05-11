@@ -49,7 +49,7 @@ tmux:
 hyprland:
   ln -sf {{justfile_directory()}}/hypr {{config_directory()}}
   ln -sf {{justfile_directory()}}/waybar {{config_directory()}}
-  ln -sf {{justfile_directory()}}/wofi {{config_directory()}}
+  ln -sf {{justfile_directory()}}/rofi {{config_directory()}}
   echo "--enable-wayland-ime" >{{config_directory()}}/qq-flags.conf
 
 yazi:

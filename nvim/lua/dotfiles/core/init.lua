@@ -20,7 +20,17 @@ vim.diagnostic.config({
       [vim.diagnostic.severity.INFO] = "",
     },
   },
-  jump = { float = true },
+  jump = {
+    on_jump = function(diagnostic, bufnr)
+      if not diagnostic then return end
+
+      vim.diagnostic.open_float({
+        bufnr = bufnr,
+        scope = "cursor",
+        focus = false,
+      })
+    end,
+  },
 })
 
 -- https://www.lazyvim.org/ {{{

@@ -87,8 +87,9 @@
 		"menu": "on-click",
 		"menu-file": "$HOME/.config/waybar/power_menu.xml",
 		"menu-actions": {
-			"shutdown": "systemctl poweroff",
-			"reboot": "systemctl reboot"
+            "logout": "hyprctl dispatch exit",
+			"reboot": "systemctl reboot",
+            "shutdown": "systemctl poweroff"
 		}
     }
 }

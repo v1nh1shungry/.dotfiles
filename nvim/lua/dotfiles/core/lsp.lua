@@ -103,8 +103,6 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
   if client:supports_method(ms.textDocument_foldingRange) then
     vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
   end
-
-  if client:supports_method(ms.textDocument_documentColor) then vim.lsp.document_color.enable(true, bufnr) end
 end)
 
 vim.lsp.enable({

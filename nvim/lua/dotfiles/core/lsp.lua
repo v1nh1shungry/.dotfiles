@@ -91,18 +91,6 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = bufnr })
   end
-
-  if client:supports_method(ms.textDocument_codeLens) then
-    vim.lsp.codelens.refresh()
-    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-      buffer = bufnr,
-      callback = vim.lsp.codelens.refresh,
-    })
-  end
-
-  if client:supports_method(ms.textDocument_foldingRange) then
-    vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-  end
 end)
 
 vim.lsp.enable({

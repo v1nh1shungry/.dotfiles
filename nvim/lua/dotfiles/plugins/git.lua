@@ -8,6 +8,8 @@ return {
       { "<Leader>ub", "<Cmd>Gitsigns toggle_current_line_blame<CR>", desc = "Toggle Git Blame" },
     },
     opts = {
+      attach_to_untracked = true,
+      current_line_blame = true,
       on_attach = function(bufnr)
         local map = Dotfiles.map_with({ buffer = bufnr })
         map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
@@ -43,8 +45,7 @@ return {
         map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Git Hunks (Document)" })
         map({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
       end,
-      attach_to_untracked = true,
-      current_line_blame = true,
+      preview_config = { border = "rounded" },
     },
   },
   {

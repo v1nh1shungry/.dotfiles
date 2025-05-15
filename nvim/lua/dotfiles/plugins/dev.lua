@@ -226,12 +226,11 @@ return {
     "hedyhli/outline.nvim",
     cmd = "Outline",
     opts = {
-      outline_window = { auto_close = true, hide_cursor = true },
+      outline_window = { hide_cursor = true },
       preview_window = { border = "rounded", winblend = Dotfiles.user.ui.blend },
       keymaps = {
-        goto_location = { "o", "<CR>" },
         peek_location = {},
-        goto_and_close = {},
+        goto_and_close = { "o" },
         up_and_jump = "<C-p>",
         down_and_jump = "<C-n>",
       },

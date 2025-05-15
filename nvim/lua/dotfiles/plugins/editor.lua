@@ -16,7 +16,6 @@ return {
       { "gsF", desc = "Find Left Surrounding" },
       { "gsh", desc = "Highlight Surrounding" },
       { "gsr", desc = "Replace Surrounding" },
-      { "gsn", desc = "Update `MiniSurround.config.n_lines`" },
     },
     opts = {
       mappings = {
@@ -26,7 +25,7 @@ return {
         find_left = "gsF",
         highlight = "gsh",
         replace = "gsr",
-        update_n_lines = "gsn",
+        update_n_lines = "",
       },
       search_method = "cover_or_next",
     },

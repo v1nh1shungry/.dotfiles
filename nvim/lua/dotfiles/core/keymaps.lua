@@ -30,14 +30,6 @@ remove_lsp_mapping({ "gO" })
 remove_lsp_mapping({ "<C-s>", mode = "i" })
 -- }}}
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(args)
-    vim.bo[args.buf].tagfunc = nil
-    vim.bo[args.buf].omnifunc = nil
-  end,
-  group = Dotfiles.augroup("lsp.disable_default_mappings"),
-})
-
 map({ "<C-q>", "<Cmd>bd<CR>", desc = ":bdelete" })
 map({ "<Leader>qq", "<Cmd>qa!<CR>", desc = "Quit" })
 
@@ -79,9 +71,6 @@ map({ "n", "'Nn'[v:searchforward].'zv'", expr = true, desc = "Next Search" })
 map({ "n", "'Nn'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Next Search" })
 map({ "N", "'nN'[v:searchforward].'zv'", expr = true, desc = "Previous Search" })
 map({ "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Previous Search" })
-
-map({ "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Below" })
-map({ "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", desc = "Add Comment Above" })
 
 map({
   "<Leader>xl",
@@ -172,7 +161,7 @@ map({
   function()
     local input = vim.F.npcall(string.char, vim.fn.getchar())
     if not input or not input:match("%a") then
-      Snacks.notify.error("Aborted: invalid mark")
+      Dotfiles.notify.error("Aborted: invalid mark")
       return
     end
     pcall(vim.cmd.delmark, input)

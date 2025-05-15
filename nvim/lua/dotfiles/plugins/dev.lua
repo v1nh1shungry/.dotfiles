@@ -51,7 +51,7 @@ return {
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
           if not p:is_installed() then
-            Snacks.notify.info("Installing package " .. p.name)
+            Dotfiles.notify.info("Installing package " .. p.name)
             p:install()
           end
         end
@@ -60,7 +60,7 @@ return {
       local installed = mr.get_installed_packages()
       for _, p in ipairs(installed) do
         if not vim.list_contains(opts.ensure_installed, p.name) then
-          Snacks.notify.info("Uninstall unused package " .. p.name)
+          Dotfiles.notify.info("Uninstall unused package " .. p.name)
           p:uninstall()
         end
       end
@@ -144,7 +144,7 @@ return {
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
     dependencies = {
       "williamboman/mason.nvim",
-      opts = { ensure_installed = { "stylua" } },
+      opts = { ensure_installed = vim.version.cmp(Dotfiles.glibc_version(), "2.31") > 0 and { "stylua" } or {} },
     },
     keys = {
       { "<Leader>cf", function() require("conform").format() end, desc = "Format Document", mode = { "n", "x" } },

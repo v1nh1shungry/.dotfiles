@@ -5,7 +5,9 @@ return {
     event = "LazyFile",
     keys = {
       { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIXME<CR>", desc = "Todo" },
-      { "<leader>st", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end, desc = "Todo" },
+      { "<Leader>xT", "<Cmd>TodoQuickFix<CR>", desc = "Todo & Note" },
+      { "<Leader>st", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end, desc = "Todo" },
+      { "<Leader>sT", function() Snacks.picker.todo_comments() end, desc = "Todo & Note" },
     },
     opts = { signs = false },
   },
@@ -24,15 +26,8 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    keys = {
-      { "<Leader>bk", function() require("which-key").show({ global = false }) end, desc = "Keymaps" },
-      {
-        "<C-w><Space>",
-        function() require("which-key").show({ keys = "<C-w>", loop = true }) end,
-        desc = "Window Hydra Mode",
-      },
-    },
     opts = {
+      icons = { mappings = false },
       preset = "helix",
       spec = {
         {
@@ -66,6 +61,15 @@ return {
   },
   {
     "folke/noice.nvim",
+    -- https://github.com/LazyVim/LazyVim {{{
+    config = function(_, opts)
+      -- HACK: noice shows messages from before it was enabled,
+      -- but this is not ideal when Lazy is installing plugins,
+      -- so clear the messages in this case.
+      if vim.o.filetype == "lazy" then vim.cmd([[messages clear]]) end
+      require("noice").setup(opts)
+    end,
+    -- }}}
     event = "VeryLazy",
     keys = { { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" } },
     opts = {
@@ -149,10 +153,8 @@ return {
 
       local function filter_show(_) return true end
 
-      local function filter_hide(fs_entry)
-        return not vim.list_contains(IGNORED_PATTERN, vim.fs.basename(fs_entry.path))
-          and not Dotfiles.git.ignored(fs_entry.path)
-      end
+      -- TODO: check gitignore via git executable
+      local function filter_hide(fs_entry) return not vim.list_contains(IGNORED_PATTERN, vim.fs.basename(fs_entry.path)) end
 
       vim.api.nvim_create_autocmd("User", {
         callback = function(args)

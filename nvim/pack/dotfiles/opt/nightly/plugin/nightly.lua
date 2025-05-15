@@ -10,7 +10,6 @@ local ffi = require("ffi")
 
 ffi.cdef([[
 int lockf(int fd, int cmd, long len);
-const char *gnu_get_libc_version();
 ]])
 
 local NIGHTLY_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
@@ -22,7 +21,7 @@ local USR_LOCAL_DIRECTORY = vim.fs.joinpath(vim.env.HOME, ".local")
 local USR_BIN_DIRECTORY = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "bin")
 
 local GITHUB_REPO_NAME = "neovim"
-if vim.version.cmp(ffi.string(ffi.C.gnu_get_libc_version()), "2.31") <= 0 then GITHUB_REPO_NAME = "neovim-releases" end
+if vim.version.cmp(Dotfiles.glibc_version(), "2.31") <= 0 then GITHUB_REPO_NAME = "neovim-releases" end
 
 local ASSET_NAME = "nvim-linux-x86_64"
 local ASSET_PACKAGE_NAME = ASSET_NAME .. ".tar.gz"
@@ -43,7 +42,7 @@ local function unlock() ffi.C.lockf(LOCK_FD, F_ULOCK, 0) end
 ---@return boolean
 local function lock(force)
   if ffi.C.lockf(LOCK_FD, F_TLOCK, 0) == -1 then
-    if force then Snacks.notify.warn("There is another session holding the lock, please wait for it") end
+    if force then Dotfiles.notify.warn("There is another session holding the lock, please wait for it") end
 
     return false
   end
@@ -62,7 +61,7 @@ end
 local function api(url)
   local res = Dotfiles.co.system({ "curl", "-fsSL", url })
   if res.code ~= 0 then
-    Snacks.notify.error(("Failed to request %s: %s"):format(url, res.stderr))
+    Dotfiles.notify.error("Failed to request %s: %s", url, res.stderr)
     return nil
   end
 
@@ -99,7 +98,7 @@ local function install(id)
   })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to install binary: " .. res.stderr)
+    Dotfiles.notify.error("Failed to install binary: " .. res.stderr)
     return false
   end
 
@@ -114,7 +113,7 @@ local function install(id)
   })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to install desktop entry: " .. res.stderr)
+    Dotfiles.notify.error("Failed to install desktop entry: " .. res.stderr)
     return false
   end
 
@@ -128,7 +127,7 @@ local function install(id)
   })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to install desktop entry: " .. res.stderr)
+    Dotfiles.notify.error("Failed to install desktop entry: " .. res.stderr)
     return false
   end
 
@@ -140,7 +139,7 @@ local function install(id)
   })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to install desktop entry: " .. res.stderr)
+    Dotfiles.notify.error("Failed to install desktop entry: " .. res.stderr)
     return false
   end
 
@@ -153,7 +152,7 @@ local function install(id)
   })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to install man page: " .. res.stderr)
+    Dotfiles.notify.error("Failed to install man page: " .. res.stderr)
     return false
   end
 
@@ -171,7 +170,7 @@ local function update(force)
     return
   end
 
-  Snacks.notify.info("Start updating nightly neovim")
+  Dotfiles.notify.info("Start updating nightly neovim")
 
   local release = api(("https://api.github.com/repos/neovim/%s/releases/tags/nightly"):format(GITHUB_REPO_NAME))
   if not release then
@@ -180,7 +179,7 @@ local function update(force)
   end
 
   if metadata.latest and metadata.latest == release.id then
-    Snacks.notify.info("No update for nightly neovim")
+    Dotfiles.notify.info("No update for nightly neovim")
 
     if metadata.current ~= metadata.latest and install(metadata.latest) then metadata.current = metadata.latest end
 
@@ -199,7 +198,7 @@ local function update(force)
   end
 
   if not url then
-    Snacks.notify.error("No available nightly neovim package")
+    Dotfiles.notify.error("No available nightly neovim package")
     unlock()
     return
   end
@@ -207,7 +206,7 @@ local function update(force)
   local res = Dotfiles.co.system({ "curl", "-fsSLO", url }, { cwd = vim.uv.os_tmpdir() })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to download nightly neovim package: " .. res.stderr)
+    Dotfiles.notify.error("Failed to download nightly neovim package: " .. res.stderr)
     unlock()
     return
   end
@@ -224,7 +223,7 @@ local function update(force)
   })
 
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to extract nightly neovim package: " .. res.stderr)
+    Dotfiles.notify.error("Failed to extract nightly neovim package: " .. res.stderr)
     unlock()
     return
   end
@@ -240,7 +239,7 @@ local function update(force)
 
     write_metadata(metadata)
 
-    Snacks.notify.info("Complete updating nightly neovim")
+    Dotfiles.notify.info("Complete updating nightly neovim")
   end
 
   unlock()
@@ -254,7 +253,7 @@ local function rollback()
 
   local metadata = read_metadata() or {}
   if not metadata.rollback or metadata.current == metadata.rollback then
-    Snacks.notify.warn("No available rollback")
+    Dotfiles.notify.warn("No available rollback")
     unlock()
     return
   end
@@ -262,7 +261,7 @@ local function rollback()
   if install(metadata.rollback) then
     metadata.current = metadata.rollback
     write_metadata(metadata)
-    Snacks.notify.info("Complete rolling back nightly neovim")
+    Dotfiles.notify.info("Complete rolling back nightly neovim")
   end
 
   unlock()

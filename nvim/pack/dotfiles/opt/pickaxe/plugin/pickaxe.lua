@@ -4,14 +4,11 @@
 ---@return boolean
 local function is_normal_git_repo()
   if not Dotfiles.git.root() then
-    Snacks.notify.error("Aborting: not a git repository")
+    Dotfiles.notify.error("Aborting: not a git repository")
     return false
   end
 
-  if Dotfiles.git.shallow() then
-    Snacks.notify.error("Aborting: repository is shallow")
-    return false
-  end
+  -- TODO: check shallow git repository via git executable
 
   return true
 end
@@ -25,7 +22,7 @@ local function pickaxe()
 
   local res = Dotfiles.co.system({ "git", "log", "--pretty=oneline", "--abbrev-commit", "-G", query })
   if res.code ~= 0 then
-    Snacks.notify.error("Failed to execute git command: " .. res.stderr)
+    Dotfiles.notify.error("Failed to execute git command: " .. res.stderr)
     return
   end
 

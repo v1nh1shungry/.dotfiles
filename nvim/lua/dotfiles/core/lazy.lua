@@ -31,6 +31,7 @@ require("lazy").setup("dotfiles.plugins", {
   install = { colorscheme = { Dotfiles.user.ui.colorscheme } },
   local_spec = false,
   performance = {
+    reset_packpath = false,
     rtp = {
       disabled_plugins = {
         "gzip",

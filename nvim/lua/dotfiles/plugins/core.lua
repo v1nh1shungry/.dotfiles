@@ -191,15 +191,6 @@ return {
       highlight = { enable = true },
       indent = { enable = true },
       matchup = { enable = true, disable_virtual_text = true, include_match_words = true },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-Space>",
-          node_incremental = "<C-Space>",
-          scope_incremental = false,
-          node_decremental = "<BS>",
-        },
-      },
       textobjects = {
         move = {
           enable = true,
@@ -272,11 +263,20 @@ return {
   },
   {
     "echasnovski/mini.jump",
-    keys = vim.iter({ "f", "F", "t", "T", ",", ";" }):map(function(m) return { m, mode = { "n", "x" } } end):totable(),
+    keys = vim.iter({ "f", "F", "t", "T" }):map(function(m) return { m, mode = { "n", "x" } } end):totable(),
     opts = {},
   },
   {
     "folke/snacks.nvim",
+    -- https://github.com/LazyVim/LazyVim {{{
+    config = function(_, opts)
+      local notify = vim.notify
+      require("snacks").setup(opts)
+      -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
+      -- this is needed to have early notifications show up in noice history
+      vim.notify = notify
+    end,
+    -- }}}
     init = function()
       vim.g.snacks_animate = false
 
@@ -296,6 +296,7 @@ return {
 
           Snacks.toggle.profiler():map("<Leader>pp")
         end,
+        once = true,
         pattern = "VeryLazy",
       })
     end,
@@ -309,12 +310,11 @@ return {
       { "<M-=>", function() Snacks.terminal.toggle() end, mode = { "n", "t" }, desc = "Terminal" },
       { "<C-w>z", function() Snacks.zen.zoom() end, desc = "Zoom" },
       { "<Leader>ut", function() Snacks.picker.undo() end, desc = "Undotree" },
-      { "<Leader>p/", function() Snacks.profiler.pick() end, desc = "Check Profiler" },
+      { "<Leader>pP", function() Snacks.profiler.pick() end, desc = "Check Profile Result" },
       { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
       { "<Leader>u/", function() Snacks.picker.notifications() end, desc = "Notifications" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, mode = { "n", "x" }, desc = "Git Browse" },
       { "<Leader>fs", function() Snacks.scratch() end, desc = "Open Scratch Buffer" },
-      { "<Leader>ft", function() Snacks.picker.explorer() end, desc = "Explorer (Tree)" },
       { "<Leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
       { "<Leader>fr", function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "Recent Files" },
       { "<Leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },

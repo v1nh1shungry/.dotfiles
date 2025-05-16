@@ -6,7 +6,9 @@ return {
     keys = {
       { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIXME<CR>", desc = "Todo" },
       { "<Leader>xT", "<Cmd>TodoQuickFix<CR>", desc = "Todo & Note" },
+      ---@diagnostic disable-next-line: undefined-field
       { "<Leader>st", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end, desc = "Todo" },
+      ---@diagnostic disable-next-line: undefined-field
       { "<Leader>sT", function() Snacks.picker.todo_comments() end, desc = "Todo & Note" },
     },
     opts = { signs = false },
@@ -140,6 +142,7 @@ return {
     "echasnovski/mini.files",
     config = function()
       local show_hidden = false
+      local ignored = {} ---@type table<string, boolean>
 
       local NS = Dotfiles.ns("mini.files.extmarks")
       local AUGROUP = Dotfiles.augroup("mini.files")
@@ -151,10 +154,37 @@ return {
         "node_modules",
       }
 
+      ---@return boolean
       local function filter_show(_) return true end
 
-      -- TODO: check gitignore via git executable
-      local function filter_hide(fs_entry) return not vim.list_contains(IGNORED_PATTERN, vim.fs.basename(fs_entry.path)) end
+      ---@return boolean
+      local function filter_hide(fs_entry)
+        local dir = vim.fs.dirname(fs_entry.path)
+        if ignored[dir] then return false end
+
+        if ignored[fs_entry.path] == nil then
+          local entries = {} ---@type string[]
+
+          for name, _ in vim.fs.dir(dir) do
+            local path = vim.fs.joinpath(dir, name)
+            if vim.list_contains(IGNORED_PATTERN, name) then
+              ignored[path] = true
+            else
+              ignored[path] = false
+              table.insert(entries, name)
+            end
+          end
+
+          if Dotfiles.git.root() then
+            local ret = vim.fn.system(vim.list_extend({ "git", "-C", dir, "check-ignore" }, entries))
+            for _, name in ipairs(vim.split(ret, "\n", { trimempty = true })) do
+              ignored[vim.fs.joinpath(dir, name)] = true
+            end
+          end
+        end
+
+        return not ignored[fs_entry.path]
+      end
 
       vim.api.nvim_create_autocmd("User", {
         callback = function(args)

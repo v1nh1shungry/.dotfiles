@@ -74,3 +74,9 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "gitcommit", "markdown", "text" },
 })
 -- }}}
+
+vim.api.nvim_create_autocmd("FileType", {
+  command = "setlocal conceallevel=2",
+  group = Dotfiles.augroup("markdown.conceal"),
+  pattern = "markdown",
+})

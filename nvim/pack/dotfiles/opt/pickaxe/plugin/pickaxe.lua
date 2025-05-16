@@ -8,7 +8,10 @@ local function is_normal_git_repo()
     return false
   end
 
-  -- TODO: check shallow git repository via git executable
+  if vim.trim(Dotfiles.co.system({ "git", "rev-parse", "--is-shallow-repository" }).stdout) == "true" then
+    Snacks.notify.error("Aborting: repository is shallow")
+    return false
+  end
 
   return true
 end

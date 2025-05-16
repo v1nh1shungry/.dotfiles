@@ -11,6 +11,23 @@ vim.filetype.add({
 vim.treesitter.language.register("bash", "kitty")
 
 vim.diagnostic.config({
+  jump = {
+    on_jump = function(diagnostic, bufnr)
+      if not diagnostic then return end
+
+      local ns = Dotfiles.ns("diagnostic.on_jump")
+      vim.diagnostic.show(ns, bufnr, { diagnostic }, {
+        virtual_lines = { current_line = true },
+        virtual_text = false,
+      })
+
+      vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter" }, {
+        buffer = bufnr,
+        callback = function() vim.diagnostic.reset(ns, bufnr) end,
+        once = true,
+      })
+    end,
+  },
   severity_sort = true,
   signs = {
     text = {
@@ -19,17 +36,6 @@ vim.diagnostic.config({
       [vim.diagnostic.severity.HINT] = "",
       [vim.diagnostic.severity.INFO] = "",
     },
-  },
-  jump = {
-    on_jump = function(diagnostic, bufnr)
-      if not diagnostic then return end
-
-      vim.diagnostic.open_float({
-        bufnr = bufnr,
-        scope = "cursor",
-        focus = false,
-      })
-    end,
   },
 })
 

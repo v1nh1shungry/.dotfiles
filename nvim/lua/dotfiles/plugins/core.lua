@@ -189,6 +189,15 @@ return {
         "yaml",
       },
       highlight = { enable = true },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "<C-Space>",
+          node_incremental = "<C-Space>",
+          scope_incremental = false,
+          node_decremental = "<BS>",
+        },
+      },
       indent = { enable = true },
       matchup = { enable = true, disable_virtual_text = true, include_match_words = true },
       textobjects = {

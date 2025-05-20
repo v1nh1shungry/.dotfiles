@@ -1,17 +1,19 @@
+---@alias dotfiles.utils.Notifier fun(msg: string, ...)
+
 ---@class dotfiles.utils.Notify
----@field debug fun(msg: string, ...)
----@field error fun(msg: string, ...)
----@field info fun(msg: string, ...)
----@field warn fun(msg: string, ...)
----@field off fun(msg: string, ...)
----@field trace fun(msg: string, ...)
+---@field debug dotfiles.utils.Notifier
+---@field error dotfiles.utils.Notifier
+---@field info dotfiles.utils.Notifier
+---@field warn dotfiles.utils.Notifier
+---@field off dotfiles.utils.Notifier
+---@field trace dotfiles.utils.Notifier
 local M = {}
 
 for k, v in pairs(vim.log.levels) do
   ---@param msg string
   M[k:lower()] = function(msg, ...)
     local args = vim.F.pack_len(...)
-    if args.n ~= 0 then msg = string.format(msg, vim.F.unpack_len(args)) end
+    if args.n ~= 0 then msg = msg:format(vim.F.unpack_len(args)) end
     vim.notify(msg, v, { title = "Dotfiles" })
   end
 end

@@ -6,12 +6,6 @@ if not Dotfiles.user.nightly then return end
 ---@field latest string
 ---@field rollback? string
 
-local ffi = require("ffi")
-
-ffi.cdef([[
-int lockf(int fd, int cmd, long len);
-]])
-
 local NIGHTLY_DIRECTORY = vim.fs.joinpath(vim.fn.stdpath("data"), "nightly")
 local NIGHTLY_METADATA_PATH = vim.fs.joinpath(NIGHTLY_DIRECTORY, "install-metadata.json")
 local LOCKFILE = vim.fs.joinpath(NIGHTLY_DIRECTORY, "LOCK")
@@ -21,29 +15,25 @@ local USR_LOCAL_DIRECTORY = vim.fs.joinpath(vim.env.HOME, ".local")
 local USR_BIN_DIRECTORY = vim.fs.joinpath(USR_LOCAL_DIRECTORY, "bin")
 
 local GITHUB_REPO_NAME = "neovim"
-if vim.version.cmp(Dotfiles.glibc_version(), "2.31") <= 0 then GITHUB_REPO_NAME = "neovim-releases" end
+if vim.version.cmp(Dotfiles.C.glibc_version(), "2.31") <= 0 then GITHUB_REPO_NAME = "neovim-releases" end
 
 local ASSET_NAME = "nvim-linux-x86_64"
 local ASSET_PACKAGE_NAME = ASSET_NAME .. ".tar.gz"
 
 local AUGROUP = Dotfiles.augroup("nightly")
 
-local F_TLOCK = 2
-local F_ULOCK = 0
-
-local LOCK_FD = vim.uv.fs_open(LOCKFILE, "w", tonumber("0644", 8))
+local LOCK_FD = assert(vim.uv.fs_open(LOCKFILE, "w", tonumber("0644", 8)))
 
 if vim.fn.isdirectory(NIGHTLY_DIRECTORY) == 0 then vim.fn.mkdir(NIGHTLY_DIRECTORY) end
 
-local function unlock() ffi.C.lockf(LOCK_FD, F_ULOCK, 0) end
+local function unlock() Dotfiles.C.unlock(LOCK_FD) end
 
 ---@async
 ---@param force? boolean
 ---@return boolean
 local function lock(force)
-  if ffi.C.lockf(LOCK_FD, F_TLOCK, 0) == -1 then
+  if Dotfiles.C.lock(LOCK_FD) == -1 then
     if force then Dotfiles.notify.warn("There is another session holding the lock, please wait for it") end
-
     return false
   end
 
@@ -267,10 +257,7 @@ local function rollback()
   unlock()
 end
 
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = Dotfiles.co.void(update),
-  group = AUGROUP,
-})
+Dotfiles.co.run(update)
 
 Dotfiles.map({ "<Leader>pnu", Dotfiles.co.void(update, true), desc = "Update" })
 Dotfiles.map({ "<Leader>pnr", Dotfiles.co.void(rollback), desc = "Rollback" })

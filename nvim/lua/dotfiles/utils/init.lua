@@ -1,4 +1,5 @@
 ---@class dotfiles.utils
+---@field C dotfiles.utils.C
 ---@field co dotfiles.utils.Co
 ---@field git dotfiles.utils.Git
 ---@field lsp dotfiles.utils.LSP
@@ -63,14 +64,5 @@ function M.augroup(name, opts) return vim.api.nvim_create_augroup("dotfiles." ..
 ---@param name string
 ---@return integer
 function M.ns(name) return vim.api.nvim_create_namespace("dotfiles." .. name) end
-
-local ffi = require("ffi")
-
-ffi.cdef([[
-const char *gnu_get_libc_version();
-]])
-
----@return string
-function M.glibc_version() return ffi.string(ffi.C.gnu_get_libc_version()) end
 
 return M

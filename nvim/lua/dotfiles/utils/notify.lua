@@ -13,7 +13,9 @@ for k, v in pairs(vim.log.levels) do
   ---@param msg string
   M[k:lower()] = function(msg, ...)
     local args = vim.F.pack_len(...)
-    if args.n ~= 0 then msg = msg:format(vim.F.unpack_len(args)) end
+    if args.n ~= 0 then
+      msg = msg:format(vim.F.unpack_len(args))
+    end
     vim.notify(msg, v, { title = "Dotfiles" })
   end
 end

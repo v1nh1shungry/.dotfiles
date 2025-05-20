@@ -9,7 +9,9 @@ function M.on_attach(callback, name)
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
       local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if client and (not name or client.name == name) then callback(client, args.buf) end
+      if client and (not name or client.name == name) then
+        callback(client, args.buf)
+      end
     end,
     group = AUGROUP,
   })

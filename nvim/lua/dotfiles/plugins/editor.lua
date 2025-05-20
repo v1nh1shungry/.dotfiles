@@ -60,7 +60,9 @@ return {
       local open = pairs.open
       ---@diagnostic disable-next-line: duplicate-set-field
       pairs.open = function(pair, neigh_pattern)
-        if vim.fn.getcmdline() ~= "" then return open(pair, neigh_pattern) end
+        if vim.fn.getcmdline() ~= "" then
+          return open(pair, neigh_pattern)
+        end
 
         local o, c = pair:sub(1, 1), pair:sub(2, 2)
         local line = vim.api.nvim_get_current_line()
@@ -72,17 +74,23 @@ return {
           return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
         end
 
-        if next ~= "" and next:match([=[[%w%%%'%[%"%.%`%$]]=]) then return o end
+        if next ~= "" and next:match([=[[%w%%%'%[%"%.%`%$]]=]) then
+          return o
+        end
 
         local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
         for _, capture in ipairs(ok and captures or {}) do
-          if vim.tbl_contains({ "string", "comment" }, capture.capture) then return o end
+          if vim.tbl_contains({ "string", "comment" }, capture.capture) then
+            return o
+          end
         end
 
         if next == c and c ~= o then
           local _, count_open = line:gsub(vim.pesc(pair:sub(1, 1)), "")
           local _, count_close = line:gsub(vim.pesc(pair:sub(2, 2)), "")
-          if count_close > count_open then return o end
+          if count_close > count_open then
+            return o
+          end
         end
 
         return open(pair, neigh_pattern)

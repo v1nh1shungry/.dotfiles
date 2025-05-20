@@ -13,7 +13,9 @@ vim.treesitter.language.register("bash", "kitty")
 vim.diagnostic.config({
   jump = {
     on_jump = function(diagnostic, bufnr)
-      if not diagnostic then return end
+      if not diagnostic then
+        return
+      end
 
       local ns = Dotfiles.ns("diagnostic.on_jump")
       vim.diagnostic.show(ns, bufnr, { diagnostic }, {
@@ -65,7 +67,9 @@ end
 
 -- wait till vim.notify has been replaced
 check:start(function()
-  if vim.notify ~= temp then replay() end
+  if vim.notify ~= temp then
+    replay()
+  end
 end)
 -- or if it took more than 1s, then something went wrong
 timer:start(1000, 0, replay)

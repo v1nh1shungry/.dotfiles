@@ -18,7 +18,9 @@ local function remove_lsp_mapping(mapping)
     ipairs(mapping.mode --[=[@as string[]]=])
   do
     local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
-    if map_desc and string.find(map_desc, "vim%.lsp") then vim.keymap.del(m, mapping[1]) end
+    if map_desc and string.find(map_desc, "vim%.lsp") then
+      vim.keymap.del(m, mapping[1])
+    end
   end
 end
 
@@ -76,7 +78,9 @@ map({
   "<Leader>xl",
   function()
     local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
-    if not success and err then vim.notify(err, vim.log.levels.ERROR) end
+    if not success and err then
+      vim.notify(err, vim.log.levels.ERROR)
+    end
   end,
   desc = "Toggle Location List",
 })
@@ -84,7 +88,9 @@ map({
   "<Leader>xq",
   function()
     local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
-    if not success and err then vim.notify(err, vim.log.levels.ERROR) end
+    if not success and err then
+      vim.notify(err, vim.log.levels.ERROR)
+    end
   end,
   desc = "Toggle Quickfix List",
 })
@@ -174,7 +180,9 @@ map({
   function()
     local cur_ln = vim.api.nvim_win_get_cursor(0)
     for _, mark in ipairs(vim.fn.getmarklist(vim.api.nvim_get_current_buf())) do
-      if cur_ln[1] == mark.pos[2] then vim.cmd("delmark " .. mark.mark:sub(2, 2)) end
+      if cur_ln[1] == mark.pos[2] then
+        vim.cmd("delmark " .. mark.mark:sub(2, 2))
+      end
     end
     vim.cmd("redraw!")
   end,
@@ -192,7 +200,9 @@ map({
     for _ = 1, count do
       if vim.api.nvim_win_get_cursor(0)[2] == 0 then
         local ok = pcall(normal, "zc")
-        if not ok then normal("h") end
+        if not ok then
+          normal("h")
+        end
       else
         normal("h")
       end
@@ -227,7 +237,9 @@ map({
       prompt = "Edit Macro",
       default = vim.api.nvim_replace_termcodes(vim.fn.keytrans(vim.fn.getreg("a")), true, true, true),
     }, function(input)
-      if not input then return end
+      if not input then
+        return
+      end
       vim.fn.setreg("a", input, "c")
     end)
   end,
@@ -248,9 +260,13 @@ map({ "<M-d>", "<S-Right><C-w>", mode = "c", desc = "Delete Word Forward" })
 map({
   "gb",
   function()
-    if vim.v.count == 0 then return end
+    if vim.v.count == 0 then
+      return
+    end
     local bufs = vim.iter(vim.api.nvim_list_bufs()):filter(function(b) return vim.bo[b].buflisted end):totable()
-    if vim.v.count > #bufs then return end
+    if vim.v.count > #bufs then
+      return
+    end
     table.sort(bufs)
     vim.api.nvim_set_current_buf(bufs[vim.v.count])
   end,

@@ -68,7 +68,9 @@ return {
       -- HACK: noice shows messages from before it was enabled,
       -- but this is not ideal when Lazy is installing plugins,
       -- so clear the messages in this case.
-      if vim.o.filetype == "lazy" then vim.cmd([[messages clear]]) end
+      if vim.o.filetype == "lazy" then
+        vim.cmd([[messages clear]])
+      end
       require("noice").setup(opts)
     end,
     -- }}}
@@ -160,7 +162,9 @@ return {
       ---@return boolean
       local function filter_hide(fs_entry)
         local dir = vim.fs.dirname(fs_entry.path)
-        if ignored[dir] then return false end
+        if ignored[dir] then
+          return false
+        end
 
         if ignored[fs_entry.path] == nil then
           local entries = {} ---@type string[]
@@ -205,7 +209,9 @@ return {
         callback = function(args)
           vim.api.nvim_buf_clear_namespace(args.data.buf_id, NS, 0, -1)
 
-          if not show_hidden then return end
+          if not show_hidden then
+            return
+          end
 
           for i = 1, vim.api.nvim_buf_line_count(args.data.buf_id) do
             local entry = MiniFiles.get_fs_entry(args.data.buf_id, i)
@@ -234,7 +240,9 @@ return {
       {
         "<Leader>e",
         function()
-          if not MiniFiles.close() then MiniFiles.open() end
+          if not MiniFiles.close() then
+            MiniFiles.open()
+          end
         end,
         desc = "Explorer",
       },

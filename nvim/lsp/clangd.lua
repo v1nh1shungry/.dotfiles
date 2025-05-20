@@ -5,7 +5,9 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
       local params = vim.lsp.util.make_text_document_params(bufnr)
       ---@diagnostic disable-next-line: param-type-mismatch
       client:request("textDocument/switchSourceHeader", params, function(err, result)
-        if err then error(tostring(err)) end
+        if err then
+          error(tostring(err))
+        end
         if not result then
           vim.notify("No corresponding file")
           return

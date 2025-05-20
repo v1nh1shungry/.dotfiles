@@ -1,7 +1,9 @@
 ---@param delta integer
 ---@return boolean
 local function scroll(delta)
-  if not vim.b.lsp_floating_preview then return false end
+  if not vim.b.lsp_floating_preview then
+    return false
+  end
   require("noice.util.nui").scroll(vim.b.lsp_floating_preview, delta)
   return true
 end

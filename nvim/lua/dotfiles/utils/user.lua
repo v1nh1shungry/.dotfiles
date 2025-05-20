@@ -17,6 +17,8 @@ local M = {
 
 local PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "nvim.user")
 
-if vim.fn.filereadable(PATH) == 1 then M = vim.tbl_deep_extend("force", M, dofile(PATH)) end
+if vim.fn.filereadable(PATH) == 1 then
+  M = vim.tbl_deep_extend("force", M, dofile(PATH))
+end
 
 return M

@@ -1,7 +1,9 @@
 -- https://www.lazyvim.org/configuration/general#auto-commands {{{
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   callback = function()
-    if vim.o.buftype ~= "nofile" then vim.cmd("checktime") end
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
+    end
   end,
   group = Dotfiles.augroup("checktime"),
 })
@@ -15,18 +17,24 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(event)
     local exclude = { "gitcommit", "man" }
     local buf = event.buf
-    if vim.list_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].dotfiles_last_loc then return end
+    if vim.list_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].dotfiles_last_loc then
+      return
+    end
     vim.b[buf].dotfiles_last_loc = true
     local mark = vim.api.nvim_buf_get_mark(buf, '"')
     local lcount = vim.api.nvim_buf_line_count(buf)
-    if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
   end,
   group = Dotfiles.augroup("last_loc"),
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function(event)
-    if event.match:match("^%w%w+:[\\/][\\/]") then return end
+    if event.match:match("^%w%w+:[\\/][\\/]") then
+      return
+    end
     local file = vim.uv.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
@@ -53,7 +61,9 @@ local function setup_minimal_ui(args)
     vim.opt_local.signcolumn = "no"
 
     local ret = vim.fn.maparg("q", "n", false, true)
-    if ret.buffer ~= 1 then Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = args.buf, desc = ":close" }) end
+    if ret.buffer ~= 1 then
+      Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = args.buf, desc = ":close" })
+    end
   end
 end
 

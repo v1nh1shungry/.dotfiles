@@ -10,7 +10,9 @@ function M.wrap(fn)
     local args = { ... }
     table.insert(args, function(r)
       ret = r
-      if coroutine.status(this) == "suspended" then coroutine.resume(this) end
+      if coroutine.status(this) == "suspended" then
+        coroutine.resume(this)
+      end
     end)
     fn(unpack(args))
     coroutine.yield()
@@ -41,7 +43,9 @@ local function schedule_wrapper(t)
   return setmetatable({}, {
     __index = function(_, k)
       return function(...)
-        if vim.in_fast_event() then M.schedule() end
+        if vim.in_fast_event() then
+          M.schedule()
+        end
         return t[k](...)
       end
     end,

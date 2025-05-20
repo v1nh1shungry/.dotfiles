@@ -62,7 +62,9 @@ return {
             local start_line, end_line = 1, vim.fn.line("$")
             if ai_type == "i" then
               local first_nonblank, last_nonblank = vim.fn.nextnonblank(start_line), vim.fn.prevnonblank(end_line)
-              if first_nonblank == 0 or last_nonblank == 0 then return { from = { line = start_line, col = 1 } } end
+              if first_nonblank == 0 or last_nonblank == 0 then
+                return { from = { line = start_line, col = 1 } }
+              end
               start_line, end_line = first_nonblank, last_nonblank
             end
             local to_col = math.max(vim.fn.getline(end_line):len(), 1)
@@ -150,9 +152,13 @@ return {
       }, require("nvim-treesitter.configs").get_ensure_installed_parsers() --[=[@as string[]]=])
       local unused_parsers = {}
       for _, parser in ipairs(require("nvim-treesitter.info").installed_parsers()) do
-        if not vim.list_contains(ensure_installed_parsers, parser) then table.insert(unused_parsers, parser) end
+        if not vim.list_contains(ensure_installed_parsers, parser) then
+          table.insert(unused_parsers, parser)
+        end
       end
-      if #unused_parsers > 0 then require("nvim-treesitter.install").uninstall(unused_parsers) end
+      if #unused_parsers > 0 then
+        require("nvim-treesitter.install").uninstall(unused_parsers)
+      end
     end,
     event = "LazyFile",
     -- https://github.com/LazyVim/LazyVim {{{

@@ -18,10 +18,14 @@ end
 
 ---@async
 local function pickaxe()
-  if not is_normal_git_repo() then return end
+  if not is_normal_git_repo() then
+    return
+  end
 
   local query = Dotfiles.co.input({ prompt = "Git Pickaxe" })
-  if not query then return end
+  if not query then
+    return
+  end
 
   local res = Dotfiles.co.system({ "git", "log", "--pretty=oneline", "--abbrev-commit", "-G", query })
   if res.code ~= 0 then

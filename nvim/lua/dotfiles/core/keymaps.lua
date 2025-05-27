@@ -79,7 +79,7 @@ map({
   function()
     local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
     if not success and err then
-      vim.notify(err, vim.log.levels.ERROR)
+      Dotfiles.notify.error(err)
     end
   end,
   desc = "Toggle Location List",
@@ -89,7 +89,7 @@ map({
   function()
     local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
     if not success and err then
-      vim.notify(err, vim.log.levels.ERROR)
+      Dotfiles.notify.error(err)
     end
   end,
   desc = "Toggle Quickfix List",
@@ -179,11 +179,13 @@ map({
   "dm-",
   function()
     local cur_ln = vim.api.nvim_win_get_cursor(0)
+
     for _, mark in ipairs(vim.fn.getmarklist(vim.api.nvim_get_current_buf())) do
       if cur_ln[1] == mark.pos[2] then
         vim.cmd("delmark " .. mark.mark:sub(2, 2))
       end
     end
+
     vim.cmd("redraw!")
   end,
   desc = "Delete Mark in Current Line",
@@ -240,6 +242,7 @@ map({
       if not input then
         return
       end
+
       vim.fn.setreg("a", input, "c")
     end)
   end,
@@ -263,10 +266,12 @@ map({
     if vim.v.count == 0 then
       return
     end
+
     local bufs = vim.iter(vim.api.nvim_list_bufs()):filter(function(b) return vim.bo[b].buflisted end):totable()
     if vim.v.count > #bufs then
       return
     end
+
     table.sort(bufs)
     vim.api.nvim_set_current_buf(bufs[vim.v.count])
   end,

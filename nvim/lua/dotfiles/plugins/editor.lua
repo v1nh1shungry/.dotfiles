@@ -111,19 +111,9 @@ return {
   },
   -- }}}
   {
-    "cshuaimin/ssr.nvim",
-    keys = {
-      { "<Leader>sr", function() require("ssr").open() end, mode = { "n", "x" }, desc = "Structural Search & Replace" },
-    },
-  },
-  {
-    "bullets-vim/bullets.vim",
-    config = function() vim.g.bullets_set_mappings = false end,
-    keys = {
-      { "<CR>", "<Plug>(bullets-newline)", mode = "i", desc = "Enter New Line", ft = "markdown" },
-      { "o", "<Plug>(bullets-newline)", desc = "New Line Below", ft = "markdown" },
-      { "<C-t>", "<Plug>(bullets-demote)", mode = "i", desc = "Increase Indent", ft = "markdown" },
-      { "<C-d>", "<Plug>(bullets-promote)", mode = "i", desc = "Decrease Indent", ft = "markdown" },
-    },
+    "MagicDuck/grug-far.nvim",
+    cmd = "GrugFar",
+    keys = { { "<Leader>sr", "<Cmd>GrugFar<CR>", desc = "Search & Replace" } },
+    opts = {},
   },
 }

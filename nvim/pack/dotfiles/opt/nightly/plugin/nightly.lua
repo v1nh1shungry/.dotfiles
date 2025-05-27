@@ -32,7 +32,7 @@ if vim.fn.isdirectory(NIGHTLY_DIRECTORY) == 0 then
   vim.fn.mkdir(NIGHTLY_DIRECTORY)
 end
 
-local function unlock() Dotfiles.C.unlock(LOCK_FD) end
+local function unlock() Dotfiles.C.lock(LOCK_FD, false) end
 
 ---@async
 ---@param force? boolean
@@ -42,6 +42,7 @@ local function lock(force)
     if force then
       Dotfiles.notify.warn("There is another session holding the lock, please wait for it")
     end
+
     return false
   end
 
@@ -72,6 +73,7 @@ local function read_metadata()
   if Dotfiles.co.fn.filereadable(NIGHTLY_METADATA_PATH) == 1 then
     return vim.json.decode(table.concat(Dotfiles.co.fn.readfile(NIGHTLY_METADATA_PATH), "\n"))
   end
+
   return nil
 end
 
@@ -170,7 +172,7 @@ local function update(force)
     return
   end
 
-  Dotfiles.notify.info("Start updating nightly neovim")
+  Dotfiles.notify("Start updating nightly neovim")
 
   local release = api(("https://api.github.com/repos/neovim/%s/releases/tags/nightly"):format(GITHUB_REPO_NAME))
   if not release then
@@ -179,7 +181,7 @@ local function update(force)
   end
 
   if metadata.latest and metadata.latest == release.id then
-    Dotfiles.notify.info("No update for nightly neovim")
+    Dotfiles.notify("No update for nightly neovim")
 
     if metadata.current ~= metadata.latest and install(metadata.latest) then
       metadata.current = metadata.latest
@@ -241,7 +243,7 @@ local function update(force)
 
     write_metadata(metadata)
 
-    Dotfiles.notify.info("Complete updating nightly neovim")
+    Dotfiles.notify("Complete updating nightly neovim")
   end
 
   unlock()
@@ -265,7 +267,7 @@ local function rollback()
   if install(metadata.rollback) then
     metadata.current = metadata.rollback
     write_metadata(metadata)
-    Dotfiles.notify.info("Complete rolling back nightly neovim")
+    Dotfiles.notify("Complete rolling back nightly neovim")
   end
 
   unlock()

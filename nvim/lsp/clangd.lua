@@ -8,10 +8,12 @@ Dotfiles.lsp.on_attach(function(client, bufnr)
         if err then
           error(tostring(err))
         end
+
         if not result then
-          vim.notify("No corresponding file")
+          Dotfiles.notify("No corresponding file")
           return
         end
+
         vim.cmd.edit(vim.uri_to_fname(result))
       end, bufnr)
     end,

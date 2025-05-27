@@ -32,6 +32,7 @@ local function restore_previous_im()
   if ret.stdout == previous_im then
     return
   end
+
   if previous_im == "1" then
     Dotfiles.co.system({ command, "-c" })
   elseif previous_im == "2" then

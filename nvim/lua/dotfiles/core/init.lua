@@ -54,9 +54,11 @@ local check = assert(vim.uv.new_check())
 local replay = function()
   timer:stop()
   check:stop()
+
   if vim.notify == temp then
     vim.notify = orig -- put back the original notify if needed
   end
+
   vim.schedule(function()
     ---@diagnostic disable-next-line: no-unknown
     for _, notif in ipairs(notifs) do

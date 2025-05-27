@@ -16,8 +16,11 @@ for k, v in pairs(vim.log.levels) do
     if args.n ~= 0 then
       msg = msg:format(vim.F.unpack_len(args))
     end
+
     vim.notify(msg, v, { title = "Dotfiles" })
   end
 end
 
-return M
+return setmetatable(M, {
+  __call = function(_, ...) M.info(...) end,
+})

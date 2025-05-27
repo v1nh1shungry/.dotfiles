@@ -51,7 +51,7 @@ return {
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
           if not p:is_installed() then
-            Dotfiles.notify.info("Installing package " .. p.name)
+            Dotfiles.notify("Installing package " .. p.name)
             p:install()
           end
         end
@@ -60,13 +60,13 @@ return {
       local installed = mr.get_installed_packages()
       for _, p in ipairs(installed) do
         if not vim.list_contains(opts.ensure_installed, p.name) then
-          Dotfiles.notify.info("Uninstall unused package " .. p.name)
+          Dotfiles.notify("Uninstall unused package " .. p.name)
           p:uninstall()
         end
       end
     end,
     event = "VeryLazy",
-    -- NOTE: manually setup $PATH to speed up startup
+    -- HACK: manually setup $PATH to speed up startup
     init = function() vim.env.PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin") .. ":" .. vim.env.PATH end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = {
@@ -100,6 +100,7 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
+    dependencies = "xzbdmw/colorful-menu.nvim",
     event = "VeryLazy",
     opts = {
       cmdline = { enabled = false },
@@ -117,7 +118,13 @@ return {
         menu = {
           draw = {
             align_to = "none",
-            treesitter = { "lsp" },
+            columns = { { "kind_icon" }, { "label", gap = 1 } },
+            components = {
+              label = {
+                text = function(ctx) return require("colorful-menu").blink_components_text(ctx) end,
+                highlight = function(ctx) return require("colorful-menu").blink_components_highlight(ctx) end,
+              },
+            },
           },
           winblend = Dotfiles.user.ui.blend,
         },
@@ -177,6 +184,7 @@ return {
           lint.linters[name] = linter
         end
       end
+
       lint.linters_by_ft = opts.linters_by_ft
 
       local function debounce(ms, fn)
@@ -199,14 +207,16 @@ return {
         if #names == 0 then
           vim.list_extend(names, lint.linters_by_ft["_"] or {})
         end
+
         vim.list_extend(names, lint.linters_by_ft["*"] or {})
         names = vim.tbl_filter(function(name)
           local linter = lint.linters[name] ---@cast linter dotfiles.plugins.ide.lint.Linter
           if not linter then
-            vim.notify("Linter not found: " .. name, vim.log.levels.WARN, { title = "nvim-lint" })
+            Dotfiles.notify.warn("Linter not found: " .. name)
           end
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition())
         end, names)
+
         if #names > 0 then
           lint.try_lint(names)
         end
@@ -242,5 +252,17 @@ return {
       },
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
+  },
+  {
+    "mistweaverco/kulala.nvim",
+    ft = "http",
+    keys = {
+      { "<CR>", function() require("kulala").run() end, desc = "Send Request", ft = "http" },
+      { "<Tab>", function() require("kulala").open() end, desc = "Open Dashboard", ft = "http" },
+      { "yr", function() require("kulala").copy() end, desc = "Copy Request", ft = "http" },
+      { "]r", function() require("kulala").jump_next() end, desc = "Next Request", ft = "http" },
+      { "[r", function() require("kulala").jump_prev() end, desc = "Previous Request", ft = "http" },
+    },
+    opts = {},
   },
 }

@@ -135,8 +135,9 @@ return {
   -- }}}
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
     build = ":TSUpdate",
-    cmd = { "TSInstall", "TSUpdate" },
+    cmd = "TSUpdate",
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
 
@@ -151,11 +152,13 @@ return {
         "vimdoc",
       }, require("nvim-treesitter.configs").get_ensure_installed_parsers() --[=[@as string[]]=])
       local unused_parsers = {}
+
       for _, parser in ipairs(require("nvim-treesitter.info").installed_parsers()) do
         if not vim.list_contains(ensure_installed_parsers, parser) then
           table.insert(unused_parsers, parser)
         end
       end
+
       if #unused_parsers > 0 then
         require("nvim-treesitter.install").uninstall(unused_parsers)
       end

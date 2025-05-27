@@ -9,9 +9,10 @@ return {
     },
     enabled = function()
       if not vim.env.CODECOMPANION_NVIM_API_KEY then
-        vim.notify("`CODECOMPANION_NVIM_API_KEY` is not set", vim.log.levels.WARN, { title = "codecompanion.nvim" })
+        Dotfiles.notify.warn("`CODECOMPANION_NVIM_API_KEY` is not set")
         return false
       end
+
       return true
     end,
     keys = {

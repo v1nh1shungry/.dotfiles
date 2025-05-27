@@ -14,11 +14,8 @@ local GLIBC_VERSION = ffi.string(ffi.C.gnu_get_libc_version())
 function M.glibc_version() return GLIBC_VERSION end
 
 ---@param fd integer
+---@param enable? boolean
 ---@return integer
-function M.lock(fd) return ffi.C.lockf(fd, 2, 0) end
-
----@param fd integer
----@return integer
-function M.unlock(fd) return ffi.C.lockf(fd, 0, 0) end
+function M.lock(fd, enable) return ffi.C.lockf(fd, enable and 2 or 0, 0) end
 
 return M

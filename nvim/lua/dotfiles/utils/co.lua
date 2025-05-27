@@ -46,6 +46,7 @@ local function schedule_wrapper(t)
         if vim.in_fast_event() then
           M.schedule()
         end
+
         return t[k](...)
       end
     end,

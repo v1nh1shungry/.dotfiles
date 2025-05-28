@@ -16,6 +16,9 @@ function M.glibc_version() return GLIBC_VERSION end
 ---@param fd integer
 ---@param enable? boolean
 ---@return integer
-function M.lock(fd, enable) return ffi.C.lockf(fd, enable and 2 or 0, 0) end
+function M.lock(fd, enable)
+  enable = type(enable) == "boolean" and enable or true
+  return ffi.C.lockf(fd, enable and 2 or 0, 0)
+end
 
 return M

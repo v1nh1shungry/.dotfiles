@@ -50,39 +50,41 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = Dotfiles.augroup("resize_splits"),
 })
 
----@param args vim.api.keyset.create_autocmd.callback_args
-local function setup_minimal_ui(args)
-  if vim.list_contains({ "help", "nofile", "quickfix" }, vim.bo.buftype) then
-    vim.opt_local.buflisted = false
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
-    vim.opt_local.cc = ""
-    vim.opt_local.stc = ""
-    vim.opt_local.signcolumn = "no"
+do
+  ---@param args vim.api.keyset.create_autocmd.callback_args
+  local function setup_minimal_ui(args)
+    if vim.list_contains({ "help", "nofile", "quickfix" }, vim.bo.buftype) then
+      vim.opt_local.buflisted = false
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+      vim.opt_local.cc = ""
+      vim.opt_local.stc = ""
+      vim.opt_local.signcolumn = "no"
 
-    local ret = vim.fn.maparg("q", "n", false, true)
-    if ret.buffer ~= 1 then
-      Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = args.buf, desc = ":close" })
+      local ret = vim.fn.maparg("q", "n", false, true)
+      if ret.buffer ~= 1 then
+        Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = args.buf, desc = ":close" })
+      end
     end
   end
+
+  local augroup = Dotfiles.augroup("minimal_ui")
+  vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
+    callback = setup_minimal_ui,
+    group = augroup,
+  })
+  vim.api.nvim_create_autocmd({ "OptionSet" }, {
+    callback = setup_minimal_ui,
+    group = augroup,
+    pattern = "buftype",
+  })
+
+  vim.api.nvim_create_autocmd("FileType", {
+    command = "setlocal wrap",
+    group = Dotfiles.augroup("wrap"),
+    pattern = { "gitcommit", "markdown", "text" },
+  })
 end
-
-local minimal_ui_augroup = Dotfiles.augroup("minimal_ui")
-vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
-  callback = setup_minimal_ui,
-  group = minimal_ui_augroup,
-})
-vim.api.nvim_create_autocmd({ "OptionSet" }, {
-  callback = setup_minimal_ui,
-  group = minimal_ui_augroup,
-  pattern = "buftype",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  command = "setlocal wrap",
-  group = Dotfiles.augroup("wrap"),
-  pattern = { "gitcommit", "markdown", "text" },
-})
 -- }}}
 
 vim.api.nvim_create_autocmd("FileType", {

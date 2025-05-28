@@ -4,32 +4,34 @@ vim.g.mapleader = vim.keycode("<Space>")
 vim.g.maplocalleader = "\\"
 
 -- https://github.com/echasnovski/mini.operators {{{
----@param mapping { [1]: string, mode?: string|string[] }
-local function remove_lsp_mapping(mapping)
-  mapping.mode = mapping.mode or { "n" }
+do
+  ---@param mapping { [1]: string, mode?: string|string[] }
+  local function remove_lsp_mapping(mapping)
+    mapping.mode = mapping.mode or { "n" }
 
-  if type(mapping.mode) == "string" then
-    mapping.mode = {
-      mapping.mode --[[@as string]],
-    }
-  end
+    if type(mapping.mode) == "string" then
+      mapping.mode = {
+        mapping.mode --[[@as string]],
+      }
+    end
 
-  for _, m in
-    ipairs(mapping.mode --[=[@as string[]]=])
-  do
-    local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
-    if map_desc and string.find(map_desc, "vim%.lsp") then
-      vim.keymap.del(m, mapping[1])
+    for _, m in
+      ipairs(mapping.mode --[=[@as string[]]=])
+    do
+      local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
+      if map_desc and string.find(map_desc, "vim%.lsp") then
+        vim.keymap.del(m, mapping[1])
+      end
     end
   end
-end
 
-remove_lsp_mapping({ "grn" })
-remove_lsp_mapping({ "grr" })
-remove_lsp_mapping({ "gra", mode = { "n", "x" } })
-remove_lsp_mapping({ "gri" })
-remove_lsp_mapping({ "gO" })
-remove_lsp_mapping({ "<C-s>", mode = "i" })
+  remove_lsp_mapping({ "grn" })
+  remove_lsp_mapping({ "grr" })
+  remove_lsp_mapping({ "gra", mode = { "n", "x" } })
+  remove_lsp_mapping({ "gri" })
+  remove_lsp_mapping({ "gO" })
+  remove_lsp_mapping({ "<C-s>", mode = "i" })
+end
 -- }}}
 
 map({ "<C-q>", "<Cmd>bd<CR>", desc = ":bdelete" })
@@ -136,26 +138,28 @@ map({ "$", "g_", mode = "x", desc = "End of Line" })
 map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = ":Inspect" })
 map({ "<Leader>uI", "<Cmd>InspectTree<CR>", desc = ":InspectTree" })
 
----@param severity string
----@param next? boolean
----@param ending? boolean
-local function goto_diagnostic(severity, next, ending)
-  return function()
-    vim.diagnostic.jump({
-      count = (next and 1 or -1) * (ending and math.huge or vim.v.count1),
-      severity = vim.diagnostic.severity[severity],
-    })
+do
+  ---@param severity string
+  ---@param next? boolean
+  ---@param ending? boolean
+  local function goto_diagnostic(severity, next, ending)
+    return function()
+      vim.diagnostic.jump({
+        count = (next and 1 or -1) * (ending and math.huge or vim.v.count1),
+        severity = vim.diagnostic.severity[severity],
+      })
+    end
   end
-end
 
-map({ "]w", goto_diagnostic("WARN", true), desc = "Next Warning" })
-map({ "[w", goto_diagnostic("WARN"), desc = "Previous Warning" })
-map({ "]W", goto_diagnostic("WARN", true, true), desc = "Last Warning" })
-map({ "[W", goto_diagnostic("WARN", false, true), desc = "First Warning" })
-map({ "]e", goto_diagnostic("ERROR", true), desc = "Next Error" })
-map({ "[e", goto_diagnostic("ERROR"), desc = "Previous Error" })
-map({ "]E", goto_diagnostic("ERROR", true, true), desc = "Last Error" })
-map({ "[E", goto_diagnostic("ERROR", false, true), desc = "First Error" })
+  map({ "]w", goto_diagnostic("WARN", true), desc = "Next Warning" })
+  map({ "[w", goto_diagnostic("WARN"), desc = "Previous Warning" })
+  map({ "]W", goto_diagnostic("WARN", true, true), desc = "Last Warning" })
+  map({ "[W", goto_diagnostic("WARN", false, true), desc = "First Warning" })
+  map({ "]e", goto_diagnostic("ERROR", true), desc = "Next Error" })
+  map({ "[e", goto_diagnostic("ERROR"), desc = "Previous Error" })
+  map({ "]E", goto_diagnostic("ERROR", true, true), desc = "Last Error" })
+  map({ "[E", goto_diagnostic("ERROR", false, true), desc = "First Error" })
+end
 
 map({ "<Leader>xx", vim.diagnostic.setloclist, desc = "Document Diagnostics" })
 map({ "<Leader>xX", vim.diagnostic.setqflist, desc = "Workspace Diagnostics" })
@@ -193,37 +197,39 @@ map({
 map({ "dm<Space>", "<Cmd>delm!<Bar>redraw!<CR>", desc = "Delete All Marks" })
 
 -- https://github.com/chrisgrieser/nvim-origami/blob/main/lua/origami/fold-keymaps.lua {{{
-local function normal(expr) return vim.cmd("normal! " .. expr) end
+do
+  local function normal(expr) return vim.cmd("normal! " .. expr) end
 
-map({
-  "h",
-  function()
-    local count = vim.v.count1
-    for _ = 1, count do
-      if vim.api.nvim_win_get_cursor(0)[2] == 0 then
-        local ok = pcall(normal, "zc")
-        if not ok then
+  map({
+    "h",
+    function()
+      local count = vim.v.count1
+      for _ = 1, count do
+        if vim.api.nvim_win_get_cursor(0)[2] == 0 then
+          local ok = pcall(normal, "zc")
+          if not ok then
+            normal("h")
+          end
+        else
           normal("h")
         end
-      else
-        normal("h")
       end
-    end
-  end,
-  desc = "Left",
-})
+    end,
+    desc = "Left",
+  })
 
-map({
-  "l",
-  function()
-    local count = vim.v.count1
-    for _ = 1, count do
-      ---@diagnostic disable-next-line: param-type-mismatch
-      pcall(normal, vim.fn.foldclosed(".") > -1 and "zo" or "l")
-    end
-  end,
-  desc = "Right",
-})
+  map({
+    "l",
+    function()
+      local count = vim.v.count1
+      for _ = 1, count do
+        ---@diagnostic disable-next-line: param-type-mismatch
+        pcall(normal, vim.fn.foldclosed(".") > -1 and "zo" or "l")
+      end
+    end,
+    desc = "Right",
+  })
+end
 -- }}}
 
 map({ "/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search Selection" })

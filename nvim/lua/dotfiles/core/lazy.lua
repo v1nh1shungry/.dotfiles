@@ -50,3 +50,15 @@ require("lazy").setup("dotfiles.plugins", {
   },
   rocks = { enabled = false },
 })
+
+-- TODO: may be overkilled
+vim.api.nvim_create_autocmd("User", {
+  callback = function()
+    for pack, _ in vim.fs.dir(vim.fs.joinpath(vim.fn.stdpath("config"), "pack", "dotfiles", "opt")) do
+      vim.cmd("packadd " .. pack)
+    end
+  end,
+  group = Dotfiles.augroup("pack"),
+  once = true,
+  pattern = "VeryLazy",
+})

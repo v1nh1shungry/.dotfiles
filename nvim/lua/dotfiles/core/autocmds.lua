@@ -92,3 +92,37 @@ vim.api.nvim_create_autocmd("FileType", {
   group = Dotfiles.augroup("markdown.conceal"),
   pattern = "markdown",
 })
+
+-- Inspired by https://github.com/keaising/im-select.nvim {{{
+if vim.fn.executable("fcitx5-remote") == 1 then
+  local augroup = Dotfiles.augroup("im")
+  local previous_im
+
+  local function get_current_im() return vim.trim(vim.fn.system("fcitx5-remote")) end
+
+  ---@param enable? boolean
+  local function activate_im(enable)
+    enable = type(enable) == "boolean" and enable or true
+    vim.fn.system({ "fcitx5-remote", enable and "-o" or "-c" })
+  end
+
+  vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
+    callback = Dotfiles.co.void(function()
+      if previous_im == "1" then
+        activate_im(false)
+      elseif previous_im == "2" then
+        activate_im()
+      end
+    end),
+    group = augroup,
+  })
+
+  vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave" }, {
+    callback = Dotfiles.co.void(function()
+      previous_im = get_current_im()
+      activate_im(false)
+    end),
+    group = augroup,
+  })
+end
+-- }}}

@@ -9,7 +9,7 @@ local function is_normal_git_repo()
   end
 
   if vim.trim(Dotfiles.co.system({ "git", "rev-parse", "--is-shallow-repository" }).stdout) == "true" then
-    Snacks.notify.error("Aborting: repository is shallow")
+    Dotfiles.notify.error("Aborting: repository is shallow")
     return false
   end
 

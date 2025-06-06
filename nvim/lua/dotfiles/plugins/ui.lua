@@ -182,7 +182,7 @@ return {
 
           if Dotfiles.git.root() then
             local ret = vim.fn.system(vim.list_extend({ "git", "-C", dir, "check-ignore" }, entries))
-            for _, name in ipairs(vim.split(ret, "\n", { trimempty = true })) do
+            for name in vim.gsplit(ret, "\n", { trimempty = true }) do
               ignored[vim.fs.joinpath(dir, name)] = true
             end
           end

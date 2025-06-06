@@ -11,6 +11,7 @@ vim.filetype.add({
 vim.treesitter.language.register("bash", "kitty")
 
 vim.diagnostic.config({
+  float = { border = "rounded" },
   jump = {
     on_jump = function(_, bufnr)
       vim.diagnostic.open_float({
@@ -79,4 +80,4 @@ require("dotfiles.core.lazy")
 require("dotfiles.core.lsp")
 
 -- should execute after colorscheme plugins are loaded
-vim.cmd("colorscheme " .. Dotfiles.user.ui.colorscheme)
+vim.cmd("colorscheme " .. Dotfiles.user.colorscheme)

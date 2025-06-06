@@ -26,7 +26,6 @@ vim.opt.list = true
 vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "  " }
 vim.opt.number = true
 vim.opt.packpath = vim.fn.stdpath("config")
-vim.opt.pumblend = Dotfiles.user.ui.blend
 vim.opt.pumheight = 10
 vim.opt.relativenumber = true
 vim.opt.ruler = false
@@ -52,6 +51,5 @@ vim.opt.timeoutlen = 300
 vim.opt.updatetime = 500
 vim.opt.virtualedit = "block"
 vim.opt.wildmode = "longest:full,full"
-vim.opt.winblend = Dotfiles.user.ui.blend
 vim.opt.winminwidth = 5
 vim.opt.wrap = false

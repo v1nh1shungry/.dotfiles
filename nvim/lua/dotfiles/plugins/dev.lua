@@ -108,7 +108,6 @@ return {
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,
-          window = { winblend = Dotfiles.user.ui.blend },
         },
         list = {
           selection = {
@@ -126,7 +125,6 @@ return {
               },
             },
           },
-          winblend = Dotfiles.user.ui.blend,
         },
       },
       fuzzy = { prebuilt_binaries = { download = false } },
@@ -243,7 +241,7 @@ return {
     cmd = "Outline",
     opts = {
       outline_window = { hide_cursor = true },
-      preview_window = { border = "rounded", winblend = Dotfiles.user.ui.blend },
+      preview_window = { border = "rounded" },
       keymaps = {
         peek_location = {},
         goto_and_close = { "o" },

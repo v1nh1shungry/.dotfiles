@@ -382,6 +382,7 @@ return {
           },
         },
       },
+      image = { doc = { enabled = false } },
       indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },

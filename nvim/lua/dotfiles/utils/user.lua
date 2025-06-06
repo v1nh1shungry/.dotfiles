@@ -1,17 +1,14 @@
 ---@module "lazy.types"
 ---
 ---@class dotfiles.utils.User
+---@field colorscheme? string
 ---@field extra? LazySpec[]
 ---@field lang? string[]
----@field ui? { blend: integer, colorscheme: string }
 ---@field nightly? boolean|integer
 local M = {
+  colorscheme = "tokyonight",
   extra = {},
   lang = {},
-  ui = {
-    blend = 10,
-    colorscheme = "tokyonight",
-  },
   nightly = false,
 }
 

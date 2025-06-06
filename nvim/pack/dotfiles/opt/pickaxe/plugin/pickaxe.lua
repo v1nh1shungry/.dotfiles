@@ -34,7 +34,7 @@ local function pickaxe()
   end
 
   local results = {}
-  for _, line in ipairs(vim.split(res.stdout, "\n", { trimempty = true })) do
+  for line in vim.gsplit(res.stdout, "\n", { trimempty = true }) do
     local sha, msg = string.match(line, "([^ ]+) (.+)")
     if not msg then
       sha = line

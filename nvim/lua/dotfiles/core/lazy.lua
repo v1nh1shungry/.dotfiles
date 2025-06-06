@@ -28,7 +28,7 @@ require("lazy").setup("dotfiles.plugins", {
     patterns = { "v1nh1shungry" },
   },
   diff = { cmd = "diffview.nvim" },
-  install = { colorscheme = { Dotfiles.user.ui.colorscheme } },
+  install = { colorscheme = { Dotfiles.user.colorscheme } },
   local_spec = false,
   performance = {
     reset_packpath = false,

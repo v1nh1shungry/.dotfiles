@@ -102,7 +102,9 @@ if vim.fn.executable("fcitx5-remote") == 1 then
 
   ---@param enable? boolean
   local function activate_im(enable)
-    enable = type(enable) == "boolean" and enable or true
+    if type(enable) ~= "boolean" then
+      enable = true
+    end
     vim.fn.system({ "fcitx5-remote", enable and "-o" or "-c" })
   end
 

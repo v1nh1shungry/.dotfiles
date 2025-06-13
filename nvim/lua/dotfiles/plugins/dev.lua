@@ -100,7 +100,6 @@ return {
 
       require("blink.cmp").setup(opts)
     end,
-    dependencies = "xzbdmw/colorful-menu.nvim",
     event = "VeryLazy",
     opts = {
       cmdline = { enabled = false },
@@ -117,13 +116,7 @@ return {
         menu = {
           draw = {
             align_to = "none",
-            columns = { { "kind_icon" }, { "label", gap = 1 } },
-            components = {
-              label = {
-                text = function(ctx) return require("colorful-menu").blink_components_text(ctx) end,
-                highlight = function(ctx) return require("colorful-menu").blink_components_highlight(ctx) end,
-              },
-            },
+            treesitter = { "lsp" },
           },
         },
       },

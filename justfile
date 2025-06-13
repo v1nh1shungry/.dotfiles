@@ -24,6 +24,16 @@ gdb:
 git:
   ln -sf {{justfile_directory()}}/git/.gitconfig {{home_directory()}}
 
+go-musicfox:
+  mkdir -p {{config_directory()}}/go-musicfox
+  ln -sf {{justfile_directory()}}/go-musicfox/go-musicfox.ini {{config_directory()}}/go-musicfox
+
+hyprland:
+  ln -sf {{justfile_directory()}}/hypr {{config_directory()}}
+  ln -sf {{justfile_directory()}}/waybar {{config_directory()}}
+  ln -sf {{justfile_directory()}}/rofi {{config_directory()}}
+  echo "--enable-wayland-ime" >{{config_directory()}}/qq-flags.conf
+
 kitty:
   mkdir -p {{config_directory()}}/kitty
   ln -sf {{justfile_directory()}}/kitty/base.conf {{config_directory()}}/kitty
@@ -45,12 +55,6 @@ starship:
 
 tmux:
   ln -sf {{justfile_directory()}}/tmux {{config_directory()}}
-
-hyprland:
-  ln -sf {{justfile_directory()}}/hypr {{config_directory()}}
-  ln -sf {{justfile_directory()}}/waybar {{config_directory()}}
-  ln -sf {{justfile_directory()}}/rofi {{config_directory()}}
-  echo "--enable-wayland-ime" >{{config_directory()}}/qq-flags.conf
 
 yazi:
   ln -sf {{justfile_directory()}}/yazi {{config_directory()}}

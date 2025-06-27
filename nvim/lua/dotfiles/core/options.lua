@@ -25,7 +25,6 @@ vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "  " }
 vim.opt.number = true
-vim.opt.packpath = vim.fn.stdpath("config")
 vim.opt.pumheight = 10
 vim.opt.relativenumber = true
 vim.opt.ruler = false

@@ -1,11 +1,14 @@
 ---@param delta integer
 ---@return boolean
 local function scroll(delta)
-  if not vim.b.lsp_floating_preview then
+  if not vim.b.lsp_floating_preview or not vim.api.nvim_win_is_valid(vim.b.lsp_floating_preview) then
     return false
   end
 
-  require("noice.util.nui").scroll(vim.b.lsp_floating_preview, delta)
+  vim.api.nvim_win_call(
+    vim.b.lsp_floating_preview,
+    function() vim.fn.winrestview({ topline = vim.fn.winsaveview().topline + delta }) end
+  )
 
   return true
 end
@@ -122,6 +125,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
   group = Dotfiles.ns("lsp.on_attach"),
 })
+
+vim.system({ "find", vim.lsp.log.get_filename(), "-size", "+50M", "-delete" })
 
 vim.lsp.enable({
   "clangd",

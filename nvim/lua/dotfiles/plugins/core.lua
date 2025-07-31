@@ -2,9 +2,10 @@ return {
   {
     "andymass/vim-matchup",
     config = function()
-      vim.g.matchup_matchparen_offscreen = {}
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_nomode = "i"
+      vim.g.matchup_matchparen_offscreen = {}
+      vim.g.matchup_treesitter_disable_virtual_text = true
     end,
     event = "LazyFile",
   },
@@ -208,7 +209,6 @@ return {
         },
       },
       indent = { enable = true },
-      matchup = { enable = true, disable_virtual_text = true, include_match_words = true },
       textobjects = {
         move = {
           enable = true,

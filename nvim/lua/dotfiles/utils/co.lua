@@ -1,6 +1,8 @@
 ---@class dotfiles.utils.Co
 local M = {}
 
+---FIXME: handle nil correctly
+---
 ---@param fn function
 ---@return function
 function M.wrap(fn)

@@ -236,7 +236,20 @@ map({ "g/", "<Esc>/\\%V", mode = "x", silent = false, desc = "Search Selection" 
 vim.keymap.del("n", "<C-w><C-d>")
 
 -- Modified from https://github.com/chrisgrieser/nvim-recorder {{{
-map({ "q", function() return vim.fn.reg_recording() == "" and "qa" or "q" end, expr = true, desc = "Record Macro" })
+map({
+  "q",
+  function()
+    if vim.fn.reg_recording() == "" then
+      Dotfiles.notify("Start recording...")
+      return "qa"
+    end
+
+    Dotfiles.notify("Completed recording!")
+    return "q"
+  end,
+  expr = true,
+  desc = "Record Macro",
+})
 map({
   "cq",
   function()

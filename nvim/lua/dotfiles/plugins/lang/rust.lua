@@ -7,7 +7,14 @@ return {
   {
     "Saecki/crates.nvim",
     event = "BufRead Cargo.toml",
-    opts = {},
+    opts = {
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
+      },
+    },
   },
   {
     "mrcjkb/rustaceanvim",
@@ -49,13 +56,12 @@ return {
             local map = Dotfiles.map_with({ buffer = bufnr })
             map({ "<Leader>cR", "<Cmd>RustLsp! runnables<CR>", desc = "Execute" })
             map({ "<Leader>cT", "<Cmd>RustLsp! testables<CR>", desc = "Run Test" })
-            map({ "<C-w>D", "<Cmd>RustLsp renderDiagnostic current<CR>", desc = "Show Diagnostics" })
-            map({ "<C-w><C-d>", "<Cmd>RustLsp explainError current<CR>", desc = "Explain Error" })
-            map({ "J", "<Cmd>RustLsp joinLines<CR>", desc = "Join" })
-            map({ "<Leader>sr", "<Cmd>RustLsp ssr<CR>", desc = "Structural Search & Replace" })
+            map({ "<C-w>d", "<Cmd>RustLsp renderDiagnostic current<CR>", desc = "Show Diagnostics" })
+            map({ "]d", "<Cmd>RustLsp renderDiagnostic cycle<CR>", desc = "Next Diagnostic" })
+            map({ "[d", "<Cmd>RustLsp renderDiagnostic cycle_prev<CR>", desc = "Previous Diagnostic" })
+            map({ "<C-w>e", "<Cmd>RustLsp explainError current<CR>", desc = "Explain Error" })
           end,
         },
-        tools = { test_executor = "background" },
       }
     end,
     ft = "rust",

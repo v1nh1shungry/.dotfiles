@@ -56,10 +56,6 @@ return {
             local map = Dotfiles.map_with({ buffer = bufnr })
             map({ "<Leader>cR", "<Cmd>RustLsp! runnables<CR>", desc = "Execute" })
             map({ "<Leader>cT", "<Cmd>RustLsp! testables<CR>", desc = "Run Test" })
-            map({ "<C-w>d", "<Cmd>RustLsp renderDiagnostic current<CR>", desc = "Show Diagnostics" })
-            map({ "]d", "<Cmd>RustLsp renderDiagnostic cycle<CR>", desc = "Next Diagnostic" })
-            map({ "[d", "<Cmd>RustLsp renderDiagnostic cycle_prev<CR>", desc = "Previous Diagnostic" })
-            map({ "<C-w>e", "<Cmd>RustLsp explainError current<CR>", desc = "Explain Error" })
           end,
         },
       }

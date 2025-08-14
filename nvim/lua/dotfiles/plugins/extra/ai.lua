@@ -5,7 +5,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "ravitemer/mcphub.nvim",
     },
     enabled = function()
       if not vim.env.CODECOMPANION_NVIM_API_KEY then
@@ -29,35 +28,20 @@ return {
               url = "https://dashscope.aliyuncs.com/compatible-mode",
               api_key = "CODECOMPANION_NVIM_API_KEY",
             },
-            schema = { model = { default = "qwen-max-latest" } },
+            schema = {
+              model = {
+                default = "qwen-plus-2025-07-28",
+              },
+            },
           })
         end,
       },
-      opts = { language = "Chinese" },
+      opts = {
+        language = "Chinese",
+      },
       strategies = {
         chat = {
           adapter = "qwen",
-          tools = {
-            ["mcp"] = {
-              callback = function() return require("mcphub.extensions.codecompanion") end,
-              description = "Call tools and resources from the MCP Servers",
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    "ravitemer/mcphub.nvim",
-    build = "npm install -g mcp-hub@latest",
-    cmd = "MCPHub",
-    dependencies = "nvim-lua/plenary.nvim",
-    opts = {
-      extensions = {
-        codecompanion = {
-          show_result_in_chat = true,
-          make_vars = true,
-          make_slash_commands = true,
         },
       },
     },

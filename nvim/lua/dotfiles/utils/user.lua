@@ -4,12 +4,10 @@
 ---@field colorscheme? string
 ---@field extra? LazySpec[]
 ---@field lang? string[]
----@field nightly? boolean|integer
 local M = {
   colorscheme = "tokyonight",
   extra = {},
   lang = {},
-  nightly = false,
 }
 
 local PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "nvim.user")

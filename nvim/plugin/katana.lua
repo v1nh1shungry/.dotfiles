@@ -1,4 +1,4 @@
-local KANA = {
+local CHARACTERS = {
   ["あ"] = "a",
   ["い"] = "i",
   ["う"] = "u",
@@ -45,6 +45,31 @@ local KANA = {
   ["わ"] = "wa",
   ["を"] = "wo",
   ["ん"] = "n",
+  ["が"] = "ga",
+  ["ぎ"] = "gi",
+  ["ぐ"] = "gu",
+  ["げ"] = "ge",
+  ["ご"] = "go",
+  ["ざ"] = "za",
+  ["じ"] = "ji",
+  ["ず"] = "zu",
+  ["ぜ"] = "ze",
+  ["ぞ"] = "zo",
+  ["だ"] = "da",
+  ["ぢ"] = "ji",
+  ["づ"] = "zu",
+  ["で"] = "de",
+  ["ど"] = "do",
+  ["ば"] = "ba",
+  ["び"] = "bi",
+  ["ぶ"] = "bu",
+  ["べ"] = "be",
+  ["ぼ"] = "bo",
+  ["ぱ"] = "pa",
+  ["ぴ"] = "pi",
+  ["ぷ"] = "pu",
+  ["ぺ"] = "pe",
+  ["ぽ"] = "po",
 }
 
 local COUNT = 10
@@ -52,7 +77,7 @@ local NS_ID = Dotfiles.ns("katana")
 
 ---@return string[]
 local function generate_quiz()
-  local t = vim.tbl_keys(KANA)
+  local t = vim.tbl_keys(CHARACTERS)
   for i = 1, COUNT do
     local j = math.random(i, #t)
     t[i], t[j] = t[j], t[i]
@@ -100,7 +125,7 @@ local function create()
         function(self)
           local index = vim.api.nvim_win_get_cursor(self.win)[1]
           local line = vim.api.nvim_get_current_line()
-          local answer = KANA[quiz[index]]
+          local answer = CHARACTERS[quiz[index]]
           local virt_text = answer == vim.trim(line):lower() and " ✅" or (answer .. " ❌")
           vim.api.nvim_buf_set_extmark(self.buf, Dotfiles.ns("katana"), index - 1, -1, {
             virt_text = { { virt_text, "Comment" } },

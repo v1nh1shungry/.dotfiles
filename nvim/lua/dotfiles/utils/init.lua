@@ -18,7 +18,7 @@ setmetatable(M, {
 ---@field [2] string|function
 ---@field mode? string|string[]
 ---@field ft? string|string[]
----
+
 ---@param opts dotfiles.utils.map.Opts
 function M.map(opts)
   opts = vim.deepcopy(opts)

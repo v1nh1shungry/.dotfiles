@@ -15,35 +15,9 @@ return {
     opts = {},
   },
   -- https://www.lazyvim.org/plugins/coding#miniai {{{
-  -- https://www.lazyvim.org/plugins/treesitter#nvim-treesitter-textobjects
   {
     "echasnovski/mini.ai",
-    dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        config = function()
-          local move = require("nvim-treesitter.textobjects.move")
-          local configs = require("nvim-treesitter.configs")
-          for name, fn in pairs(move) do
-            if name:find("goto") == 1 then
-              move[name] = function(q, ...)
-                if vim.wo.diff then
-                  local config = configs.get_module("textobjects.move")[name]
-                  for key, query in pairs(config or {}) do
-                    if q == query and key:find("[%]%[][cC]") then
-                      vim.cmd("normal! " .. key)
-                      return
-                    end
-                  end
-                end
-                return fn(q, ...)
-              end
-            end
-          end
-        end,
-        dependencies = "nvim-treesitter/nvim-treesitter",
-      },
-    },
+    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
     event = "LazyFile",
     opts = function()
       local ai = require("mini.ai")
@@ -136,46 +110,75 @@ return {
   -- }}}
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
+    branch = "main",
     build = ":TSUpdate",
-    cmd = "TSUpdate",
     config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
+      require("nvim-treesitter").install(opts.ensure_installed)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          vim.treesitter.start()
+          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+          ---@param direction "goto_next_start"|"goto_next_end"|"goto_previous_start"|"goto_previous_end"
+          ---@param key string
+          ---@param textobject string
+          local function map_move(direction, key, textobject)
+            local desc = direction:gsub("_", " ")
+            desc = desc:sub(1, 1):upper() .. desc:sub(2) .. " " .. textobject
+
+            Dotfiles.map({
+              key,
+              function()
+                if vim.wo.diff and key:find("[%]%[][cC]") then
+                  vim.cmd("normal! " .. key)
+                else
+                  require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects")
+                end
+              end,
+              mode = { "n", "x", "o" },
+              desc = desc,
+              buffer = args.buf,
+            })
+          end
+
+          for direction, mappings in pairs(opts.textobjects.move) do
+            for key, textobject in pairs(mappings) do
+              map_move(direction, key, textobject)
+            end
+          end
+        end,
+        pattern = vim.iter(opts.ensure_installed):map(vim.treesitter.language.get_filetypes):flatten():totable(),
+      })
 
       -- clean unused parsers
-      local ensure_installed_parsers = vim.list_extend({
+      local ensure_installed_parsers = vim.list_extend({ -- bundled with Neovim
         "c",
+        "html_tags", -- bundled with nvim-treesitter
         "lua",
         "markdown",
         "markdown_inline",
         "query",
         "vim",
         "vimdoc",
-      }, require("nvim-treesitter.configs").get_ensure_installed_parsers() --[=[@as string[]]=])
-      local unused_parsers = {}
+      }, opts.ensure_installed)
 
-      for _, parser in ipairs(require("nvim-treesitter.info").installed_parsers()) do
+      local unused_parsers = {}
+      for _, parser in ipairs(require("nvim-treesitter.config").get_installed()) do
         if not vim.list_contains(ensure_installed_parsers, parser) then
           table.insert(unused_parsers, parser)
         end
       end
-
       if #unused_parsers > 0 then
-        require("nvim-treesitter.install").uninstall(unused_parsers)
+        require("nvim-treesitter").uninstall(unused_parsers)
       end
     end,
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      branch = "main",
+    },
     event = "LazyFile",
-    -- https://github.com/LazyVim/LazyVim {{{
-    init = function(plugin)
-      -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
-      -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
-      -- no longer trigger the **nvim-treesitter** module to be loaded in time.
-      -- Luckily, the only things that those plugins need are the custom queries, which we make available
-      -- during startup.
-      require("lazy.core.loader").add_to_rtp(plugin)
-      require("nvim-treesitter.query_predicates")
-    end,
-    -- }}}
     opts = {
       ensure_installed = {
         "bash",
@@ -187,7 +190,6 @@ return {
         "gitcommit",
         "html",
         "http",
-        "hyprlang",
         "json",
         "jsonc",
         "just",
@@ -198,21 +200,8 @@ return {
         "regex",
         "yaml",
       },
-      highlight = { enable = true },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-Space>",
-          node_incremental = "<C-Space>",
-          scope_incremental = false,
-          node_decremental = "<BS>",
-        },
-      },
-      indent = { enable = true },
       textobjects = {
         move = {
-          enable = true,
-          set_jumps = true,
           goto_next_start = { ["]a"] = "@parameter.inner", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
           goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
           goto_previous_start = { ["[a"] = "@parameter.inner", ["[f"] = "@function.outer", ["[c"] = "@class.outer" },

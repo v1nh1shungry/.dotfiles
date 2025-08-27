@@ -116,68 +116,33 @@ return {
       require("nvim-treesitter").install(opts.ensure_installed)
 
       vim.api.nvim_create_autocmd("FileType", {
-        callback = function(args)
+        callback = function()
           vim.treesitter.start()
-          vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-
-          ---@param direction "goto_next_start"|"goto_next_end"|"goto_previous_start"|"goto_previous_end"
-          ---@param key string
-          ---@param textobject string
-          local function map_move(direction, key, textobject)
-            local desc = direction:gsub("_", " ")
-            desc = desc:sub(1, 1):upper() .. desc:sub(2) .. " " .. textobject
-
-            Dotfiles.map({
-              key,
-              function()
-                if vim.wo.diff and key:find("[%]%[][cC]") then
-                  vim.cmd("normal! " .. key)
-                else
-                  require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects")
-                end
-              end,
-              mode = { "n", "x", "o" },
-              desc = desc,
-              buffer = args.buf,
-            })
-          end
-
-          for direction, mappings in pairs(opts.textobjects.move) do
-            for key, textobject in pairs(mappings) do
-              map_move(direction, key, textobject)
-            end
-          end
         end,
         pattern = vim.iter(opts.ensure_installed):map(vim.treesitter.language.get_filetypes):flatten():totable(),
       })
 
       -- clean unused parsers
-      local ensure_installed_parsers = vim.list_extend({ -- bundled with Neovim
-        "c",
-        "html_tags", -- bundled with nvim-treesitter
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "query",
-        "vim",
-        "vimdoc",
-      }, opts.ensure_installed)
+      local resolved_ensure_installed = vim.list.unique(
+        vim
+          .iter(opts.ensure_installed)
+          :map(
+            function(lang) return vim.list_extend({ lang }, require("nvim-treesitter.parsers")[lang].requires or {}) end
+          )
+          :flatten()
+          :totable()
+      )
 
-      local unused_parsers = {}
-      for _, parser in ipairs(require("nvim-treesitter.config").get_installed()) do
-        if not vim.list_contains(ensure_installed_parsers, parser) then
-          table.insert(unused_parsers, parser)
+      for _, parser in ipairs(require("nvim-treesitter").get_installed()) do
+        if
+          not vim.list_contains(resolved_ensure_installed, parser)
+          and parser ~= "html_tags" -- bundled with nvim-treesitter
+        then
+          require("nvim-treesitter").uninstall(parser)
         end
       end
-      if #unused_parsers > 0 then
-        require("nvim-treesitter").uninstall(unused_parsers)
-      end
     end,
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      branch = "main",
-    },
     event = "LazyFile",
     opts = {
       ensure_installed = {
@@ -200,16 +165,41 @@ return {
         "regex",
         "yaml",
       },
-      textobjects = {
-        move = {
-          goto_next_start = { ["]a"] = "@parameter.inner", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-          goto_previous_start = { ["[a"] = "@parameter.inner", ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-          goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
-        },
-      },
     },
     opts_extend = { "ensure_installed" },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    event = "LazyFile",
+    keys = function()
+      local mappings = {}
+      for direction, actions in pairs({
+        goto_next_start = { ["]a"] = "@parameter.inner", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+        goto_previous_start = { ["[a"] = "@parameter.inner", ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+        goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+      }) do
+        local desc_prefix = direction:gsub("_", " ") .. " "
+        desc_prefix = desc_prefix:sub(1, 1):upper() .. desc_prefix:sub(2)
+        for key, textobject in pairs(actions) do
+          table.insert(mappings, {
+            key,
+            function()
+              if vim.wo.diff and key:find("[%]%[][cC]") then
+                vim.cmd("normal! " .. key)
+              else
+                require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects")
+              end
+            end,
+            mode = { "n", "x", "o" },
+            desc = desc_prefix .. textobject,
+          })
+        end
+      end
+      return mappings
+    end,
   },
   {
     "chrisgrieser/nvim-spider",
@@ -367,7 +357,8 @@ return {
         },
       },
       image = { doc = { enabled = false } },
-      indent = { enabled = true },
+      -- NOTE: A bit buggy now. Use indent-blankline.nvim instead for now.
+      -- indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },
       picker = {

@@ -144,6 +144,7 @@ return {
     "echasnovski/mini.files",
     config = function()
       local show_hidden = false
+      -- FIXME: Never clear. May waste memory.
       local ignored = {} ---@type table<string, boolean>
 
       local NS = Dotfiles.ns("mini.files.extmarks")
@@ -279,5 +280,25 @@ return {
     "echasnovski/mini.trailspace",
     event = "LazyFile",
     opts = {},
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "LazyFile",
+    main = "ibl",
+    opts = {
+      indent = {
+        char = "│",
+        tab_char = "│",
+      },
+      scope = {
+        include = {
+          node_type = {
+            lua = { "table_constructor" },
+          },
+        },
+        show_start = false,
+        show_end = false,
+      },
+    },
   },
 }

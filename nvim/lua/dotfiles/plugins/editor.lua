@@ -124,4 +124,67 @@ return {
     },
     opts = { use_default_keymaps = false },
   },
+  {
+    "ibhagwan/fzf-lua",
+    config = function(_, opts)
+      require("fzf-lua").setup(opts)
+      vim.cmd("FzfLua register_ui_select")
+    end,
+    dependencies = { "echasnovski/mini.icons" },
+    keys = {
+      { "<Leader><Space>", "<Cmd>FzfLua files<CR>", desc = "Files" },
+      { "<Leader>h", "<Cmd>FzfLua helptags<CR>", desc = "Help Pages" },
+      { "<Leader>/", "<Cmd>FzfLua live_grep_native<CR>", desc = "Live Grep" },
+      { "<Leader>:", "<Cmd>FzfLua command_history<CR>", desc = "Command History" },
+      { "<Leader>fr", "<Cmd>FzfLua oldfiles<CR>", desc = "Recent Files" },
+      { "<Leader>sa", "<Cmd>FzfLua autocmds<CR>", desc = "Autocommands" },
+      { "<Leader>sk", "<Cmd>FzfLua keymaps<CR>", desc = "Keymaps" },
+      { "<Leader>s,", "<Cmd>FzfLua resume<CR>", desc = "Resume" },
+      { "<Leader>sh", "<Cmd>FzfLua highlights<CR>", desc = "Highlight Groups" },
+      { "<Leader>sm", "<Cmd>FzfLua manpages<CR>", desc = "Manpages" },
+      { "<Leader>sx", "<Cmd>FzfLua diagnostics_document<CR>", desc = "Document Diagnostics" },
+      { "<Leader>sX", "<Cmd>FzfLua diagnostics_workspace<CR>", desc = "Workspace Diagnostics" },
+      { "<Leader>sq", "<Cmd>FzfLua quickfix<CR>", desc = "Quickfix List" },
+      { "<Leader>sl", "<Cmd>FzfLua loclist<CR>", desc = "Location List" },
+      { "<Leader>sC", "<Cmd>FzfLua colorschemes<CR>", desc = "Colorschemes" },
+      { "<Leader>s:", "<Cmd>FzfLua commands<CR>", desc = "Commands" },
+      { "<Leader>gl", "<Cmd>FzfLua git_bcommits<CR>", desc = "Git Log (File)" },
+      { "<Leader>gL", "<Cmd>FzfLua git_commits<CR>", desc = "Git Log" },
+      { "<Leader>gs", "<Cmd>FzfLua git_status<CR>", desc = "Git Status" },
+      { "<Leader>bb", "<Cmd>FzfLua buffers<CR>", desc = "Buffers" },
+    },
+    opts = {
+      "ivy",
+      files = {
+        cwd_prompt = false,
+      },
+      fzf_colors = true,
+      fzf_opts = {
+        ["--cycle"] = true,
+      },
+      lsp = {
+        code_actions = {
+          previewer = "codeaction_native",
+        },
+      },
+      keymap = {
+        builtin = {
+          ["<C-f>"] = "preview-page-down",
+          ["<C-b>"] = "preview-page-up",
+        },
+        fzf = {
+          ["ctrl-d"] = "half-page-down",
+          ["ctrl-u"] = "half-page-up",
+          ["ctrl-f"] = "preview-page-down",
+          ["ctrl-b"] = "preview-page-up",
+          ["ctrl-q"] = "select-all+accept",
+          -- Not a real keymap. `--bind 'change:first'` to select the first item when query changes.
+          ["change"] = "first",
+        },
+      },
+      oldfiles = {
+        cwd_only = true,
+      },
+    },
+  },
 }

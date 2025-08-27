@@ -6,10 +6,12 @@ return {
     keys = {
       { "<Leader>xt", "<Cmd>TodoQuickFix keywords=TODO,FIXME<CR>", desc = "Todo" },
       { "<Leader>xT", "<Cmd>TodoQuickFix<CR>", desc = "Todo & Note" },
-      ---@diagnostic disable-next-line: undefined-field
-      { "<Leader>st", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIXME" } }) end, desc = "Todo" },
-      ---@diagnostic disable-next-line: undefined-field
-      { "<Leader>sT", function() Snacks.picker.todo_comments() end, desc = "Todo & Note" },
+      {
+        "<Leader>st",
+        function() require("todo-comments.fzf").todo({ keywords = { "TODO", "FIXME" } }) end,
+        desc = "Todo",
+      },
+      { "<Leader>sT", function() require("todo-comments.fzf").todo() end, desc = "Todo & Note" },
     },
     opts = { signs = false },
   },

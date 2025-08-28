@@ -2,7 +2,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "rust", "toml" } },
+    opts = { ensure_installed = { "rust" } },
   },
   {
     "Saecki/crates.nvim",

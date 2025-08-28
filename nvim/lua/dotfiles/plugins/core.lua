@@ -115,55 +115,49 @@ return {
     config = function(_, opts)
       require("nvim-treesitter").install(opts.ensure_installed)
 
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function()
-          vim.treesitter.start()
-          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end,
-        pattern = vim.iter(opts.ensure_installed):map(vim.treesitter.language.get_filetypes):flatten():totable(),
-      })
-
       -- clean unused parsers
-      local resolved_ensure_installed = vim.list.unique(
-        vim
-          .iter(opts.ensure_installed)
-          :map(
-            function(lang) return vim.list_extend({ lang }, require("nvim-treesitter.parsers")[lang].requires or {}) end
-          )
-          :flatten()
-          :totable()
-      )
-
+      local resolved_ensure_installed = require("nvim-treesitter.config").norm_languages(opts.ensure_installed)
       for _, parser in ipairs(require("nvim-treesitter").get_installed()) do
-        if
-          not vim.list_contains(resolved_ensure_installed, parser)
-          and parser ~= "html_tags" -- bundled with nvim-treesitter
-        then
+        if not vim.list_contains(resolved_ensure_installed, parser) then
           require("nvim-treesitter").uninstall(parser)
         end
       end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          if not pcall(vim.treesitter.start) then
+            return
+          end
+
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
     end,
     event = "LazyFile",
     opts = {
       ensure_installed = {
         "bash",
         "cmake",
+        "c",
         "cpp",
         "diff",
         "doxygen",
         "fish",
         "gitcommit",
-        "html",
-        "http",
+        "html_tags", -- bundled with nvim-treesitter
         "json",
-        "jsonc",
         "just",
+        "lua",
         "luadoc",
         "luap",
         "make",
+        "markdown",
+        "markdown_inline",
         "printf",
+        "query",
         "regex",
-        "yaml",
+        "vim",
+        "vimdoc",
       },
     },
     opts_extend = { "ensure_installed" },
@@ -171,35 +165,45 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
+    config = function(_, opts)
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          if not pcall(vim.treesitter.get_parser) then
+            return
+          end
+
+          for direction, actions in pairs(opts.move) do
+            local desc_prefix = direction:gsub("_", " ") .. " "
+            desc_prefix = desc_prefix:sub(1, 1):upper() .. desc_prefix:sub(2)
+            for key, textobject in pairs(actions) do
+              Dotfiles.map({
+                key,
+                function()
+                  if vim.wo.diff and key:find("[%]%[][cC]") then
+                    vim.cmd("normal! " .. key)
+                  else
+                    require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects")
+                  end
+                end,
+                buffer = args.buf,
+                desc = desc_prefix .. textobject,
+                mode = { "n", "x", "o" },
+              })
+            end
+          end
+        end,
+      })
+    end,
     dependencies = "nvim-treesitter/nvim-treesitter",
     event = "LazyFile",
-    keys = function()
-      local mappings = {}
-      for direction, actions in pairs({
+    opts = {
+      move = {
         goto_next_start = { ["]a"] = "@parameter.inner", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
         goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
         goto_previous_start = { ["[a"] = "@parameter.inner", ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
         goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
-      }) do
-        local desc_prefix = direction:gsub("_", " ") .. " "
-        desc_prefix = desc_prefix:sub(1, 1):upper() .. desc_prefix:sub(2)
-        for key, textobject in pairs(actions) do
-          table.insert(mappings, {
-            key,
-            function()
-              if vim.wo.diff and key:find("[%]%[][cC]") then
-                vim.cmd("normal! " .. key)
-              else
-                require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects")
-              end
-            end,
-            mode = { "n", "x", "o" },
-            desc = desc_prefix .. textobject,
-          })
-        end
-      end
-      return mappings
-    end,
+      },
+    },
   },
   {
     "chrisgrieser/nvim-spider",

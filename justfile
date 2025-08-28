@@ -47,7 +47,7 @@ nvim:
 
 pip:
   mkdir -p {{config_directory()}}/pip
-  echo -e "[global]\nindex-url = https://mirrors.ustc.edu.cn/pypi/simple" >{{config_directory()}}/pip/pip.conf
+  echo "[global]\nindex-url = https://mirrors.ustc.edu.cn/pypi/simple" >{{config_directory()}}/pip/pip.conf
 
 starship:
   ln -sf {{justfile_directory()}}/starship/starship.toml {{config_directory()}}

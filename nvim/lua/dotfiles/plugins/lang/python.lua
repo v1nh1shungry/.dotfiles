@@ -3,7 +3,7 @@ vim.lsp.enable({ "basedpyright", "ruff" })
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "python", "rst" } },
+    opts = { ensure_installed = { "python" } },
   },
   {
     "williamboman/mason.nvim",

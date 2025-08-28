@@ -104,7 +104,7 @@ return {
     },
   },
   {
-    "echasnovski/mini-git",
+    "nvim-mini/mini-git",
     cmd = "Git",
     main = "mini.git",
     opts = {},

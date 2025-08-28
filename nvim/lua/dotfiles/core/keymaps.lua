@@ -3,7 +3,7 @@ local map = Dotfiles.map
 vim.g.mapleader = vim.keycode("<Space>")
 vim.g.maplocalleader = "\\"
 
--- https://github.com/echasnovski/mini.operators {{{
+-- https://github.com/nvim-mini/mini.operators {{{
 do
   ---@param mapping { [1]: string, mode?: string|string[] }
   local function remove_lsp_mapping(mapping)

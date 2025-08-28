@@ -16,7 +16,7 @@ return {
   },
   -- https://www.lazyvim.org/plugins/coding#miniai {{{
   {
-    "echasnovski/mini.ai",
+    "nvim-mini/mini.ai",
     dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
     event = "LazyFile",
     opts = function()
@@ -215,7 +215,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.operators",
+    "nvim-mini/mini.operators",
     keys = {
       { "g=", mode = { "n", "v" }, desc = "Evaluate" },
       { "cx", mode = { "n", "v" }, desc = "Exchange" },
@@ -258,7 +258,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.jump",
+    "nvim-mini/mini.jump",
     keys = vim.iter({ "f", "F", "t", "T" }):map(function(m) return { m, mode = { "n", "x" } } end):totable(),
     opts = {},
   },

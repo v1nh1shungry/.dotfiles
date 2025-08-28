@@ -8,7 +8,7 @@ return {
     opts = { use_default_keymaps = false },
   },
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     keys = {
       { "gsa", mode = { "n", "x" }, desc = "Add Surrounding" },
       { "gsd", desc = "Delete Surrounding" },
@@ -31,7 +31,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.align",
+    "nvim-mini/mini.align",
     keys = {
       { "ga", mode = { "n", "x" }, desc = "Align" },
       { "gA", mode = { "n", "x" }, desc = "Align with Preview" },
@@ -52,7 +52,7 @@ return {
   },
   -- Modified from https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/mini.lua {{{
   {
-    "echasnovski/mini.pairs",
+    "nvim-mini/mini.pairs",
     config = function(_, opts)
       local pairs = require("mini.pairs")
       pairs.setup(opts)
@@ -130,7 +130,7 @@ return {
       require("fzf-lua").setup(opts)
       vim.cmd("FzfLua register_ui_select")
     end,
-    dependencies = { "echasnovski/mini.icons" },
+    dependencies = { "nvim-mini/mini.icons" },
     keys = {
       { "<Leader><Space>", "<Cmd>FzfLua files<CR>", desc = "Files" },
       { "<Leader>h", "<Cmd>FzfLua helptags<CR>", desc = "Help Pages" },

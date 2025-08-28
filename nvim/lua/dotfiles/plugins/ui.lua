@@ -16,14 +16,14 @@ return {
     opts = { signs = false },
   },
   {
-    "echasnovski/mini.tabline",
-    dependencies = "echasnovski/mini.icons",
+    "nvim-mini/mini.tabline",
+    dependencies = "nvim-mini/mini.icons",
     event = "VeryLazy",
     opts = {},
   },
   {
-    "echasnovski/mini.statusline",
-    dependencies = "echasnovski/mini.icons",
+    "nvim-mini/mini.statusline",
+    dependencies = "nvim-mini/mini.icons",
     event = "VeryLazy",
     opts = {},
   },
@@ -105,7 +105,7 @@ return {
     event = "LazyFile",
   },
   {
-    "echasnovski/mini.icons",
+    "nvim-mini/mini.icons",
     init = function()
       package.preload["nvim-web-devicons"] = function()
         require("mini.icons").mock_nvim_web_devicons()
@@ -143,7 +143,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.files",
+    "nvim-mini/mini.files",
     config = function()
       local show_hidden = false
       -- FIXME: Never clear. May waste memory.
@@ -235,7 +235,7 @@ return {
         },
       })
     end,
-    dependencies = "echasnovski/mini.icons",
+    dependencies = "nvim-mini/mini.icons",
     lazy = not (
         vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0) --[[@as string]]) == 1
       ),
@@ -279,7 +279,7 @@ return {
     opts = {},
   },
   {
-    "echasnovski/mini.trailspace",
+    "nvim-mini/mini.trailspace",
     event = "LazyFile",
     opts = {},
   },

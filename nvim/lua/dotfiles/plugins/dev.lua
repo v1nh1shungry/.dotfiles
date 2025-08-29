@@ -1,9 +1,5 @@
 return {
   {
-    "b0o/SchemaStore.nvim",
-    lazy = true,
-  },
-  {
     "folke/lazydev.nvim",
     ft = "lua",
     opts = {
@@ -85,15 +81,6 @@ return {
     "saghen/blink.cmp",
     build = "cargo build --release",
     config = function(_, opts)
-      for _, source in ipairs(opts.sources.compat) do
-        opts.sources.providers[source] = vim.tbl_deep_extend("force", {
-          name = source,
-          module = "blink.compat.source",
-        }, opts.sources.providers[source] or {})
-      end
-
-      opts.sources.compat = nil
-
       for _, sources in pairs(opts.sources.per_filetype or {}) do
         vim.list_extend(sources, opts.sources.default)
       end
@@ -124,7 +111,6 @@ return {
       keymap = { preset = "super-tab" },
       signature = { enabled = true },
       sources = {
-        compat = {},
         default = { "lsp", "snippets", "path", "buffer" },
         providers = {
           snippets = {
@@ -135,7 +121,7 @@ return {
         },
       },
     },
-    opts_extend = { "sources.compat", "sources.default" },
+    opts_extend = { "sources.default" },
   },
   {
     "stevearc/conform.nvim",
@@ -153,7 +139,7 @@ return {
         fish = { "fish_indent" },
         just = { "just" },
         lua = { "stylua" },
-        markdown = { "autocorrect", "injected" },
+        markdown = { "injected" },
         query = { "format-queries" },
       },
       formatters = {
@@ -246,9 +232,6 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    init = function()
-      vim.opt.runtimepath:prepend(vim.fs.joinpath(require("lazy.core.config").options.root, "nvim-lspconfig"))
-    end,
-    lazy = true,
+    event = "VeryLazy",
   },
 }

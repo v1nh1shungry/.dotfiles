@@ -130,7 +130,10 @@ return {
       require("fzf-lua").setup(opts)
       vim.cmd("FzfLua register_ui_select")
     end,
-    dependencies = { "nvim-mini/mini.icons" },
+    dependencies = {
+      "nvim-mini/mini.icons",
+      "folke/snacks.nvim",
+    },
     keys = {
       { "<Leader><Space>", "<Cmd>FzfLua files<CR>", desc = "Files" },
       { "<Leader>h", "<Cmd>FzfLua helptags<CR>", desc = "Help Pages" },

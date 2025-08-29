@@ -134,23 +134,3 @@ vim.lsp.enable({
   "lua_ls",
   "neocmake",
 })
-
-vim.api.nvim_create_user_command("LspLog", "tabedit " .. vim.lsp.log.get_filename(), { desc = "Open LSP log" })
-
-vim.api.nvim_create_user_command("LspRestart", function(args)
-  local servers = vim.split(vim.trim(args.args), " ", { trimempty = true })
-  if #servers == 0 then
-    servers = vim
-      .iter(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
-      :map(function(c) return c.name end)
-      :totable()
-  end
-  if #servers == 0 then
-    Dotfiles.notify.warn("No attached LSP clients")
-  end
-  vim.lsp.enable(servers, false)
-  vim.lsp.enable(servers, true)
-end, {
-  desc = "Restart LSP server",
-  nargs = "*",
-})

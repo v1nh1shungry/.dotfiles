@@ -5,7 +5,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "MunifTanjim/nui.nvim",
-      "folke/snacks.nvim",
+      "ibhagwan/fzf-lua",
     },
     lazy = vim.fn.argv()[1] ~= "leetcode.nvim",
     opts = {
@@ -15,7 +15,7 @@ return {
           imports = function() return { "#include <bits/stdc++.h>", "using namespace std;" } end,
         },
       },
-      picker = "snacks-picker",
+      picker = "fzf-lua",
     },
   },
 }

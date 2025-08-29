@@ -4,6 +4,12 @@ return {
   {
     "obsidian-nvim/obsidian.nvim",
     cmd = "Obsidian",
+    dependencies = {
+      "saghen/blink.cmp",
+      "ibhagwan/fzf-lua",
+      "folke/snacks.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
     event = {
       "BufReadPre " .. vim.fs.joinpath(VAULT_DIR, "*.md"),
       "BufNewFile " .. vim.fs.joinpath(VAULT_DIR, "*.md"),
@@ -11,6 +17,9 @@ return {
     opts = {
       completion = {
         blink = true,
+      },
+      picker = {
+        name = "fzf-lua",
       },
       workspaces = {
         {

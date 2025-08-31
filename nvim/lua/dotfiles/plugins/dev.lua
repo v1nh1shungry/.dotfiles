@@ -89,7 +89,6 @@ return {
     end,
     event = "VeryLazy",
     opts = {
-      cmdline = { enabled = false },
       completion = {
         documentation = {
           auto_show = true,
@@ -102,7 +101,6 @@ return {
         },
         menu = {
           draw = {
-            align_to = "none",
             treesitter = { "lsp" },
           },
         },
@@ -164,49 +162,32 @@ return {
 
       lint.linters_by_ft = opts.linters_by_ft
 
-      local function debounce(ms, fn)
-        local timer = assert(vim.uv.new_timer())
-        return function(...)
-          local argv = { ... }
-          timer:start(ms, 0, function()
-            timer:stop()
-            vim.schedule_wrap(fn)(unpack(argv))
-          end)
-        end
-      end
-
-      ---@class dotfiles.plugins.ide.lint.Linter: lint.Linter
+      ---@class dotfiles.plugins.dev.lint.Linter: lint.Linter
       ---@field condition fun(): boolean
 
-      local function run()
-        local names = lint._resolve_linter_by_ft(vim.bo.filetype)
-        names = vim.list_extend({}, names)
-        if #names == 0 then
-          vim.list_extend(names, lint.linters_by_ft["_"] or {})
-        end
+      vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+        callback = function()
+          local names = vim
+            .iter(lint._resolve_linter_by_ft(vim.bo.filetype))
+            :filter(function(name)
+              local linter = lint.linters[name] ---@cast linter dotfiles.plugins.dev.lint.Linter
+              if not linter then
+                Dotfiles.notify.warn("Linter not found: " .. name)
+                return false
+              end
+              return not (type(linter) == "table" and linter.condition and not linter.condition())
+            end)
+            :totable()
 
-        vim.list_extend(names, lint.linters_by_ft["*"] or {})
-        names = vim.tbl_filter(function(name)
-          local linter = lint.linters[name] ---@cast linter dotfiles.plugins.ide.lint.Linter
-          if not linter then
-            Dotfiles.notify.warn("Linter not found: " .. name)
+          if #names > 0 then
+            lint.try_lint(names)
           end
-          return linter and not (type(linter) == "table" and linter.condition and not linter.condition())
-        end, names)
-
-        if #names > 0 then
-          lint.try_lint(names)
-        end
-      end
-
-      vim.api.nvim_create_autocmd(opts.events, {
-        callback = debounce(100, run),
+        end,
         group = Dotfiles.augroup("lint"),
       })
     end,
     event = "LazyFile",
     opts = {
-      events = { "BufWritePost", "BufReadPost", "InsertLeave" },
       linters_by_ft = {
         bash = { "bash" },
         fish = { "fish" },
@@ -232,6 +213,9 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    event = "VeryLazy",
+    init = function()
+      vim.opt.runtimepath:prepend(vim.fs.joinpath(require("lazy.core.config").options.root, "nvim-lspconfig"))
+    end,
+    lazy = true,
   },
 }

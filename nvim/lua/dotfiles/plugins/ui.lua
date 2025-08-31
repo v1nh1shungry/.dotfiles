@@ -37,7 +37,6 @@ return {
         {
           mode = { "n", "v" },
           { "g", group = "goto" },
-          { "gs", group = "surround" },
           { "]", group = "next" },
           { "[", group = "prev" },
           { "z", group = "fold" },
@@ -129,6 +128,10 @@ return {
     "stevearc/quicker.nvim",
     -- NOTE: loclist doesn't work in `ft = "qf"`
     event = "VeryLazy",
+    keys = {
+      { "<Leader>xq", function() require("quicker").toggle() end, desc = "Toggle Quickfix List" },
+      { "<Leader>xl", function() require("quicker").toggle({ loclist = true }) end, desc = "Toggle Location List" },
+    },
     opts = {
       keys = {
         {
@@ -137,8 +140,7 @@ return {
           desc = "Expand Context",
         },
         { "<", function() require("quicker").collapse() end, desc = "Collapse Context" },
-        { "<Leader>xq", function() require("quicker").toggle() end, desc = "Toggle Quickfix List" },
-        { "<Leader>xl", function() require("quicker").toggle({ loclist = true }) end, desc = "Toggle Location List" },
+        { "q", "<Cmd>close<CR>", desc = ":close" },
       },
     },
   },
@@ -252,22 +254,50 @@ return {
     },
   },
   {
-    "tzachar/highlight-undo.nvim",
-    commit = "795fc36f8bb7e4cf05e31bd7e354b86d27643a9e",
+    "rachartier/tiny-glimmer.nvim",
     keys = {
+      { "y", desc = "Yank", mode = { "n", "x" } },
       { "u", desc = "Undo" },
       { "<C-r>", desc = "Redo" },
       { "p", desc = "Paste" },
       { "P", desc = "Paste Before" },
     },
     opts = {
-      keymaps = {
-        undo = { hlgroup = "IncSearch" },
-        redo = { hlgroup = "IncSearch" },
-        paste = { hlgroup = "IncSearch" },
+      overwrite = {
+        yank = {
+          default_animation = {
+            name = "fade",
+            settings = {
+              from_color = "IncSearch",
+            },
+          },
+        },
+        paste = {
+          default_animation = {
+            name = "reverse_fade",
+            settings = {
+              from_color = "IncSearch",
+            },
+          },
+        },
+        undo = {
+          enabled = true,
+          default_animation = {
+            settings = {
+              from_color = "IncSearch",
+            },
+          },
+        },
+        redo = {
+          enabled = true,
+          default_animation = {
+            settings = {
+              from_color = "IncSearch",
+            },
+          },
+        },
       },
     },
-    pin = true,
   },
   {
     "Bekaboo/dropbar.nvim",

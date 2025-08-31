@@ -10,6 +10,7 @@ return {
   {
     "nvim-mini/mini.surround",
     keys = {
+      { "gs", "", mode = { "n", "x" }, desc = "+surround" },
       { "gsa", mode = { "n", "x" }, desc = "Add Surrounding" },
       { "gsd", desc = "Delete Surrounding" },
       { "gsf", desc = "Find Right Surrounding" },
@@ -40,11 +41,8 @@ return {
   },
   {
     "dhruvasagar/vim-table-mode",
-    config = function()
-      vim.g.table_mode_corner = "|"
-      vim.g.table_mode_disable_mappings = 1
-    end,
-    keys = { { "<Leader>ct", "<Cmd>TableModeToggle<CR>", desc = "Toggle Table Mode" } },
+    ft = "markdown",
+    keys = { { "<Leader>t", "", desc = "+table-mode", ft = "markdown" } },
   },
   {
     "RRethy/nvim-treesitter-endwise",
@@ -113,7 +111,10 @@ return {
   {
     "MagicDuck/grug-far.nvim",
     cmd = "GrugFar",
-    keys = { { "<Leader>s/", "<Cmd>GrugFar<CR>", desc = "Search & Replace" } },
+    keys = {
+      { "<Leader>sg", "<Cmd>GrugFar<CR>", desc = "Search & Replace" },
+      { "<Leader>sg", "<Cmd>GrugFarWithin<CR>", desc = "Search & Replace", mode = "x" },
+    },
     opts = {},
   },
   {
@@ -148,12 +149,15 @@ return {
       { "<Leader>sx", "<Cmd>FzfLua diagnostics_document<CR>", desc = "Document Diagnostics" },
       { "<Leader>sX", "<Cmd>FzfLua diagnostics_workspace<CR>", desc = "Workspace Diagnostics" },
       { "<Leader>sq", "<Cmd>FzfLua quickfix<CR>", desc = "Quickfix List" },
+      { "<Leader>sQ", "<Cmd>FzfLua quickfix_stack<CR>", desc = "Quickfix Stack" },
       { "<Leader>sl", "<Cmd>FzfLua loclist<CR>", desc = "Location List" },
+      { "<Leader>sL", "<Cmd>FzfLua loclist_stack<CR>", desc = "Location Stack" },
       { "<Leader>sC", "<Cmd>FzfLua colorschemes<CR>", desc = "Colorschemes" },
       { "<Leader>s:", "<Cmd>FzfLua commands<CR>", desc = "Commands" },
+      { "<Leader>sz", "<Cmd>FzfLua zoxide<CR>", desc = "Zoxide" },
       { "<Leader>gl", "<Cmd>FzfLua git_bcommits<CR>", desc = "Git Log (File)" },
       { "<Leader>gL", "<Cmd>FzfLua git_commits<CR>", desc = "Git Log" },
-      { "<Leader>gs", "<Cmd>FzfLua git_status<CR>", desc = "Git Status" },
+      { "<Leader>gh", "<Cmd>FzfLua git_hunks<CR>", desc = "Hunks" },
       { "<Leader>bb", "<Cmd>FzfLua buffers<CR>", desc = "Buffers" },
     },
     opts = {

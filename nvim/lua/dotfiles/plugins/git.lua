@@ -11,9 +11,8 @@ return {
       current_line_blame = true,
       on_attach = function(bufnr)
         local map = Dotfiles.map_with({ buffer = bufnr })
-        map({ "<Leader>ga", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
-        map({ "<Leader>gA", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Whole Buffer" })
-        map({ "<Leader>gu", "<Cmd>Gitsigns undo_stage_hunk<CR>", desc = "Undo Staged Hunk" })
+        map({ "<Leader>gs", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
+        map({ "<Leader>gS", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Whole Buffer" })
         map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" })
         map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset Hunk" })
         map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Whole Buffer" })
@@ -97,7 +96,7 @@ return {
     keys = {
       { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Diff Pane" },
       {
-        "<Leader>gh",
+        "<Leader>gH",
         function() vim.cmd("DiffviewFileHistory" .. (vim.bo.buftype == "" and " %" or "")) end,
         desc = "History",
       },

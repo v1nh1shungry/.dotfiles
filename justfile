@@ -19,14 +19,10 @@ fontconfig:
   ln -sf {{justfile_directory()}}/fontconfig {{config_directory()}}
 
 gdb:
-  ln -sf {{justfile_directory()}}/gdb/.gdbinit {{home_directory()}}
+  wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
 
 git:
   ln -sf {{justfile_directory()}}/git/.gitconfig {{home_directory()}}
-
-go-musicfox:
-  mkdir -p {{config_directory()}}/go-musicfox
-  ln -sf {{justfile_directory()}}/go-musicfox/go-musicfox.ini {{config_directory()}}/go-musicfox
 
 hyprland:
   ln -sf {{justfile_directory()}}/hypr {{config_directory()}}

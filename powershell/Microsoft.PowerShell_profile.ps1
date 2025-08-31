@@ -297,5 +297,3 @@ Set-PSReadLineKeyHandler -Key Ctrl+r `
 Set-PSReadLineKeyHandler -Key Ctrl+j -Function AcceptLine
 
 Import-Module scoop-completion
-
-Invoke-Expression (& { (zoxide init powershell | Out-String) })

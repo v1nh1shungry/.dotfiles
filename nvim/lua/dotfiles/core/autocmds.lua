@@ -8,11 +8,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = Dotfiles.augroup("checktime"),
 })
 
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function() vim.hl.on_yank({ timeout = 500 }) end,
-  group = Dotfiles.augroup("highlight_yank"),
-})
-
 vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(event)
     local exclude = { "gitcommit", "man" }
@@ -53,7 +48,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 do
   ---@param args vim.api.keyset.create_autocmd.callback_args
   local function setup_minimal_ui(args)
-    if vim.list_contains({ "help", "nofile", "quickfix" }, vim.bo.buftype) then
+    if vim.list_contains({ "help", "nofile" }, vim.bo.buftype) then
       vim.opt_local.buflisted = false
       vim.opt_local.number = false
       vim.opt_local.relativenumber = false
@@ -78,13 +73,13 @@ do
     group = augroup,
     pattern = "buftype",
   })
-
-  vim.api.nvim_create_autocmd("FileType", {
-    command = "setlocal wrap",
-    group = Dotfiles.augroup("wrap"),
-    pattern = { "gitcommit", "markdown", "text" },
-  })
 end
+
+vim.api.nvim_create_autocmd("FileType", {
+  command = "setlocal wrap",
+  group = Dotfiles.augroup("wrap"),
+  pattern = { "gitcommit", "markdown", "text" },
+})
 -- }}}
 
 vim.api.nvim_create_autocmd("FileType", {

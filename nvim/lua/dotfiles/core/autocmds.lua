@@ -123,3 +123,25 @@ if vim.fn.executable("fcitx5-remote") == 1 then
   })
 end
 -- }}}
+
+-- https://github.com/neovim/neovim/issues/16572#issuecomment-1954420136 {{{
+-- Sync terminal's background color to remove padding around Neovim.
+do
+  local augroup = Dotfiles.augroup("sync_terminal_color")
+
+  vim.api.nvim_create_autocmd({ "UIEnter", "ColorScheme" }, {
+    callback = function()
+      local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
+      if normal.bg then
+        io.write(string.format("\027]11;#%06x\027\\", normal.bg))
+      end
+    end,
+    group = augroup,
+  })
+
+  vim.api.nvim_create_autocmd("UILeave", {
+    callback = function() io.write("\027]111\027\\") end,
+    group = augroup,
+  })
+end
+-- }}}

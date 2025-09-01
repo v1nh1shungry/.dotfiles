@@ -78,30 +78,35 @@ return {
     event = "VeryLazy",
     keys = { { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" } },
     opts = {
-      views = { split = { enter = true } },
-      presets = { long_message_to_split = true, bottom_search = true, command_palette = true },
       lsp = {
         hover = { enabled = false },
         signature = { enabled = false },
       },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+      },
       routes = {
         {
           filter = {
-            event = "msg_show",
             any = {
               { find = "%d+L, %d+B" },
               { find = "; after #%d+" },
               { find = "; before #%d+" },
             },
+            event = "msg_show",
           },
           view = "mini",
         },
       },
+      views = { split = { enter = true } },
     },
   },
   {
     "Bekaboo/deadcolumn.nvim",
-    event = "LazyFile",
+    -- NOTE: otherwise nofile brokes.
+    event = "VeryLazy",
   },
   {
     "nvim-mini/mini.icons",

@@ -66,7 +66,7 @@ map({
     return "<Esc>"
   end,
   expr = true,
-  mode = { "i", "n" },
+  mode = { "i", "n", "s" },
   desc = "Escape and Clear Highlight",
 })
 

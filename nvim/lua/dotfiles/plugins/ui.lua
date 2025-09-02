@@ -35,7 +35,7 @@ return {
       preset = "helix",
       spec = {
         {
-          mode = { "n", "v" },
+          mode = { "n", "x" },
           { "g", group = "goto" },
           { "]", group = "next" },
           { "[", group = "prev" },

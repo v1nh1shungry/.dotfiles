@@ -3,6 +3,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.opt.autowrite = true
+vim.opt.clipboard = "unnamedplus"
 vim.opt.colorcolumn = "80"
 vim.opt.completeopt = { "menuone", "noselect", "fuzzy" }
 vim.opt.confirm = true
@@ -20,6 +21,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldtext = ""
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
+vim.opt.jumpoptions:append("stack")
 vim.opt.laststatus = 3
 vim.opt.linebreak = true
 vim.opt.list = true

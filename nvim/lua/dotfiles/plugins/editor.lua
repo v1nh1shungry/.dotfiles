@@ -127,6 +127,7 @@ return {
   },
   {
     "ibhagwan/fzf-lua",
+    cmd = "FzfLua",
     config = function(_, opts)
       require("fzf-lua").setup(opts)
       vim.cmd("FzfLua register_ui_select")

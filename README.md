@@ -24,6 +24,7 @@
 * [flameshot](https://github.com/flameshot-org/flameshot)
 * [fnm](https://github.com/Schniz/fnm)
 * [fzf](https://github.com/junegunn/fzf)
+* [git-absorb](https://github.com/tummychow/git-absorb)
 * [jq](https://github.com/jqlang/jq)
 * [just](https://github.com/casey/just)
 * [kitty](https://sw.kovidgoyal.net/kitty/)

@@ -1,1 +1,1 @@
-Dotfiles.map({ "<Leader>ch", "<Cmd>LspClangdSwitchSourceHeader<CR>", desc = "Switch Source/Header" })
+Dotfiles.map({ "<Leader>ch", "<Cmd>LspClangdSwitchSourceHeader<CR>", buffer = true, desc = "Switch Source/Header" })

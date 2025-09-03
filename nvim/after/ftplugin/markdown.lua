@@ -26,7 +26,14 @@ do
     return key
   end
 
-  Dotfiles.map({ "o", function() return bullet("o") end, desc = "New Line Below", expr = true })
-  Dotfiles.map({ "<CR>", function() return bullet("<CR>") end, desc = "Begin New Line", expr = true, mode = "i" })
+  Dotfiles.map({ "o", function() return bullet("o") end, buffer = true, desc = "New Line Below", expr = true })
+  Dotfiles.map({
+    "<CR>",
+    function() return bullet("<CR>") end,
+    buffer = true,
+    desc = "Begin New Line",
+    expr = true,
+    mode = "i",
+  })
 end
 -- }}}

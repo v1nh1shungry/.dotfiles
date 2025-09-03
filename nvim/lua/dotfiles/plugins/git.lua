@@ -11,10 +11,10 @@ return {
       current_line_blame = true,
       on_attach = function(bufnr)
         local map = Dotfiles.map_with({ buffer = bufnr })
-        map({ "<Leader>gs", ":Gitsigns stage_hunk<CR>", mode = { "n", "x" }, desc = "Stage Hunk" })
+        map({ "<Leader>gs", ":Gitsigns stage_hunk<CR>", desc = "Stage Hunk", mode = { "n", "x" } })
         map({ "<Leader>gS", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Whole Buffer" })
         map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" })
-        map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", mode = { "n", "x" }, desc = "Reset Hunk" })
+        map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", desc = "Reset Hunk", mode = { "n", "x" } })
         map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Whole Buffer" })
         map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this Line" })
         map({ "<Leader>gB", "<Cmd>Gitsigns blame<CR>", desc = "Blame" })
@@ -38,8 +38,8 @@ return {
           function() require("gitsigns").nav_hunk("first", { navigation_message = false }) end,
           desc = "First Git Hunk",
         })
-        map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
-        map({ "ah", ":<C-U>Gitsigns select_hunk<CR>", mode = { "o", "x" }, desc = "Git Hunk" })
+        map({ "ih", ":<C-U>Gitsigns select_hunk<CR>", desc = "Git Hunk", mode = { "o", "x" } })
+        map({ "ah", ":<C-U>Gitsigns select_hunk<CR>", desc = "Git Hunk", mode = { "o", "x" } })
         map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Git Hunks (Document)" })
         map({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
       end,

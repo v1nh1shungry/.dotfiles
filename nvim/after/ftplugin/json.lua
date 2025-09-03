@@ -8,6 +8,7 @@ Dotfiles.map({
     end
     return "o"
   end,
+  buffer = true,
   desc = "New Line Below",
   expr = true,
 })

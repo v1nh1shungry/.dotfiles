@@ -74,19 +74,7 @@ do
     pattern = "buftype",
   })
 end
-
-vim.api.nvim_create_autocmd("FileType", {
-  command = "setlocal wrap",
-  group = Dotfiles.augroup("wrap"),
-  pattern = { "gitcommit", "markdown", "text" },
-})
 -- }}}
-
-vim.api.nvim_create_autocmd("FileType", {
-  command = "setlocal conceallevel=2",
-  group = Dotfiles.augroup("markdown.conceal"),
-  pattern = "markdown",
-})
 
 -- Inspired by https://github.com/keaising/im-select.nvim {{{
 if vim.fn.executable("fcitx5-remote") == 1 then

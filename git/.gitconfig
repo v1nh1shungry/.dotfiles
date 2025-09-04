@@ -6,21 +6,12 @@
   line-numbers = true
   navigate = true
   syntax-theme = tokyonight_moon
-  # https://github.com/folke/tokyonight.nvim
-  line-numbers-minus-style      = "#e26a75"
-  line-numbers-plus-style       = "#b8db87"
-  line-numbers-zero-style       = "#3b4261"
-  minus-emph-style              = syntax "#6b2e43"
-  minus-empty-line-marker-style = syntax "#3a273a"
-  minus-non-emph-style          = syntax "#3a273a"
-  minus-style                   = syntax "#3a273a"
-  plus-emph-style               = syntax "#305f6f"
-  plus-empty-line-marker-style  = syntax "#273849"
-  plus-non-emph-style           = syntax "#273849"
-  plus-style                    = syntax "#273849"
 
 [diff]
   colorMoved = default
+
+[include]
+  path = ~/.local/share/nvim/lazy/tokyonight.nvim/extras/delta/tokyonight_moon.gitconfig
 
 [init]
   defaultBranch = main

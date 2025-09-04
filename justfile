@@ -3,13 +3,14 @@ default:
   @just --list
 
 bat:
-  ln -sf {{justfile_directory()}}/bat {{config_directory()}}
+  mkdir -p {{config_directory()}}/bat/themes
+  ln -sf {{justfile_directory()}}/bat/config {{config_directory()}}/bat
+  ln -sf {{data_directory()}}/nvim/lazy/tokyonight.nvim/extras/sublime/tokyonight_moon.tmTheme {{config_directory()}}/bat/themes
   bat cache --build
 
 cargo:
   mkdir -p {{home_directory()}}/.cargo
   ln -sf {{justfile_directory()}}/cargo/config.toml {{home_directory()}}/.cargo
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 fish:
   mkdir -p {{config_directory()}}/fish
@@ -34,6 +35,7 @@ kitty:
   ln -sf {{justfile_directory()}}/kitty/base.conf {{config_directory()}}/kitty
   ln -sf {{justfile_directory()}}/kitty/kitty.conf {{config_directory()}}/kitty
   ln -sf {{justfile_directory()}}/kitty/goto_tab.py {{config_directory()}}/kitty
+  ln -sf {{data_directory()}}/nvim/lazy/tokyonight.nvim/extras/kitty/tokyonight_moon.conf {{config_directory()}}/kitty
 
 npm:
   echo "registry=https://npmreg.proxy.ustclug.org/" >{{home_directory()}}/.npmrc

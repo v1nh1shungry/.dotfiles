@@ -37,7 +37,6 @@ vim.opt.shiftwidth = 2
 vim.opt.shortmess:append({ W = true, c = true })
 vim.opt.showcmdloc = "statusline"
 vim.opt.showmode = false
-vim.opt.showtabline = 2
 vim.opt.sidescrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.smartcase = true

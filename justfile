@@ -26,16 +26,12 @@ git:
   ln -sf {{justfile_directory()}}/git/.gitconfig {{home_directory()}}
 
 hyprland:
-  ln -sf {{justfile_directory()}}/hypr {{config_directory()}}
-  ln -sf {{justfile_directory()}}/waybar {{config_directory()}}
-  ln -sf {{justfile_directory()}}/rofi {{config_directory()}}
+  ln -sf {{justfile_directory()}}/{hypr,rofi,waybar} {{config_directory()}}
 
 kitty:
   mkdir -p {{config_directory()}}/kitty
-  ln -sf {{justfile_directory()}}/kitty/base.conf {{config_directory()}}/kitty
-  ln -sf {{justfile_directory()}}/kitty/kitty.conf {{config_directory()}}/kitty
-  ln -sf {{justfile_directory()}}/kitty/goto_tab.py {{config_directory()}}/kitty
-  ln -sf {{data_directory()}}/nvim/lazy/tokyonight.nvim/extras/kitty/tokyonight_moon.conf {{config_directory()}}/kitty
+  ln -sf {{justfile_directory()}}/kitty/{base.conf,kitty.conf,goto_tab.py} {{config_directory()}}/kitty
+  kitty +kitten themes --config-file-name=base.conf Tokyo Night Moon
 
 npm:
   echo "registry=https://npmreg.proxy.ustclug.org/" >{{home_directory()}}/.npmrc
@@ -54,6 +50,8 @@ tmux:
   ln -sf {{justfile_directory()}}/tmux {{config_directory()}}
 
 yazi:
-  ln -sf {{justfile_directory()}}/yazi {{config_directory()}}
+  mkdir -p {{config_directory()}}/yazi
+  ln -sf {{justfile_directory()}}/yazi/{package,theme,yazi}.toml {{config_directory()}}/yazi
+  ya pkg add BennyOe/tokyo-night
 
 all: bat cargo fish fontconfig gdb git kitty npm nvim starship yazi

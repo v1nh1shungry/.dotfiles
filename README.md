@@ -13,6 +13,7 @@
 * [Spotify](https://open.spotify.com/)
 * [WeChat](https://weixin.qq.com/)
 * [bat](https://github.com/sharkdp/bat)
+* [btop](https://github.com/aristocratos/btop)
 * [cargo](https://www.rust-lang.org/)
 * [cargo-cache](https://github.com/matthiaskrgr/cargo-cache)
 * [cargo-update](https://github.com/nabijaczleweli/cargo-update)

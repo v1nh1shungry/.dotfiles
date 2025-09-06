@@ -298,8 +298,6 @@ return {
 
           Snacks.toggle.diagnostics():map("<Leader>ux")
           Snacks.toggle.treesitter():map("<Leader>uT")
-
-          Snacks.toggle.profiler():map("<Leader>pp")
         end,
         once = true,
         pattern = "VeryLazy",
@@ -310,31 +308,17 @@ return {
       { "<C-q>", function() Snacks.bufdelete() end, desc = "Close Buffer" },
       { "<M-=>", function() Snacks.terminal.toggle() end, mode = { "n", "t" }, desc = "Terminal" },
       { "<C-w>z", function() Snacks.zen.zoom() end, desc = "Zoom" },
-      { "<Leader>ut", function() Snacks.picker.undo() end, desc = "Undotree" },
-      { "<Leader>pP", function() Snacks.profiler.pick() end, desc = "Check Profile Result" },
       { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
-      { "<Leader>u/", function() Snacks.picker.notifications() end, desc = "Notifications" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, mode = { "n", "x" }, desc = "Git Browse" },
       { "<Leader>fs", function() Snacks.scratch() end, desc = "Open Scratch Buffer" },
-      { "<Leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
       { "<Leader>bo", function() Snacks.bufdelete.other() end, desc = "Only" },
     },
     opts = {
       bigfile = { enabled = true },
       image = { doc = { enabled = false } },
-      -- NOTE: A bit buggy now. Use indent-blankline.nvim instead for now.
-      -- indent = { enabled = true },
       input = { enabled = true },
       notifier = { enabled = true },
-      -- NOTE: A bit buggy now. Use fzf-lua instead for now.
-      -- TODO: Completely remove picker dependencies.
-      picker = {
-        layout = { preset = "ivy" },
-        previewers = { git = { native = true } },
-        ui_select = false,
-      },
       quickfile = { enabled = true },
-      scope = { cursor = false },
       scratch = { autowrite = false },
       statuscolumn = { folds = { open = true, git_hl = true } },
       words = { enabled = true },
@@ -350,5 +334,80 @@ return {
     "mikesmithgh/kitty-scrollback.nvim",
     event = "User KittyScrollbackLaunch",
     opts = {},
+  },
+  {
+    "ibhagwan/fzf-lua",
+    cmd = "FzfLua",
+    config = function(_, opts)
+      require("fzf-lua").setup(opts)
+      vim.cmd("FzfLua register_ui_select")
+    end,
+    dependencies = {
+      "nvim-mini/mini.icons",
+      "folke/snacks.nvim",
+    },
+    keys = {
+      { "<Leader><Space>", "<Cmd>FzfLua files<CR>", desc = "Files" },
+      { "<Leader>h", "<Cmd>FzfLua helptags<CR>", desc = "Help Pages" },
+      { "<Leader>/", "<Cmd>FzfLua live_grep_native<CR>", desc = "Live Grep" },
+      { "<Leader>:", "<Cmd>FzfLua command_history<CR>", desc = "Command History" },
+      { "<Leader>fr", "<Cmd>FzfLua oldfiles<CR>", desc = "Recent Files" },
+      { "<Leader>sa", "<Cmd>FzfLua autocmds<CR>", desc = "Autocommands" },
+      { "<Leader>sk", "<Cmd>FzfLua keymaps<CR>", desc = "Keymaps" },
+      { "<Leader>s,", "<Cmd>FzfLua resume<CR>", desc = "Resume" },
+      { "<Leader>sh", "<Cmd>FzfLua highlights<CR>", desc = "Highlight Groups" },
+      { "<Leader>sm", "<Cmd>FzfLua manpages<CR>", desc = "Manpages" },
+      { "<Leader>sx", "<Cmd>FzfLua diagnostics_document<CR>", desc = "Document Diagnostics" },
+      { "<Leader>sX", "<Cmd>FzfLua diagnostics_workspace<CR>", desc = "Workspace Diagnostics" },
+      { "<Leader>sq", "<Cmd>FzfLua quickfix<CR>", desc = "Quickfix List" },
+      { "<Leader>sQ", "<Cmd>FzfLua quickfix_stack<CR>", desc = "Quickfix Stack" },
+      { "<Leader>sl", "<Cmd>FzfLua loclist<CR>", desc = "Location List" },
+      { "<Leader>sL", "<Cmd>FzfLua loclist_stack<CR>", desc = "Location Stack" },
+      { "<Leader>sC", "<Cmd>FzfLua colorschemes<CR>", desc = "Colorschemes" },
+      { "<Leader>s:", "<Cmd>FzfLua commands<CR>", desc = "Commands" },
+      { "<Leader>sz", "<Cmd>FzfLua zoxide<CR>", desc = "Zoxide" },
+      { "<Leader>gl", "<Cmd>FzfLua git_bcommits<CR>", desc = "Git Log (File)" },
+      { "<Leader>gL", "<Cmd>FzfLua git_commits<CR>", desc = "Git Log" },
+      { "<Leader>gh", "<Cmd>FzfLua git_hunks<CR>", desc = "Hunks" },
+      { "<Leader>bb", "<Cmd>FzfLua buffers<CR>", desc = "Buffers" },
+    },
+    opts = {
+      files = {
+        cwd_prompt = false,
+      },
+      fzf_colors = true,
+      fzf_opts = {
+        ["--cycle"] = true,
+      },
+      lsp = {
+        code_actions = {
+          previewer = "codeaction_native",
+        },
+      },
+      keymap = {
+        builtin = {
+          ["<C-f>"] = "preview-page-down",
+          ["<C-b>"] = "preview-page-up",
+        },
+        fzf = {
+          ["ctrl-d"] = "half-page-down",
+          ["ctrl-u"] = "half-page-up",
+          ["ctrl-f"] = "preview-page-down",
+          ["ctrl-b"] = "preview-page-up",
+          ["ctrl-q"] = "select-all+accept",
+          -- Not a real keymap. `--bind 'change:first'` to select the first item when query changes.
+          ["change"] = "first",
+        },
+      },
+      oldfiles = {
+        cwd_only = true,
+      },
+      winopts = {
+        height = 0.5,
+        width = 1,
+        row = 1,
+        col = 0,
+      },
+    },
   },
 }

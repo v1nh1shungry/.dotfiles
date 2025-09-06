@@ -211,11 +211,5 @@ return {
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
   },
-  {
-    "neovim/nvim-lspconfig",
-    init = function()
-      vim.opt.runtimepath:prepend(vim.fs.joinpath(require("lazy.core.config").options.root, "nvim-lspconfig"))
-    end,
-    lazy = true,
-  },
+  "neovim/nvim-lspconfig",
 }

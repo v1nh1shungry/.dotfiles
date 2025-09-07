@@ -114,6 +114,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
       end
     end
 
+    ---@diagnostic disable-next-line: undefined-field
+    for _, key in ipairs(vim.lsp.config[client.name].keys or {}) do
+      map(key)
+    end
+
     if
       client:supports_method(ms.textDocument_inlayHint)
       and vim.api.nvim_buf_is_valid(args.buf)

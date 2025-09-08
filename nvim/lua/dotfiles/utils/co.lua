@@ -1,7 +1,7 @@
 ---@class dotfiles.utils.Co
 local M = {}
 
----FIXME: handle nil correctly
+---FIXME: Handle nil correctly.
 ---
 ---@param fn function
 ---@return function

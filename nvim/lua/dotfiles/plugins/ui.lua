@@ -66,8 +66,8 @@ return {
     -- https://github.com/LazyVim/LazyVim {{{
     config = function(_, opts)
       -- HACK: noice shows messages from before it was enabled,
-      -- but this is not ideal when Lazy is installing plugins,
-      -- so clear the messages in this case.
+      --       but this is not ideal when Lazy is installing
+      --       plugins, so clear the messages in this case.
       if vim.o.filetype == "lazy" then
         vim.cmd([[messages clear]])
       end
@@ -105,7 +105,7 @@ return {
   },
   {
     "Bekaboo/deadcolumn.nvim",
-    -- NOTE: otherwise nofile brokes.
+    -- NOTE: Otherwise nofile brokes.
     event = "VeryLazy",
   },
   {
@@ -131,7 +131,7 @@ return {
   },
   {
     "stevearc/quicker.nvim",
-    -- NOTE: loclist doesn't work in `ft = "qf"`
+    -- NOTE: Doesn't work for loclist if `ft = "qf"`.
     event = "VeryLazy",
     keys = {
       { "<Leader>xq", function() require("quicker").toggle() end, desc = "Toggle Quickfix List" },

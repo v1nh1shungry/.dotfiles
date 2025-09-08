@@ -18,7 +18,8 @@ return {
   {
     "nvim-mini/mini.ai",
     dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
-    event = "LazyFile",
+    -- NOTE: For nofile, again :(
+    event = "VeryLazy",
     opts = function()
       local ai = require("mini.ai")
 
@@ -133,7 +134,7 @@ return {
         end,
       })
     end,
-    event = "LazyFile",
+    event = "VeryLazy",
     opts = {
       ensure_installed = {
         "bash",
@@ -195,7 +196,7 @@ return {
       })
     end,
     dependencies = "nvim-treesitter/nvim-treesitter",
-    event = "LazyFile",
+    event = "VeryLazy",
     opts = {
       move = {
         goto_next_start = { ["]a"] = "@parameter.inner", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
@@ -277,8 +278,8 @@ return {
     config = function(_, opts)
       local notify = vim.notify
       require("snacks").setup(opts)
-      -- HACK: restore vim.notify after snacks setup and let noice.nvim take over
-      -- this is needed to have early notifications show up in noice history
+      -- HACK: Restore vim.notify after snacks setup and let noice.nvim take over
+      --       this is needed to have early notifications show up in noice history.
       vim.notify = notify
     end,
     -- }}}
@@ -395,7 +396,7 @@ return {
           ["ctrl-f"] = "preview-page-down",
           ["ctrl-b"] = "preview-page-up",
           ["ctrl-q"] = "select-all+accept",
-          -- Not a real keymap. `--bind 'change:first'` to select the first item when query changes.
+          -- Not a real keymap. To select the first item when query changes.
           ["change"] = "first",
         },
       },
@@ -403,10 +404,10 @@ return {
         cwd_only = true,
       },
       winopts = {
-        height = 0.5,
-        width = 1,
-        row = 1,
         col = 0,
+        height = 0.5,
+        row = 1,
+        width = 1,
       },
     },
   },

@@ -8,7 +8,6 @@
 
 ## Requirements
 
-* [Motrix](https://motrix.app/)
 * [Neovim](https://github.com/neovim/neovim)
 * [Spotify](https://open.spotify.com/)
 * [WeChat](https://weixin.qq.com/)

@@ -62,7 +62,7 @@ return {
       end
     end,
     event = "VeryLazy",
-    -- HACK: manually setup $PATH to speed up startup
+    -- HACK: Setup $PATH manually to speed up startup.
     init = function() vim.env.PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin") .. ":" .. vim.env.PATH end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = {

@@ -17,9 +17,7 @@ return {
   -- https://www.lazyvim.org/plugins/coding#miniai {{{
   {
     "nvim-mini/mini.ai",
-    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
-    -- NOTE: For nofile, again :(
-    event = "VeryLazy",
+    event = "VeryLazy", -- NOTE: For nofile, again :(
     opts = function()
       local ai = require("mini.ai")
 
@@ -116,14 +114,6 @@ return {
     config = function(_, opts)
       require("nvim-treesitter").install(opts.ensure_installed)
 
-      -- clean unused parsers
-      local resolved_ensure_installed = require("nvim-treesitter.config").norm_languages(opts.ensure_installed)
-      for _, parser in ipairs(require("nvim-treesitter").get_installed()) do
-        if not vim.list_contains(resolved_ensure_installed, parser) then
-          require("nvim-treesitter").uninstall(parser)
-        end
-      end
-
       vim.api.nvim_create_autocmd("FileType", {
         callback = function()
           if not pcall(vim.treesitter.start) then
@@ -132,9 +122,11 @@ return {
 
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
+        desc = "Enable treesitter highlight and indent",
+        group = Dotfiles.augroup("nvim-treesitter"),
       })
     end,
-    event = "VeryLazy",
+    event = "LazyFile",
     opts = {
       ensure_installed = {
         "bash",
@@ -145,7 +137,6 @@ return {
         "doxygen",
         "fish",
         "gitcommit",
-        "html_tags", -- bundled with nvim-treesitter
         "json",
         "just",
         "lua",
@@ -193,10 +184,12 @@ return {
             end
           end
         end,
+        desc = "Setup nvim-treesitter-textobjects keymappings",
+        group = Dotfiles.augroup("nvim-treesitter-textobjects"),
       })
     end,
     dependencies = "nvim-treesitter/nvim-treesitter",
-    event = "VeryLazy",
+    event = "LazyFile",
     opts = {
       move = {
         goto_next_start = { ["]a"] = "@parameter.inner", ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
@@ -300,6 +293,8 @@ return {
           Snacks.toggle.diagnostics():map("<Leader>ux")
           Snacks.toggle.treesitter():map("<Leader>uT")
         end,
+        desc = "Setup snacks.nvim when ready",
+        group = Dotfiles.augroup("snacks.nvim"),
         once = true,
         pattern = "VeryLazy",
       })
@@ -311,6 +306,9 @@ return {
       { "<C-w>z", function() Snacks.zen.zoom() end, desc = "Zoom" },
       { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, mode = { "n", "x" }, desc = "Git Browse" },
+      { "<Leader>gg", function() Snacks.lazygit() end, desc = "LazyGit" },
+      { "<Leader>gl", function() Snacks.lazygit.log_file() end, desc = "Log (file)" },
+      { "<Leader>gL", function() Snacks.lazygit.log() end, desc = "Log" },
       { "<Leader>fs", function() Snacks.scratch() end, desc = "Open Scratch Buffer" },
       { "<Leader>bo", function() Snacks.bufdelete.other() end, desc = "Only" },
     },
@@ -367,8 +365,6 @@ return {
       { "<Leader>sC", "<Cmd>FzfLua colorschemes<CR>", desc = "Colorschemes" },
       { "<Leader>s:", "<Cmd>FzfLua commands<CR>", desc = "Commands" },
       { "<Leader>sz", "<Cmd>FzfLua zoxide<CR>", desc = "Zoxide" },
-      { "<Leader>gl", "<Cmd>FzfLua git_bcommits<CR>", desc = "Git Log (File)" },
-      { "<Leader>gL", "<Cmd>FzfLua git_commits<CR>", desc = "Git Log" },
       { "<Leader>gh", "<Cmd>FzfLua git_hunks<CR>", desc = "Hunks" },
       { "<Leader>bb", "<Cmd>FzfLua buffers<CR>", desc = "Buffers" },
     },

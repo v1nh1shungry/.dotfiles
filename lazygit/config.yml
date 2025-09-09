@@ -1,0 +1,6 @@
+git:
+  paging:
+    pager: delta --paging=never
+  parseEmoji: true
+update:
+  method: never

@@ -5,6 +5,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
       vim.cmd("checktime")
     end
   end,
+  desc = "Automatically check if any buffers were changed outside of Nvim",
   group = Dotfiles.augroup("checktime"),
 })
 
@@ -22,6 +23,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
   end,
+  desc = "Move to last location",
   group = Dotfiles.augroup("last_loc"),
 })
 
@@ -33,32 +35,56 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
     vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(event.match) or event.match, ":p:h"), "p")
   end,
+  desc = "Automatically create directory if not exists",
   group = Dotfiles.augroup("auto_create_dir"),
 })
 
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-  callback = function()
-    local current_tab = vim.fn.tabpagenr()
-    vim.cmd("tabdo wincmd =")
-    vim.cmd("tabnext " .. current_tab)
-  end,
-  group = Dotfiles.augroup("resize_splits"),
-})
-
 do
-  ---@param args vim.api.keyset.create_autocmd.callback_args
-  local function setup_minimal_ui(args)
+  local minimal_options = {
+    bo = {
+      buflisted = false,
+    },
+    wo = {
+      number = false,
+      relativenumber = false,
+      colorcolumn = "",
+      statuscolumn = "",
+      signcolumn = "no",
+    },
+  }
+
+  local function setup_minimal_ui()
     if vim.list_contains({ "help", "nofile" }, vim.bo.buftype) then
-      vim.opt_local.buflisted = false
-      vim.opt_local.number = false
-      vim.opt_local.relativenumber = false
-      vim.opt_local.cc = ""
-      vim.opt_local.stc = ""
-      vim.opt_local.signcolumn = "no"
+      local b_restore_ui = {}
+      local w_restore_ui = {}
+
+      for opt, value in pairs(minimal_options.bo) do
+        b_restore_ui[opt] = vim.bo[opt]
+        vim.bo[opt] = value
+      end
+      for opt, value in pairs(minimal_options.wo) do
+        w_restore_ui[opt] = vim.wo[opt]
+        vim.wo[opt] = value
+      end
+
+      vim.b.restore_minimal_ui = b_restore_ui
+      vim.w.restore_minimal_ui = w_restore_ui
 
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then
-        Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = args.buf, desc = ":close" })
+        Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = true, desc = ":close (minimal)" })
+      end
+    else
+      for opt, value in pairs(vim.b.restore_minimal_ui or {}) do
+        vim.bo[opt] = value
+      end
+      for opt, value in pairs(vim.w.restore_minimal_ui or {}) do
+        vim.wo[opt] = value
+      end
+
+      local map_desc = vim.fn.maparg("q", "n", false, true).desc
+      if map_desc and map_desc == ":close (minimal)" then
+        vim.keymap.del("n", "q", { buffer = true })
       end
     end
   end
@@ -66,11 +92,13 @@ do
   local augroup = Dotfiles.augroup("minimal_ui")
   vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
     callback = setup_minimal_ui,
+    desc = "Setup minimal UI for nofile",
     group = augroup,
   })
   vim.api.nvim_create_autocmd({ "OptionSet" }, {
     callback = setup_minimal_ui,
     group = augroup,
+    desc = "Setup minimal UI for nofile",
     pattern = "buftype",
   })
 end
@@ -99,6 +127,7 @@ if vim.fn.executable("fcitx5-remote") == 1 then
         activate_im()
       end
     end),
+    desc = "Automatically activate Fcitx5 if needed",
     group = augroup,
   })
 
@@ -107,13 +136,13 @@ if vim.fn.executable("fcitx5-remote") == 1 then
       previous_im = get_current_im()
       activate_im(false)
     end),
+    desc = "Automatically deactivate Fcitx5",
     group = augroup,
   })
 end
 -- }}}
 
 -- https://github.com/neovim/neovim/issues/16572#issuecomment-1954420136 {{{
--- Sync terminal's background color to remove padding around Neovim.
 do
   local augroup = Dotfiles.augroup("sync_terminal_color")
 
@@ -124,11 +153,13 @@ do
         io.write(string.format("\027]11;#%06x\027\\", normal.bg))
       end
     end,
+    desc = "Sync terminal's background color",
     group = augroup,
   })
 
   vim.api.nvim_create_autocmd("UILeave", {
     callback = function() io.write("\027]111\027\\") end,
+    desc = "Restore terminal's background color",
     group = augroup,
   })
 end

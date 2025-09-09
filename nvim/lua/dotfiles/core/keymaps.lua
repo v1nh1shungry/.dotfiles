@@ -269,14 +269,15 @@ map({
 
 map({ "<CR>", "<Cmd>source<CR>", desc = ":source", ft = { "lua", "vim" } })
 
-map({ "<C-f>", "<Right>", mode = { "i", "c" }, desc = "Forward" })
-map({ "<C-b>", "<Left>", mode = { "i", "c" }, desc = "Backward" })
-map({ "<C-a>", "<Home>", mode = { "i", "c" }, desc = "Begin of Line" })
-map({ "<C-e>", "<End>", mode = { "i", "c" }, desc = "End of Line" })
-map({ "<M-f>", "<S-Right>", mode = { "i", "c" }, desc = "Word Forward" })
-map({ "<M-b>", "<S-Left>", mode = { "i", "c" }, desc = "Word Backward" })
-map({ "<M-d>", "<C-o>dw", mode = "i", desc = "Delete Word Forward" })
-map({ "<M-d>", "<S-Right><C-w>", mode = "c", desc = "Delete Word Forward" })
+map({ "<C-f>", "<Right>", desc = "Forward", mode = "!" })
+map({ "<C-b>", "<Left>", desc = "Backward", mode = "!" })
+map({ "<C-a>", "<Home>", desc = "Begin of Line", mode = "!" })
+map({ "<C-e>", "<End>", desc = "End of Line", mode = "!" })
+map({ "<M-f>", "<S-Right>", desc = "Word Forward", mode = "!" })
+map({ "<M-b>", "<S-Left>", desc = "Word Backward", mode = "!" })
+map({ "<M-d>", "<C-o>dw", desc = "Delete Word Forward", mode = "i" })
+map({ "<M-d>", "<S-Right><C-w>", desc = "Delete Word Forward", mode = "c" })
+map({ "<C-d>", "<Del>", desc = "Delete character under cursor", mode = "!" })
 
 map({
   "gb",
@@ -295,3 +296,5 @@ map({
   end,
   desc = "Goto Nth Buffer",
 })
+
+map({ "<Leader>qr", "<Cmd>restart<CR>", desc = "Restart" })

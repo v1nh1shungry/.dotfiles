@@ -52,14 +52,6 @@ return {
           end
         end
       end)
-
-      local installed = mr.get_installed_packages()
-      for _, p in ipairs(installed) do
-        if not vim.list_contains(opts.ensure_installed, p.name) then
-          Dotfiles.notify("Uninstall unused package " .. p.name)
-          p:uninstall()
-        end
-      end
     end,
     event = "VeryLazy",
     -- HACK: Setup $PATH manually to speed up startup.
@@ -183,6 +175,7 @@ return {
             lint.try_lint(names)
           end
         end,
+        desc = "Run linter automatically",
         group = Dotfiles.augroup("lint"),
       })
     end,

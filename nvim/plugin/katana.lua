@@ -73,6 +73,7 @@ local CHARACTERS = {
 }
 
 local COUNT = 10
+local AUGROUP = Dotfiles.augroup("katana")
 local NS_ID = Dotfiles.ns("katana")
 
 ---@return string[]
@@ -152,6 +153,8 @@ local function create()
       vim.api.nvim_create_autocmd("InsertLeave", {
         buffer = self.buf,
         command = "setlocal nomodifiable",
+        desc = "Forbid modification after leaving insert mode",
+        group = AUGROUP,
       })
       render(self.buf)
     end,
@@ -159,6 +162,8 @@ local function create()
       vim.opt.backspace:remove("eol")
       vim.api.nvim_create_autocmd("WinClosed", {
         callback = function() vim.opt.backspace:append("eol") end,
+        desc = "Avoid backspace over line",
+        group = AUGROUP,
         pattern = tostring(self.win),
       })
 

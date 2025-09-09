@@ -105,8 +105,7 @@ return {
   },
   {
     "Bekaboo/deadcolumn.nvim",
-    -- NOTE: Otherwise nofile brokes.
-    event = "VeryLazy",
+    event = "VeryLazy", -- NOTE: Otherwise nofile brokes.
   },
   {
     "nvim-mini/mini.icons",
@@ -131,8 +130,7 @@ return {
   },
   {
     "stevearc/quicker.nvim",
-    -- NOTE: Doesn't work for loclist if `ft = "qf"`.
-    event = "VeryLazy",
+    event = "VeryLazy", -- NOTE: Doesn't work for loclist if `ft = "qf"`.
     keys = {
       { "<Leader>xq", function() require("quicker").toggle() end, desc = "Toggle Quickfix List" },
       { "<Leader>xl", function() require("quicker").toggle({ loclist = true }) end, desc = "Toggle Location List" },
@@ -152,9 +150,34 @@ return {
   {
     "nvim-mini/mini.files",
     config = function()
+      -- Modified from https://github.com/stevearc/oil.nvim/blob/master/doc/recipes.md#hide-gitignored-files-and-show-git-tracked-hidden-files {{{
+      local function new_git_ignored()
+        return setmetatable({}, {
+          __index = function(self, key)
+            local obj = vim
+              .system(
+                { "git", "ls-files", "--ignored", "--exclude-standard", "--others", "--directory" },
+                { cwd = key, text = true }
+              )
+              :wait()
+
+            local ret = {}
+
+            if obj.code == 0 then
+              for line in vim.gsplit(obj.stdout, "\n", { plain = true, trimempty = true }) do
+                ret[line:gsub("/$", "")] = true
+              end
+            end
+
+            rawset(self, key, ret)
+            return ret
+          end,
+        })
+      end
+      -- }}}
+
       local show_hidden = false
-      -- FIXME: Never clear. May waste memory.
-      local ignored = {} ---@type table<string, boolean>
+      local git_ignored = new_git_ignored()
 
       local NS = Dotfiles.ns("mini.files.extmarks")
       local AUGROUP = Dotfiles.augroup("mini.files")
@@ -171,33 +194,12 @@ return {
 
       ---@return boolean
       local function filter_hide(fs_entry)
-        local dir = vim.fs.dirname(fs_entry.path)
-        if ignored[dir] then
+        if vim.list_contains(IGNORED_PATTERN, fs_entry.name) then
           return false
         end
 
-        if ignored[fs_entry.path] == nil then
-          local entries = {} ---@type string[]
-
-          for name, _ in vim.fs.dir(dir) do
-            local path = vim.fs.joinpath(dir, name)
-            if vim.list_contains(IGNORED_PATTERN, name) then
-              ignored[path] = true
-            else
-              ignored[path] = false
-              table.insert(entries, name)
-            end
-          end
-
-          if Dotfiles.git.root() then
-            local ret = vim.fn.system(vim.list_extend({ "git", "-C", dir, "check-ignore" }, entries))
-            for name in vim.gsplit(ret, "\n", { trimempty = true }) do
-              ignored[vim.fs.joinpath(dir, name)] = true
-            end
-          end
-        end
-
-        return not ignored[fs_entry.path]
+        local dir = vim.fs.dirname(fs_entry.path)
+        return not git_ignored[dir][fs_entry.name]
       end
 
       vim.api.nvim_create_autocmd("User", {
@@ -211,6 +213,7 @@ return {
             end,
           }):map("g.", { buffer = args.data.buf_id })
         end,
+        desc = "Setup keymappings for mini.files",
         group = AUGROUP,
         pattern = "MiniFilesBufferCreate",
       })
@@ -232,8 +235,16 @@ return {
             end
           end
         end,
+        desc = "Render ignored files for mini.files",
         group = AUGROUP,
         pattern = "MiniFilesBufferUpdate",
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        callback = function() git_ignored = new_git_ignored() end,
+        desc = "Refresh Git status",
+        group = AUGROUP,
+        pattern = "MiniFilesExplorerOpen",
       })
 
       require("mini.files").setup({
@@ -260,13 +271,7 @@ return {
   },
   {
     "rachartier/tiny-glimmer.nvim",
-    keys = {
-      { "y", desc = "Yank", mode = { "n", "x" } },
-      { "u", desc = "Undo" },
-      { "<C-r>", desc = "Redo" },
-      { "p", desc = "Paste" },
-      { "P", desc = "Paste Before" },
-    },
+    event = "VeryLazy",
     opts = {
       overwrite = {
         yank = {
@@ -316,6 +321,7 @@ return {
   {
     "nvim-mini/mini.trailspace",
     event = "LazyFile",
+    keys = { { "d<Space>", function() require("mini.trailspace").trim() end, desc = "Trim Trailing Space" } },
     opts = {},
   },
   {

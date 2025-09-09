@@ -37,6 +37,9 @@ kitty:
   ln -sf {{justfile_directory()}}/kitty/goto_tab.py {{config_directory()}}/kitty
   kitty +kitten themes --config-file-name=base.conf Tokyo Night Moon
 
+lazygit:
+  ln -sf {{justfile_directory()}}/lazygit {{config_directory()}}
+
 npm:
   echo "registry=https://npmreg.proxy.ustclug.org/" >{{home_directory()}}/.npmrc
 
@@ -60,4 +63,4 @@ yazi:
   ln -sf {{justfile_directory()}}/yazi/yazi.toml {{config_directory()}}/yazi
   ya pkg add BennyOe/tokyo-night
 
-all: bat cargo fish fontconfig gdb git kitty npm nvim starship yazi
+all: bat cargo fish fontconfig gdb git kitty lazygit npm nvim starship yazi

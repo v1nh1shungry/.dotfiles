@@ -29,6 +29,7 @@ function M.map(opts)
 
     vim.api.nvim_create_autocmd("FileType", {
       callback = function(args) Dotfiles.map_with({ buffer = args.buf })(opts) end,
+      desc = "Dotfiles.map() with filetypes",
       pattern = pattern,
     })
 
@@ -49,7 +50,7 @@ function M.map(opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
----@param opts vim.keymap.set.Opts
+---@param opts dotfiles.utils.map.Opts
 ---@return fun(opts: dotfiles.utils.map.Opts)
 function M.map_with(opts)
   return function(mapping) M.map(vim.tbl_deep_extend("force", opts, mapping)) end

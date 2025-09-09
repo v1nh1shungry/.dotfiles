@@ -128,6 +128,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = args.buf })
     end
   end,
+  desc = "Setup everything when LSP attaches",
   group = Dotfiles.ns("lsp.on_attach"),
 })
 

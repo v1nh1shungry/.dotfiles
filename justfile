@@ -8,9 +8,15 @@ bat:
   ln -sf {{data_directory()}}/nvim/lazy/tokyonight.nvim/extras/sublime/tokyonight_moon.tmTheme {{config_directory()}}/bat/themes
   bat cache --build
 
+brave:
+  echo "--enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform" >{{justfile_directory()}}/brave-flags.conf
+
 cargo:
   mkdir -p {{home_directory()}}/.cargo
   ln -sf {{justfile_directory()}}/cargo/config.toml {{home_directory()}}/.cargo
+
+electron program:
+  echo "--enable-wayland-ime" >{{config_directory()}}/{{program}}-flags.conf
 
 fish:
   mkdir -p {{config_directory()}}/fish
@@ -27,8 +33,6 @@ git:
 
 hyprland:
   ln -sf {{justfile_directory()}}/hypr {{config_directory()}}
-  ln -sf {{justfile_directory()}}/rofi {{config_directory()}}
-  ln -sf {{justfile_directory()}}/waybar {{config_directory()}}
 
 kitty:
   mkdir -p {{config_directory()}}/kitty
@@ -56,6 +60,12 @@ starship:
 tmux:
   ln -sf {{justfile_directory()}}/tmux {{config_directory()}}
 
+rofi:
+  ln -sf {{justfile_directory()}}/rofi {{config_directory()}}
+
+waybar:
+  ln -sf {{justfile_directory()}}/waybar {{config_directory()}}
+
 yazi:
   mkdir -p {{config_directory()}}/yazi
   ln -sf {{justfile_directory()}}/yazi/package.toml {{config_directory()}}/yazi
@@ -64,3 +74,5 @@ yazi:
   ya pkg add BennyOe/tokyo-night
 
 all: bat cargo fish fontconfig gdb git kitty lazygit npm nvim starship yazi
+
+wayland: brave hyprland rofi waybar

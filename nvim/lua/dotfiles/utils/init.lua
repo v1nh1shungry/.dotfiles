@@ -50,9 +50,10 @@ function M.map(opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
----@param opts dotfiles.utils.map.Opts
+---@param opts vim.keymap.set.Opts
 ---@return fun(opts: dotfiles.utils.map.Opts)
 function M.map_with(opts)
+  ---@diagnostic disable-next-line: param-type-mismatch
   return function(mapping) M.map(vim.tbl_deep_extend("force", opts, mapping)) end
 end
 

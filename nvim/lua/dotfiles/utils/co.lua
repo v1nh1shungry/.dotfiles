@@ -36,7 +36,7 @@ M.system = M.wrap(vim.system) ---@type async fun(cmd: string[], opts?: vim.Syste
 
 ---@module "snacks.input"
 ---@type async fun(opts?: snacks.input.Opts): string?
-M.input = M.wrap(vim.schedule_wrap(vim.ui.input))
+M.input = M.wrap(vim.schedule_wrap(function(...) return vim.ui.input(...) end))
 
 M.schedule = M.wrap(vim.schedule) ---@type async fun()
 

@@ -1,32 +1,5 @@
 _G.Dotfiles = require("dotfiles.utils")
 
-vim.filetype.add({
-  filename = { ["nvim.user"] = "lua" },
-  pattern = {
-    [".*/kitty/.+%.conf"] = "kitty",
-    ["%.env%.[%w_.-]+"] = "sh",
-  },
-})
-
-vim.treesitter.language.register("bash", "kitty")
-
-vim.diagnostic.config({
-  float = { border = "rounded" },
-  jump = {
-    on_jump = function(_, bufnr)
-      vim.diagnostic.open_float({
-        bufnr = bufnr,
-        scope = "cursor",
-        focus = false,
-      })
-    end,
-  },
-  severity_sort = true,
-  signs = {
-    text = { "", "", "", "" },
-  },
-})
-
 -- https://www.lazyvim.org/ {{{
 do
   local notifs = {}
@@ -74,5 +47,31 @@ require("dotfiles.core.options")
 require("dotfiles.core.lazy")
 require("dotfiles.core.lsp")
 
--- should execute after colorscheme plugins are loaded
+vim.filetype.add({
+  filename = { ["nvim.user"] = "lua" },
+  pattern = {
+    [".*/kitty/.+%.conf"] = "kitty",
+    ["%.env%.[%w_.-]+"] = "sh",
+  },
+})
+
+vim.treesitter.language.register("bash", "kitty")
+
+vim.diagnostic.config({
+  float = { border = "rounded" },
+  jump = {
+    on_jump = function(_, bufnr)
+      vim.diagnostic.open_float({
+        bufnr = bufnr,
+        scope = "cursor",
+        focus = false,
+      })
+    end,
+  },
+  severity_sort = true,
+  signs = {
+    text = { "", "", "", "" },
+  },
+})
+
 vim.cmd("colorscheme " .. Dotfiles.user.colorscheme)

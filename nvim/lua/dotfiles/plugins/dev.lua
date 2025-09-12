@@ -97,18 +97,15 @@ return {
           },
         },
       },
-      fuzzy = { prebuilt_binaries = { download = false } },
+      fuzzy = {
+        prebuilt_binaries = {
+          download = false,
+        },
+      },
       keymap = { preset = "super-tab" },
       signature = { enabled = true },
       sources = {
         default = { "lsp", "snippets", "path", "buffer" },
-        providers = {
-          snippets = {
-            opts = {
-              search_paths = { vim.fs.joinpath(vim.fn.stdpath("config"), "snippets") },
-            },
-          },
-        },
       },
     },
     opts_extend = { "sources.default" },

@@ -1,19 +1,26 @@
 return { ---@type vim.lsp.Config
   settings = {
     Lua = {
+      codeLens = {
+        enable = true,
+      },
       completion = {
         autoRequire = false,
         keywordSnippet = "Disable",
       },
-      doc = { privateName = { "^_" } },
+      doc = {
+        privateName = { "^_" },
+      },
       hint = {
         arrayIndex = "Disable",
-        awaitPropagate = true,
         enable = true,
         setType = false,
         semicolon = "Disable",
+        paramName = "Disable",
       },
-      workspace = { checkThirdParty = false },
+      workspace = {
+        checkThirdParty = false,
+      },
     },
   },
 }

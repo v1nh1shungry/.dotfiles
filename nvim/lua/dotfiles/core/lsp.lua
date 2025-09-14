@@ -115,8 +115,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     ---@diagnostic disable-next-line: undefined-field
-    for _, key in ipairs(vim.lsp.config[client.name].keys or {}) do
-      map(key)
+    if vim.lsp.config[client.name] and type(vim.lsp.config[client.name].keys) == "table" then
+      ---@diagnostic disable-next-line: undefined-field
+      for _, key in ipairs(vim.lsp.config[client.name].keys) do
+        map(key)
+      end
     end
 
     if

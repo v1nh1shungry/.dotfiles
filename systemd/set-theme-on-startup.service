@@ -1,0 +1,9 @@
+[Unit]
+Description=Set theme based on time at startup
+
+[Service]
+Type=oneshot
+ExecStart=/home/yuanjing/.dotfiles/bin/set-theme.sh
+
+[Install]
+WantedBy=default.target

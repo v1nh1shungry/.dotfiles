@@ -57,6 +57,11 @@ pip:
 starship:
   ln -sf {{justfile_directory()}}/starship/starship.toml {{config_directory()}}
 
+systemd:
+  ln -sf {{justfile_directory()}}/systemd/* {{config_directory()}}/systemd/user
+  systemctl --user daemon-reload
+  systemctl --user enable --now set-theme@{light,dark}.timer {aria2,set-theme-on-startup}.service
+
 tmux:
   ln -sf {{justfile_directory()}}/tmux {{config_directory()}}
 

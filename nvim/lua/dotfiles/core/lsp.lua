@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- TODO: separate plugin-driven mappings
     local mappings = { ---@type table<string, dotfiles.utils.map.Opts|dotfiles.utils.map.Opts[]>
       [ms.textDocument_rename] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
-      [ms.textDocument_codeAction] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
+      [ms.textDocument_codeAction] = { "<Leader>ca", "<Cmd>FzfLua lsp_code_actions<CR>", desc = "Code Action" },
       [ms.textDocument_documentSymbol] = {
         {
           "<Leader>ss",
@@ -139,7 +139,7 @@ vim.system({ "find", vim.lsp.log.get_filename(), "-size", "+50M", "-delete" })
 
 vim.lsp.enable({
   "clangd",
+  "emmylua_ls",
   "jsonls",
-  "lua_ls",
   "neocmake",
 })

@@ -1,30 +1,4 @@
 return {
-  {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    opts = {
-      library = {
-        { path = "snacks.nvim", words = { "Snacks" } },
-      },
-    },
-    specs = {
-      {
-        "saghen/blink.cmp",
-        opts = {
-          sources = {
-            per_filetype = { lua = { "lazydev" } },
-            providers = {
-              lazydev = {
-                name = "LazyDev",
-                module = "lazydev.integrations.blink",
-                score_offset = 100,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
   -- https://www.lazyvim.org/plugins/lsp#masonnvim-1 {{{
   {
     "mason-org/mason.nvim",
@@ -61,8 +35,8 @@ return {
       PATH = "skip",
       ensure_installed = {
         "clangd",
+        "emmylua_ls",
         "json-lsp",
-        "lua-language-server",
         "neocmakelsp",
       },
     },

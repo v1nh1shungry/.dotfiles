@@ -10,14 +10,10 @@ do
     mapping.mode = mapping.mode or { "n" }
 
     if type(mapping.mode) == "string" then
-      mapping.mode = {
-        mapping.mode --[[@as string]],
-      }
+      mapping.mode = { mapping.mode }
     end
 
-    for _, m in
-      ipairs(mapping.mode --[=[@as string[]]=])
-    do
+    for _, m in ipairs(mapping.mode) do
       local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
       if map_desc and string.find(map_desc, "vim%.lsp") then
         vim.keymap.del(m, mapping[1])
@@ -77,22 +73,12 @@ map({ "N", "'nN'[v:searchforward]", mode = { "x", "o" }, expr = true, desc = "Pr
 
 map({
   "<Leader>xl",
-  function()
-    local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
-    if not success and err then
-      Dotfiles.notify.error(err)
-    end
-  end,
+  function() pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen) end,
   desc = "Toggle Location List",
 })
 map({
   "<Leader>xq",
-  function()
-    local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
-    if not success and err then
-      Dotfiles.notify.error(err)
-    end
-  end,
+  function() pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen) end,
   desc = "Toggle Quickfix List",
 })
 -- }}}
@@ -111,11 +97,11 @@ map({ "<Leader>bn", "<Cmd>enew<CR>", desc = ":enew" })
 map({
   "<Leader>fc",
   function()
-    local PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "nvim.user")
+    local path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "nvim.user")
 
-    vim.cmd("edit " .. PATH)
+    vim.cmd("edit " .. path)
 
-    if vim.fn.filereadable(PATH) == 0 then
+    if vim.fn.filereadable(path) == 0 then
       vim.api.nvim_buf_set_lines(0, 0, -1, false, {
         '---@module "dotfiles.utils"',
         '---@module "lazy.types"',
@@ -144,7 +130,7 @@ do
   local function goto_diagnostic(severity, next, ending)
     return function()
       vim.diagnostic.jump({
-        count = (next and 1 or -1) * (ending and math.huge or vim.v.count1),
+        count = (next and 1 or -1) * (ending and math.huge or vim.v.count1) --[[@as integer]],
         severity = vim.diagnostic.severity[severity],
       })
     end
@@ -222,7 +208,6 @@ do
     function()
       local count = vim.v.count1
       for _ = 1, count do
-        ---@diagnostic disable-next-line: param-type-mismatch
         pcall(normal, vim.fn.foldclosed(".") > -1 and "zo" or "l")
       end
     end,
@@ -264,6 +249,7 @@ map({
       vim.fn.setreg("a", input, "c")
     end)
   end,
+  desc = "Edit Macro",
 })
 -- }}}
 

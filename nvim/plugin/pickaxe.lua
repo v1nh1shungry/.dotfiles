@@ -10,7 +10,7 @@ local function normal_git_root()
     return nil
   end
 
-  if vim.trim(Dotfiles.co.system({ "git", "rev-parse", "--is-shallow-repository" }).stdout) == "true" then
+  if vim.trim(Dotfiles.co.system({ "git", "rev-parse", "--is-shallow-repository" }).stdout or "") == "true" then
     Dotfiles.notify.error("Aborting: repository is shallow")
     return nil
   end

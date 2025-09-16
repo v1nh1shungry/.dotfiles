@@ -9,7 +9,7 @@ do
   vim.notify = temp
 
   local timer = assert(vim.uv.new_timer())
-  local check = assert(vim.uv.new_check())
+  local check = vim.uv.new_check()
 
   local replay = function()
     timer:stop()
@@ -20,7 +20,6 @@ do
     end
 
     vim.schedule(function()
-      ---@diagnostic disable-next-line: no-unknown
       for _, notif in ipairs(notifs) do
         vim.notify(vim.F.unpack_len(notif))
       end
@@ -38,7 +37,6 @@ do
 end
 -- }}}
 
----@diagnostic disable-next-line: duplicate-set-field
 vim.deprecate = function() end
 
 require("dotfiles.core.autocmds")

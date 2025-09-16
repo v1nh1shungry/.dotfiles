@@ -29,7 +29,11 @@ return {
     end,
     event = "VeryLazy",
     -- HACK: Setup $PATH manually to speed up startup.
-    init = function() vim.env.PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin") .. ":" .. vim.env.PATH end,
+    init = function()
+      vim.env.PATH = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "mason", "bin")
+        .. ":"
+        .. vim.env.PATH
+    end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = {
       PATH = "skip",
@@ -46,13 +50,6 @@ return {
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
-    config = function(_, opts)
-      for _, sources in pairs(opts.sources.per_filetype or {}) do
-        vim.list_extend(sources, opts.sources.default)
-      end
-
-      require("blink.cmp").setup(opts)
-    end,
     event = "VeryLazy",
     opts = {
       completion = {
@@ -99,13 +96,11 @@ return {
       formatters_by_ft = {
         fish = { "fish_indent" },
         just = { "just" },
-        lua = { "stylua" },
         markdown = { "injected" },
         query = { "format-queries" },
       },
       formatters = {
         injected = { options = { ignore_errors = true } },
-        stylua = { condition = function(_, ctx) return vim.fs.root(ctx.filename, "stylua.toml") ~= nil end },
       },
     },
   },
@@ -133,7 +128,7 @@ return {
           local names = vim
             .iter(lint._resolve_linter_by_ft(vim.bo.filetype))
             :filter(function(name)
-              local linter = lint.linters[name] ---@cast linter dotfiles.plugins.dev.lint.Linter
+              local linter = lint.linters[name] ---@as dotfiles.plugins.dev.lint.Linter
               if not linter then
                 Dotfiles.notify.warn("Linter not found: " .. name)
                 return false

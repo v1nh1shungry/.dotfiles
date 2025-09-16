@@ -24,7 +24,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local ms = vim.lsp.protocol.Methods
 
     -- TODO: separate plugin-driven mappings
-    local mappings = { ---@type table<string, dotfiles.utils.map.Opts|dotfiles.utils.map.Opts[]>
+
+    ---@type table<vim.lsp.protocol.Method.ClientToServer, dotfiles.utils.map.Opts|dotfiles.utils.map.Opts[]>
+    local mappings = {
       [ms.textDocument_rename] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
       [ms.textDocument_codeAction] = { "<Leader>ca", "<Cmd>FzfLua lsp_code_actions<CR>", desc = "Code Action" },
       [ms.textDocument_documentSymbol] = {
@@ -103,20 +105,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
     for method, keys in pairs(mappings) do
       if client:supports_method(method) then
         if type(keys[1]) == "string" then
-          map(keys)
+          map(keys --[[@as dotfiles.utils.map.Opts]])
         else
-          for _, k in
-            ipairs(keys --[=[@as dotfiles.utils.map.Opts[]]=])
-          do
+          for _, k in ipairs(keys) do
             map(k)
           end
         end
       end
     end
 
-    ---@diagnostic disable-next-line: undefined-field
     if vim.lsp.config[client.name] and type(vim.lsp.config[client.name].keys) == "table" then
-      ---@diagnostic disable-next-line: undefined-field
       for _, key in ipairs(vim.lsp.config[client.name].keys) do
         map(key)
       end

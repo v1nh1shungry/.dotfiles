@@ -10,10 +10,10 @@ local M = {
   lang = {},
 }
 
-local PATH = vim.fs.joinpath(vim.fn.stdpath("data"), "nvim.user")
+local path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "nvim.user")
 
-if vim.fn.filereadable(PATH) == 1 then
-  M = vim.tbl_deep_extend("force", M, dofile(PATH))
+if vim.fn.filereadable(path) == 1 then
+  M = vim.tbl_deep_extend("force", M, dofile(path))
 end
 
 return M

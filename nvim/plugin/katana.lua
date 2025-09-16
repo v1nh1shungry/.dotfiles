@@ -151,12 +151,12 @@ local function create()
     minimal = true,
     on_buf = function(self)
       vim.api.nvim_create_autocmd("InsertLeave", {
-        buffer = self.buf,
+        buffer = self.buf --[[@as integer]],
         command = "setlocal nomodifiable",
         desc = "Forbid modification after leaving insert mode",
         group = AUGROUP,
       })
-      render(self.buf)
+      render(self.buf --[[@as integer]])
     end,
     on_win = function(self)
       vim.opt.backspace:remove("eol")
@@ -167,7 +167,7 @@ local function create()
         pattern = tostring(self.win),
       })
 
-      vim.api.nvim_win_set_cursor(self.win, { 1, 0 })
+      vim.api.nvim_win_set_cursor(self.win --[[@as integer]], { 1, 0 })
       vim.cmd("startinsert")
     end,
     position = "float",

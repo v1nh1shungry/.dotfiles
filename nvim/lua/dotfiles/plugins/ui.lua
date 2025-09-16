@@ -163,7 +163,7 @@ return {
 
             local ret = {}
 
-            if obj.code == 0 then
+            if obj.code == 0 and obj.stdout then
               for line in vim.gsplit(obj.stdout, "\n", { plain = true, trimempty = true }) do
                 ret[line:gsub("/$", "")] = true
               end
@@ -182,7 +182,8 @@ return {
       local NS = Dotfiles.ns("mini.files.extmarks")
       local AUGROUP = Dotfiles.augroup("mini.files")
 
-      local IGNORED_PATTERN = { ---@type string[]
+      ---@type string[]
+      local IGNORED_PATTERN = {
         ".cache",
         ".git",
         "build",

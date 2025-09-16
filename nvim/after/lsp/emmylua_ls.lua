@@ -27,15 +27,6 @@ return { ---@type vim.lsp.Config
           }),
         },
       },
-      runtime = {
-        version = "LuaJIT",
-      },
-      workspace = {
-        library = {
-          "$VIMRUNTIME",
-          require("lazy.core.config").options.root,
-        },
-      },
     },
   },
 }

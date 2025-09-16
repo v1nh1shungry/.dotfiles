@@ -1,9 +1,0 @@
-[Unit]
-Description=Run set-theme@dark.service daily at 18:00
-
-[Timer]
-OnCalendar=*-*-* 18:00:00
-Persistent=true
-
-[Install]
-WantedBy=timers.target

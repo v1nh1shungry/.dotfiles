@@ -1,6 +1,0 @@
-[Unit]
-Description=Set GTK theme to %I
-
-[Service]
-Type=oneshot
-ExecStart=/home/yuanjing/.dotfiles/bin/set-theme.sh %I

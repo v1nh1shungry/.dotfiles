@@ -97,19 +97,7 @@ map({ "<Leader>bn", "<Cmd>enew<CR>", desc = ":enew" })
 map({
   "<Leader>fc",
   function()
-    local path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "nvim.user")
-
-    vim.cmd("edit " .. path)
-
-    if vim.fn.filereadable(path) == 0 then
-      vim.api.nvim_buf_set_lines(0, 0, -1, false, {
-        '---@module "dotfiles.utils"',
-        '---@module "lazy.types"',
-        "",
-        "return { ---@type dotfiles.utils.User",
-        "}",
-      })
-    end
+    vim.cmd("edit " .. vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "nvim.user"))
   end,
   desc = "Edit User Configuration",
 })

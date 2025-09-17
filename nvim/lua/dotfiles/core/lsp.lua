@@ -133,7 +133,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = Dotfiles.ns("lsp.on_attach"),
 })
 
-vim.system({ "find", vim.lsp.log.get_filename(), "-size", "+50M", "-delete" })
+do
+  local log_path = vim.lsp.log.get_filename()
+  local stat = vim.uv.fs_stat(log_path)
+  if stat and stat.size and stat.size > 50 * 1024 * 1024 then
+    vim.uv.fs_unlink(log_path)
+  end
+end
 
 vim.lsp.enable({
   "clangd",

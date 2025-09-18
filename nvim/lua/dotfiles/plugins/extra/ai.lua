@@ -8,9 +8,8 @@ return {
     },
     keys = {
       { "<Leader>a", "", desc = "+ai" },
-      { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "Chat" },
-      { "<Leader>aa", "<Cmd>CodeCompanionChat Add<CR>", mode = "x", desc = "Add Selected to Chat" },
-      { "<Leader>a/", "<Cmd>CodeCompanionActions<CR>", desc = "Actions" },
+      { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "CodeCompanion" },
+      { "<Leader>aa", "<Cmd>CodeCompanionChat Add<CR>", desc = "Add Selected to CodeCompanion", mode = "x" },
     },
     opts = {
       opts = {
@@ -22,5 +21,16 @@ return {
         },
       },
     },
+  },
+  {
+    "coder/claudecode.nvim",
+    cmd = { "ClaudeCode" },
+    dependencies = "folke/snacks.nvim",
+    keys = {
+      { "<Leader>ac", "<Cmd>ClaudeCode<CR>", desc = "Claude Code" },
+      { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Add Selected to Claude Code", mode = "x" },
+      { "<Leader>aC", "<Cmd>ClaudeCode --continue<CR>", desc = "Resume Claude Code" },
+    },
+    opts = {},
   },
 }

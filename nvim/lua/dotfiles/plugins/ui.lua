@@ -325,39 +325,4 @@ return {
     keys = { { "d<Space>", function() require("mini.trailspace").trim() end, desc = "Trim Trailing Space" } },
     opts = {},
   },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    config = function(_, opts)
-      require("ibl").setup(opts)
-
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-    end,
-    event = "LazyFile",
-    opts = {
-      indent = {
-        char = "│",
-        tab_char = "│",
-      },
-      scope = {
-        include = {
-          node_type = {
-            lua = { "table_constructor" },
-          },
-        },
-        highlight = {
-          "SnacksIndent1",
-          "SnacksIndent2",
-          "SnacksIndent3",
-          "SnacksIndent4",
-          "SnacksIndent5",
-          "SnacksIndent6",
-          "SnacksIndent7",
-          "SnacksIndent8",
-        },
-        show_start = false,
-        show_end = false,
-      },
-    },
-  },
 }

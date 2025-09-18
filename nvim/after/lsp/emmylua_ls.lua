@@ -33,10 +33,10 @@ return {
         },
         externalToolRangeFormat = {
           program = "stylua",
-          args = vim.list_extend(vim.deepcopy(stylua_args), {
+          args = vim.list_extend({
             "--range-start=${start_offset}",
             "--range-end=${end_offset}",
-          }),
+          }, stylua_args),
         },
       },
       runtime = {

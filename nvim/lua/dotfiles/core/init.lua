@@ -73,3 +73,7 @@ vim.diagnostic.config({
 })
 
 vim.cmd("colorscheme " .. Dotfiles.user.colorscheme)
+
+for k, v in pairs(Dotfiles.user.env) do
+  vim.env[k] = v
+end

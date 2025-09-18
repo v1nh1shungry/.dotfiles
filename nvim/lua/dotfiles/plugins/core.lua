@@ -316,9 +316,24 @@ return {
     opts = {
       bigfile = { enabled = true },
       image = { doc = { enabled = false } },
+      indent = {
+        scope = {
+          hl = {
+            "SnacksIndent1",
+            "SnacksIndent2",
+            "SnacksIndent3",
+            "SnacksIndent4",
+            "SnacksIndent5",
+            "SnacksIndent6",
+            "SnacksIndent7",
+            "SnacksIndent8",
+          },
+        },
+      },
       input = { enabled = true },
       notifier = { enabled = true },
       quickfile = { enabled = true },
+      scope = { cursor = false },
       scratch = { autowrite = false },
       statuscolumn = { folds = { open = true, git_hl = true } },
       words = { enabled = true },

@@ -51,6 +51,11 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     opts = {
       config = mcp_settings_path,
+      ui = {
+        window = {
+          border = "rounded",
+        },
+      },
       use_bundled_binary = true,
     },
   },
@@ -59,15 +64,21 @@ return {
     cmd = { "ClaudeCode" },
     dependencies = "folke/snacks.nvim",
     keys = {
-      { "<Leader>ac", "<Cmd>ClaudeCode<CR>", desc = "Claude Code" },
+      { "<Leader>ac", "<Cmd>ClaudeCode --continue<CR>", desc = "Claude Code (Resume If Any)" },
       { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Add Selected to Claude Code", mode = "x" },
-      { "<Leader>aC", "<Cmd>ClaudeCode --continue<CR>", desc = "Resume Claude Code" },
+      { "<Leader>aC", "<Cmd>ClaudeCode<CR>", desc = "Claude Code (New)" },
     },
     opts = {
       diff_opts = {
+        hide_terminal_in_new_tab = true,
         open_in_new_tab = true,
       },
       terminal = {
+        snacks_win_opts = {
+          keys = {
+            term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
+          },
+        },
         split_width_percentage = 0.4,
       },
       terminal_cmd = "claude --mcp-config=" .. mcp_settings_path,

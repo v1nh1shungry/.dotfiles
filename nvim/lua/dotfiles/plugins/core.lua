@@ -128,6 +128,10 @@ return {
       })
     end,
     event = "LazyFile",
+    dependencies = {
+      "mason-org/mason.nvim",
+      opts = { ensure_installed = { "tree-sitter-cli" } },
+    },
     opts = {
       ensure_installed = {
         "bash",

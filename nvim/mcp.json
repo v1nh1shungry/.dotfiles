@@ -7,5 +7,13 @@
       ],
       "command": "npx"
     }
+  },
+  "nativeMCPServers": {
+    "mcphub": {
+      "disabled": true
+    },
+    "neovim": {
+      "disabled": true
+    }
   }
 }

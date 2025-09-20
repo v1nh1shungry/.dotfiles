@@ -171,4 +171,30 @@ return {
     },
   },
   "neovim/nvim-lspconfig",
+  {
+    "coder/claudecode.nvim",
+    cmd = { "ClaudeCode" },
+    dependencies = "folke/snacks.nvim",
+    keys = {
+      { "<Leader>ac", "<Cmd>ClaudeCode --continue<CR>", desc = "Claude Code (Resume If Any)" },
+      { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Add Selected to Claude Code", mode = "x" },
+      { "<Leader>aC", "<Cmd>ClaudeCode<CR>", desc = "Claude Code (New)" },
+    },
+    opts = {
+      diff_opts = {
+        hide_terminal_in_new_tab = true,
+        open_in_new_tab = true,
+      },
+      terminal = {
+        snacks_win_opts = {
+          keys = {
+            term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
+            hide = { "<C-c>", function(self) self:hide() end, desc = "Hide" },
+          },
+        },
+        split_width_percentage = 0.5,
+      },
+      terminal_cmd = "claude --mcp-config=" .. vim.fs.joinpath(vim.fn.stdpath("config") --[[@as string]], "mcp.json"),
+    },
+  },
 }

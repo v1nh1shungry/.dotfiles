@@ -40,51 +40,18 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 do
-  local minimal_options = {
-    bo = {
-      buflisted = false,
-    },
-    wo = {
-      number = false,
-      relativenumber = false,
-      colorcolumn = "",
-      statuscolumn = "",
-      signcolumn = "no",
-    },
-  }
-
   local function setup_minimal_ui()
     if vim.list_contains({ "help", "nofile" }, vim.bo.buftype) then
-      local b_restore_ui = {}
-      local w_restore_ui = {}
-
-      for opt, value in pairs(minimal_options.bo) do
-        b_restore_ui[opt] = vim.bo[opt]
-        vim.bo[opt] = value
-      end
-      for opt, value in pairs(minimal_options.wo) do
-        w_restore_ui[opt] = vim.wo[opt]
-        vim.wo[opt] = value
-      end
-
-      vim.b.restore_minimal_ui = b_restore_ui
-      vim.w.restore_minimal_ui = w_restore_ui
+      vim.opt_local.buflisted = false
+      vim.opt_local.number = false
+      vim.opt_local.relativenumber = false
+      vim.opt_local.colorcolumn = ""
+      vim.opt_local.statuscolumn = ""
+      vim.opt_local.signcolumn = "no"
 
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then
-        Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = true, desc = ":close (minimal)" })
-      end
-    else
-      for opt, value in pairs(vim.b.restore_minimal_ui or {}) do
-        vim.bo[opt] = value
-      end
-      for opt, value in pairs(vim.w.restore_minimal_ui or {}) do
-        vim.wo[opt] = value
-      end
-
-      local map_desc = vim.fn.maparg("q", "n", false, true).desc
-      if map_desc and map_desc == ":close (minimal)" then
-        vim.keymap.del("n", "q", { buffer = true })
+        Dotfiles.map({ "q", "<Cmd>close<CR>", buffer = true, desc = ":close" })
       end
     end
   end

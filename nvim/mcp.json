@@ -6,14 +6,19 @@
         "@upstash/context7-mcp@latest"
       ],
       "command": "npx"
-    }
-  },
-  "nativeMCPServers": {
-    "mcphub": {
-      "disabled": true
     },
-    "neovim": {
-      "disabled": true
+    "serena": {
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "${PWD}"
+      ],
+      "command": "uvx"
     }
   }
 }

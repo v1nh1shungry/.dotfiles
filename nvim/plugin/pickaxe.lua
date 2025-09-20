@@ -18,10 +18,6 @@ local function normal_git_root()
   return root
 end
 
----@param line string
----@return string, string
-local function parse_commit(line) return string.match(line, "([^ ]+) (.+)") end
-
 ---@async
 local function pickaxe()
   local root = normal_git_root()
@@ -34,20 +30,53 @@ local function pickaxe()
     return
   end
 
-  require("fzf-lua").fzf_exec("git log --pretty=oneline --abbrev-commit -G " .. query, {
-    actions = {
-      ["default"] = function(selected)
-        local sha = parse_commit(selected[1])
-        vim.cmd(("DiffviewFileHistory --base=%s -n=1 -G=%s"):format(sha, query))
-      end,
-    },
-    preview = {
-      type = "cmd",
-      fn = function(items)
-        local sha = parse_commit(items[1])
-        return ("git -C %s show %s -G %s | delta"):format(root, sha, query)
-      end,
-    },
+  Dotfiles.co.schedule()
+  Snacks.picker({
+    finder = function(_, ctx)
+      return require("snacks.picker.source.proc").proc({
+        cmd = "git",
+        args = { "-C", root, "log", "--pretty=oneline", "--abbrev-commit", "-G", query },
+        cwd = root,
+        transform = function(item)
+          local sha, msg = string.match(item.text, "([^ ]+) (.+)")
+          if not msg then
+            sha = item.text
+            msg = "<empty commit message>"
+          end
+
+          item.sha = sha
+          item.msg = msg
+          item.text = sha .. " " .. msg
+          return item
+        end,
+      }, ctx)
+    end,
+    format = function(item)
+      return {
+        { item.sha, "SnacksPickerLabel" },
+        { " ", virtual = true },
+        { item.msg, "SnacksPickerComment" },
+      }
+    end,
+    confirm = function(picker, item)
+      picker:close()
+      vim.cmd(("DiffviewFileHistory --base=%s -n=1 -G=%s"):format(item.sha, query))
+    end,
+    preview = function(ctx)
+      local cmd = {
+        "git",
+        "-c",
+        "delta." .. vim.o.background .. "=true",
+        "-C",
+        root,
+        "show",
+        ctx.item.sha,
+        "-G",
+        query,
+      }
+      Snacks.picker.preview.cmd(cmd, ctx)
+    end,
+    layout = { layout = { title = "Git Pickaxe" } },
   })
 end
 

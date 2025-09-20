@@ -28,39 +28,39 @@ vim.api.nvim_create_autocmd("LspAttach", {
     ---@type table<vim.lsp.protocol.Method.ClientToServer, dotfiles.utils.map.Opts|dotfiles.utils.map.Opts[]>
     local mappings = {
       [ms.textDocument_rename] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
-      [ms.textDocument_codeAction] = { "<Leader>ca", "<Cmd>FzfLua lsp_code_actions<CR>", desc = "Code Action" },
+      [ms.textDocument_codeAction] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
       [ms.textDocument_documentSymbol] = {
         {
           "<Leader>ss",
-          "<Cmd>FzfLua lsp_document_symbols<CR>",
+          function() Snacks.picker.lsp_symbols() end,
           desc = "LSP Symbols (Document)",
         },
         { "gO", "<Cmd>Outline<CR>", desc = "Symbol Outline" },
       },
       [ms.workspace_symbol] = {
         "<Leader>sS",
-        "<Cmd>FzfLua lsp_workspace_symbols<CR>",
+        function() Snacks.picker.lsp_workspace_symbols() end,
         desc = "LSP Symbols (Workspace)",
       },
       [ms.textDocument_references] = {
         { "gR", vim.lsp.buf.references, desc = "Goto References" },
-        { "<Leader>sR", "<Cmd>FzfLua lsp_references<CR>", desc = "LSP References" },
+        { "<Leader>sR", function() Snacks.picker.lsp_references() end, desc = "LSP References" },
       },
       [ms.textDocument_definition] = {
         { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
-        { "<Leader>sd", "<Cmd>FzfLua lsp_definitions<CR>", desc = "LSP Definitions" },
+        { "<Leader>sd", function() Snacks.picker.lsp_definitions() end, desc = "LSP Definitions" },
       },
       [ms.textDocument_declaration] = {
         { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
-        { "<Leader>sD", "<Cmd>FzfLua lsp_declarations<CR>", desc = "LSP Declarations" },
+        { "<Leader>sD", function() Snacks.picker.lsp_declarations() end, desc = "LSP Declarations" },
       },
       [ms.textDocument_typeDefinition] = {
         { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
-        { "<Leader>sy", "<Cmd>FzfLua lsp_typedefs<CR>", desc = "LSP Type Definitions" },
+        { "<Leader>sy", function() Snacks.picker.lsp_type_definitions() end, desc = "LSP Type Definitions" },
       },
       [ms.textDocument_implementation] = {
         { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
-        { "<Leader>sI", "<Cmd>FzfLua lsp_implementations<CR>", desc = "LSP Implementations" },
+        { "<Leader>sI", function() Snacks.picker.lsp_implementations() end, desc = "LSP Implementations" },
       },
       [ms.callHierarchy_incomingCalls] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
       [ms.callHierarchy_outgoingCalls] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },

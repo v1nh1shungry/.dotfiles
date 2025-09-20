@@ -307,15 +307,39 @@ return {
     lazy = false,
     keys = {
       { "<C-q>", function() Snacks.bufdelete() end, desc = "Close Buffer" },
-      { "<M-=>", function() Snacks.terminal.toggle() end, mode = { "n", "t" }, desc = "Terminal" },
       { "<C-w>z", function() Snacks.zen.zoom() end, desc = "Zoom" },
-      { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
+      { "<Leader>/", function() Snacks.picker.grep() end, desc = "Live Grep" },
+      { "<Leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
+      { "<Leader><Space>", function() Snacks.picker.smart() end, desc = "Files (Frecency)" },
+      { "<Leader>h", function() Snacks.picker.help() end, desc = "Help Pages" },
+      { "<Leader>b/", function() Snacks.picker.grep_buffers() end, desc = "Grep" },
+      { "<Leader>bb", function() Snacks.picker.buffers() end, desc = "Buffers" },
+      { "<Leader>bo", function() Snacks.bufdelete.other() end, desc = "Only" },
+      { "<Leader>ff", function() Snacks.picker.files() end, desc = "Files" },
+      { "<Leader>fr", function() Snacks.picker.recent() end, desc = "Recent Files" },
+      { "<Leader>fs", function() Snacks.scratch() end, desc = "Open Scratch Buffer" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, mode = { "n", "x" }, desc = "Git Browse" },
       { "<Leader>gg", function() Snacks.lazygit() end, desc = "LazyGit" },
-      { "<Leader>gl", function() Snacks.lazygit.log_file() end, desc = "Log (file)" },
-      { "<Leader>gL", function() Snacks.lazygit.log() end, desc = "Log" },
-      { "<Leader>fs", function() Snacks.scratch() end, desc = "Open Scratch Buffer" },
-      { "<Leader>bo", function() Snacks.bufdelete.other() end, desc = "Only" },
+      { "<Leader>gl", function() Snacks.picker.git_log_line() end, desc = "Log (file)" },
+      { "<Leader>s,", function() Snacks.picker.resume() end, desc = "Resume" },
+      { "<Leader>s:", function() Snacks.picker.commands() end, desc = "Commands" },
+      { "<Leader>sC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },
+      { "<Leader>sX", function() Snacks.picker.diagnostics() end, desc = "Workspace Diagnostics" },
+      { "<Leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocommands" },
+      { "<Leader>sh", function() Snacks.picker.highlights() end, desc = "Highlight Groups" },
+      { "<Leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
+      { "<Leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
+      { "<Leader>sl", function() Snacks.picker.loclist() end, desc = "Location List" },
+      { "<Leader>sL", function() Snacks.picker.lsp_config() end, desc = "LSP Config" },
+      { "<Leader>sm", function() Snacks.picker.man() end, desc = "Manpages" },
+      { "<Leader>sx", function() Snacks.picker.diagnostics_buffer() end, desc = "Document Diagnostics" },
+      { "<Leader>sp", function() Snacks.picker.lazy() end, desc = "Plugin Specs" },
+      { "<Leader>sP", function() Snacks.picker.projects() end, desc = "Projects" },
+      { "<Leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
+      { "<Leader>sz", function() Snacks.picker.zoxide() end, desc = "Zoxide" },
+      { "<Leader>u/", function() Snacks.picker.notifications() end, desc = "Notifications" },
+      { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
+      { "<Leader>ut", function() Snacks.picker.undo() end, desc = "Undotree" },
     },
     opts = {
       bigfile = { enabled = true },
@@ -336,6 +360,44 @@ return {
       },
       input = { enabled = true },
       notifier = { enabled = true },
+      picker = {
+        layout = {
+          preset = "ivy",
+        },
+        layouts = {
+          ivy = {
+            layout = {
+              height = 0.5,
+            },
+          },
+        },
+        previewers = {
+          git = { native = true },
+        },
+        on_close = function()
+          vim.cmd("nohlsearch")
+          -- Fix CursorLine highlight restoration issue after picker closes
+          vim.schedule(function()
+            -- Force reset any picker-related highlights that might be lingering
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+              if vim.api.nvim_win_is_valid(win) then
+                local winhl = vim.wo[win].winhighlight
+                if winhl and winhl:find("SnacksPicker") then
+                  -- Clear all SnacksPicker-related winhighlight settings
+                  local cleaned = winhl
+                    :gsub("[^,]*SnacksPicker[^,]*", "")
+                    :gsub(",,+", ",")
+                    :gsub("^,", "")
+                    :gsub(",$", "")
+                  vim.wo[win].winhighlight = cleaned
+                end
+              end
+            end
+            -- Force a complete redraw
+            vim.cmd("redraw!")
+          end)
+        end,
+      },
       quickfile = { enabled = true },
       scope = { cursor = false },
       scratch = { autowrite = false },
@@ -353,78 +415,5 @@ return {
     "mikesmithgh/kitty-scrollback.nvim",
     event = "User KittyScrollbackLaunch",
     opts = {},
-  },
-  {
-    "ibhagwan/fzf-lua",
-    cmd = "FzfLua",
-    config = function(_, opts)
-      require("fzf-lua").setup(opts)
-      vim.cmd("FzfLua register_ui_select")
-    end,
-    dependencies = {
-      "nvim-mini/mini.icons",
-      "folke/snacks.nvim",
-    },
-    keys = {
-      { "<Leader><Space>", "<Cmd>FzfLua files<CR>", desc = "Files" },
-      { "<Leader>h", "<Cmd>FzfLua helptags<CR>", desc = "Help Pages" },
-      { "<Leader>/", "<Cmd>FzfLua live_grep_native<CR>", desc = "Live Grep" },
-      { "<Leader>:", "<Cmd>FzfLua command_history<CR>", desc = "Command History" },
-      { "<Leader>fr", "<Cmd>FzfLua oldfiles<CR>", desc = "Recent Files" },
-      { "<Leader>sa", "<Cmd>FzfLua autocmds<CR>", desc = "Autocommands" },
-      { "<Leader>sk", "<Cmd>FzfLua keymaps<CR>", desc = "Keymaps" },
-      { "<Leader>s,", "<Cmd>FzfLua resume<CR>", desc = "Resume" },
-      { "<Leader>sh", "<Cmd>FzfLua highlights<CR>", desc = "Highlight Groups" },
-      { "<Leader>sm", "<Cmd>FzfLua manpages<CR>", desc = "Manpages" },
-      { "<Leader>sx", "<Cmd>FzfLua diagnostics_document<CR>", desc = "Document Diagnostics" },
-      { "<Leader>sX", "<Cmd>FzfLua diagnostics_workspace<CR>", desc = "Workspace Diagnostics" },
-      { "<Leader>sq", "<Cmd>FzfLua quickfix<CR>", desc = "Quickfix List" },
-      { "<Leader>sQ", "<Cmd>FzfLua quickfix_stack<CR>", desc = "Quickfix Stack" },
-      { "<Leader>sl", "<Cmd>FzfLua loclist<CR>", desc = "Location List" },
-      { "<Leader>sL", "<Cmd>FzfLua loclist_stack<CR>", desc = "Location Stack" },
-      { "<Leader>sC", "<Cmd>FzfLua colorschemes<CR>", desc = "Colorschemes" },
-      { "<Leader>s:", "<Cmd>FzfLua commands<CR>", desc = "Commands" },
-      { "<Leader>sz", "<Cmd>FzfLua zoxide<CR>", desc = "Zoxide" },
-      { "<Leader>gh", "<Cmd>FzfLua git_hunks<CR>", desc = "Hunks" },
-      { "<Leader>bb", "<Cmd>FzfLua buffers<CR>", desc = "Buffers" },
-    },
-    opts = {
-      files = {
-        cwd_prompt = false,
-      },
-      fzf_colors = true,
-      fzf_opts = {
-        ["--cycle"] = true,
-      },
-      lsp = {
-        code_actions = {
-          previewer = "codeaction_native",
-        },
-      },
-      keymap = {
-        builtin = {
-          ["<C-f>"] = "preview-page-down",
-          ["<C-b>"] = "preview-page-up",
-        },
-        fzf = {
-          ["ctrl-d"] = "half-page-down",
-          ["ctrl-u"] = "half-page-up",
-          ["ctrl-f"] = "preview-page-down",
-          ["ctrl-b"] = "preview-page-up",
-          ["ctrl-q"] = "select-all+accept",
-          -- Not a real keymap. To select the first item when query changes.
-          ["change"] = "first",
-        },
-      },
-      oldfiles = {
-        cwd_only = true,
-      },
-      winopts = {
-        col = 0,
-        height = 0.5,
-        row = 1,
-        width = 1,
-      },
-    },
   },
 }

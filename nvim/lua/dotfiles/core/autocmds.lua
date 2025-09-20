@@ -86,7 +86,7 @@ if vim.fn.executable("fcitx5-remote") == 1 then
     vim.fn.system({ "fcitx5-remote", enable and "-o" or "-c" })
   end
 
-  vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
+  vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter", "TermEnter" }, {
     callback = Dotfiles.co.void(function()
       if previous_im == "1" then
         activate_im(false)
@@ -98,7 +98,7 @@ if vim.fn.executable("fcitx5-remote") == 1 then
     group = augroup,
   })
 
-  vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave" }, {
+  vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave", "TermLeave" }, {
     callback = Dotfiles.co.void(function()
       previous_im = get_current_im()
       activate_im(false)

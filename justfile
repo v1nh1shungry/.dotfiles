@@ -31,9 +31,6 @@ gdb:
 git:
   ln -sf {{justfile_directory()}}/git/.gitconfig {{home_directory()}}
 
-hyprland:
-  ln -sf {{justfile_directory()}}/hypr {{config_directory()}}
-
 kitty:
   mkdir -p {{config_directory()}}/kitty
   ln -sf {{justfile_directory()}}/kitty/base.conf {{config_directory()}}/kitty
@@ -43,6 +40,9 @@ kitty:
 
 lazygit:
   ln -sf {{justfile_directory()}}/lazygit {{config_directory()}}
+
+niri:
+  ln -sf {{justfile_directory()}}/niri {{config_directory()}}
 
 npm:
   echo "registry=https://npmreg.proxy.ustclug.org/" >{{home_directory()}}/.npmrc
@@ -65,12 +65,6 @@ systemd:
 tmux:
   ln -sf {{justfile_directory()}}/tmux {{config_directory()}}
 
-rofi:
-  ln -sf {{justfile_directory()}}/rofi {{config_directory()}}
-
-waybar:
-  ln -sf {{justfile_directory()}}/waybar {{config_directory()}}
-
 yazi:
   mkdir -p {{config_directory()}}/yazi
   ln -sf {{justfile_directory()}}/yazi/package.toml {{config_directory()}}/yazi
@@ -80,4 +74,4 @@ yazi:
 
 all: bat cargo fish fontconfig gdb git kitty lazygit npm nvim starship yazi
 
-wayland: brave hyprland rofi waybar
+wayland: brave niri

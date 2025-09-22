@@ -177,7 +177,7 @@ return {
     dependencies = "folke/snacks.nvim",
     keys = {
       { "<Leader>a", "", desc = "+claude" },
-      { "<Leader>ac", "<Cmd>ClaudeCode --continue<CR>", desc = "Claude Code (Resume If Any)" },
+      { "<Leader>ac", "<Cmd>ClaudeCode --continue<CR>", desc = "Claude Code (Resume)" },
       { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Add Selected to Claude Code", mode = "x" },
       { "<Leader>aC", "<Cmd>ClaudeCode<CR>", desc = "Claude Code (New)" },
     },

@@ -130,7 +130,9 @@ return {
     event = "LazyFile",
     dependencies = {
       "mason-org/mason.nvim",
-      opts = { ensure_installed = { "tree-sitter-cli" } },
+      opts = {
+        ensure_installed = vim.version.cmp(Dotfiles.C.glibc_version(), "2.31") > 0 and { "tree-sitter-cli" } or {},
+      },
     },
     opts = {
       ensure_installed = {
@@ -371,9 +373,6 @@ return {
             },
           },
         },
-        previewers = {
-          git = { native = true },
-        },
         on_close = function()
           vim.cmd("nohlsearch")
           -- Fix CursorLine highlight restoration issue after picker closes
@@ -384,11 +383,8 @@ return {
                 local winhl = vim.wo[win].winhighlight
                 if winhl and winhl:find("SnacksPicker") then
                   -- Clear all SnacksPicker-related winhighlight settings
-                  local cleaned = winhl
-                    :gsub("[^,]*SnacksPicker[^,]*", "")
-                    :gsub(",,+", ",")
-                    :gsub("^,", "")
-                    :gsub(",$", "")
+                  local cleaned =
+                    winhl:gsub("[^,]*SnacksPicker[^,]*", ""):gsub(",,+", ","):gsub("^,", ""):gsub(",$", "")
                   vim.wo[win].winhighlight = cleaned
                 end
               end
@@ -397,6 +393,17 @@ return {
             vim.cmd("redraw!")
           end)
         end,
+        previewers = {
+          git = { native = true },
+        },
+        sources = {
+          recent = {
+            filter = { cwd = true },
+          },
+          smart = {
+            filter = { cwd = true },
+          },
+        },
       },
       quickfile = { enabled = true },
       scope = { cursor = false },

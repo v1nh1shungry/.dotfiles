@@ -51,15 +51,6 @@ if status is-interactive
         alias cd "echo 'use `z` instead'; false"
     end
 
-    if test -d ~/.local/kitty.app
-        fish_add_path -g ~/.local/kitty.app/bin
-        alias kitty-update "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
-    end
-
-    if command -q kitten
-        alias icat "kitten icat"
-    end
-
     if command -q yazi
         function y
             set tmp (mktemp -t "yazi-cwd.XXXXXX")

@@ -31,13 +31,6 @@ gdb:
 git:
   ln -sf {{justfile_directory()}}/git/.gitconfig {{home_directory()}}
 
-kitty:
-  mkdir -p {{config_directory()}}/kitty
-  ln -sf {{justfile_directory()}}/kitty/base.conf {{config_directory()}}/kitty
-  ln -sf {{justfile_directory()}}/kitty/kitty.conf {{config_directory()}}/kitty
-  ln -sf {{justfile_directory()}}/kitty/goto_tab.py {{config_directory()}}/kitty
-  kitty +kitten themes --config-file-name=base.conf Tokyo Night Moon
-
 lazygit:
   ln -sf {{justfile_directory()}}/lazygit {{config_directory()}}
 
@@ -72,6 +65,6 @@ yazi:
   ln -sf {{justfile_directory()}}/yazi/yazi.toml {{config_directory()}}/yazi
   ya pkg add BennyOe/tokyo-night
 
-all: bat cargo fish fontconfig gdb git kitty lazygit npm nvim starship yazi
+all: bat cargo fish fontconfig gdb git lazygit npm nvim starship yazi
 
 wayland: brave niri

@@ -235,7 +235,6 @@ return {
   },
   {
     "mrjones2014/smart-splits.nvim",
-    build = "./kitty/install-kittens.bash",
     event = "VeryLazy",
     keys = {
       { "<M-h>", function() require("smart-splits").move_cursor_left() end, desc = "Left Window", mode = { "n", "t" } },
@@ -416,11 +415,6 @@ return {
   {
     "tiagovla/scope.nvim",
     event = "VeryLazy",
-    opts = {},
-  },
-  {
-    "mikesmithgh/kitty-scrollback.nvim",
-    event = "User KittyScrollbackLaunch",
     opts = {},
   },
 }

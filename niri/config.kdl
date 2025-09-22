@@ -330,8 +330,9 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Alt+Space hotkey-overlay-title="Run an Application" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+    Alt+Space hotkey-overlay-title="Application Launcher" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "toggle"; }
+    Super+E hotkey-overlay-title="File Explorer" { spawn "nautilus"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
@@ -558,7 +559,7 @@ environment {
     GDK_BACKEND "wayland,x11,*"
     QT_AUTO_SCREEN_SCALE_FACTOR "1"
     QT_QPA_PLATFORM "wayland;xcb"
-    QT_QPA_PLATFORMTHEME "gtk4"
+    QT_QPA_PLATFORMTHEME "gtk3"
 
     LANG "zh_CN.UTF-8"
     LANGUAGE "zh_CN.UTF-8"

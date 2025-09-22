@@ -46,14 +46,13 @@ require("dotfiles.core.lazy")
 require("dotfiles.core.lsp")
 
 vim.filetype.add({
-  filename = { ["nvim.user"] = "lua" },
+  filename = {
+    ["nvim.user"] = "lua",
+  },
   pattern = {
-    [".*/kitty/.+%.conf"] = "kitty",
     ["%.env%.[%w_.-]+"] = "sh",
   },
 })
-
-vim.treesitter.language.register("bash", "kitty")
 
 vim.diagnostic.config({
   float = { border = "rounded" },

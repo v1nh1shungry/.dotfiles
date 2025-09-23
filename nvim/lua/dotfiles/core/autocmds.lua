@@ -72,40 +72,64 @@ end
 -- }}}
 
 -- Inspired by https://github.com/keaising/im-select.nvim {{{
-if vim.fn.executable("fcitx5-remote") == 1 then
-  local augroup = Dotfiles.augroup("im")
-  local previous_im
-
-  local function get_current_im() return vim.trim(vim.fn.system("fcitx5-remote")) end
-
-  ---@param enable? boolean
-  local function activate_im(enable)
-    if type(enable) ~= "boolean" then
-      enable = true
+do
+  local function detect_fcitx_remote()
+    if vim.fn.executable("fcitx5-remote") == 1 then
+      return {
+        command = "fcitx5-remote",
+        name = "fcitx5",
+        inactive_state = "1",
+        active_state = "2",
+      }
+    elseif vim.fn.executable("fcitx-remote") == 1 then
+      return {
+        command = "fcitx-remote",
+        name = "fcitx",
+        inactive_state = "1",
+        active_state = "2",
+      }
     end
-    vim.fn.system({ "fcitx5-remote", enable and "-o" or "-c" })
+    return nil
   end
 
-  vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter", "TermEnter" }, {
-    callback = Dotfiles.co.void(function()
-      if previous_im == "1" then
-        activate_im(false)
-      elseif previous_im == "2" then
-        activate_im()
-      end
-    end),
-    desc = "Automatically activate Fcitx5 if needed",
-    group = augroup,
-  })
+  local fcitx_config = detect_fcitx_remote()
+  if fcitx_config then
+    local augroup = Dotfiles.augroup("im")
+    local previous_im
 
-  vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave", "TermLeave" }, {
-    callback = Dotfiles.co.void(function()
-      previous_im = get_current_im()
-      activate_im(false)
-    end),
-    desc = "Automatically deactivate Fcitx5",
-    group = augroup,
-  })
+    local function get_current_im()
+      return vim.trim(vim.fn.system(fcitx_config.command))
+    end
+
+    ---@param enable? boolean
+    local function activate_im(enable)
+      if type(enable) ~= "boolean" then
+        enable = true
+      end
+      vim.fn.system({ fcitx_config.command, enable and "-o" or "-c" })
+    end
+
+    vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter", "TermEnter" }, {
+      callback = Dotfiles.co.void(function()
+        if previous_im == fcitx_config.inactive_state then
+          activate_im(false)
+        elseif previous_im == fcitx_config.active_state then
+          activate_im()
+        end
+      end),
+      desc = string.format("Automatically activate %s if needed", fcitx_config.name),
+      group = augroup,
+    })
+
+    vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave", "TermLeave" }, {
+      callback = Dotfiles.co.void(function()
+        previous_im = get_current_im()
+        activate_im(false)
+      end),
+      desc = string.format("Automatically deactivate %s", fcitx_config.name),
+      group = augroup,
+    })
+  end
 end
 -- }}}
 

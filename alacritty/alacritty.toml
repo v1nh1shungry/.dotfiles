@@ -1,0 +1,14 @@
+[font]
+size = 14
+
+[general]
+import = ["theme.toml"]
+
+[mouse]
+hide_when_typing = true
+
+[terminal.shell]
+program = "tmux"
+
+[window]
+startup_mode = "Maximized"

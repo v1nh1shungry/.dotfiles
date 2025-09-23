@@ -11,6 +11,8 @@
 * [Neovim](https://github.com/neovim/neovim)
 * [Spotify](https://open.spotify.com/)
 * [WeChat](https://weixin.qq.com/)
+* [alacritty](https://alacritty.org/)
+* [atuin](https://github.com/atuinsh/atuin)
 * [bat](https://github.com/sharkdp/bat)
 * [btop](https://github.com/aristocratos/btop)
 * [cargo](https://www.rust-lang.org/)

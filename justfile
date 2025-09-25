@@ -23,6 +23,9 @@ cargo:
     mkdir -p {{ home_directory() }}/.cargo
     ln -sf {{ justfile_directory() }}/cargo/config.toml {{ home_directory() }}/.cargo
 
+codex:
+    ln -sf {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
+
 electron program:
     echo "--enable-wayland-ime" >{{ config_directory() }}/{{ program }}-flags.conf
 

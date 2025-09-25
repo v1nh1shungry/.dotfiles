@@ -406,7 +406,12 @@ return {
       quickfile = { enabled = true },
       scope = { cursor = false },
       scratch = { autowrite = false },
-      statuscolumn = { folds = { open = true, git_hl = true } },
+      statuscolumn = {
+        folds = {
+          open = true,
+          git_hl = true,
+        },
+      },
       words = { enabled = true },
     },
     priority = 1000,

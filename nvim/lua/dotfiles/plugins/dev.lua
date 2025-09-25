@@ -176,7 +176,7 @@ return {
     cmd = { "ClaudeCode" },
     dependencies = "folke/snacks.nvim",
     keys = {
-      { "<Leader>a", "", desc = "+claude" },
+      { "<Leader>a", "", desc = "+agent" },
       { "<Leader>ac", "<Cmd>ClaudeCode --continue<CR>", desc = "Claude Code (Resume)" },
       { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Add Selected to Claude Code", mode = "x" },
       { "<Leader>aC", "<Cmd>ClaudeCode<CR>", desc = "Claude Code (New)" },
@@ -189,8 +189,8 @@ return {
       terminal = {
         snacks_win_opts = {
           keys = {
+            hide = { "<C-c>", "hide", desc = "Hide" },
             term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
-            hide = { "<C-c>", function(self) self:hide() end, desc = "Hide" },
           },
         },
         split_width_percentage = 0.5,

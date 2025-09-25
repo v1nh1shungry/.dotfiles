@@ -37,8 +37,6 @@ do
 end
 -- }}}
 
-vim.deprecate = function() end
-
 require("dotfiles.core.autocmds")
 require("dotfiles.core.keymaps")
 require("dotfiles.core.options")

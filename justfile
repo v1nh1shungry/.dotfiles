@@ -23,6 +23,9 @@ cargo:
     mkdir -p {{ home_directory() }}/.cargo
     ln -sf {{ justfile_directory() }}/cargo/config.toml {{ home_directory() }}/.cargo
 
+claude:
+    ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
+
 codex:
     ln -sf {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
 
@@ -39,6 +42,9 @@ fontconfig:
 
 gdb:
     wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
+
+gemini:
+    ln -sf {{ justfile_directory() }}/gemini/settings.json {{ home_directory() }}/.gemini
 
 git:
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}

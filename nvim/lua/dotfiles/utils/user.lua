@@ -5,9 +5,7 @@
 ---@field lang? string[]
 local M = {
   colorscheme = "tokyonight",
-  env = {
-    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1,
-  },
+  env = {},
   extra = {},
   lang = {},
 }

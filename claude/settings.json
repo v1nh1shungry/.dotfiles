@@ -1,0 +1,12 @@
+{
+  "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__mcphub__context7__get-library-docs",
+      "mcp__mcphub__context7__resolve-library-id",
+      "mcp__mcphub__sequential_thinking__sequentialthinking"
+    ]
+  }
+}

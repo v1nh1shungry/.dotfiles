@@ -40,6 +40,7 @@ return {
           { "z", group = "fold" },
           { "<Space>", group = "leader" },
           { "<Leader><Tab>", group = "tab" },
+          { "<Leader>a", group = "agent" },
           { "<Leader>b", group = "buffer" },
           { "<Leader>c", group = "code" },
           { "<Leader>f", group = "file" },

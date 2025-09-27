@@ -17,7 +17,6 @@ return {
       "ravitemer/mcphub.nvim",
     },
     keys = {
-      { "<Leader>a", "", desc = "+agent" },
       { "<Leader>ac", "<Cmd>ClaudeCode --continue<CR>", desc = "Claude Code (Resume)" },
       { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Add Selected to Claude Code", mode = "x" },
       { "<Leader>aC", "<Cmd>ClaudeCode<CR>", desc = "Claude Code (New)" },
@@ -29,6 +28,7 @@ return {
       },
       terminal = {
         snacks_win_opts = snacks_win_opts,
+        split_width_percentage = 0.5,
       },
       terminal_cmd = "claude --mcp-config="
         .. vim.fs.joinpath(assert(vim.uv.os_homedir()), ".dotfiles", "claude", "mcp.json"),
@@ -53,6 +53,11 @@ return {
     },
     opts = {
       config = vim.fs.joinpath(vim.fn.stdpath("config") --[[@as string]], "mcp.json"),
+      ui = {
+        window = {
+          border = "rounded",
+        },
+      },
       use_bundled_binary = true,
     },
   },

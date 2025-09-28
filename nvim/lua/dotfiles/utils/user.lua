@@ -10,6 +10,12 @@ local M = {
   lang = {},
 }
 
+vim.filetype.add({
+  filename = {
+    ["nvim.user"] = "lua",
+  },
+})
+
 local path = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "nvim.user")
 
 if vim.fn.filereadable(path) == 1 then

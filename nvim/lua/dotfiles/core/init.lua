@@ -1,3 +1,11 @@
+local ffi = require("ffi")
+
+ffi.cdef([[
+const char *gnu_get_libc_version();
+]])
+
+vim.g.glibc_version = ffi.string(ffi.C.gnu_get_libc_version())
+
 _G.Dotfiles = require("dotfiles.utils")
 
 -- https://www.lazyvim.org/ {{{
@@ -43,14 +51,15 @@ require("dotfiles.core.options")
 require("dotfiles.core.lazy")
 require("dotfiles.core.lsp")
 
-vim.filetype.add({
-  filename = {
-    ["nvim.user"] = "lua",
-  },
-  pattern = {
-    ["%.env%.[%w_.-]+"] = "sh",
-  },
-})
+-- clean loader cache without corresponding file.
+local luac_path = vim.fs.joinpath(vim.fn.stdpath("cache") --[[@as string]], "luac")
+for name, type in vim.fs.dir(luac_path) do
+  if type == "file" then
+    if not vim.uv.fs_stat(vim.uri_decode(name):sub(1, -2)) then
+      vim.fs.rm(vim.fs.joinpath(luac_path, name))
+    end
+  end
+end
 
 vim.diagnostic.config({
   float = { border = "rounded" },

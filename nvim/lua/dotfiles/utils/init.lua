@@ -1,6 +1,4 @@
 ---@class dotfiles.utils
----@field C dotfiles.utils.C
----@field co dotfiles.utils.Co
 ---@field git dotfiles.utils.Git
 ---@field notify dotfiles.utils.Notifier|dotfiles.utils.Notify
 ---@field user dotfiles.utils.User

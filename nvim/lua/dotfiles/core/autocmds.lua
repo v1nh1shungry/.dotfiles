@@ -110,22 +110,22 @@ do
     end
 
     vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter", "TermEnter" }, {
-      callback = Dotfiles.co.void(function()
+      callback = function()
         if previous_im == fcitx_config.inactive_state then
           activate_im(false)
         elseif previous_im == fcitx_config.active_state then
           activate_im()
         end
-      end),
+      end,
       desc = string.format("Automatically activate %s if needed", fcitx_config.name),
       group = augroup,
     })
 
     vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave", "TermLeave" }, {
-      callback = Dotfiles.co.void(function()
+      callback = function()
         previous_im = get_current_im()
         activate_im(false)
-      end),
+      end,
       desc = string.format("Automatically deactivate %s", fcitx_config.name),
       group = augroup,
     })

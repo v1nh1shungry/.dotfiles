@@ -14,5 +14,13 @@
         "@modelcontextprotocol/server-sequential-thinking"
       ]
     }
+  },
+  "nativeMCPServers": {
+    "mcphub": {
+      "disabled": true
+    },
+    "neovim": {
+      "disabled": true
+    }
   }
 }

@@ -45,10 +45,6 @@ fontconfig:
 gdb:
     wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
 
-gemini:
-    mkdir -p {{ home_directory() }}/.gemini
-    ln -sf {{ justfile_directory() }}/gemini/settings.json {{ home_directory() }}/.gemini
-
 git:
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}
 

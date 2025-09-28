@@ -131,7 +131,7 @@ return {
     dependencies = {
       "mason-org/mason.nvim",
       opts = {
-        ensure_installed = vim.version.cmp(Dotfiles.C.glibc_version(), "2.31") > 0 and { "tree-sitter-cli" } or {},
+        ensure_installed = vim.version.cmp(vim.g.glibc_version, "2.31") > 0 and { "tree-sitter-cli" } or {},
       },
     },
     opts = {

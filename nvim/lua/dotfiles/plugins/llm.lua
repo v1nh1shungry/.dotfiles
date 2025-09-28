@@ -45,11 +45,6 @@ return {
         function() Snacks.terminal.toggle({ "codex", "resume" }, { win = snacks_win_opts }) end,
         desc = "Codex",
       },
-      {
-        "<leader>ag",
-        function() Snacks.terminal.toggle("gemini", { win = snacks_win_opts }) end,
-        desc = "Gemini",
-      },
     },
     opts = {
       config = vim.fs.joinpath(vim.fn.stdpath("config") --[[@as string]], "mcp.json"),

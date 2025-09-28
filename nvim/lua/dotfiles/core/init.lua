@@ -49,7 +49,6 @@ require("dotfiles.core.autocmds")
 require("dotfiles.core.keymaps")
 require("dotfiles.core.options")
 require("dotfiles.core.lazy")
-require("dotfiles.core.lsp")
 
 -- clean loader cache without corresponding file.
 local luac_path = vim.fs.joinpath(vim.fn.stdpath("cache") --[[@as string]], "luac")

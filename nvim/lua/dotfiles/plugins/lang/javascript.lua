@@ -1,9 +1,3 @@
-vim.lsp.enable({
-  "cssls",
-  "html",
-  "vtsls",
-})
-
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -18,13 +12,15 @@ return {
     },
   },
   {
-    "williamboman/mason.nvim",
+    "neovim/nvim-lspconfig",
     opts = {
-      ensure_installed = {
-        "css-lsp",
-        "html-lsp",
-        "vtsls",
+      cssls = {
+        mason = "css-lsp",
       },
+      html = {
+        mason = "html-lsp",
+      },
+      vtsls = {},
     },
   },
   {

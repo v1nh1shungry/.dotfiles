@@ -1,3 +1,18 @@
+---@param delta integer
+---@return boolean
+local function scroll(delta)
+  if not vim.b.lsp_floating_preview or not vim.api.nvim_win_is_valid(vim.b.lsp_floating_preview) then
+    return false
+  end
+
+  vim.api.nvim_win_call(
+    vim.b.lsp_floating_preview,
+    function() vim.fn.winrestview({ topline = vim.fn.winsaveview().topline + delta }) end
+  )
+
+  return true
+end
+
 return {
   -- https://www.lazyvim.org/plugins/lsp#masonnvim-1 {{{
   {
@@ -28,58 +43,108 @@ return {
       end)
     end,
     event = "VeryLazy",
-    -- HACK: Setup $PATH manually to speed up startup.
-    init = function()
-      vim.env.PATH = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "mason", "bin")
-        .. ":"
-        .. vim.env.PATH
-    end,
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = {
-      PATH = "skip",
-      ensure_installed = {
-        "clangd",
-        "emmylua_ls",
-        "json-lsp",
-        "neocmakelsp",
-      },
+      ensure_installed = {},
     },
     opts_extend = { "ensure_installed" },
   },
   -- }}}
   {
-    "saghen/blink.cmp",
-    build = "cargo build --release",
+    "neovim/nvim-lspconfig",
+    config = function(_, opts)
+      local log_path = vim.lsp.log.get_filename()
+      local stat = vim.uv.fs_stat(log_path)
+      if stat and stat.size and stat.size > 50 * 1024 * 1024 then
+        vim.uv.fs_unlink(log_path)
+      end
+
+      local ms = vim.lsp.protocol.Methods
+
+      Dotfiles.lsp.on_attach(function(client, buffer)
+        local map = Dotfiles.map_with({ buffer = buffer })
+        if type(opts[client.name].keys) == "table" then
+          for _, key in ipairs(opts[client.name].keys) do
+            map(key)
+          end
+        end
+
+        if client:supports_method(ms.textDocument_inlayHint) then
+          vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
+        end
+      end)
+
+      Dotfiles.lsp.register_mappings({
+        [ms.textDocument_rename] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
+        [ms.textDocument_codeAction] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
+        [ms.textDocument_references] = { "gR", vim.lsp.buf.references, desc = "Goto References" },
+        [ms.textDocument_definition] = { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
+        [ms.textDocument_declaration] = { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
+        [ms.textDocument_typeDefinition] = { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
+        [ms.textDocument_implementation] = { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
+        [ms.callHierarchy_incomingCalls] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
+        [ms.callHierarchy_outgoingCalls] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
+        [ms.typeHierarchy_subtypes] = {
+          "<Leader>cs",
+          function() vim.lsp.buf.typehierarchy("subtypes") end,
+          desc = "LSP Subtypes",
+        },
+        [ms.typeHierarchy_supertypes] = {
+          "<Leader>cS",
+          function() vim.lsp.buf.typehierarchy("supertypes") end,
+          desc = "LSP Supertypes",
+        },
+        [ms.textDocument_hover] = {
+          {
+            "<C-f>",
+            function()
+              if not scroll(5) then
+                return "<C-f>"
+              end
+            end,
+            desc = "Scroll Down Document",
+            expr = true,
+          },
+          {
+            "<C-b>",
+            function()
+              if not scroll(-5) then
+                return "<C-b>"
+              end
+            end,
+            desc = "Scroll Up Document",
+            expr = true,
+          },
+        },
+      })
+
+      local mr = require("mason-registry")
+      for name, settings in pairs(opts) do
+        local p = mr.get_package(settings.mason or name)
+        if not p:is_installed() then
+          Dotfiles.notify("Installing package " .. p.name)
+          p:install()
+        end
+      end
+
+      vim.lsp.enable(vim.tbl_keys(opts))
+    end,
+    dependencies = "mason-org/mason.nvim",
     event = "VeryLazy",
     opts = {
-      completion = {
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 200,
-        },
-        list = {
-          selection = {
-            preselect = function() return not require("blink.cmp").snippet_active({ direction = 1 }) end,
-          },
-        },
-        menu = {
-          draw = {
-            treesitter = { "lsp" },
-          },
+      clangd = {
+        keys = {
+          { "<Leader>ch", "<Cmd>LspClangdSwitchSourceHeader<CR>", desc = "Switch Source/Header" },
         },
       },
-      fuzzy = {
-        prebuilt_binaries = {
-          download = false,
-        },
+      emmylua_ls = {},
+      jsonls = {
+        mason = "json-lsp",
       },
-      keymap = { preset = "super-tab" },
-      signature = { enabled = true },
-      sources = {
-        default = { "lsp", "snippets", "path", "buffer" },
+      neocmake = {
+        mason = "neocmakelsp",
       },
     },
-    opts_extend = { "sources.default" },
   },
   {
     "stevearc/conform.nvim",
@@ -158,6 +223,11 @@ return {
   {
     "hedyhli/outline.nvim",
     cmd = "Outline",
+    init = function()
+      Dotfiles.lsp.register_mappings({
+        [vim.lsp.protocol.Methods.textDocument_documentSymbol] = { "gO", "<Cmd>Outline<CR>", desc = "Symbol Outline" },
+      })
+    end,
     opts = {
       outline_window = { hide_cursor = true },
       preview_window = { border = "rounded" },
@@ -170,5 +240,4 @@ return {
       symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
     },
   },
-  "neovim/nvim-lspconfig",
 }

@@ -122,6 +122,8 @@ return {
           end
 
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+          Snacks.toggle.treesitter():map("<Leader>uT")
         end,
         desc = "Enable treesitter highlight and indent",
         group = Dotfiles.augroup("nvim-treesitter"),
@@ -297,13 +299,61 @@ return {
           Snacks.toggle.line_number():map("<Leader>ul")
 
           Snacks.toggle.diagnostics():map("<Leader>ux")
-          Snacks.toggle.treesitter():map("<Leader>uT")
         end,
         desc = "Setup snacks.nvim when ready",
         group = Dotfiles.augroup("snacks.nvim"),
         once = true,
         pattern = "VeryLazy",
       })
+
+      local ms = vim.lsp.protocol.Methods
+
+      Dotfiles.lsp.register_mappings({
+        [ms.textDocument_documentSymbol] = {
+          "<Leader>ss",
+          function() Snacks.picker.lsp_symbols() end,
+          desc = "LSP Symbols (Document)",
+        },
+        [ms.workspace_symbol] = {
+          "<Leader>sS",
+          function() Snacks.picker.lsp_workspace_symbols() end,
+          desc = "LSP Symbols (Workspace)",
+        },
+        [ms.textDocument_references] = {
+          "<Leader>sR",
+          function() Snacks.picker.lsp_references() end,
+          desc = "LSP References",
+        },
+        [ms.textDocument_definition] = {
+          "<Leader>sd",
+          function() Snacks.picker.lsp_definitions() end,
+          desc = "LSP Definitions",
+        },
+        [ms.textDocument_declaration] = {
+          "<Leader>sD",
+          function() Snacks.picker.lsp_declarations() end,
+          desc = "LSP Declarations",
+        },
+        [ms.textDocument_typeDefinition] = {
+          "<Leader>sy",
+          function() Snacks.picker.lsp_type_definitions() end,
+          desc = "LSP Type Definitions",
+        },
+        [ms.textDocument_implementation] = {
+          "<Leader>sI",
+          function() Snacks.picker.lsp_implementations() end,
+          desc = "LSP Implementations",
+        },
+        [ms.textDocument_documentHighlight] = {
+          { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
+          { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous Reference" },
+        },
+      })
+
+      Dotfiles.lsp.on_supports_method(
+        ms.textDocument_inlayHint,
+        function(_, buffer) Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = buffer }) end
+      )
     end,
     lazy = false,
     keys = {

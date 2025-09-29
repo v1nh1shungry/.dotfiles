@@ -18,8 +18,9 @@ return {
       terminal = {
         snacks_win_opts = {
           keys = {
-            hide = { "<C-c>", "hide", desc = "Hide" },
-            term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
+            hide_n = { "<C-c>", "hide" },
+            hide_t = { "<C-q>", "hide", mode = "t" },
+            term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t" },
           },
           position = "right",
         },
@@ -62,10 +63,9 @@ return {
       cli = {
         win = {
           keys = {
-            hide = { "<C-c>", "hide", desc = "Hide" },
-            term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
+            hide_n = { "<C-c>", "hide", mode = "n" },
+            stopinsert = { "<C-c>", "stopinsert" },
           },
-          width = 0.5,
         },
       },
     },

@@ -15,7 +15,7 @@ end
 set -x LESS -rF
 
 if command -q atuin
-    atuin init fish | source
+    atuin init fish --disable-up-arrow | source
 end
 
 if test -d ~/.cargo

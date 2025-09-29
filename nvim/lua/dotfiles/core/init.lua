@@ -34,13 +34,13 @@ do
     end)
   end
 
-  -- wait till vim.notify has been replaced
+  -- Wait until vim.notify has been replaced
   check:start(function()
     if vim.notify ~= temp then
       replay()
     end
   end)
-  -- or if it took more than 1s, then something went wrong
+  -- Or if it took more than 1s, then something went wrong
   timer:start(1000, 0, replay)
 end
 -- }}}
@@ -50,7 +50,7 @@ require("dotfiles.core.keymaps")
 require("dotfiles.core.options")
 require("dotfiles.core.lazy")
 
--- clean loader cache without corresponding file.
+-- Clean loader cache for files that no longer exist.
 local luac_path = vim.fs.joinpath(vim.fn.stdpath("cache") --[[@as string]], "luac")
 for name, type in vim.fs.dir(luac_path) do
   if type == "file" then

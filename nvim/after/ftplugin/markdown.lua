@@ -1,8 +1,8 @@
 vim.opt_local.wrap = true
 vim.opt_local.conceallevel = 2
 
--- Copy from https://github.com/chrisgrieser/.config {{{
--- Insert bullets automatically.
+-- Copied from https://github.com/chrisgrieser/.config {{{
+-- Automatically insert bullets.
 do
   vim.opt_local.formatoptions:append("r")
   vim.opt_local.formatoptions:append("o")

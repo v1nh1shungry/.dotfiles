@@ -1,13 +1,3 @@
----@type snacks.win.Config|{}
-local snacks_win_opts = {
-  position = "right",
-  width = 0.5,
-  keys = {
-    hide = { "<C-c>", "hide", desc = "Hide" },
-    term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
-  },
-}
-
 return {
   {
     "coder/claudecode.nvim",
@@ -17,9 +7,8 @@ return {
       "ravitemer/mcphub.nvim",
     },
     keys = {
-      { "<Leader>ac", "<Cmd>ClaudeCode --continue<CR>", desc = "Claude Code (Resume)" },
-      { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Add Selected to Claude Code", mode = "x" },
-      { "<Leader>aC", "<Cmd>ClaudeCode<CR>", desc = "Claude Code (New)" },
+      { "<Leader>ac", "<Cmd>ClaudeCode<CR>", desc = "Claude Code" },
+      { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Claude Code", mode = "x" },
     },
     opts = {
       diff_opts = {
@@ -27,7 +16,13 @@ return {
         open_in_new_tab = true,
       },
       terminal = {
-        snacks_win_opts = snacks_win_opts,
+        snacks_win_opts = {
+          keys = {
+            hide = { "<C-c>", "hide", desc = "Hide" },
+            term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
+          },
+          position = "right",
+        },
         split_width_percentage = 0.5,
       },
       terminal_cmd = "claude --mcp-config="
@@ -39,13 +34,6 @@ return {
     build = "bundled_build.lua",
     cmd = "MCPHub",
     dependencies = "nvim-lua/plenary.nvim",
-    keys = {
-      {
-        "<leader>ax",
-        function() Snacks.terminal.toggle({ "codex", "resume" }, { win = snacks_win_opts }) end,
-        desc = "Codex",
-      },
-    },
     opts = {
       config = vim.fs.joinpath(vim.fn.stdpath("config") --[[@as string]], "mcp.json"),
       ui = {
@@ -54,6 +42,32 @@ return {
         },
       },
       use_bundled_binary = true,
+    },
+  },
+  {
+    "folke/sidekick.nvim",
+    dependencies = {
+      "folke/snacks.nvim",
+      "ravitemer/mcphub.nvim",
+    },
+    keys = {
+      {
+        "<Leader>ax",
+        function() require("sidekick.cli").toggle({ name = "codex", focus = true }) end,
+        desc = "Codex",
+        mode = { "n", "x" },
+      },
+    },
+    opts = {
+      cli = {
+        win = {
+          keys = {
+            hide = { "<C-c>", "hide", desc = "Hide" },
+            term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t", desc = "Enter Normal Mode" },
+          },
+          width = 0.5,
+        },
+      },
     },
   },
 }

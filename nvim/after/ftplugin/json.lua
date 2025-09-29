@@ -1,4 +1,3 @@
-Dotfiles.map({ "<Leader>cF", "<Cmd>%! jq --compact-output .<CR>", buffer = true, desc = "Format (Compact)" })
 Dotfiles.map({
   "o",
   function()

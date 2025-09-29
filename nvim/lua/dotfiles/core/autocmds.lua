@@ -73,60 +73,47 @@ end
 
 -- Inspired by https://github.com/keaising/im-select.nvim {{{
 do
-  local function detect_fcitx_remote()
-    if vim.fn.executable("fcitx5-remote") == 1 then
-      return {
-        command = "fcitx5-remote",
-        name = "fcitx5",
-        inactive_state = "1",
-        active_state = "2",
-      }
-    elseif vim.fn.executable("fcitx-remote") == 1 then
-      return {
-        command = "fcitx-remote",
-        name = "fcitx",
-        inactive_state = "1",
-        active_state = "2",
-      }
-    end
-    return nil
+  local fcitx_cmd = nil
+
+  if vim.fn.executable("fcitx5-remote") == 1 then
+    fcitx_cmd = "fcitx5-remote"
+  elseif vim.fn.executable("fcitx-remote") == 1 then
+    fcitx_cmd = "fcitx-remote"
   end
 
-  local fcitx_config = detect_fcitx_remote()
-  if fcitx_config then
+  if fcitx_cmd then
     local augroup = Dotfiles.augroup("im")
     local previous_im
-
-    local function get_current_im()
-      return vim.trim(vim.fn.system(fcitx_config.command))
-    end
 
     ---@param enable? boolean
     local function activate_im(enable)
       if type(enable) ~= "boolean" then
         enable = true
       end
-      vim.fn.system({ fcitx_config.command, enable and "-o" or "-c" })
+      vim.system({ fcitx_cmd, enable and "-o" or "-c" })
     end
 
     vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter", "TermEnter" }, {
       callback = function()
-        if previous_im == fcitx_config.inactive_state then
+        if previous_im == "1" then
           activate_im(false)
-        elseif previous_im == fcitx_config.active_state then
+        elseif previous_im == "2" then
           activate_im()
         end
       end,
-      desc = string.format("Automatically activate %s if needed", fcitx_config.name),
+      desc = "Automatically activate fcitx",
       group = augroup,
     })
 
     vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave", "TermLeave" }, {
       callback = function()
-        previous_im = get_current_im()
-        activate_im(false)
+        vim.system({ fcitx_cmd }, { text = true }, function(out)
+          assert(out.code == 0)
+          previous_im = vim.trim(assert(out.stdout))
+          activate_im(false)
+        end)
       end,
-      desc = string.format("Automatically deactivate %s", fcitx_config.name),
+      desc = "Automatically deactivate fcitx",
       group = augroup,
     })
   end

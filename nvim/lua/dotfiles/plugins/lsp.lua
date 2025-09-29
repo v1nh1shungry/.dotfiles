@@ -72,6 +72,10 @@ return {
         if client:supports_method(ms.textDocument_inlayHint) then
           vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
         end
+
+        if type(opts[client.name].setup) == "function" then
+          opts[client.name].setup(client, buffer)
+        end
       end)
 
       Dotfiles.lsp.register_mappings({
@@ -160,6 +164,7 @@ return {
       default_format_opts = { lsp_format = "fallback" },
       formatters_by_ft = {
         fish = { "fish_indent" },
+        json = { "jq" },
         just = { "just" },
         markdown = { "injected" },
         query = { "format-queries" },

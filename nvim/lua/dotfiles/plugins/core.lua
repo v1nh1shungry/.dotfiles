@@ -299,6 +299,8 @@ return {
           Snacks.toggle.line_number():map("<Leader>ul")
 
           Snacks.toggle.diagnostics():map("<Leader>ux")
+
+          Snacks.toggle.profiler():map("<Leader>pp")
         end,
         desc = "Setup snacks.nvim when ready",
         group = Dotfiles.augroup("snacks.nvim"),
@@ -371,7 +373,7 @@ return {
       { "<Leader>fs", function() Snacks.scratch() end, desc = "Open Scratch Buffer" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, mode = { "n", "x" }, desc = "Git Browse" },
       { "<Leader>gg", function() Snacks.lazygit() end, desc = "LazyGit" },
-      { "<Leader>gl", function() Snacks.picker.git_log_line() end, desc = "Log (file)" },
+      { "<Leader>gl", function() Snacks.picker.git_log_line() end, desc = "Log (line)" },
       { "<Leader>s,", function() Snacks.picker.resume() end, desc = "Resume" },
       { "<Leader>s:", function() Snacks.picker.commands() end, desc = "Commands" },
       { "<Leader>sC", function() Snacks.picker.colorschemes() end, desc = "Colorschemes" },

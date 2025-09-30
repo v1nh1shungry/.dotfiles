@@ -1,3 +1,28 @@
+-- HACK: Disable automatic inline completion refresh (annoying and wasteful).
+local function enable_inline_completion(_, buffer)
+  vim.lsp.inline_completion.enable(true, { bufnr = buffer })
+
+  ---@type vim.lsp.inline_completion.Completor
+  local completor = assert(require("vim.lsp._capability").all["inline_completion"].active[buffer])
+  vim.api.nvim_clear_autocmds({
+    group = completor.augroup,
+    event = { "InsertEnter", "CursorMovedI", "TextChangedP" },
+  })
+end
+
+---@param opts vim.lsp.inline_completion.select.Opts
+local function manually_trigger_inline_completion(opts)
+  local buffer = vim.api.nvim_get_current_buf()
+  ---@type vim.lsp.inline_completion.Completor
+  local completor = assert(require("vim.lsp._capability").all["inline_completion"].active[buffer])
+  if not completor.current then
+    ---@diagnostic disable-next-line: access-invisible
+    completor:request(vim.lsp.protocol.InlineCompletionTriggerKind.Invoked)
+  else
+    vim.lsp.inline_completion.select(opts)
+  end
+end
+
 return {
   {
     "coder/claudecode.nvim",
@@ -50,7 +75,67 @@ return {
     dependencies = {
       "folke/snacks.nvim",
       "ravitemer/mcphub.nvim",
+      {
+        "neovim/nvim-lspconfig",
+        opts = {
+          copilot = {
+            keys = {
+              {
+                "<Tab>",
+                function()
+                  if not require("sidekick").nes_jump_or_apply() then
+                    return "<Tab>"
+                  end
+                end,
+                desc = "Next Edit Suggestion",
+                expr = true,
+              },
+              {
+                "<M-a>",
+                function() require("sidekick.nes").update() end,
+                desc = "Refresh Next Edit Suggestion",
+                mode = { "i", "n" },
+              },
+              {
+                "<M-]>",
+                function() manually_trigger_inline_completion({ count = 1 }) end,
+                desc = "Next Copilot Suggestion",
+                mode = "i",
+              },
+              {
+                "<M-[>",
+                function() manually_trigger_inline_completion({ count = -1 }) end,
+                desc = "Prev Copilot Suggestion",
+                mode = "i",
+              },
+            },
+            mason = "copilot-language-server",
+            setup = enable_inline_completion,
+          },
+        },
+      },
+      {
+        "saghen/blink.cmp",
+        opts = {
+          keymap = {
+            ["<Tab>"] = {
+              function(cmp)
+                if cmp.snippet_active() then
+                  return cmp.accept()
+                else
+                  return cmp.select_and_accept()
+                end
+              end,
+              "snippet_forward",
+              function() return require("sidekick").nes_jump_or_apply() end,
+              function() return vim.lsp.inline_completion.get() end,
+              "fallback",
+            },
+          },
+        },
+      },
     },
+    event = "LspAttach",
     keys = {
       {
         "<Leader>ax",

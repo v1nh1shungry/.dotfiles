@@ -3,6 +3,13 @@
     "mcphub": {
       "type": "sse",
       "url": "http://localhost:37373/mcp"
+    },
+    "gemini": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "gemini-mcp-tool"
+      ]
     }
   }
 }

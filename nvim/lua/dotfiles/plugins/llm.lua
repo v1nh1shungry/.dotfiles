@@ -138,9 +138,9 @@ return {
     event = "LspAttach",
     keys = {
       {
-        "<Leader>ax",
-        function() require("sidekick.cli").toggle({ name = "codex", focus = true }) end,
-        desc = "Codex",
+        "<Leader>ag",
+        function() require("sidekick.cli").toggle({ name = "gemini" }) end,
+        desc = "Gemini",
         mode = { "n", "x" },
       },
     },

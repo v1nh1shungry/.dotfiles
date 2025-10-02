@@ -27,10 +27,6 @@ claude:
     mkdir -p {{ home_directory() }}/.claude
     ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
 
-codex:
-    mkdir -p {{ home_directory() }}/.codex
-    ln -sf {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
-
 electron program:
     echo "--enable-wayland-ime" >{{ config_directory() }}/{{ program }}-flags.conf
 
@@ -45,6 +41,10 @@ fontconfig:
 
 gdb:
     wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
+
+gemini:
+    mkdir -p {{ home_directory() }}/.gemini
+    ln -sf {{ justfile_directory() }}/gemini/settings.json {{ home_directory() }}/.gemini
 
 git:
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}

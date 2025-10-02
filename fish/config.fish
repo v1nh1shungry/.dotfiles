@@ -83,5 +83,3 @@ if command -q zoxide
     zoxide init fish | source
     abbr cd z
 end
-
-fish_add_path /home/scutech/.spicetify

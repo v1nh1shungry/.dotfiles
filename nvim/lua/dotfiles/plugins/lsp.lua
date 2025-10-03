@@ -73,6 +73,10 @@ return {
           vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
         end
 
+        if client:supports_method(ms.textDocument_onTypeFormatting) then
+          vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
+        end
+
         if type(opts[client.name].setup) == "function" then
           opts[client.name].setup(client, buffer)
         end
@@ -140,6 +144,8 @@ return {
         keys = {
           { "<Leader>ch", "<Cmd>LspClangdSwitchSourceHeader<CR>", desc = "Switch Source/Header" },
         },
+        -- FIXME: clang-format can't format all projects well.
+        setup = function(client) vim.lsp.on_type_formatting.enable(false, { client_id = client.id }) end,
       },
       emmylua_ls = {},
       jsonls = {

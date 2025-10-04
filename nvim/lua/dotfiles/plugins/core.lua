@@ -308,52 +308,50 @@ return {
         pattern = "VeryLazy",
       })
 
-      local ms = vim.lsp.protocol.Methods
-
       Dotfiles.lsp.register_mappings({
-        [ms.textDocument_documentSymbol] = {
+        ["textDocument/documentSymbol"] = {
           "<Leader>ss",
           function() Snacks.picker.lsp_symbols() end,
           desc = "LSP Symbols (Document)",
         },
-        [ms.workspace_symbol] = {
+        ["workspace/symbol"] = {
           "<Leader>sS",
           function() Snacks.picker.lsp_workspace_symbols() end,
           desc = "LSP Symbols (Workspace)",
         },
-        [ms.textDocument_references] = {
+        ["textDocument/references"] = {
           "<Leader>sR",
           function() Snacks.picker.lsp_references() end,
           desc = "LSP References",
         },
-        [ms.textDocument_definition] = {
+        ["textDocument/definition"] = {
           "<Leader>sd",
           function() Snacks.picker.lsp_definitions() end,
           desc = "LSP Definitions",
         },
-        [ms.textDocument_declaration] = {
+        ["textDocument/declaration"] = {
           "<Leader>sD",
           function() Snacks.picker.lsp_declarations() end,
           desc = "LSP Declarations",
         },
-        [ms.textDocument_typeDefinition] = {
+        ["textDocument/typeDefinition"] = {
           "<Leader>sy",
           function() Snacks.picker.lsp_type_definitions() end,
           desc = "LSP Type Definitions",
         },
-        [ms.textDocument_implementation] = {
+        ["textDocument/implementation"] = {
           "<Leader>sI",
           function() Snacks.picker.lsp_implementations() end,
           desc = "LSP Implementations",
         },
-        [ms.textDocument_documentHighlight] = {
+        ["textDocument/documentHighlight"] = {
           { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference" },
           { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Previous Reference" },
         },
       })
 
       Dotfiles.lsp.on_supports_method(
-        ms.textDocument_inlayHint,
+        "textDocument/inlayHint",
         function(_, buffer) Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = buffer }) end
       )
     end,

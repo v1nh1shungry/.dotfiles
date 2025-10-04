@@ -13,19 +13,16 @@ vim.opt.expandtab = true
 vim.opt.fileencoding = "utf-8"
 vim.opt.fileencodings = { "utf-8", "gb2312", "gb18030", "gbk", "ucs-bom", "cp936", "latin1" }
 vim.opt.fillchars = { eob = " ", fold = " ", foldclose = "", foldopen = "", foldsep = " " }
-vim.opt.foldenable = false
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
-vim.opt.foldtext = ""
 vim.opt.helpheight = 10
 vim.opt.ignorecase = true
 vim.opt.jumpoptions:append("stack")
 vim.opt.laststatus = 3
 vim.opt.linebreak = true
 vim.opt.list = true
-vim.opt.listchars = { extends = "…", nbsp = "␣", precedes = "…", tab = "  " }
 vim.opt.number = true
 vim.opt.pumheight = 10
 vim.opt.relativenumber = true
@@ -34,7 +31,7 @@ vim.opt.scrolloff = 5
 vim.opt.shell = "/bin/fish"
 vim.opt.shiftround = true
 vim.opt.shiftwidth = 2
-vim.opt.shortmess:append({ W = true, c = true })
+vim.opt.shortmess:append({ C = true, W = true, c = true })
 vim.opt.showcmdloc = "statusline"
 vim.opt.showmode = false
 vim.opt.sidescrolloff = 8

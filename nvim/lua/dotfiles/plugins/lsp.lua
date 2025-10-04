@@ -59,8 +59,6 @@ return {
         vim.uv.fs_unlink(log_path)
       end
 
-      local ms = vim.lsp.protocol.Methods
-
       Dotfiles.lsp.on_attach(function(client, buffer)
         local map = Dotfiles.map_with({ buffer = buffer })
         if type(opts[client.name].keys) == "table" then
@@ -69,11 +67,11 @@ return {
           end
         end
 
-        if client:supports_method(ms.textDocument_inlayHint) then
+        if client:supports_method("textDocument/inlayHint") then
           vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
         end
 
-        if client:supports_method(ms.textDocument_onTypeFormatting) then
+        if client:supports_method("textDocument/onTypeFormatting") then
           vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
         end
 
@@ -83,26 +81,26 @@ return {
       end)
 
       Dotfiles.lsp.register_mappings({
-        [ms.textDocument_rename] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
-        [ms.textDocument_codeAction] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
-        [ms.textDocument_references] = { "gR", vim.lsp.buf.references, desc = "Goto References" },
-        [ms.textDocument_definition] = { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
-        [ms.textDocument_declaration] = { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
-        [ms.textDocument_typeDefinition] = { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
-        [ms.textDocument_implementation] = { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
-        [ms.callHierarchy_incomingCalls] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
-        [ms.callHierarchy_outgoingCalls] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
-        [ms.typeHierarchy_subtypes] = {
+        ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
+        ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
+        ["textDocument/references"] = { "gR", vim.lsp.buf.references, desc = "Goto References" },
+        ["textDocument/definition"] = { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
+        ["textDocument/declaration"] = { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
+        ["textDocument/typeDefinition"] = { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
+        ["textDocument/implementation"] = { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
+        ["callHierarchy/incomingCalls"] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
+        ["callHierarchy/outgoingCalls"] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
+        ["typeHierarchy/subtypes"] = {
           "<Leader>cs",
           function() vim.lsp.buf.typehierarchy("subtypes") end,
           desc = "LSP Subtypes",
         },
-        [ms.typeHierarchy_supertypes] = {
+        ["typeHierarchy/supertypes"] = {
           "<Leader>cS",
           function() vim.lsp.buf.typehierarchy("supertypes") end,
           desc = "LSP Supertypes",
         },
-        [ms.textDocument_hover] = {
+        ["textDocument/hover"] = {
           {
             "<C-f>",
             function()
@@ -236,7 +234,7 @@ return {
     cmd = "Outline",
     init = function()
       Dotfiles.lsp.register_mappings({
-        [vim.lsp.protocol.Methods.textDocument_documentSymbol] = { "gO", "<Cmd>Outline<CR>", desc = "Symbol Outline" },
+        ["textDocument/documentSymbol"] = { "gO", "<Cmd>Outline<CR>", desc = "Symbol Outline" },
       })
     end,
     opts = {

@@ -68,11 +68,6 @@ pip:
 starship:
     ln -sf {{ justfile_directory() }}/starship/starship.toml {{ config_directory() }}
 
-systemd:
-    ln -sf {{ justfile_directory() }}/systemd/* {{ config_directory() }}/systemd/user
-    systemctl --user daemon-reload
-    systemctl --user enable --now aria2.service
-
 tmux:
     ln -sf {{ justfile_directory() }}/tmux {{ config_directory() }}
 
@@ -83,6 +78,6 @@ yazi:
     ln -sf {{ justfile_directory() }}/yazi/yazi.toml {{ config_directory() }}/yazi
     ya pkg add BennyOe/tokyo-night
 
-all: atuin bat cargo fish fontconfig gdb git lazygit npm nvim pip starship systemd tmux yazi
+all: atuin bat cargo fish fontconfig gdb git lazygit npm nvim pip starship tmux yazi
 
 wayland: brave niri

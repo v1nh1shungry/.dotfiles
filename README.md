@@ -42,4 +42,5 @@
 * [tpm](https://github.com/tmux-plugins/tpm)
 * [uv](https://github.com/astral-sh/uv)
 * [yazi](https://github.com/sxyazi/yazi)
+* [zathura](https://github.com/pwmt/zathura)
 * [zoxide](https://github.com/ajeetdsouza/zoxide)

@@ -61,7 +61,7 @@ return {
 
       Dotfiles.lsp.on_attach(function(client, buffer)
         local map = Dotfiles.map_with({ buffer = buffer })
-        if type(opts[client.name].keys) == "table" then
+        if opts[client.name] and type(opts[client.name].keys) == "table" then
           for _, key in ipairs(opts[client.name].keys) do
             map(key)
           end
@@ -75,7 +75,7 @@ return {
           vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
         end
 
-        if type(opts[client.name].setup) == "function" then
+        if opts[client.name] and type(opts[client.name].setup) == "function" then
           opts[client.name].setup(client, buffer)
         end
       end)

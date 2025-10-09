@@ -1,11 +1,16 @@
 return {
   {
     "olimorris/codecompanion.nvim",
-    cmd = "CodeCompanionChat",
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionChat",
+      "CodeCompanionCmd",
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/mcphub.nvim",
+      "lalitmee/codecompanion-spinners.nvim",
     },
     keys = {
       { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "CodeCompanion" },
@@ -24,16 +29,27 @@ return {
           end,
         },
       },
+      display = {
+        chat = {
+          window = {
+            width = 0.5,
+          },
+        },
+      },
       extensions = {
         mcphub = {
           callback = "mcphub.extensions.codecompanion",
         },
+        spinner = {},
       },
       opts = {
         language = "Chinese",
       },
       strategies = {
         chat = {
+          adapter = "gemini",
+        },
+        cmd = {
           adapter = "gemini",
         },
         inline = {

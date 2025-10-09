@@ -1,13 +1,11 @@
 ---@class dotfiles.utils.User
----@field colorscheme? string
+---@field colorscheme string
 ---@field env table<string, string|integer>
----@field extra? LazySpec[]
----@field lang? string[]
+---@field extra LazySpec[]
 local M = {
   colorscheme = "tokyonight",
   env = {},
   extra = {},
-  lang = {},
 }
 
 vim.filetype.add({

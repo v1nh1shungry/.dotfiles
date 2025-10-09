@@ -20,32 +20,46 @@ Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFil
 Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 -- }}}
 
-require("lazy").setup("dotfiles.plugins", {
-  checker = { enabled = true },
-  dev = {
-    fallback = true,
-    path = vim.fs.joinpath(vim.env.HOME, "Documents", "repos"),
-    patterns = { "v1nh1shungry" },
-  },
-  diff = { cmd = "diffview.nvim" },
-  install = { colorscheme = { Dotfiles.user.colorscheme } },
-  local_spec = false,
-  performance = {
-    rtp = {
-      disabled_plugins = {
-        "gzip",
-        "matchit",
-        "matchparen",
-        "netrwPlugin",
-        "rplugin",
-        "shada",
-        "spellfile",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
+require("lazy").setup(
+  vim.list_extend(
+    { { import = "dotfiles.plugins" } },
+    vim
+      .iter(Dotfiles.user.extra)
+      :map(function(spec)
+        if type(spec) == "string" and vim.F.npcall(require, "dotfiles.plugins.extra." .. spec) then
+          return { import = "dotfiles.plugins.extra." .. spec }
+        end
+        return spec
+      end)
+      :totable()
+  ),
+  {
+    checker = { enabled = true },
+    dev = {
+      fallback = true,
+      path = vim.fs.joinpath(vim.env.HOME, "Documents", "repos"),
+      patterns = { "v1nh1shungry" },
+    },
+    diff = { cmd = "diffview.nvim" },
+    install = { colorscheme = { Dotfiles.user.colorscheme } },
+    local_spec = false,
+    performance = {
+      rtp = {
+        disabled_plugins = {
+          "gzip",
+          "matchit",
+          "matchparen",
+          "netrwPlugin",
+          "rplugin",
+          "shada",
+          "spellfile",
+          "tarPlugin",
+          "tohtml",
+          "tutor",
+          "zipPlugin",
+        },
       },
     },
-  },
-  rocks = { enabled = false },
-})
+    rocks = { enabled = false },
+  }
+)

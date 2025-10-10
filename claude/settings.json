@@ -7,7 +7,6 @@
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
-      "mcp__gemini",
       "mcp__mcphub"
     ]
   },

@@ -21,6 +21,7 @@ return {
         win = {
           keys = {
             hide_n = { "<C-c>", "hide", mode = "n" },
+            prompt = { "<M-p>", "prompt" },
             stopinsert = { "<C-c>", "stopinsert" },
           },
           split = {

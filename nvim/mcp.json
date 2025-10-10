@@ -8,11 +8,11 @@
       "command": "npx"
     },
     "sequential-thinking": {
-      "command": "npx",
       "args": [
         "-y",
         "@modelcontextprotocol/server-sequential-thinking"
-      ]
+      ],
+      "command": "npx"
     }
   },
   "nativeMCPServers": {

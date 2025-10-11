@@ -104,8 +104,6 @@ map({
 
 map({ "<Leader>pl", "<Cmd>Lazy home<CR>", desc = "Lazy" })
 
-map({ "<Leader>fU", "<Cmd>earlier 1f<CR>", desc = "Drop Modifications" })
-
 map({ "$", "g_", mode = "x", desc = "End of Line" })
 
 map({ "<Leader>ui", "<Cmd>Inspect<CR>", desc = ":Inspect" })
@@ -240,8 +238,6 @@ map({
   desc = "Edit Macro",
 })
 -- }}}
-
-map({ "<CR>", "<Cmd>source<CR>", desc = ":source", ft = { "lua", "vim" } })
 
 map({ "<C-f>", "<Right>", desc = "Forward", mode = "!" })
 map({ "<C-b>", "<Left>", desc = "Backward", mode = "!" })

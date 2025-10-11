@@ -7,7 +7,9 @@
 ---@field warn dotfiles.utils.Notifier
 ---@field off dotfiles.utils.Notifier
 ---@field trace dotfiles.utils.Notifier
-local M = {}
+local M = setmetatable({}, {
+  __call = function(self, ...) self.info(...) end,
+})
 
 for k, v in pairs(vim.log.levels) do
   ---@param msg string
@@ -21,6 +23,4 @@ for k, v in pairs(vim.log.levels) do
   end
 end
 
-return setmetatable(M, {
-  __call = function(_, ...) M.info(...) end,
-})
+return M

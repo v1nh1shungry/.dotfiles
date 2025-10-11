@@ -147,26 +147,6 @@ return {
             },
           },
         },
-        on_close = function()
-          vim.cmd("nohlsearch")
-          -- Fix CursorLine highlight restoration issue after picker closes
-          vim.schedule(function()
-            -- Force reset any picker-related highlights that might be lingering
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-              if vim.api.nvim_win_is_valid(win) then
-                local winhl = vim.wo[win].winhighlight
-                if winhl and winhl:find("SnacksPicker") then
-                  -- Clear all SnacksPicker-related winhighlight settings
-                  local cleaned =
-                    winhl:gsub("[^,]*SnacksPicker[^,]*", ""):gsub(",,+", ","):gsub("^,", ""):gsub(",$", "")
-                  vim.wo[win].winhighlight = cleaned
-                end
-              end
-            end
-            -- Force a complete redraw
-            vim.cmd("redraw!")
-          end)
-        end,
         previewers = {
           git = { native = true },
         },

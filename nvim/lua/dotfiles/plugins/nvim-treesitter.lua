@@ -3,7 +3,12 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     build = ":TSUpdate",
-    cmd = { "TSUpdate", "TSUninstall" },
+    cmd = {
+      "TSInstall",
+      "TSInstallFromGrammar",
+      "TSUninstall",
+      "TSUpdate",
+    },
     config = function(_, opts)
       require("nvim-treesitter").install(opts.ensure_installed)
 

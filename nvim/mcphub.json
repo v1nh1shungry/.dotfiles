@@ -7,7 +7,7 @@
       ],
       "command": "npx"
     },
-    "sequential-thinking": {
+    "sequentialthinking": {
       "args": [
         "-y",
         "@modelcontextprotocol/server-sequential-thinking"

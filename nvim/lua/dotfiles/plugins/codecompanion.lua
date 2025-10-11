@@ -1,11 +1,16 @@
 return {
   {
     "olimorris/codecompanion.nvim",
-    cmd = { "CodeCompanion", "CodeCompanionChat" },
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionChat",
+      "CodeCompanionHistory",
+    },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/mcphub.nvim",
+      "ravitemer/codecompanion-history.nvim",
     },
     keys = {
       { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "Code Companion" },
@@ -23,11 +28,6 @@ return {
             return require("codecompanion.adapters").extend("gemini", {
               env = {
                 api_key = "CLI_PROXY_API_KEY",
-              },
-              schema = {
-                model = {
-                  default = "gemini-2.5-pro",
-                },
               },
               url = "http://localhost:8317/v1/chat/completions",
             })
@@ -53,9 +53,26 @@ return {
         },
       },
       extensions = {
+        history = {
+          opts = {
+            delete_on_clearing_chat = true,
+            expiration_days = 7,
+            summary = {
+              generation_opts = {
+                adapter = "gemini",
+                model = "gemini-2.5-flash",
+              },
+            },
+            title_generation_opts = {
+              adapter = "gemini",
+              model = "gemini-2.5-flash-lite",
+            },
+          },
+        },
         mcphub = {
           callback = "mcphub.extensions.codecompanion",
         },
+        spinner = {},
       },
       memory = {
         opts = {
@@ -69,7 +86,10 @@ return {
       },
       strategies = {
         chat = {
-          adapter = "gemini",
+          adapter = {
+            model = "gemini-2.5-pro",
+            name = "gemini",
+          },
           tools = {
             opts = {
               auto_submit_errors = true,

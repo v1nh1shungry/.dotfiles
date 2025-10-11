@@ -13,6 +13,14 @@ return {
       { "]]", function() require("kulala").jump_next() end, desc = "Next Request", ft = "http" },
       { "[[", function() require("kulala").jump_prev() end, desc = "Previous Request", ft = "http" },
     },
-    opts = {},
+    opts = {
+      ui = {
+        win_opts = {
+          wo = {
+            signcolumn = "no",
+          },
+        },
+      },
+    },
   },
 }

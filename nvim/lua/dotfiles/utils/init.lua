@@ -1,7 +1,7 @@
 ---@class dotfiles.utils
 ---@field git dotfiles.utils.Git
 ---@field lsp dotfiles.utils.Lsp
----@field notify dotfiles.utils.Notifier|dotfiles.utils.Notify
+---@field notify dotfiles.utils.Notify
 ---@field user dotfiles.utils.User
 local M = {}
 

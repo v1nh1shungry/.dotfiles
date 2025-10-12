@@ -551,6 +551,7 @@ binds {
 
 environment {
     GLFW_IM_MODULE "ibus"
+    QT_IM_MODULES "wayland;fcitx"
     QT_IM_MODULE "fcitx"
     SDL_IM_MODULE "fcitx"
     XMODIFIERS "@im=fcitx"

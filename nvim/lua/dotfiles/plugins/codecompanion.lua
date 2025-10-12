@@ -24,12 +24,33 @@ return {
           },
         },
         http = {
-          gemini = function()
-            return require("codecompanion.adapters").extend("gemini", {
+          modelscope = function()
+            local openai = require("codecompanion.adapters.http.openai")
+
+            return require("codecompanion.adapters").extend("openai_compatible", {
               env = {
-                api_key = "CLI_PROXY_API_KEY",
+                api_key = "MODELSCOPE_API_KEY",
+                url = "https://api-inference.modelscope.cn",
               },
-              url = "http://localhost:8317/v1/chat/completions",
+              formatted_name = "Modelscope",
+              name = "modelscope",
+              handlers = {
+                form_parameters = function(self, params, messages)
+                  if params.model:find("Qwen3") and not params.stream then
+                    params.enable_thinking = false
+                  end
+                  return openai.handlers.form_parameters(self, params, messages)
+                end,
+              },
+              schema = {
+                model = {
+                  choices = {
+                    "ZhipuAI/GLM-4.6",
+                    "ZhipuAI/GLM-4.5",
+                  },
+                  default = "ZhipuAI/GLM-4.6",
+                },
+              },
             })
           end,
           opts = {
@@ -59,13 +80,13 @@ return {
             expiration_days = 7,
             summary = {
               generation_opts = {
-                adapter = "gemini",
-                model = "gemini-2.5-flash",
+                adapter = "modelscope",
+                model = "Qwen/Qwen3-8B",
               },
             },
             title_generation_opts = {
-              adapter = "gemini",
-              model = "gemini-2.5-flash-lite",
+              adapter = "modelscope",
+              model = "Qwen/Qwen3-8B",
             },
           },
         },
@@ -86,9 +107,14 @@ return {
       },
       strategies = {
         chat = {
-          adapter = {
-            model = "gemini-2.5-pro",
-            name = "gemini",
+          adapter = "modelscope",
+          roles = {
+            llm = function(adapter)
+              return ("%s | %s"):format(
+                adapter.model.formatted_name or adapter.model.name,
+                adapter.formatted_name or adapter.name
+              )
+            end,
           },
           tools = {
             opts = {
@@ -97,10 +123,10 @@ return {
           },
         },
         cmd = {
-          adapter = "gemini",
+          adapter = "modelscope",
         },
         inline = {
-          adapter = "gemini",
+          adapter = "modelscope",
         },
       },
     },

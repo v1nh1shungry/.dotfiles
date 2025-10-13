@@ -65,6 +65,9 @@ return {
       display = {
         chat = {
           window = {
+            opts = {
+              conceallevel = 2,
+            },
             width = 0.5,
           },
         },

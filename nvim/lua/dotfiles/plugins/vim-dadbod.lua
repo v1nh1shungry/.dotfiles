@@ -7,10 +7,7 @@ return {
     "kristijanhusak/vim-dadbod-ui",
     cmd = "DBUI",
     dependencies = {
-      {
-        "tpope/vim-dadbod",
-        lazy = true, -- NOTE: otherwise loaded at startup, don't know why :(
-      },
+      "tpope/vim-dadbod",
       "kristijanhusak/vim-dadbod-completion",
     },
     init = function()

@@ -3,12 +3,15 @@ return {
     "olimorris/codecompanion.nvim",
     cmd = {
       "CodeCompanion",
+      "CodeCompanionActions",
       "CodeCompanionChat",
+      "CodeCompanionCmd",
       "CodeCompanionHistory",
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "folke/snacks.nvim",
       "ravitemer/mcphub.nvim",
       "ravitemer/codecompanion-history.nvim",
     },

@@ -7,6 +7,7 @@
 ## Requirements
 
 * [Brave](https://brave.com/)
+* [CCometixLine](https://github.com/Haleclipse/CCometixLine)
 * [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)
 * [Neovim](https://github.com/neovim/neovim)
 * [Spotify](https://open.spotify.com/)
@@ -29,6 +30,7 @@
 * [fzf](https://github.com/junegunn/fzf)
 * [gemini-cli](https://github.com/google-gemini/gemini-cli)
 * [git-absorb](https://github.com/tummychow/git-absorb)
+* [imv](https://sr.ht/~exec64/imv/)
 * [jq](https://github.com/jqlang/jq)
 * [just](https://github.com/casey/just)
 * [niri](https://github.com/YaLTeR/niri)

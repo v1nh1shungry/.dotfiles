@@ -68,15 +68,6 @@ end
 
 vim.diagnostic.config({
   float = { border = "rounded" },
-  jump = {
-    on_jump = function(_, bufnr)
-      vim.diagnostic.open_float({
-        bufnr = bufnr,
-        scope = "cursor",
-        focus = false,
-      })
-    end,
-  },
   severity_sort = true,
   signs = {
     text = { "", "", "", "" },

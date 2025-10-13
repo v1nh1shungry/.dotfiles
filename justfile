@@ -65,6 +65,10 @@ pip:
     mkdir -p {{ config_directory() }}/pip
     echo "[global]\nindex-url = https://mirrors.ustc.edu.cn/pypi/simple" >{{ config_directory() }}/pip/pip.conf
 
+qwen:
+    mkdir -p {{ home_directory() }}/.qwen
+    ln -sf {{ justfile_directory() }}/qwen/settings.json {{ home_directory() }}/.qwen
+
 starship:
     ln -sf {{ justfile_directory() }}/starship/starship.toml {{ config_directory() }}
 

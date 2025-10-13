@@ -49,6 +49,7 @@ require("lazy").setup(
           "gzip",
           "matchit",
           "matchparen",
+          "net",
           "netrwPlugin",
           "rplugin",
           "shada",

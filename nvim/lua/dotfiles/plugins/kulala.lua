@@ -12,6 +12,7 @@ return {
       { "yr", function() require("kulala").copy() end, desc = "Copy Request", ft = "http" },
       { "]]", function() require("kulala").jump_next() end, desc = "Next Request", ft = "http" },
       { "[[", function() require("kulala").jump_prev() end, desc = "Previous Request", ft = "http" },
+      { "<Leader>fn", function() require("kulala").scratchpad() end, desc = "Kulala Scratchpad" },
     },
     opts = {
       ui = {

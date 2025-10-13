@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mcphub": {
+      "trust": true,
+      "url": "http://localhost:37373/mcp"
+    }
+  },
+  "selectedAuthType": "qwen-oauth",
+  "telemetry": {
+    "enabled": false
+  },
+  "usageStatisticsEnabled": false
+}
+

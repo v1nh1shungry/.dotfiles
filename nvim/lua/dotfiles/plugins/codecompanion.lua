@@ -14,6 +14,7 @@ return {
       "folke/snacks.nvim",
       "ravitemer/mcphub.nvim",
       "ravitemer/codecompanion-history.nvim",
+      "franco-ruggeri/codecompanion-spinner.nvim",
     },
     keys = {
       { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "Code Companion" },
@@ -48,8 +49,10 @@ return {
               schema = {
                 model = {
                   choices = {
-                    "ZhipuAI/GLM-4.6",
                     "ZhipuAI/GLM-4.5",
+                    "ZhipuAI/GLM-4.6",
+                    "deepseek-ai/DeepSeek-R1-0528",
+                    "deepseek-ai/DeepSeek-V3.2-Exp",
                   },
                   default = "ZhipuAI/GLM-4.6",
                 },
@@ -64,6 +67,7 @@ return {
       },
       display = {
         chat = {
+          show_settings = true,
           window = {
             opts = {
               conceallevel = 2,
@@ -114,6 +118,14 @@ return {
       strategies = {
         chat = {
           adapter = "modelscope",
+          keymaps = {
+            send = {
+              callback = function(chat)
+                vim.cmd("stopinsert")
+                require("codecompanion.strategies.chat.keymaps").send.callback(chat)
+              end,
+            },
+          },
           roles = {
             llm = function(adapter)
               return ("%s | %s"):format(
@@ -134,6 +146,36 @@ return {
         inline = {
           adapter = "modelscope",
         },
+      },
+    },
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = "codecompanion",
+    opts = {
+      code = {
+        position = "right",
+      },
+      file_types = { "codecompanion" },
+      html = {
+        tag = {
+          buf = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          file = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          help = { icon = "󰘥 ", highlight = "CodeCompanionChatVariable" },
+          image = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          symbols = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          url = { icon = "󰖟 ", highlight = "CodeCompanionChatVariable" },
+          var = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          tool = { icon = " ", highlight = "CodeCompanionChatTool" },
+          prompt = { icon = " ", highlight = "CodeCompanionChatTool" },
+          group = { icon = " ", highlight = "CodeCompanionChatToolGroup" },
+        },
+      },
+      latex = {
+        enabled = false,
+      },
+      sign = {
+        enabled = false,
       },
     },
   },

@@ -37,6 +37,3 @@ do
   })
 end
 -- }}}
-
--- NOTE: https://github.com/andymass/vim-matchup/issues/416
-vim.b.matchup_matchparen_enabled = false

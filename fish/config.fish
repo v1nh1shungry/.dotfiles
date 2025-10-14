@@ -42,8 +42,8 @@ if command -q fzf && command -q delta
 end
 
 abbr l ls
-alias la "ls -a"
-alias ll "ls -al"
+abbr la "ls -a"
+abbr ll "ls -al"
 
 if command -q nvim
     set -x EDITOR $(which nvim)
@@ -54,6 +54,10 @@ if command -q nvim
     abbr vim nvim
 
     set -x MANPAGER "nvim +Man!"
+end
+
+if command -q procs
+    abbr ps procs
 end
 
 if command -q rg

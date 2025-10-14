@@ -1,7 +1,7 @@
 return {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
-    event = "VeryLazy",
+    event = "LazyFile",
     opts = {
       options = {
         show_source = {

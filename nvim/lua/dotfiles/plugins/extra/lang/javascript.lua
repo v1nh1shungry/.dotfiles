@@ -4,7 +4,6 @@ return {
     opts = {
       ensure_installed = {
         "css",
-        "html",
         "javascript",
         "jsdoc",
         "typescript",

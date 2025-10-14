@@ -1,3 +1,4 @@
+-- FIXME: automatically installing is broken due to plguins' resolving order.
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -43,6 +44,8 @@ return {
         "doxygen",
         "fish",
         "gitcommit",
+        "html",
+        "http",
         "json",
         "just",
         "lua",
@@ -54,8 +57,10 @@ return {
         "printf",
         "query",
         "regex",
+        "sql",
         "vim",
         "vimdoc",
+        "yaml",
       },
     },
     opts_extend = { "ensure_installed" },

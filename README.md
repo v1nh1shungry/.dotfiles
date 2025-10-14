@@ -7,7 +7,6 @@
 ## Requirements
 
 * [Brave](https://brave.com/)
-* [CCometixLine](https://github.com/Haleclipse/CCometixLine)
 * [Cherry Studio](https://www.cherry-ai.com/)
 * [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)
 * [Neovim](https://github.com/neovim/neovim)
@@ -35,6 +34,7 @@
 * [localsend](https://github.com/localsend/localsend)
 * [niri](https://github.com/YaLTeR/niri)
 * [noctalia-shell](https://github.com/noctalia-dev/noctalia-shell)
+* [procs](https://github.com/dalance/procs)
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 * [spicetify](https://spicetify.app/)
 * [starship](https://github.com/starship/starship)

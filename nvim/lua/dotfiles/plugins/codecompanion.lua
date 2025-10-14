@@ -28,33 +28,22 @@ return {
           },
         },
         http = {
-          modelscope = function()
-            local openai = require("codecompanion.adapters.http.openai")
-
+          bigmodel = function()
             return require("codecompanion.adapters").extend("openai_compatible", {
               env = {
-                api_key = "MODELSCOPE_API_KEY",
-                url = "https://api-inference.modelscope.cn",
+                api_key = "BIGMODEL_API_KEY",
+                chat_url = "/chat/completions",
+                url = "https://open.bigmodel.cn/api/coding/paas/v4",
               },
-              formatted_name = "Modelscope",
-              name = "modelscope",
-              handlers = {
-                form_parameters = function(self, params, messages)
-                  if params.model:find("Qwen3") and not params.stream then
-                    params.enable_thinking = false
-                  end
-                  return openai.handlers.form_parameters(self, params, messages)
-                end,
-              },
+              formatted_name = "BigModel",
+              name = "bigmodel",
               schema = {
                 model = {
                   choices = {
-                    "ZhipuAI/GLM-4.5",
-                    "ZhipuAI/GLM-4.6",
-                    "deepseek-ai/DeepSeek-R1-0528",
-                    "deepseek-ai/DeepSeek-V3.2-Exp",
+                    "glm-4.5-air",
+                    "glm-4.6",
                   },
-                  default = "ZhipuAI/GLM-4.6",
+                  default = "glm-4.6",
                 },
               },
             })
@@ -90,13 +79,13 @@ return {
             expiration_days = 7,
             summary = {
               generation_opts = {
-                adapter = "modelscope",
-                model = "Qwen/Qwen3-8B",
+                adapter = "bigmodel",
+                model = "glm-4.5-air",
               },
             },
             title_generation_opts = {
-              adapter = "modelscope",
-              model = "Qwen/Qwen3-8B",
+              adapter = "bigmodel",
+              model = "glm-4.5-air",
             },
           },
         },
@@ -117,7 +106,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = "modelscope",
+          adapter = "bigmodel",
           keymaps = {
             send = {
               callback = function(chat)
@@ -126,14 +115,6 @@ return {
               end,
             },
           },
-          roles = {
-            llm = function(adapter)
-              return ("%s | %s"):format(
-                adapter.model.formatted_name or adapter.model.name,
-                adapter.formatted_name or adapter.name
-              )
-            end,
-          },
           tools = {
             opts = {
               auto_submit_errors = true,
@@ -141,10 +122,10 @@ return {
           },
         },
         cmd = {
-          adapter = "modelscope",
+          adapter = "bigmodel",
         },
         inline = {
-          adapter = "modelscope",
+          adapter = "bigmodel",
         },
       },
     },

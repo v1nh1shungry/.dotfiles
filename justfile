@@ -67,6 +67,9 @@ starship:
 tmux:
     ln -sf {{ justfile_directory() }}/tmux {{ config_directory() }}
 
+vectorcode:
+    ln -sf {{ justfile_directory() }}/vectorcode {{ config_directory() }}
+
 yazi:
     mkdir -p {{ config_directory() }}/yazi
     ln -sf {{ justfile_directory() }}/yazi/package.toml {{ config_directory() }}/yazi

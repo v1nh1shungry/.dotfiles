@@ -12,7 +12,6 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "folke/snacks.nvim",
-      "ravitemer/mcphub.nvim",
       "ravitemer/codecompanion-history.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",
     },
@@ -32,17 +31,14 @@ return {
             return require("codecompanion.adapters").extend("openai_compatible", {
               env = {
                 api_key = "BIGMODEL_API_KEY",
-                chat_url = "/chat/completions",
-                url = "https://open.bigmodel.cn/api/coding/paas/v4",
+                chat_url = "/v4/chat/completions",
+                models_endpoint = "/v4/models",
+                url = "https://open.bigmodel.cn/api/coding/paas",
               },
               formatted_name = "BigModel",
               name = "bigmodel",
               schema = {
                 model = {
-                  choices = {
-                    "glm-4.5-air",
-                    "glm-4.6",
-                  },
                   default = "glm-4.6",
                 },
               },
@@ -56,7 +52,6 @@ return {
       },
       display = {
         chat = {
-          show_settings = true,
           window = {
             opts = {
               conceallevel = 2,
@@ -75,7 +70,6 @@ return {
       extensions = {
         history = {
           opts = {
-            delete_on_clearing_chat = true,
             expiration_days = 7,
             summary = {
               generation_opts = {
@@ -88,9 +82,6 @@ return {
               model = "glm-4.5-air",
             },
           },
-        },
-        mcphub = {
-          callback = "mcphub.extensions.codecompanion",
         },
         spinner = {},
       },

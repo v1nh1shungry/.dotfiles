@@ -1,0 +1,5 @@
+{
+  "embedding_params": {
+    "backend": "openvino"
+  }
+}

@@ -1,11 +1,7 @@
 {
   "mcpServers": {
-    "context7": {
-      "args": [
-        "-y",
-        "@upstash/context7-mcp"
-      ],
-      "command": "npx"
+    "exa": {
+      "url": "https://mcp.exa.ai/mcp"
     },
     "sequentialthinking": {
       "args": [

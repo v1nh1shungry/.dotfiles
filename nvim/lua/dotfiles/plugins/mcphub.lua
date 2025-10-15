@@ -15,4 +15,15 @@ return {
       use_bundled_binary = true,
     },
   },
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = "ravitemer/mcphub.nvim",
+    opts = {
+      extensions = {
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+        },
+      },
+    },
+  },
 }

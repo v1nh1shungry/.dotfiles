@@ -11,6 +11,7 @@ return {
       { "<Leader>fn", function() require("kulala").scratchpad() end, desc = "Kulala Scratchpad" },
     },
     opts = {
+      scratchpad_default_contents = {},
       ui = {
         win_opts = {
           wo = {

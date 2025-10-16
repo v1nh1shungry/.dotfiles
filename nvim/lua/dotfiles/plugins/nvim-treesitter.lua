@@ -60,7 +60,6 @@ return {
         "sql",
         "vim",
         "vimdoc",
-        "yaml",
       },
     },
     opts_extend = { "ensure_installed" },

@@ -148,6 +148,7 @@ return {
           },
         },
         previewers = {
+          diff = { builtin = false },
           git = { native = true },
         },
         sources = {

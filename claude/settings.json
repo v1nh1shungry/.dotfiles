@@ -4,19 +4,6 @@
   "env": {
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-send 'Claude Code' 'Done'"
-          }
-        ]
-      }
-    ]
-  },
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [

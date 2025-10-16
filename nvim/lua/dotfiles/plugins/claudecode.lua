@@ -9,6 +9,7 @@ return {
     keys = {
       { "<Leader>ac", "<Cmd>ClaudeCode<CR>", desc = "Claude Code" },
       { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Claude Code", mode = "x" },
+      { "<Leader>aC", "<Cmd>ClaudeCode --resume<CR>", desc = "Claude Code (Resume)" },
     },
     opts = {
       diff_opts = {

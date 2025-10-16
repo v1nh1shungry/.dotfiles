@@ -16,8 +16,9 @@ return {
       "franco-ruggeri/codecompanion-spinner.nvim",
     },
     keys = {
-      { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "Code Companion" },
-      { "<Leader>aa", "<Cmd>CodeCompanionChat Add<CR>", desc = "Code Companion", mode = "x" },
+      { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "CodeCompanion" },
+      { "<Leader>aa", "<Cmd>CodeCompanionChat Add<CR>", desc = "CodeCompanion", mode = "x" },
+      { "<Leader>aA", "<Cmd>CodeCompanionHistory<CR>", desc = "CodeCompanion (Resume)" },
     },
     opts = {
       adapters = {
@@ -57,13 +58,6 @@ return {
               conceallevel = 2,
             },
             width = 0.5,
-          },
-        },
-        diff = {
-          provider_opts = {
-            inline = {
-              layout = "buffer",
-            },
           },
         },
       },
@@ -135,6 +129,7 @@ return {
           file = { icon = " ", highlight = "CodeCompanionChatVariable" },
           help = { icon = "󰘥 ", highlight = "CodeCompanionChatVariable" },
           image = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          memory = { icon = " ", highlight = "CodeCompanionChatVariable" },
           symbols = { icon = " ", highlight = "CodeCompanionChatVariable" },
           url = { icon = "󰖟 ", highlight = "CodeCompanionChatVariable" },
           var = { icon = " ", highlight = "CodeCompanionChatVariable" },

@@ -28,7 +28,7 @@ function M.map(opts)
 
     vim.api.nvim_create_autocmd("FileType", {
       callback = function(args) Dotfiles.map_with({ buffer = args.buf })(opts) end,
-      desc = "Dotfiles.map() with filetypes",
+      desc = "Create filetype-specific mappings",
       pattern = pattern,
     })
 

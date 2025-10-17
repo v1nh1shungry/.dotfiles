@@ -7,7 +7,7 @@ return {
       {
         "<M-l>",
         function() require("smart-splits").move_cursor_right() end,
-        desc = "Right window",
+        desc = "Right Window",
         mode = { "n", "t" },
       },
       {

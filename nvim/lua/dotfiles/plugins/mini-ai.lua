@@ -2,7 +2,7 @@
 return {
   {
     "nvim-mini/mini.ai",
-    event = "VeryLazy", -- NOTE: For nofile, again :(
+    event = "VeryLazy", -- NOTE: Required for nofile buffers
     opts = function()
       local ai = require("mini.ai")
 

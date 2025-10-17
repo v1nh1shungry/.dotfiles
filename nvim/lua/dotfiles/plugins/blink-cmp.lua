@@ -5,6 +5,10 @@ return {
     dependencies = "xzbdmw/colorful-menu.nvim",
     event = "VeryLazy",
     opts = {
+      -- FIXME: Command line completion is currently broken due to an unresolved issue.
+      cmdline = {
+        enabled = false,
+      },
       completion = {
         documentation = {
           auto_show = true,

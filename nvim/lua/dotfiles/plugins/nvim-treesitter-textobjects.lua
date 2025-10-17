@@ -30,7 +30,7 @@ return {
             end
           end
         end,
-        desc = "Setup nvim-treesitter-textobjects keymappings",
+        desc = "Setup nvim-treesitter-textobjects key mappings",
         group = Dotfiles.augroup("nvim-treesitter-textobjects"),
       })
     end,

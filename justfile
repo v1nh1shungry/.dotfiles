@@ -34,7 +34,6 @@ fish:
     mkdir -p {{ config_directory() }}/fish
     ln -sf {{ justfile_directory() }}/fish/config.fish {{ config_directory() }}/fish
     ln -sf {{ justfile_directory() }}/fish/fish_plugins {{ config_directory() }}/fish
-    ln -sf {{ justfile_directory() }}/fish/fish-ai.ini {{ config_directory() }}
 
 fontconfig:
     ln -sf {{ justfile_directory() }}/fontconfig {{ config_directory() }}

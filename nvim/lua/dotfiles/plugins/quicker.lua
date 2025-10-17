@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/quicker.nvim",
-    event = "VeryLazy", -- NOTE: Doesn't work for loclist if `ft = "qf"`.
+    event = "VeryLazy", -- NOTE: Doesn't work for location list if `ft = "qf"`.
     keys = {
       { "<Leader>xq", function() require("quicker").toggle() end, desc = "Toggle Quickfix List" },
       { "<Leader>xl", function() require("quicker").toggle({ loclist = true }) end, desc = "Toggle Location List" },

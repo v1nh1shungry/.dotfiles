@@ -1,4 +1,4 @@
--- FIXME: automatically installing is broken due to plguins' resolving order.
+-- FIXME: automatically installing is broken due to plugins' resolving order.
 return {
   {
     "nvim-treesitter/nvim-treesitter",

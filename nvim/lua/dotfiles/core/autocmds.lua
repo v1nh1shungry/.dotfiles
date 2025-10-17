@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
       vim.cmd("checktime")
     end
   end,
-  desc = "Automatically check if any buffers were changed outside of Nvim",
+  desc = "Check for external buffer changes",
   group = Dotfiles.augroup("checktime"),
 })
 
@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
     vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(event.match) or event.match, ":p:h"), "p")
   end,
-  desc = "Automatically create directory if not exists",
+  desc = "Create directory if it doesn't exist",
   group = Dotfiles.augroup("auto_create_dir"),
 })
 
@@ -108,7 +108,12 @@ do
     vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave", "TermLeave" }, {
       callback = function()
         vim.system({ fcitx_cmd }, { text = true }, function(out)
-          assert(out.code == 0)
+          -- FIXME: `nvim +Man!` would fail, don't know why.
+          if out.code ~= 0 then
+            vim.schedule(function() vim.api.nvim_del_augroup_by_id(augroup) end)
+            return
+          end
+
           previous_im = vim.trim(assert(out.stdout))
           activate_im(false)
         end)

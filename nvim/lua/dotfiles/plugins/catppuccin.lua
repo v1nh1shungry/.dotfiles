@@ -4,24 +4,19 @@ return {
     lazy = true,
     name = "catppuccin",
     opts = {
+      auto_integrations = true,
       integrations = {
-        blink_cmp = true,
-        dadbod_ui = true,
-        diffview = true,
-        dropbar = { enabled = true, color_mode = true },
-        grug_far = true,
-        mason = true,
-        native_lsp = {
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
-          },
+        dropbar = {
+          color_mode = true,
         },
-        noice = true,
-        snacks = { enabled = true },
-        which_key = true,
+      },
+      lsp_styles = {
+        underlines = {
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
+        },
       },
     },
     priority = 1000,

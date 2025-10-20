@@ -9,9 +9,9 @@ return {
     event = "BufRead Cargo.toml",
     opts = {
       lsp = {
-        enabled = true,
         actions = true,
         completion = true,
+        enabled = true,
         hover = true,
       },
     },
@@ -25,30 +25,21 @@ return {
             ["rust-analyzer"] = {
               cargo = {
                 allFeatures = true,
-                loadOutDirsFromCheck = true,
-                buildScripts = { enable = true },
               },
               checkOnSave = true,
-              procMacro = {
-                enable = true,
-                ignored = {
-                  ["async-trait"] = { "async_trait" },
-                  ["napi-derive"] = { "napi" },
-                  ["async-recursion"] = { "async_recursion" },
-                },
-              },
               files = {
                 excludeDirs = {
                   ".direnv",
                   ".git",
                   ".github",
                   ".gitlab",
+                  ".venv",
                   "bin",
                   "node_modules",
                   "target",
                   "venv",
-                  ".venv",
                 },
+                watcher = "client",
               },
             },
           },

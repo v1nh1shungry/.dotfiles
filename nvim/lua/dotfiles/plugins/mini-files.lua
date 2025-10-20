@@ -31,8 +31,8 @@ return {
       local show_hidden = false
       local git_ignored = new_git_ignored()
 
-      local NS = Dotfiles.ns("mini.files.extmarks")
-      local AUGROUP = Dotfiles.augroup("mini.files")
+      local NS = Dotfiles.ns("plugins.mini-files.extmarks")
+      local AUGROUP = Dotfiles.augroup("plugins.mini-files")
 
       ---@type string[]
       local IGNORED_PATTERN = {

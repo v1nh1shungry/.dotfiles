@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end
   end,
   desc = "Check for external buffer changes",
-  group = Dotfiles.augroup("checktime"),
+  group = Dotfiles.augroup("core.autocmds.checktime"),
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -24,7 +24,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end
   end,
   desc = "Move to last location",
-  group = Dotfiles.augroup("last_loc"),
+  group = Dotfiles.augroup("core.autocmds.last_loc"),
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(event.match) or event.match, ":p:h"), "p")
   end,
   desc = "Create directory if it doesn't exist",
-  group = Dotfiles.augroup("auto_create_dir"),
+  group = Dotfiles.augroup("core.autocmds.create_dir"),
 })
 
 do
@@ -56,7 +56,7 @@ do
     end
   end
 
-  local augroup = Dotfiles.augroup("minimal_ui")
+  local augroup = Dotfiles.augroup("core.autocmds.minimal_ui")
   vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
     callback = setup_minimal_ui,
     desc = "Setup minimal UI for nofile",
@@ -82,7 +82,7 @@ do
   end
 
   if fcitx_cmd then
-    local augroup = Dotfiles.augroup("im")
+    local augroup = Dotfiles.augroup("core.autocmds.switch-input-method")
     local previous_im
 
     ---@param enable? boolean
@@ -127,7 +127,7 @@ end
 
 -- https://github.com/neovim/neovim/issues/16572#issuecomment-1954420136 {{{
 do
-  local augroup = Dotfiles.augroup("sync_terminal_color")
+  local augroup = Dotfiles.augroup("core.autocmds.sync-terminal-color")
 
   vim.api.nvim_create_autocmd({ "UIEnter", "ColorScheme" }, {
     callback = function()
@@ -151,5 +151,5 @@ end
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.highlight.on_yank() end,
   desc = "Highlight yanked text",
-  group = Dotfiles.augroup("on_yank"),
+  group = Dotfiles.augroup("core.autocmds.highlight-on-yank"),
 })

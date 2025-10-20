@@ -1,7 +1,7 @@
 -- Inspired by https://github.com/chrisgrieser/nvim-tinygit {{{
 
 local function pickaxe()
-  local root = Dotfiles.git.root()
+  local root = Snacks.git.get_root()
 
   if not root then
     Dotfiles.notify.error("Aborting: not a git repository")

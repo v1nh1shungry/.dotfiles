@@ -39,19 +39,19 @@ return {
           vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
         end
 
-        if opts[client.name] and type(opts[client.name].setup) == "function" then
-          opts[client.name].setup(client, buffer)
+        if opts[client.name] and type(opts[client.name].on_attach) == "function" then
+          opts[client.name].on_attach(client, buffer)
         end
       end)
 
       Dotfiles.lsp.register_mappings({
         ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
         ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
-        ["textDocument/references"] = { "gR", vim.lsp.buf.references, desc = "Goto References" },
-        ["textDocument/definition"] = { "gd", vim.lsp.buf.definition, desc = "Goto Definition" },
-        ["textDocument/declaration"] = { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
-        ["textDocument/typeDefinition"] = { "gy", vim.lsp.buf.type_definition, desc = "Goto Type Definition" },
-        ["textDocument/implementation"] = { "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
+        ["textDocument/references"] = { "gR", vim.lsp.buf.references, desc = "Go to References" },
+        ["textDocument/definition"] = { "gd", vim.lsp.buf.definition, desc = "Go to Definition" },
+        ["textDocument/declaration"] = { "gD", vim.lsp.buf.declaration, desc = "Go to Declaration" },
+        ["textDocument/typeDefinition"] = { "gy", vim.lsp.buf.type_definition, desc = "Go to Type Definition" },
+        ["textDocument/implementation"] = { "gI", vim.lsp.buf.implementation, desc = "Go to Implementation" },
         ["callHierarchy/incomingCalls"] = { "<Leader>ci", vim.lsp.buf.incoming_calls, desc = "Incoming Calls" },
         ["callHierarchy/outgoingCalls"] = { "<Leader>co", vim.lsp.buf.outgoing_calls, desc = "Outgoing Calls" },
         ["typeHierarchy/subtypes"] = {
@@ -107,7 +107,7 @@ return {
           { "<Leader>ch", "<Cmd>LspClangdSwitchSourceHeader<CR>", desc = "Switch Source/Header" },
         },
         -- FIXME: clang-format can't format all projects well.
-        setup = function(client) vim.lsp.on_type_formatting.enable(false, { client_id = client.id }) end,
+        on_attach = function(client) vim.lsp.on_type_formatting.enable(false, { client_id = client.id }) end,
       },
       emmylua_ls = {},
       jsonls = {

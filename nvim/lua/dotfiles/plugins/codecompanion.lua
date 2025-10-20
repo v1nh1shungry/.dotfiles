@@ -98,6 +98,32 @@ return {
             },
           },
           tools = {
+            cmd_runner = {
+              opts = {
+                requires_approval = function(self)
+                  for _, pattern in ipairs({
+                    "^cat",
+                    "^echo",
+                    "^find %.",
+                    "^git diff",
+                    "^git log",
+                    "^git show",
+                    "^git status",
+                    "^head",
+                    "^ls",
+                    "^pwd",
+                    "^tail",
+                    "^wc",
+                  }) do
+                    if self.args.cmd:match(pattern) then
+                      return false
+                    end
+                  end
+
+                  return true
+                end,
+              },
+            },
             opts = {
               auto_submit_errors = true,
             },
@@ -124,20 +150,18 @@ return {
         tag = {
           buf = { icon = " ", highlight = "CodeCompanionChatVariable" },
           file = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          group = { icon = " ", highlight = "CodeCompanionChatToolGroup" },
           help = { icon = "󰘥 ", highlight = "CodeCompanionChatVariable" },
           image = { icon = " ", highlight = "CodeCompanionChatVariable" },
           memory = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          prompt = { icon = " ", highlight = "CodeCompanionChatTool" },
           symbols = { icon = " ", highlight = "CodeCompanionChatVariable" },
+          tool = { icon = " ", highlight = "CodeCompanionChatTool" },
           url = { icon = "󰖟 ", highlight = "CodeCompanionChatVariable" },
           var = { icon = " ", highlight = "CodeCompanionChatVariable" },
-          tool = { icon = " ", highlight = "CodeCompanionChatTool" },
-          prompt = { icon = " ", highlight = "CodeCompanionChatTool" },
-          group = { icon = " ", highlight = "CodeCompanionChatToolGroup" },
         },
       },
-      latex = {
-        enabled = false,
-      },
+      render_modes = true,
       sign = {
         enabled = false,
       },

@@ -5,11 +5,6 @@ return {
     name = "catppuccin",
     opts = {
       auto_integrations = true,
-      integrations = {
-        dropbar = {
-          color_mode = true,
-        },
-      },
       lsp_styles = {
         underlines = {
           errors = { "undercurl" },

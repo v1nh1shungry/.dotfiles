@@ -1,5 +1,4 @@
 ---@class dotfiles.utils
----@field git dotfiles.utils.Git
 ---@field lsp dotfiles.utils.Lsp
 ---@field notify dotfiles.utils.Notify
 ---@field user dotfiles.utils.User
@@ -21,19 +20,6 @@ setmetatable(M, {
 ---@param opts dotfiles.utils.map.Opts
 function M.map(opts)
   opts = vim.deepcopy(opts)
-
-  if opts.ft then
-    local pattern = opts.ft
-    opts.ft = nil
-
-    vim.api.nvim_create_autocmd("FileType", {
-      callback = function(args) Dotfiles.map_with({ buffer = args.buf })(opts) end,
-      desc = "Create filetype-specific mappings",
-      pattern = pattern,
-    })
-
-    return
-  end
 
   local lhs, rhs, mode = opts[1], opts[2], opts.mode or "n"
   opts[1], opts[2], opts.mode = nil, nil, nil

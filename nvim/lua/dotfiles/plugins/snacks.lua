@@ -29,7 +29,7 @@ return {
           Snacks.toggle.profiler():map("<Leader>pp")
         end,
         desc = "Setup snacks.nvim when ready",
-        group = Dotfiles.augroup("snacks.nvim"),
+        group = Dotfiles.augroup("plugins.snacks.setup"),
         once = true,
         pattern = "VeryLazy",
       })
@@ -80,6 +80,13 @@ return {
         "textDocument/inlayHint",
         function(_, buffer) Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = buffer }) end
       )
+
+      vim.api.nvim_create_autocmd("User", {
+        callback = function(args) Snacks.rename.on_rename_file(args.data.from, args.data.to) end,
+        desc = "Update LSP references when files are renamed in MiniFiles",
+        pattern = "MiniFilesActionRename",
+        group = Dotfiles.augroup("plugins.snacks.mini-files-rename"),
+      })
     end,
     lazy = false,
     keys = {

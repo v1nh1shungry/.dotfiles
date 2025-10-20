@@ -31,7 +31,7 @@ return {
           end
         end,
         desc = "Setup nvim-treesitter-textobjects key mappings",
-        group = Dotfiles.augroup("nvim-treesitter-textobjects"),
+        group = Dotfiles.augroup("plugins.nvim-treesitter-textobjects.keymaps"),
       })
     end,
     dependencies = "nvim-treesitter/nvim-treesitter",

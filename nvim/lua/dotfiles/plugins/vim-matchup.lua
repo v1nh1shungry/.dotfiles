@@ -10,7 +10,8 @@ return {
       -- FIXME: https://github.com/andymass/vim-matchup/issues/416
       vim.api.nvim_create_autocmd("FileType", {
         command = "let b:matchup_matchparen_enabled = v:false",
-        group = Dotfiles.augroup("matchup.issue-416"),
+        desc = "Disable vim-matchup for several filetypes due to performance issues",
+        group = Dotfiles.augroup("plugins.vim-matchup.issue-416"),
         pattern = { "codecompanion", "markdown" },
       })
     end,

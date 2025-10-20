@@ -13,12 +13,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
-      cssls = {
-        mason = "css-lsp",
-      },
-      html = {
-        mason = "html-lsp",
-      },
       vtsls = {},
     },
   },

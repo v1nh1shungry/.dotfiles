@@ -37,7 +37,7 @@ return {
           end
         end,
         desc = "Run linter automatically",
-        group = Dotfiles.augroup("lint"),
+        group = Dotfiles.augroup("plugins.nvim-lint"),
       })
     end,
     event = "LazyFile",

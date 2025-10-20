@@ -264,7 +264,7 @@ map({
     table.sort(bufs)
     vim.api.nvim_set_current_buf(bufs[vim.v.count])
   end,
-  desc = "Goto Nth Buffer",
+  desc = "Go to Nth Buffer",
 })
 
 map({ "<Leader>qr", "<Cmd>restart<CR>", desc = "Restart" })

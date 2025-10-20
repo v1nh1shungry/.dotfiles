@@ -6,6 +6,7 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     opts = {
       auto_approve = true,
+      auto_toggle_mcp_servers = false,
       config = vim.fs.joinpath(vim.fn.stdpath("config") --[[@as string]], "mcphub.json"),
       ui = {
         window = {
@@ -22,6 +23,10 @@ return {
       extensions = {
         mcphub = {
           callback = "mcphub.extensions.codecompanion",
+          opts = {
+            show_result_in_chat = false,
+            show_server_tools_in_chat = false,
+          },
         },
       },
     },

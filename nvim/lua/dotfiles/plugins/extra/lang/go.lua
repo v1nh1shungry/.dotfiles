@@ -4,7 +4,7 @@ return {
     opts = {
       gopls = {
         -- https://www.lazyvim.org/extras/lang/go {{{
-        setup = function(client)
+        on_attach = function(client)
           if not client.server_capabilities.semanticTokensProvider then
             local semantic = client.config.capabilities.textDocument.semanticTokens
             client.server_capabilities.semanticTokensProvider = {
@@ -23,13 +23,6 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "go",
-        "gomod",
-        "gosum",
-        "gowork",
-      },
-    },
+    opts = { ensure_installed = { "go" } },
   },
 }

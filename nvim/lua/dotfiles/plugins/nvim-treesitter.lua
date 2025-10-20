@@ -24,7 +24,7 @@ return {
           Snacks.toggle.treesitter():map("<Leader>uT")
         end,
         desc = "Enable treesitter highlight and indent",
-        group = Dotfiles.augroup("nvim-treesitter"),
+        group = Dotfiles.augroup("plugins.nvim-treesitter"),
       })
     end,
     event = "LazyFile",

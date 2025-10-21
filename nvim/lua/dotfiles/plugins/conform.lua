@@ -12,6 +12,8 @@ return {
     opts = {
       default_format_opts = { lsp_format = "fallback" },
       formatters_by_ft = {
+        c = { "clang-format" },
+        cpp = { "clang-format" },
         fish = { "fish_indent" },
         lua = { "stylua" },
         json = { "jq" },
@@ -19,10 +21,16 @@ return {
         just = { "just" },
         markdown = { "injected" },
         query = { "format-queries" },
-        rust = { "rustfmt" },
       },
       formatters = {
-        injected = { options = { ignore_errors = true } },
+        ["clang-format"] = {
+          prepend_args = { "--fallback-style=llvm" },
+        },
+        injected = {
+          options = {
+            ignore_errors = true,
+          },
+        },
       },
     },
   },

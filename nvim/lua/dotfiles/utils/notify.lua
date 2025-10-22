@@ -1,12 +1,12 @@
----@alias dotfiles.utils.Notifier fun(msg: string, ...)
+---@alias dotfiles.utils.notify.Notifier fun(msg: string, ...)
 
 ---@class dotfiles.utils.Notify
----@field debug dotfiles.utils.Notifier
----@field error dotfiles.utils.Notifier
----@field info dotfiles.utils.Notifier
----@field warn dotfiles.utils.Notifier
----@field off dotfiles.utils.Notifier
----@field trace dotfiles.utils.Notifier
+---@field debug dotfiles.utils.notify.Notifier
+---@field error dotfiles.utils.notify.Notifier
+---@field info dotfiles.utils.notify.Notifier
+---@field warn dotfiles.utils.notify.Notifier
+---@field off dotfiles.utils.notify.Notifier
+---@field trace dotfiles.utils.notify.Notifier
 local M = setmetatable({}, {
   __call = function(self, ...) self.info(...) end,
 })

@@ -16,7 +16,6 @@ return {
               Dotfiles.map({
                 key,
                 function()
-                  ---@diagnostic disable-next-line: unnecessary-if
                   if vim.wo.diff and key:find("[%]%[][cC]") then
                     vim.cmd("normal! " .. key)
                   else

@@ -13,6 +13,11 @@ local function scroll(delta)
   return true
 end
 
+---@class dotfiles.plugins.nvim_lspconfig.ServerOpts
+---@field keys? dotfiles.utils.map.Opts[]
+---@field mason? string
+---@field on_attach? fun(client: vim.lsp.Client, buffer: integer)
+
 return {
   {
     "neovim/nvim-lspconfig",
@@ -35,9 +40,7 @@ return {
           vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
         end
 
-        if client:supports_method("textDocument/onTypeFormatting") then
-          vim.lsp.on_type_formatting.enable(true, { client_id = client.id })
-        end
+        -- TODO: support on-type-formatting
 
         if opts[client.name] and type(opts[client.name].on_attach) == "function" then
           opts[client.name].on_attach(client, buffer)
@@ -101,17 +104,17 @@ return {
     end,
     dependencies = "mason-org/mason.nvim",
     event = "VeryLazy",
-    opts = {
+    opts = { ---@type table<string, dotfiles.plugins.nvim_lspconfig.ServerOpts>
       clangd = {
         keys = {
           { "<Leader>ch", "<Cmd>LspClangdSwitchSourceHeader<CR>", desc = "Switch Source/Header" },
         },
-        -- FIXME: clang-format can't format all projects well.
-        on_attach = function(client) vim.lsp.on_type_formatting.enable(false, { client_id = client.id }) end,
       },
-      emmylua_ls = {},
       jsonls = {
         mason = "json-lsp",
+      },
+      lua_ls = {
+        mason = "lua-language-server",
       },
       neocmake = {
         mason = "neocmakelsp",

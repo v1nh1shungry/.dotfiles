@@ -1,7 +1,7 @@
 ---@class dotfiles.utils.Lsp
 local M = {}
 
-local augroup = Dotfiles.augroup("utils.lsp.on_attach")
+local augroup = Dotfiles.augroup("utils.lsp.on-attach")
 
 ---@param callback fun(client: vim.lsp.Client, buffer: integer)
 function M.on_attach(callback)
@@ -37,7 +37,7 @@ function M.register_mappings(mappings)
           map(keys --[[@as dotfiles.utils.map.Opts]])
         else
           for _, k in ipairs(keys) do
-            map(k)
+            map(k --[[@as dotfiles.utils.map.Opts]])
           end
         end
       end

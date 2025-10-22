@@ -7,7 +7,7 @@ return {
     opts = {
       auto_approve = true,
       auto_toggle_mcp_servers = false,
-      config = vim.fs.joinpath(vim.fn.stdpath("config") --[[@as string]], "mcphub.json"),
+      config = vim.fs.joinpath(vim.fn.stdpath("config"), "mcphub.json"),
       ui = {
         window = {
           border = "rounded",

@@ -10,6 +10,7 @@
 * [Cherry Studio](https://www.cherry-ai.com/)
 * [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)
 * [Neovim](https://github.com/neovim/neovim)
+* [SPlayer](https://github.com/imsyy/SPlayer)
 * [Spotify](https://open.spotify.com/)
 * [WeChat](https://weixin.qq.com/)
 * [alacritty](https://alacritty.org/)

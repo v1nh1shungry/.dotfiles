@@ -1,4 +1,4 @@
-local lazypath = vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "lazy", "lazy.nvim")
+local lazypath = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy", "lazy.nvim")
 if not vim.uv.fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
   local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
@@ -37,7 +37,7 @@ require("lazy").setup(
     checker = { enabled = true },
     dev = {
       fallback = true,
-      path = vim.fs.joinpath(vim.env.HOME, "Documents", "repos"),
+      path = vim.fs.joinpath(vim.uv.os_homedir(), "Documents", "repos"),
       patterns = { "v1nh1shungry" },
     },
     diff = { cmd = "diffview.nvim" },

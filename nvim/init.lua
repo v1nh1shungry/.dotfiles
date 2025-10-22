@@ -1,5 +1,5 @@
 if vim.env.PROFILE_STARTUP then
-  vim.opt.rtp:append(vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "lazy", "snacks.nvim"))
+  vim.opt.rtp:append(vim.fs.joinpath(vim.fn.stdpath("data"), "lazy", "snacks.nvim"))
   ---@diagnostic disable-next-line: missing-parameter
   require("snacks.profiler").startup()
 end
@@ -57,7 +57,7 @@ require("dotfiles.core.options")
 require("dotfiles.core.lazy")
 
 -- Clean loader cache for files that no longer exist.
-local luac_path = vim.fs.joinpath(vim.fn.stdpath("cache") --[[@as string]], "luac")
+local luac_path = vim.fs.joinpath(vim.fn.stdpath("cache"), "luac")
 for name, type in vim.fs.dir(luac_path) do
   if type == "file" then
     if not vim.uv.fs_stat(vim.uri_decode(name):sub(1, -2)) then

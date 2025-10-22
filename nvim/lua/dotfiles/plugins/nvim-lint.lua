@@ -15,7 +15,7 @@ return {
 
       lint.linters_by_ft = opts.linters_by_ft
 
-      ---@class dotfiles.plugins.dev.lint.Linter: lint.Linter
+      ---@class dotfiles.plugins.nvim_lint.Linter: lint.Linter
       ---@field condition fun(): boolean
 
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
@@ -23,7 +23,8 @@ return {
           local names = vim
             .iter(lint._resolve_linter_by_ft(vim.bo.filetype))
             :filter(function(name)
-              local linter = lint.linters[name] ---@as dotfiles.plugins.dev.lint.Linter
+              local linter = lint.linters[name]
+              ---@cast linter dotfiles.plugins.nvim_lint.Linter
               if not linter then
                 Dotfiles.notify.warn("Linter not found: " .. name)
                 return false

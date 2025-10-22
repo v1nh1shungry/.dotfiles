@@ -6,6 +6,8 @@ return {
     opts = {
       content = {
         active = function()
+          ---@module "mini.statusline"
+
           local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
           local git = MiniStatusline.section_git({ trunc_width = 40 })
           local diff = MiniStatusline.section_diff({ trunc_width = 75 })
@@ -17,8 +19,9 @@ return {
             { hl = mode_hl, strings = { mode } },
             { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
             "%<",
-            { hl = "MiniStatuslineFilename", strings = {} },
+            { hl = "MiniStatuslineFilename" },
             "%=",
+            "%S ",
             { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
             { hl = mode_hl, strings = { location } },
           })

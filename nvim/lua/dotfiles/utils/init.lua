@@ -24,8 +24,6 @@ function M.map(opts)
   local lhs, rhs, mode = opts[1], opts[2], opts.mode or "n"
   opts[1], opts[2], opts.mode = nil, nil, nil
 
-  ---@cast opts vim.keymap.set.Opts
-
   mode = type(mode) == "table" and mode or { mode }
   if vim.list_contains(mode, "c") then
     mode = vim.tbl_filter(function(m) return m ~= "c" end, mode)
@@ -40,7 +38,9 @@ end
 ---@param opts vim.keymap.set.Opts
 ---@return fun(opts: dotfiles.utils.map.Opts)
 function M.map_with(opts)
-  return function(mapping) M.map(vim.tbl_deep_extend("force", opts, mapping)) end
+  return function(mapping)
+    M.map(vim.tbl_deep_extend("force", opts, mapping) --[[@as dotfiles.utils.map.Opts]])
+  end
 end
 
 ---@param name string

@@ -10,10 +10,14 @@ do
     mapping.mode = mapping.mode or { "n" }
 
     if type(mapping.mode) == "string" then
-      mapping.mode = { mapping.mode }
+      mapping.mode = {
+        mapping.mode --[[@as string]],
+      }
     end
 
-    for _, m in ipairs(mapping.mode) do
+    for _, m in
+      ipairs(mapping.mode --[=[@as string[]]=])
+    do
       local map_desc = vim.fn.maparg(mapping[1], m, false, true).desc
       if map_desc and string.find(map_desc, "vim%.lsp") then
         vim.keymap.del(m, mapping[1])
@@ -96,9 +100,7 @@ map({ "<Leader>bn", "<Cmd>enew<CR>", desc = ":enew" })
 
 map({
   "<Leader>fc",
-  function()
-    vim.cmd("edit " .. vim.fs.joinpath(vim.fn.stdpath("data") --[[@as string]], "nvim.user"))
-  end,
+  function() vim.cmd("edit " .. vim.fs.joinpath(vim.fn.stdpath("data"), "nvim.user")) end,
   desc = "Edit User Configuration",
 })
 

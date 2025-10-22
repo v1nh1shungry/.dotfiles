@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(event.match) or event.match, ":p:h"), "p")
   end,
   desc = "Create directory if it doesn't exist",
-  group = Dotfiles.augroup("core.autocmds.create_dir"),
+  group = Dotfiles.augroup("core.autocmds.create-dir"),
 })
 
 do
@@ -56,7 +56,7 @@ do
     end
   end
 
-  local augroup = Dotfiles.augroup("core.autocmds.minimal_ui")
+  local augroup = Dotfiles.augroup("core.autocmds.minimal-ui")
   vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
     callback = setup_minimal_ui,
     desc = "Setup minimal UI for nofile",

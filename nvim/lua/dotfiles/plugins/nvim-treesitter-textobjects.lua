@@ -17,7 +17,7 @@ return {
                 key,
                 function()
                   if vim.wo.diff and key:find("[%]%[][cC]") then
-                    vim.cmd("normal! " .. key)
+                    vim.cmd("normal! " .. vim.v.count1 .. key)
                   else
                     require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects")
                   end

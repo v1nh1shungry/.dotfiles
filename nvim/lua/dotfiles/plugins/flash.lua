@@ -8,7 +8,6 @@ return {
       { "T", mode = { "n", "x", "o" } },
       { ",", mode = { "n", "x", "o" } },
       { ";", mode = { "n", "x", "o" } },
-      { "s", function() require("flash").jump() end, desc = "Flash", mode = { "n", "x", "o" } },
       { "r", function() require("flash").remote() end, desc = "Remote Flash", mode = "o" },
     },
     opts = {},

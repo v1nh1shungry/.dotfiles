@@ -68,10 +68,8 @@ tmux:
 
 yazi:
     mkdir -p {{ config_directory() }}/yazi
-    ln -sf {{ justfile_directory() }}/yazi/package.toml {{ config_directory() }}/yazi
-    ln -sf {{ justfile_directory() }}/yazi/theme.toml {{ config_directory() }}/yazi
     ln -sf {{ justfile_directory() }}/yazi/yazi.toml {{ config_directory() }}/yazi
-    ya pkg add BennyOe/tokyo-night
+    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/yazi/tokyonight_moon.toml {{ config_directory() }}/yazi/theme.toml
 
 all: atuin bat cargo fish fontconfig gdb git lazygit npm nvim pip starship tmux yazi
 

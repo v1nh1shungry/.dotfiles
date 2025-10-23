@@ -135,23 +135,45 @@ return {
             cmd_runner = {
               opts = {
                 requires_approval = function(self)
-                  for _, pattern in ipairs({
-                    "^cat",
-                    "^echo",
-                    "^find %.",
-                    "^git diff",
-                    "^git log",
-                    "^git show",
-                    "^git status",
-                    "^head",
-                    "^ls",
-                    "^pwd",
-                    "^tail",
-                    "^wc",
-                  }) do
-                    if self.args.cmd:match(pattern) then
-                      return false
+                  local cmd = vim.split(self.args.cmd, " ", { trimempty = true })
+                  if #cmd == 0 then
+                    return true
+                  end
+
+                  if
+                    vim.list_contains({
+                      "cat",
+                      "echo",
+                      "head",
+                      "ls",
+                      "pwd",
+                      "tail",
+                      "wc",
+                    }, cmd[1])
+                  then
+                    return false
+                  end
+
+                  if
+                    cmd[1] == "git"
+                    and vim.list_contains({
+                      "diff",
+                      "log",
+                      "show",
+                      "status",
+                    }, cmd[2])
+                  then
+                    return false
+                  end
+
+                  if cmd[1] == "find" then
+                    for i = 2, #cmd do
+                      if vim.list_contains({ "-delete", "-exec" }, cmd[i]) then
+                        return true
+                      end
                     end
+
+                    return false
                   end
 
                   return true
@@ -194,6 +216,10 @@ return {
           url = { icon = "󰖟 ", highlight = "CodeCompanionChatVariable" },
           var = { icon = " ", highlight = "CodeCompanionChatVariable" },
         },
+      },
+      pipe_table = {
+        border_virtual = true,
+        cell = "trimmed",
       },
       render_modes = true,
       sign = {

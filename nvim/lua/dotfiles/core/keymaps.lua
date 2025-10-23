@@ -223,22 +223,6 @@ map({
   expr = true,
   desc = "Record Macro",
 })
-map({
-  "cq",
-  function()
-    vim.ui.input({
-      prompt = "Edit Macro",
-      default = vim.api.nvim_replace_termcodes(vim.fn.keytrans(vim.fn.getreg("a")), true, true, true),
-    }, function(input)
-      if not input then
-        return
-      end
-
-      vim.fn.setreg("a", input, "c")
-    end)
-  end,
-  desc = "Edit Macro",
-})
 -- }}}
 
 map({ "<C-f>", "<Right>", desc = "Forward", mode = "!" })
@@ -250,23 +234,5 @@ map({ "<M-b>", "<S-Left>", desc = "Word Backward", mode = "!" })
 map({ "<M-d>", "<C-o>dw", desc = "Delete Word Forward", mode = "i" })
 map({ "<M-d>", "<S-Right><C-w>", desc = "Delete Word Forward", mode = "c" })
 map({ "<C-d>", "<Del>", desc = "Delete character under cursor", mode = "!" })
-
-map({
-  "gb",
-  function()
-    if vim.v.count == 0 then
-      return
-    end
-
-    local bufs = vim.iter(vim.api.nvim_list_bufs()):filter(function(b) return vim.bo[b].buflisted end):totable()
-    if vim.v.count > #bufs then
-      return
-    end
-
-    table.sort(bufs)
-    vim.api.nvim_set_current_buf(bufs[vim.v.count])
-  end,
-  desc = "Go to Nth Buffer",
-})
 
 map({ "<Leader>qr", "<Cmd>restart<CR>", desc = "Restart" })

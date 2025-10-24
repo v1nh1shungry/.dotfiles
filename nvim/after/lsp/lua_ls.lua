@@ -20,6 +20,7 @@ return {
         arrayIndex = "Disable",
         enable = true,
         paramName = "Disable",
+        semicolon = "Disable",
       },
       runtime = {
         version = "LuaJIT",

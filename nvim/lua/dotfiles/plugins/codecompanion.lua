@@ -198,9 +198,6 @@ return {
     "MeanderingProgrammer/render-markdown.nvim",
     ft = "codecompanion",
     opts = {
-      code = {
-        position = "right",
-      },
       file_types = { "codecompanion" },
       html = {
         tag = {
@@ -216,14 +213,6 @@ return {
           url = { icon = "󰖟 ", highlight = "CodeCompanionChatVariable" },
           var = { icon = " ", highlight = "CodeCompanionChatVariable" },
         },
-      },
-      pipe_table = {
-        border_virtual = true,
-        cell = "trimmed",
-      },
-      render_modes = true,
-      sign = {
-        enabled = false,
       },
     },
   },

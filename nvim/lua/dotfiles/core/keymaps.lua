@@ -1,6 +1,6 @@
 local map = Dotfiles.map
 
-vim.g.mapleader = vim.keycode("<Space>")
+vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- https://github.com/nvim-mini/mini.operators {{{
@@ -231,8 +231,5 @@ map({ "<C-a>", "<Home>", desc = "Begin of Line", mode = "!" })
 map({ "<C-e>", "<End>", desc = "End of Line", mode = "!" })
 map({ "<M-f>", "<S-Right>", desc = "Word Forward", mode = "!" })
 map({ "<M-b>", "<S-Left>", desc = "Word Backward", mode = "!" })
-map({ "<M-d>", "<C-o>dw", desc = "Delete Word Forward", mode = "i" })
-map({ "<M-d>", "<S-Right><C-w>", desc = "Delete Word Forward", mode = "c" })
-map({ "<C-d>", "<Del>", desc = "Delete character under cursor", mode = "!" })
 
 map({ "<Leader>qr", "<Cmd>restart<CR>", desc = "Restart" })

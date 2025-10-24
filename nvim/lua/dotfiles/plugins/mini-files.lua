@@ -36,10 +36,7 @@ return {
 
       ---@type string[]
       local IGNORED_PATTERN = {
-        ".cache",
         ".git",
-        "build",
-        "node_modules",
       }
 
       ---@return boolean
@@ -51,8 +48,7 @@ return {
           return false
         end
 
-        local dir = vim.fs.dirname(fs_entry.path)
-        return not git_ignored[dir][fs_entry.name]
+        return not git_ignored[vim.fs.dirname(fs_entry.path)][fs_entry.name]
       end
 
       vim.api.nvim_create_autocmd("User", {

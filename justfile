@@ -19,6 +19,11 @@ bat:
 brave:
     echo "--enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform" >{{ justfile_directory() }}/brave-flags.conf
 
+btop:
+    mkdir -p {{ config_directory() }}/btop
+    ln -sf {{ justfile_directory() }}/btop/btop.conf {{ config_directory() }}/btop
+    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/btop {{ config_directory() }}/btop/themes
+
 cargo:
     mkdir -p {{ home_directory() }}/.cargo
     ln -sf {{ justfile_directory() }}/cargo/config.toml {{ home_directory() }}/.cargo
@@ -43,6 +48,8 @@ gdb:
 
 git:
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}
+    mkdir -p {{ config_directory() }}/git
+    ln -sf {{ justfile_directory() }}/git/ignore {{ config_directory() }}/git
 
 lazygit:
     ln -sf {{ justfile_directory() }}/lazygit {{ config_directory() }}

@@ -113,7 +113,7 @@ return {
           },
           prompts = {
             {
-              content = [[@{get_changed_files} 总结当前 Git 变更]],
+              content = [[@{full_stack_dev} 总结当前 Git 变更，包括未跟踪的文件]],
               role = "user",
             },
           },

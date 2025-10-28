@@ -18,7 +18,11 @@ return {
     "saghen/blink.cmp",
     opts = {
       sources = {
-        per_filetype = { sql = { "dadbod" } },
+        per_filetype = {
+          mysql = { "dadbod" },
+          plsql = { "dadbod" },
+          sql = { "dadbod" },
+        },
         providers = {
           dadbod = {
             name = "Dadbod",

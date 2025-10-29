@@ -144,7 +144,7 @@ map({
   function()
     local input = vim.F.npcall(string.char, vim.fn.getchar())
     if not input or not input:match("%a") then
-      Dotfiles.notify.error("Invalid mark: operation cancelled")
+      Snacks.notify.error("Invalid mark: operation cancelled")
       return
     end
     pcall(vim.cmd.delmark, input)
@@ -213,11 +213,11 @@ map({
   "q",
   function()
     if vim.fn.reg_recording() == "" then
-      Dotfiles.notify("Starting recording...")
+      Snacks.notify("Starting recording...")
       return "qa"
     end
 
-    Dotfiles.notify("Recording completed")
+    Snacks.notify("Recording completed")
     return "q"
   end,
   expr = true,

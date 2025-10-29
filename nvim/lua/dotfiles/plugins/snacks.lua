@@ -3,13 +3,13 @@ local function git_pickaxe()
   local root = Snacks.git.get_root()
 
   if not root then
-    Dotfiles.notify.error("Aborting: not a git repository")
+    Snacks.notify.error("Aborting: not a git repository")
     return
   end
 
   vim.system({ "git", "rev-parse", "--is-shallow-repository" }, { text = true }, function(obj)
     if vim.trim(obj.stdout or "") == "true" then
-      Dotfiles.notify.error("Aborting: repository is shallow")
+      Snacks.notify.error("Aborting: repository is shallow")
       return
     end
 
@@ -173,7 +173,6 @@ return {
       { "<Leader>sm", function() Snacks.picker.man() end, desc = "Manpages" },
       { "<Leader>sp", function() Snacks.picker.lazy() end, desc = "Plugin Specs" },
       { "<Leader>sy", function() Snacks.picker.cliphist() end, desc = "Clipboard" },
-      { "<Leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
       { "<Leader>ut", function() Snacks.picker.undo() end, desc = "Undotree" },
     },
     opts = {

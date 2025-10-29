@@ -26,7 +26,7 @@ return {
               local linter = lint.linters[name]
               ---@cast linter dotfiles.plugins.nvim_lint.Linter
               if not linter then
-                Dotfiles.notify.warn("Linter not found: " .. name)
+                Snacks.notify.warn("Linter not found: " .. name)
                 return false
               end
               return not (type(linter) == "table" and linter.condition and not linter.condition())

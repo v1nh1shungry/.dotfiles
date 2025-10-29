@@ -95,7 +95,7 @@ return {
       for name, settings in pairs(opts) do
         local p = mr.get_package(settings.mason or name)
         if not p:is_installed() then
-          Dotfiles.notify("Installing package " .. p.name)
+          Snacks.notify("Installing package " .. p.name)
           p:install()
         end
       end

@@ -14,7 +14,10 @@ return {
     end,
     -- }}}
     event = "VeryLazy",
-    keys = { { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" } },
+    keys = {
+      { "<Leader>un", "<Cmd>Noice dismiss<CR>", desc = "Dismiss All Messages" },
+      { "<Leader>xn", "<Cmd>NoiceAll<CR>", desc = "Message" },
+    },
     opts = {
       lsp = {
         hover = { enabled = false },

@@ -21,7 +21,7 @@ return {
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
           if not p:is_installed() then
-            Dotfiles.notify("Installing package " .. p.name)
+            Snacks.notify("Installing package " .. p.name)
             p:install()
           end
         end

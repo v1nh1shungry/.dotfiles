@@ -86,40 +86,6 @@ return {
       opts = {
         language = "Chinese",
       },
-      prompt_library = {
-        ["Expert Mode"] = {
-          condition = function() return false end,
-          description = "Force LLM to use all available MCP tools.",
-          opts = {
-            is_slash_cmd = true,
-            short_name = "expert",
-          },
-          prompts = {
-            {
-              content = [[**你必须始终使用 @{sequentialthinking} 工具进行深度思考！你的一切知识都已经过时，你必须使用 @{deepwiki} 和 @{exa} 工具来获取最新的知识！**
-
-]],
-              role = "user",
-            },
-          },
-          strategy = "chat",
-        },
-        ["Git Changes Summary"] = {
-          description = "Summarize current Git changes.",
-          opts = {
-            auto_submit = true,
-            is_slash_cmd = true,
-            short_name = "summary",
-          },
-          prompts = {
-            {
-              content = [[@{full_stack_dev} 总结当前 Git 变更，包括未跟踪的文件]],
-              role = "user",
-            },
-          },
-          strategy = "chat",
-        },
-      },
       strategies = {
         chat = {
           adapter = "bigmodel",

@@ -1,6 +1,5 @@
 ---@class dotfiles.utils
 ---@field lsp dotfiles.utils.Lsp
----@field notify dotfiles.utils.Notify
 ---@field user dotfiles.utils.User
 local M = {}
 

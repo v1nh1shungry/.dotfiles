@@ -1,3 +1,5 @@
+---@module "lazy.types"
+
 ---@class dotfiles.utils.User
 ---@field colorscheme string
 ---@field env table<string, string|integer>

@@ -36,4 +36,31 @@ do
     mode = "i",
   })
 end
+
+do
+  local function headings_incremantor(dir) ---@param dir 1|-1
+    local curLine = vim.api.nvim_get_current_line()
+
+    local updated = curLine:gsub("^#* ", function(match)
+      if dir == -1 and match ~= "# " then
+        return match:sub(2)
+      end
+      if dir == 1 and match ~= "###### " then
+        return "#" .. match
+      end
+      return ""
+    end)
+    if updated == curLine then
+      updated = (dir == 1 and "# " or "###### ") .. curLine
+    end
+
+    vim.api.nvim_set_current_line(updated)
+  end
+
+  Dotfiles.map({ "<Tab>", function() headings_incremantor(1) end, desc = "Increment Heading" })
+  Dotfiles.map({ "<S-Tab>", function() headings_incremantor(-1) end, desc = "Decrement Heading" })
+end
+
+Dotfiles.map({ "<C-b>", "****<Left><Left>", desc = "Bold", mode = "i" })
+Dotfiles.map({ "<C-i>", "**<Left>", desc = "Italics", mode = "i" })
 -- }}}

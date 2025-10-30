@@ -229,7 +229,5 @@ map({ "<C-f>", "<Right>", desc = "Forward", mode = "!" })
 map({ "<C-b>", "<Left>", desc = "Backward", mode = "!" })
 map({ "<C-a>", "<Home>", desc = "Begin of Line", mode = "!" })
 map({ "<C-e>", "<End>", desc = "End of Line", mode = "!" })
-map({ "<M-f>", "<S-Right>", desc = "Word Forward", mode = "!" })
-map({ "<M-b>", "<S-Left>", desc = "Word Backward", mode = "!" })
 
 map({ "<Leader>qr", "<Cmd>restart<CR>", desc = "Restart" })

@@ -96,6 +96,13 @@ return {
         pattern = "MiniFilesExplorerOpen",
       })
 
+      vim.api.nvim_create_autocmd("User", {
+        callback = function(args) Snacks.rename.on_rename_file(args.data.from, args.data.to) end,
+        desc = "Update LSP references when files are renamed in MiniFiles",
+        group = AUGROUP,
+        pattern = "MiniFilesActionRename",
+      })
+
       require("mini.files").setup({
         content = {
           filter = function(fs_entry) return show_hidden and filter_show(fs_entry) or filter_hide(fs_entry) end,

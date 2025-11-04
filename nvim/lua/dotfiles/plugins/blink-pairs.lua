@@ -18,6 +18,9 @@ return {
         },
         matchparen = { enabled = false },
       },
+      mappings = {
+        disabled_filetypes = { "snacks_picker_input" },
+      },
     },
   },
 }

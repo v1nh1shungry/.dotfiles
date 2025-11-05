@@ -19,7 +19,9 @@ return {
             return
           end
 
-          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+          vim.opt_local.foldmethod = "expr"
+          vim.opt_local.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
           Snacks.toggle.treesitter():map("<Leader>uT")
         end,

@@ -14,10 +14,6 @@ end
 
 set -x LESS -rF
 
-if command -q atuin
-    atuin init fish --disable-up-arrow | source
-end
-
 if test -d ~/.cargo
     set -x RUSTUP_UPDATE_ROOT https://mirrors.ustc.edu.cn/rust-static/rustup
     set -x RUSTUP_DIST_SERVER https://mirrors.ustc.edu.cn/rust-static

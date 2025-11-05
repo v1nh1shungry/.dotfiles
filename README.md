@@ -14,7 +14,6 @@
 * [Spotify](https://open.spotify.com/)
 * [WeChat](https://weixin.qq.com/)
 * [alacritty](https://alacritty.org/)
-* [atuin](https://github.com/atuinsh/atuin)
 * [bat](https://github.com/sharkdp/bat)
 * [btop](https://github.com/aristocratos/btop)
 * [cargo-cache](https://github.com/matthiaskrgr/cargo-cache)

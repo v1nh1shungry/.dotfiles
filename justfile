@@ -7,9 +7,6 @@ alacritty:
     ln -sf {{ justfile_directory() }}/alacritty/alacritty.toml {{ config_directory() }}/alacritty
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/alacritty/tokyonight_moon.toml {{ config_directory() }}/alacritty/theme.toml
 
-atuin:
-    ln -sf {{ justfile_directory() }}/atuin {{ config_directory() }}
-
 bat:
     mkdir -p {{ config_directory() }}/bat/themes
     ln -sf {{ justfile_directory() }}/bat/config {{ config_directory() }}/bat
@@ -51,9 +48,6 @@ git:
     mkdir -p {{ config_directory() }}/git
     ln -sf {{ justfile_directory() }}/git/ignore {{ config_directory() }}/git
 
-lazygit:
-    ln -sf {{ justfile_directory() }}/lazygit {{ config_directory() }}
-
 niri:
     ln -sf {{ justfile_directory() }}/niri {{ config_directory() }}
 
@@ -78,6 +72,6 @@ yazi:
     ln -sf {{ justfile_directory() }}/yazi/yazi.toml {{ config_directory() }}/yazi
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/yazi/tokyonight_moon.toml {{ config_directory() }}/yazi/theme.toml
 
-all: atuin bat cargo fish fontconfig gdb git lazygit npm nvim pip starship tmux yazi
+all: bat cargo fish fontconfig gdb git npm nvim pip starship tmux yazi
 
 wayland: brave niri

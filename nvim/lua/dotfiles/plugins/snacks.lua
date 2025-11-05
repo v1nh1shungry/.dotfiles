@@ -151,7 +151,6 @@ return {
       { "<Leader>fs", function() Snacks.scratch() end, desc = "Open Scratch Buffer" },
       { "<Leader>g/", git_pickaxe, desc = "Pickaxe" },
       { "<Leader>gf", function() Snacks.gitbrowse() end, mode = { "n", "x" }, desc = "Browse" },
-      { "<Leader>gg", function() Snacks.lazygit() end, desc = "LazyGit" },
       { "<Leader>gh", function() Snacks.picker.git_diff() end, desc = "Hunks" },
       { "<Leader>gl", function() Snacks.picker.git_log_line() end, desc = "Log (line)" },
       { "<Leader>h", function() Snacks.picker.help() end, desc = "Help Pages" },

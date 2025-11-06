@@ -149,7 +149,7 @@ end
 -- }}}
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function() vim.highlight.on_yank() end,
+  callback = function() vim.highlight.on_yank({ timeout = 300 }) end,
   desc = "Highlight yanked text",
   group = Dotfiles.augroup("core.autocmds.highlight-on-yank"),
 })

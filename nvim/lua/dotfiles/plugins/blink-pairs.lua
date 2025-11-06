@@ -16,7 +16,6 @@ return {
           "SnacksIndent7",
           "SnacksIndent8",
         },
-        matchparen = { enabled = false },
       },
       mappings = {
         disabled_filetypes = { "snacks_picker_input" },

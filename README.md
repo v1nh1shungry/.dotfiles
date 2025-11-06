@@ -34,7 +34,6 @@
 * [localsend](https://github.com/localsend/localsend)
 * [niri](https://github.com/YaLTeR/niri)
 * [noctalia-shell](https://github.com/noctalia-dev/noctalia-shell)
-* [procs](https://github.com/dalance/procs)
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 * [spicetify](https://spicetify.app/)
 * [starship](https://github.com/starship/starship)

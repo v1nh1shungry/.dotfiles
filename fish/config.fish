@@ -52,10 +52,6 @@ if command -q nvim
     set -x MANPAGER "nvim +Man!"
 end
 
-if command -q procs
-    abbr ps procs
-end
-
 if command -q rg
     abbr grep rg
 end

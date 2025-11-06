@@ -23,7 +23,6 @@ return {
             hide_t = { "<C-q>", "hide", mode = "t" },
             term_normal = { "<C-c>", function() vim.cmd("stopinsert") end, mode = "t" },
           },
-          position = "right",
         },
         split_width_percentage = 0.5,
       },

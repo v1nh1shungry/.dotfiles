@@ -8,15 +8,21 @@ return {
       })
     end,
     opts = {
-      outline_window = { hide_cursor = true },
-      preview_window = { border = "rounded" },
       keymaps = {
-        peek_location = {},
-        goto_and_close = { "o" },
-        up_and_jump = "<C-p>",
         down_and_jump = "<C-n>",
+        goto_and_close = { "o" },
+        peek_location = {},
+        up_and_jump = "<C-p>",
       },
-      symbols = { icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end },
+      outline_window = {
+        hide_cursor = true,
+      },
+      preview_window = {
+        border = "rounded",
+      },
+      symbols = {
+        icon_fetcher = function(kind, _) return require("mini.icons").get("lsp", kind) end,
+      },
     },
   },
 }

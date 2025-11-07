@@ -22,7 +22,9 @@ Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 
 require("lazy").setup(
   vim.list_extend(
-    { { import = "dotfiles.plugins" } },
+    {
+      { import = "dotfiles.plugins" },
+    },
     vim
       .iter(Dotfiles.user.extra)
       :map(function(spec)
@@ -34,14 +36,20 @@ require("lazy").setup(
       :totable()
   ),
   {
-    checker = { enabled = true },
+    checker = {
+      enabled = true,
+    },
     dev = {
       fallback = true,
       path = vim.fs.joinpath(vim.uv.os_homedir(), "Documents", "repos"),
       patterns = { "v1nh1shungry" },
     },
-    diff = { cmd = "diffview.nvim" },
-    install = { colorscheme = { Dotfiles.user.colorscheme } },
+    diff = {
+      cmd = "diffview.nvim",
+    },
+    install = {
+      colorscheme = { Dotfiles.user.colorscheme },
+    },
     local_spec = false,
     performance = {
       rtp = {
@@ -61,6 +69,8 @@ require("lazy").setup(
         },
       },
     },
-    rocks = { enabled = false },
+    rocks = {
+      enabled = false,
+    },
   }
 )

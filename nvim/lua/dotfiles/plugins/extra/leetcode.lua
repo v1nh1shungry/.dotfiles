@@ -9,7 +9,9 @@ return {
     },
     lazy = vim.fn.argv()[1] ~= "leetcode.nvim",
     opts = {
-      cn = { enabled = true },
+      cn = {
+        enabled = true,
+      },
       injector = {
         cpp = {
           imports = function() return { "#include <bits/stdc++.h>", "using namespace std;" } end,

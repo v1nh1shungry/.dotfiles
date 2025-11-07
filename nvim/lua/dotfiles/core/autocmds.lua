@@ -72,7 +72,10 @@ end
 -- }}}
 
 -- Inspired by https://github.com/keaising/im-select.nvim {{{
-do
+--
+-- NOTE: Don't switch input method when Neovim is used as $MANPAGER.
+--       AppArmor prevents `man` and its child processes from accessing D-Bus.
+if not vim.env.MAN_PN then
   local fcitx_cmd = nil
 
   if vim.fn.executable("fcitx5-remote") == 1 then
@@ -108,12 +111,7 @@ do
     vim.api.nvim_create_autocmd({ "VimEnter", "InsertLeave", "CmdlineLeave", "TermLeave" }, {
       callback = function()
         vim.system({ fcitx_cmd }, { text = true }, function(out)
-          -- FIXME: `nvim +Man!` would fail, don't know why.
-          if out.code ~= 0 then
-            vim.schedule(function() vim.api.nvim_del_augroup_by_id(augroup) end)
-            return
-          end
-
+          assert(out.code == 0)
           previous_im = vim.trim(assert(out.stdout))
           activate_im(false)
         end)

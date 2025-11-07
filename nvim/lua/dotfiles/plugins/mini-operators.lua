@@ -9,8 +9,12 @@ return {
       { "gS", mode = { "n", "v" }, desc = "Sort" },
     },
     opts = {
-      sort = { prefix = "gS" },
-      exchange = { prefix = "cx" },
+      sort = {
+        prefix = "gS",
+      },
+      exchange = {
+        prefix = "cx",
+      },
     },
   },
 }

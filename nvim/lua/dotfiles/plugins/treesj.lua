@@ -6,6 +6,8 @@ return {
       { "S", "<Cmd>TSJSplit<CR>", desc = "Split" },
       { "J", "<Cmd>TSJJoin<CR>", desc = "Join" },
     },
-    opts = { use_default_keymaps = false },
+    opts = {
+      use_default_keymaps = false,
+    },
   },
 }

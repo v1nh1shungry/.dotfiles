@@ -2,7 +2,9 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "rust" } },
+    opts = {
+      ensure_installed = { "rust" },
+    },
   },
   {
     "Saecki/crates.nvim",
@@ -55,7 +57,9 @@ return {
   },
   {
     "williamboman/mason.nvim",
-    opts = { ensure_installed = { "rust-analyzer" } },
+    opts = {
+      ensure_installed = { "rust-analyzer" },
+    },
   },
   {
     "stevearc/conform.nvim",

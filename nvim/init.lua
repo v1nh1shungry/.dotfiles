@@ -67,7 +67,9 @@ for name, type in vim.fs.dir(luac_path) do
 end
 
 vim.diagnostic.config({
-  float = { border = "rounded" },
+  float = {
+    border = "rounded",
+  },
   severity_sort = true,
   signs = {
     text = { "", "", "", "" },

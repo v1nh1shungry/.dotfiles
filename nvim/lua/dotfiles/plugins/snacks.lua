@@ -167,7 +167,9 @@ return {
       { "<Leader>ut", function() Snacks.picker.undo() end, desc = "Undotree" },
     },
     opts = {
-      bigfile = { enabled = true },
+      bigfile = {
+        enabled = true,
+      },
       indent = {
         scope = {
           hl = {
@@ -182,8 +184,12 @@ return {
           },
         },
       },
-      input = { enabled = true },
-      notifier = { enabled = true },
+      input = {
+        enabled = true,
+      },
+      notifier = {
+        enabled = true,
+      },
       picker = {
         layout = {
           preset = "ivy",
@@ -196,8 +202,12 @@ return {
           },
         },
         previewers = {
-          diff = { builtin = false },
-          git = { native = true },
+          diff = {
+            builtin = false,
+          },
+          git = {
+            native = true,
+          },
         },
         sources = {
           recent = {
@@ -208,16 +218,24 @@ return {
           },
         },
       },
-      quickfile = { enabled = true },
-      scope = { cursor = false },
-      scratch = { autowrite = false },
+      quickfile = {
+        enabled = true,
+      },
+      scope = {
+        cursor = false,
+      },
+      scratch = {
+        autowrite = false,
+      },
       statuscolumn = {
         folds = {
           open = true,
           git_hl = true,
         },
       },
-      words = { enabled = true },
+      words = {
+        enabled = true,
+      },
     },
     priority = 1000,
   },

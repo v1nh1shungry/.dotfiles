@@ -11,6 +11,8 @@ return {
       ---@diagnostic disable-next-line: undefined-field
       { "<Leader>sT", function() Snacks.picker.todo_comments() end, desc = "Todo & Note" },
     },
-    opts = { signs = false },
+    opts = {
+      signs = false,
+    },
   },
 }

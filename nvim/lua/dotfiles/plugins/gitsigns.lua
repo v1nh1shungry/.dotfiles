@@ -43,7 +43,9 @@ return {
         map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Git Hunks (Document)" })
         map({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
       end,
-      preview_config = { border = "rounded" },
+      preview_config = {
+        border = "rounded",
+      },
     },
   },
 }

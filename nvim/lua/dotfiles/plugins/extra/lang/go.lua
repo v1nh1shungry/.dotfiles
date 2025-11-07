@@ -23,6 +23,8 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    opts = { ensure_installed = { "go" } },
+    opts = {
+      ensure_installed = { "go" },
+    },
   },
 }

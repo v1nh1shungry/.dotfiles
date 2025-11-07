@@ -71,7 +71,9 @@ return {
         { "}", desc = "balanced } including white-space" },
       }
 
-      local spec = { mode = { "o", "x" } }
+      local spec = {
+        mode = { "o", "x" },
+      }
       for prefix, name in pairs({
         i = "inside",
         a = "around",
@@ -86,7 +88,9 @@ return {
         end
       end
 
-      return { spec = { spec } }
+      return {
+        spec = { spec },
+      }
     end,
   },
 }

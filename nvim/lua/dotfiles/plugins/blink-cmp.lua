@@ -23,7 +23,12 @@ return {
           download = false,
         },
       },
-      keymap = { preset = "super-tab" },
+      keymap = {
+        preset = "super-tab",
+      },
+      signature = {
+        enabled = true,
+      },
       sources = {
         default = { "lsp", "snippets", "path", "buffer" },
       },

@@ -40,6 +40,9 @@ fish:
 fontconfig:
     ln -sf {{ justfile_directory() }}/fontconfig {{ config_directory() }}
 
+foot:
+    ln -sf {{ justfile_directory() }}/foot {{ config_directory() }}
+
 gdb:
     wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
 

@@ -49,5 +49,6 @@ vim.opt.timeoutlen = 300
 vim.opt.updatetime = 500
 vim.opt.virtualedit = "block"
 vim.opt.wildmode = "longest:full,full"
+vim.opt.winborder = "rounded"
 vim.opt.winminwidth = 5
 vim.opt.wrap = false

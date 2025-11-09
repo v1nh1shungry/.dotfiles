@@ -13,7 +13,8 @@ return {
         local map = Dotfiles.map_with({ buffer = bufnr })
         map({ "<Leader>gs", ":Gitsigns stage_hunk<CR>", desc = "Stage Hunk", mode = { "n", "x" } })
         map({ "<Leader>gS", "<Cmd>Gitsigns stage_buffer<CR>", desc = "Stage Whole Buffer" })
-        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk" })
+        map({ "<Leader>gp", "<Cmd>Gitsigns preview_hunk_inline<CR>", desc = "Preview Hunk (inline)" })
+        map({ "<Leader>gP", "<Cmd>Gitsigns preview_hunk<CR>", desc = "Preview Hunk (popup)" })
         map({ "<Leader>gr", "<Cmd>Gitsigns reset_hunk<CR>", desc = "Reset Hunk", mode = { "n", "x" } })
         map({ "<Leader>gR", "<Cmd>Gitsigns reset_buffer<CR>", desc = "Reset Whole Buffer" })
         map({ "<Leader>gb", "<Cmd>Gitsigns blame_line<CR>", desc = "Blame this Line" })
@@ -43,9 +44,6 @@ return {
         map({ "<Leader>xh", "<Cmd>Gitsigns setloclist<CR>", desc = "Git Hunks (Document)" })
         map({ "<Leader>gd", "<Cmd>Gitsigns diffthis<CR>", desc = "Diffthis" })
       end,
-      preview_config = {
-        border = "rounded",
-      },
     },
   },
 }

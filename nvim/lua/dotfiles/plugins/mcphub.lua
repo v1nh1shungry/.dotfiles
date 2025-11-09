@@ -8,11 +8,6 @@ return {
       auto_approve = true,
       auto_toggle_mcp_servers = false,
       config = vim.fs.joinpath(vim.fn.stdpath("config"), "mcphub.json"),
-      ui = {
-        window = {
-          border = "rounded",
-        },
-      },
       use_bundled_binary = true,
     },
   },

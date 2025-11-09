@@ -201,14 +201,6 @@ return {
             },
           },
         },
-        previewers = {
-          diff = {
-            builtin = false,
-          },
-          git = {
-            native = true,
-          },
-        },
         sources = {
           recent = {
             filter = { cwd = true },

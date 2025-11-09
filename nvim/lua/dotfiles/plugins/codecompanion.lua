@@ -28,19 +28,17 @@ return {
           },
         },
         http = {
-          bigmodel = function()
+          ["cli-proxy-api"] = function()
             return require("codecompanion.adapters").extend("openai_compatible", {
               env = {
-                api_key = "BIGMODEL_API_KEY",
-                chat_url = "/v4/chat/completions",
-                models_endpoint = "/v4/models",
-                url = "https://open.bigmodel.cn/api/coding/paas",
+                api_key = "CLI_PROXY_API_KEY",
+                url = "CLI_PROXY_API_URL",
               },
-              formatted_name = "BigModel",
-              name = "bigmodel",
+              formatted_name = "CLI Proxy API",
+              name = "cli-proxy-api",
               schema = {
                 model = {
-                  default = "glm-4.6",
+                  default = "qwen3-coder-plus",
                 },
               },
             })
@@ -64,13 +62,13 @@ return {
             expiration_days = 7,
             summary = {
               generation_opts = {
-                adapter = "bigmodel",
-                model = "glm-4.5-air",
+                adapter = "cli-proxy-api",
+                model = "qwen3-coder-flash",
               },
             },
             title_generation_opts = {
-              adapter = "bigmodel",
-              model = "glm-4.5-air",
+              adapter = "cli-proxy-api",
+              model = "qwen3-coder-flash",
             },
           },
         },
@@ -88,7 +86,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = "bigmodel",
+          adapter = "cli-proxy-api",
           keymaps = {
             send = {
               callback = function(chat)
@@ -152,10 +150,10 @@ return {
           },
         },
         cmd = {
-          adapter = "bigmodel",
+          adapter = "cli-proxy-api",
         },
         inline = {
-          adapter = "bigmodel",
+          adapter = "cli-proxy-api",
         },
       },
     },

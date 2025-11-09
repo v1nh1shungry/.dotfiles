@@ -20,6 +20,14 @@ Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFil
 Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 -- }}}
 
+-- https://github.com/folke/lazy.nvim/issues/1951#issuecomment-2860253949
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(args) vim.api.nvim_win_set_config(vim.fn.win_findbuf(args.buf)[1], { border = "none" }) end,
+  desc = "Respect `winborder` in lazy.nvim's backdrop window",
+  group = Dotfiles.augroup("core.lazy.backdrop-border"),
+  pattern = "lazy_backdrop",
+})
+
 require("lazy").setup(
   vim.list_extend(
     {

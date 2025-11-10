@@ -2,10 +2,7 @@ return {
   {
     "coder/claudecode.nvim",
     cmd = "ClaudeCode",
-    dependencies = {
-      "folke/snacks.nvim",
-      "ravitemer/mcphub.nvim",
-    },
+    dependencies = "folke/snacks.nvim",
     keys = {
       { "<Leader>ac", "<Cmd>ClaudeCode<CR>", desc = "Claude Code" },
       { "<Leader>ac", "<Cmd>ClaudeCodeSend<CR>", desc = "Claude Code", mode = "x" },

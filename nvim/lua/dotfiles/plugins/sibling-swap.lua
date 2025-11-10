@@ -1,6 +1,7 @@
 return {
   {
     "Wansmer/sibling-swap.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
     keys = {
       { "<C-h>", function() require("sibling-swap").swap_with_left() end, desc = "Swap With Left" },
       { "<C-l>", function() require("sibling-swap").swap_with_right() end, desc = "Swap With Right" },

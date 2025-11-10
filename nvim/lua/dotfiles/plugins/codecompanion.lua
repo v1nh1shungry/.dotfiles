@@ -10,7 +10,6 @@ return {
     },
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
       "folke/snacks.nvim",
       "ravitemer/codecompanion-history.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",

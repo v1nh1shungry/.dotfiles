@@ -12,12 +12,14 @@ return {
       { "<Leader>cf", function() require("conform").format() end, desc = "Format Document", mode = { "n", "x" } },
     },
     opts = {
-      default_format_opts = { lsp_format = "fallback" },
+      default_format_opts = {
+        lsp_format = "prefer",
+      },
       formatters_by_ft = {
         c = { "clang-format" },
         cpp = { "clang-format" },
         fish = { "fish_indent" },
-        lua = { "stylua" },
+        lua = { "stylua", lsp_format = "never" },
         json = { "jq" },
         jsonc = { "jq" },
         just = { "just" },

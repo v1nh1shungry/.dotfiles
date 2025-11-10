@@ -13,19 +13,15 @@ return {
             local desc_prefix = direction:gsub("_", " ") .. " "
             desc_prefix = desc_prefix:sub(1, 1):upper() .. desc_prefix:sub(2)
             for key, textobject in pairs(actions) do
-              Dotfiles.map({
-                key,
-                function()
-                  if vim.wo.diff and key:find("[%]%[][cC]") then
-                    vim.cmd("normal! " .. vim.v.count1 .. key)
-                  else
-                    require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects")
-                  end
-                end,
-                buffer = args.buf,
-                desc = desc_prefix .. textobject,
-                mode = { "n", "x", "o" },
-              })
+              if not (vim.wo.diff and key:find("[cC]")) then
+                Dotfiles.map({
+                  key,
+                  function() require("nvim-treesitter-textobjects.move")[direction](textobject, "textobjects") end,
+                  buffer = args.buf,
+                  desc = desc_prefix .. textobject,
+                  mode = { "n", "x", "o" },
+                })
+              end
             end
           end
         end,

@@ -52,18 +52,14 @@ require("lazy").setup(
       path = vim.fs.joinpath(vim.uv.os_homedir(), "Documents", "repos"),
       patterns = { "v1nh1shungry" },
     },
-    diff = {
-      cmd = "diffview.nvim",
-    },
     install = {
-      colorscheme = { Dotfiles.user.colorscheme },
+      colorscheme = { Dotfiles.user.colorscheme, "default" },
     },
     local_spec = false,
     performance = {
       rtp = {
         disabled_plugins = {
           "gzip",
-          "matchit",
           "matchparen",
           "net",
           "netrwPlugin",
@@ -77,8 +73,14 @@ require("lazy").setup(
         },
       },
     },
+    pkg = {
+      enabled = false,
+    },
     rocks = {
       enabled = false,
+    },
+    ui = {
+      border = vim.o.winborder,
     },
   }
 )

@@ -13,6 +13,7 @@ return {
       require("noice").setup(opts)
     end,
     -- }}}
+    dependencies = "MunifTanjim/nui.nvim",
     event = "VeryLazy",
     keys = {
       { "<Leader>un", "<Cmd>Noice dismiss<CR>", desc = "Dismiss All Messages" },

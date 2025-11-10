@@ -40,8 +40,6 @@ return {
           vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
         end
 
-        -- TODO: support on-type-formatting
-
         if opts[client.name] and type(opts[client.name].on_attach) == "function" then
           opts[client.name].on_attach(client, buffer)
         end

@@ -15,8 +15,6 @@ end
 set -x LESS -rF
 
 if test -d ~/.cargo
-    set -x RUSTUP_UPDATE_ROOT https://mirrors.ustc.edu.cn/rust-static/rustup
-    set -x RUSTUP_DIST_SERVER https://mirrors.ustc.edu.cn/rust-static
     fish_add_path -g ~/.cargo/bin
 end
 
@@ -54,6 +52,11 @@ end
 
 if command -q rg
     abbr grep rg
+end
+
+if command -q rustup
+    set -x RUSTUP_UPDATE_ROOT https://mirrors.ustc.edu.cn/rust-static/rustup
+    set -x RUSTUP_DIST_SERVER https://mirrors.ustc.edu.cn/rust-static
 end
 
 if test -d ~/.spicetify

@@ -1,6 +1,7 @@
 return {
   {
     "mistweaverco/kulala.nvim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
     ft = "http",
     keys = {
       { "<CR>", function() require("kulala").run() end, desc = "Send Request", ft = "http" },

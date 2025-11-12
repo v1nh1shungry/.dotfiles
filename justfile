@@ -1,13 +1,15 @@
-[private]
-default:
+__default:
     @just --list
 
-alacritty:
+_check-tokyonight-nvim:
+    test -d {{ data_directory() }}/nvim/lazy/tokyonight.nvim
+
+alacritty: _check-tokyonight-nvim
     mkdir -p {{ config_directory() }}/alacritty
     ln -sf {{ justfile_directory() }}/alacritty/alacritty.toml {{ config_directory() }}/alacritty
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/alacritty/tokyonight_moon.toml {{ config_directory() }}/alacritty/theme.toml
 
-bat:
+bat: _check-tokyonight-nvim
     mkdir -p {{ config_directory() }}/bat/themes
     ln -sf {{ justfile_directory() }}/bat/config {{ config_directory() }}/bat
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/tokyonight_moon.tmTheme {{ config_directory() }}/bat/themes
@@ -16,10 +18,12 @@ bat:
 brave:
     echo "--enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform" >{{ justfile_directory() }}/brave-flags.conf
 
-btop:
-    mkdir -p {{ config_directory() }}/btop
-    ln -sf {{ justfile_directory() }}/btop/btop.conf {{ config_directory() }}/btop
+btop: _check-tokyonight-nvim
+    test -e {{ config_directory() }}/btop/btop.conf
+    -rm -r {{ config_directory() }}/btop/themes
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/btop {{ config_directory() }}/btop/themes
+    sed -i 's/^color_theme = "Default"$/color_theme = "tokyonight_moon"/' {{ config_directory() }}/btop/btop.conf
+    sed -i 's/^vim_keys = False$/vim_keys = True/' {{ config_directory() }}/btop/btop.conf
 
 cargo:
     mkdir -p {{ home_directory() }}/.cargo
@@ -29,9 +33,6 @@ claude:
     mkdir -p {{ home_directory() }}/.claude
     ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
 
-electron program:
-    echo "--enable-wayland-ime" >{{ config_directory() }}/{{ program }}-flags.conf
-
 fish:
     mkdir -p {{ config_directory() }}/fish
     ln -sf {{ justfile_directory() }}/fish/config.fish {{ config_directory() }}/fish
@@ -40,13 +41,13 @@ fish:
 fontconfig:
     ln -sf {{ justfile_directory() }}/fontconfig {{ config_directory() }}
 
-foot:
+foot: _check-tokyonight-nvim
     ln -sf {{ justfile_directory() }}/foot {{ config_directory() }}
 
 gdb:
     wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
 
-git:
+git: _check-tokyonight-nvim
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}
     mkdir -p {{ config_directory() }}/git
     ln -sf {{ justfile_directory() }}/git/ignore {{ config_directory() }}/git
@@ -70,11 +71,10 @@ starship:
 tmux:
     ln -sf {{ justfile_directory() }}/tmux {{ config_directory() }}
 
+waylandify-electron-app program:
+    echo "--enable-wayland-ime" >{{ config_directory() }}/{{ program }}-flags.conf
+
 yazi:
     mkdir -p {{ config_directory() }}/yazi
     ln -sf {{ justfile_directory() }}/yazi/yazi.toml {{ config_directory() }}/yazi
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/yazi/tokyonight_moon.toml {{ config_directory() }}/yazi/theme.toml
-
-all: bat cargo fish fontconfig gdb git npm nvim pip starship tmux yazi
-
-wayland: brave niri

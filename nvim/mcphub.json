@@ -1,8 +1,5 @@
 {
   "mcpServers": {
-    "deepwiki": {
-      "url": "https://mcp.deepwiki.com/mcp"
-    },
     "exa": {
       "url": "https://mcp.exa.ai/mcp"
     },

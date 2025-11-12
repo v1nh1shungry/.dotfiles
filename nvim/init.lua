@@ -68,6 +68,9 @@ end
 
 vim.diagnostic.config({
   severity_sort = true,
+  signs = {
+    text = { "", "", "", "" },
+  },
 })
 
 vim.cmd("colorscheme " .. Dotfiles.user.colorscheme)

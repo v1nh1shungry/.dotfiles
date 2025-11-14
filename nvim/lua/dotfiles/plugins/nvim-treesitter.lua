@@ -13,21 +13,14 @@ return {
     config = function(_, opts)
       require("nvim-treesitter").install(opts.ensure_installed)
 
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function()
-          if not pcall(vim.treesitter.start) then
-            return
-          end
+      Dotfiles.treesitter.on_available(function(buf)
+        vim.treesitter.start(buf)
 
-          vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-          vim.opt_local.foldmethod = "expr"
-          vim.opt_local.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
-          Snacks.toggle.treesitter():map("<Leader>uT")
-        end,
-        desc = "Enable treesitter highlight and indent",
-        group = Dotfiles.augroup("plugins.nvim-treesitter"),
-      })
+        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo.foldmethod = "expr"
+      end)
     end,
     event = "LazyFile",
     dependencies = {

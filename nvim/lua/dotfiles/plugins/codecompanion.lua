@@ -111,6 +111,7 @@ return {
                       "ls",
                       "pwd",
                       "tail",
+                      "tree",
                       "wc",
                     }, cmd[1])
                   then

@@ -1,28 +1,29 @@
 __default:
     @just --list
 
-_check-tokyonight-nvim:
-    test -d {{ data_directory() }}/nvim/lazy/tokyonight.nvim
+theme := "tokyonight_moon"
 
-alacritty: _check-tokyonight-nvim
+_check-theme:
+    test -d {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras
+
+alacritty: _check-theme
     mkdir -p {{ config_directory() }}/alacritty
     ln -sf {{ justfile_directory() }}/alacritty/alacritty.toml {{ config_directory() }}/alacritty
-    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/alacritty/tokyonight_moon.toml {{ config_directory() }}/alacritty/theme.toml
 
-bat: _check-tokyonight-nvim
+bat: _check-theme
     mkdir -p {{ config_directory() }}/bat/themes
     ln -sf {{ justfile_directory() }}/bat/config {{ config_directory() }}/bat
-    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/tokyonight_moon.tmTheme {{ config_directory() }}/bat/themes
+    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/{{ theme }}.tmTheme {{ config_directory() }}/bat/themes
     bat cache --build
 
 brave:
     echo "--enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform" >{{ justfile_directory() }}/brave-flags.conf
 
-btop: _check-tokyonight-nvim
+btop: _check-theme
     test -e {{ config_directory() }}/btop/btop.conf
     -rm -r {{ config_directory() }}/btop/themes
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/btop {{ config_directory() }}/btop/themes
-    sed -i 's/^color_theme = "Default"$/color_theme = "tokyonight_moon"/' {{ config_directory() }}/btop/btop.conf
+    sed -i 's/^color_theme = "Default"$/color_theme = "{{ theme }}"/' {{ config_directory() }}/btop/btop.conf
     sed -i 's/^vim_keys = False$/vim_keys = True/' {{ config_directory() }}/btop/btop.conf
 
 cargo:
@@ -41,13 +42,13 @@ fish:
 fontconfig:
     ln -sf {{ justfile_directory() }}/fontconfig {{ config_directory() }}
 
-foot: _check-tokyonight-nvim
+foot: _check-theme
     ln -sf {{ justfile_directory() }}/foot {{ config_directory() }}
 
 gdb:
     wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
 
-git: _check-tokyonight-nvim
+git: _check-theme
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}
     mkdir -p {{ config_directory() }}/git
     ln -sf {{ justfile_directory() }}/git/ignore {{ config_directory() }}/git
@@ -77,4 +78,8 @@ waylandify-electron-app program:
 yazi:
     mkdir -p {{ config_directory() }}/yazi
     ln -sf {{ justfile_directory() }}/yazi/yazi.toml {{ config_directory() }}/yazi
-    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/yazi/tokyonight_moon.toml {{ config_directory() }}/yazi/theme.toml
+    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/yazi/{{ theme }}.toml {{ config_directory() }}/yazi/theme.toml
+
+zathura: _check-theme
+    mkdir -p {{ config_directory() }}/zathura
+    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/zathura/{{ theme }}.zathurarc {{ config_directory() }}/zathura/zathurarc

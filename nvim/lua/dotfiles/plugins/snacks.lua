@@ -136,6 +136,8 @@ return {
         "textDocument/inlayHint",
         function(_, buffer) Snacks.toggle.inlay_hints():map("<leader>uh", { buffer = buffer }) end
       )
+
+      Dotfiles.treesitter.on_available(function(buf) Snacks.toggle.treesitter():map("<Leader>uT", { buffer = buf }) end)
     end,
     lazy = false,
     keys = {
@@ -165,6 +167,7 @@ return {
       { "<Leader>sm", function() Snacks.picker.man() end, desc = "Manpages" },
       { "<Leader>sy", function() Snacks.picker.cliphist() end, desc = "Clipboard" },
       { "<Leader>ut", function() Snacks.picker.undo() end, desc = "Undotree" },
+      { "<M-=>", function() Snacks.terminal.toggle() end, desc = "Terminal" },
     },
     opts = {
       bigfile = {

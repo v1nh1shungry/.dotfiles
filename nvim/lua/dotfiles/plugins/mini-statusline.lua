@@ -21,7 +21,6 @@ return {
             "%<",
             { hl = "MiniStatuslineFilename" },
             "%=",
-            "%S ",
             { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
             { hl = mode_hl, strings = { location } },
           })

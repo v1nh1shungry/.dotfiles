@@ -2,7 +2,7 @@
 size = 14
 
 [general]
-import = ["theme.toml"]
+import = ["~/.local/share/nvim/lazy/tokyonight.nvim/extras/alacritty/tokyonight_moon.toml"]
 
 [mouse]
 hide_when_typing = true

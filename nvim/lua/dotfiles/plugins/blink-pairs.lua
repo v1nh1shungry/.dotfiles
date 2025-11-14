@@ -3,7 +3,7 @@ return {
     "saghen/blink.pairs",
     build = "cargo build --release",
     dependencies = "folke/snacks.nvim",
-    event = "LazyFile",
+    event = { "InsertEnter", "LazyFile" },
     opts = {
       highlights = {
         groups = {

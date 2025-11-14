@@ -1,5 +1,6 @@
 ---@class dotfiles.utils
 ---@field lsp dotfiles.utils.Lsp
+---@field treesitter dotfiles.utils.Treesitter
 ---@field user dotfiles.utils.User
 local M = {}
 

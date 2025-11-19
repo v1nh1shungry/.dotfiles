@@ -1,18 +1,3 @@
----@param delta integer
----@return boolean
-local function scroll(delta)
-  if not vim.b.lsp_floating_preview or not vim.api.nvim_win_is_valid(vim.b.lsp_floating_preview) then
-    return false
-  end
-
-  vim.api.nvim_win_call(
-    vim.b.lsp_floating_preview,
-    function() vim.fn.winrestview({ topline = vim.fn.winsaveview().topline + delta }) end
-  )
-
-  return true
-end
-
 ---@class dotfiles.plugins.nvim_lspconfig.ServerOpts
 ---@field keys? dotfiles.utils.map.Opts[]
 ---@field mason? string
@@ -64,28 +49,6 @@ return {
           "<Leader>cS",
           function() vim.lsp.buf.typehierarchy("supertypes") end,
           desc = "LSP Supertypes",
-        },
-        ["textDocument/hover"] = {
-          {
-            "<C-f>",
-            function()
-              if not scroll(5) then
-                return "<C-f>"
-              end
-            end,
-            desc = "Scroll Down Document",
-            expr = true,
-          },
-          {
-            "<C-b>",
-            function()
-              if not scroll(-5) then
-                return "<C-b>"
-              end
-            end,
-            desc = "Scroll Up Document",
-            expr = true,
-          },
         },
       })
 

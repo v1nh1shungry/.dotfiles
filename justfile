@@ -7,8 +7,7 @@ _check-theme:
     test -d {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras
 
 alacritty: _check-theme
-    mkdir -p {{ config_directory() }}/alacritty
-    ln -sf {{ justfile_directory() }}/alacritty/alacritty.toml {{ config_directory() }}/alacritty
+    ln -sf {{ justfile_directory() }}/alacritty {{ config_directory() }}
 
 bat: _check-theme
     mkdir -p {{ config_directory() }}/bat/themes

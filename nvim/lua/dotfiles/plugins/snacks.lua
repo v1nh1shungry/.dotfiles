@@ -167,7 +167,7 @@ return {
       { "<Leader>sm", function() Snacks.picker.man() end, desc = "Manpages" },
       { "<Leader>sy", function() Snacks.picker.cliphist() end, desc = "Clipboard" },
       { "<Leader>ut", function() Snacks.picker.undo() end, desc = "Undotree" },
-      { "<M-=>", function() Snacks.terminal.toggle() end, desc = "Terminal" },
+      { "<M-=>", function() Snacks.terminal.toggle() end, desc = "Terminal", mode = { "n", "t" } },
     },
     opts = {
       bigfile = {

@@ -52,12 +52,14 @@ return {
       },
       presets = {
         bottom_search = true,
+        cmdline_output_to_split = true,
         command_palette = true,
       },
       routes = {
         {
           filter = {
             event = "msg_show",
+            kind = { "", "bufwrite", "empty", "undo" },
             max_height = 1,
           },
           view = "mini",

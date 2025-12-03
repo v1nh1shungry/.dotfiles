@@ -1,6 +1,6 @@
 ---@class dotfiles.plugins.nvim_lspconfig.ServerOpts
 ---@field keys? dotfiles.utils.map.Opts[]
----@field mason? string
+---@field mason? string|{ [1]?: string, version?: string }
 ---@field on_attach? fun(client: vim.lsp.Client, buffer: integer)
 
 return {
@@ -54,10 +54,18 @@ return {
 
       local mr = require("mason-registry")
       for name, settings in pairs(opts) do
-        local p = mr.get_package(settings.mason or name)
+        local version = nil
+        if type(settings.mason) == "string" then
+          name = settings.mason
+        elseif type(settings.mason) == "table" then
+          name = settings.mason[1] and settings.mason[1] or name
+          version = settings.mason.version
+        end
+
+        local p = mr.get_package(name)
         if not p:is_installed() then
           Snacks.notify("Installing package " .. p.name)
-          p:install()
+          p:install({ version = version })
         end
       end
 
@@ -75,7 +83,11 @@ return {
         mason = "json-lsp",
       },
       lua_ls = {
-        mason = "lua-language-server",
+        mason = {
+          "lua-language-server",
+          -- FIXME: https://github.com/LuaLS/lua-language-server/issues/3301
+          version = "3.15.0",
+        },
       },
       neocmake = {
         mason = "neocmakelsp",

@@ -37,7 +37,7 @@ return {
               name = "cli-proxy-api",
               schema = {
                 model = {
-                  default = "qwen3-coder-plus",
+                  default = "gemini-3-pro-preview",
                 },
               },
             })
@@ -157,6 +157,7 @@ return {
         },
       },
     },
+    version = "v17.33.0",
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",

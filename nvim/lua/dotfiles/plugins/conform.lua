@@ -5,7 +5,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       opts = {
-        ensure_installed = vim.version.cmp(vim.g.glibc_version, "2.31") > 0 and { "stylua" } or {},
+        ensure_installed = vim.g.legacy_glibc and {} or { "stylua" },
       },
     },
     keys = {

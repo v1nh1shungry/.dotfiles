@@ -4,13 +4,16 @@ if vim.env.PROFILE_STARTUP then
   require("snacks.profiler").startup()
 end
 
-local ffi = require("ffi")
+do
+  local ffi = require("ffi")
 
-ffi.cdef([[
+  ffi.cdef([[
 const char *gnu_get_libc_version();
-]])
+  ]])
 
-vim.g.glibc_version = ffi.string(ffi.C.gnu_get_libc_version())
+  local glibc_version = ffi.string(ffi.C.gnu_get_libc_version())
+  vim.g.legacy_glibc = vim.version.cmp(glibc_version, "2.31") <= 0
+end
 
 _G.Dotfiles = require("dotfiles.utils")
 

@@ -46,9 +46,6 @@ return {
         hover = {
           enabled = false,
         },
-        signature = {
-          enabled = false,
-        },
       },
       presets = {
         bottom_search = true,

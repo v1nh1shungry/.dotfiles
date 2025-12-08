@@ -12,7 +12,6 @@ return {
       "nvim-lua/plenary.nvim",
       "folke/snacks.nvim",
       "ravitemer/codecompanion-history.nvim",
-      "franco-ruggeri/codecompanion-spinner.nvim",
     },
     keys = {
       { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "CodeCompanion" },
@@ -71,7 +70,6 @@ return {
             },
           },
         },
-        spinner = {},
       },
       memory = {
         opts = {

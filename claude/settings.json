@@ -7,8 +7,6 @@
   },
   "includeCoAuthoredBy": false,
   "permissions": {
-    "allow": [
-      "mcp__mcphub"
-    ]
+    "defaultMode": "plan"
   }
 }

@@ -26,8 +26,4 @@ return {
       },
     },
   },
-  {
-    "coder/claudecode.nvim",
-    dependencies = "ravitemer/mcphub.nvim",
-  },
 }

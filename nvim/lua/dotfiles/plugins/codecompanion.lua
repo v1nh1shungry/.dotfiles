@@ -36,7 +36,17 @@ return {
               name = "cli-proxy-api",
               schema = {
                 model = {
-                  default = "gemini-3-pro-preview",
+                  -- FIXME: https://github.com/olimorris/codecompanion.nvim/pull/2472
+                  --        https://github.com/olimorris/codecompanion.nvim/issues/2477#issuecomment-3613212093
+                  choices = function(self)
+                    local models = require("codecompanion.adapters.http.openai_compatible").schema.model.choices(self)
+                    local ret = {}
+                    for _, v in ipairs(models) do
+                      ret[v] = {}
+                    end
+                    return ret
+                  end,
+                  default = "gemini-claude-opus-4-5-thinking",
                 },
               },
             })

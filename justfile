@@ -31,7 +31,7 @@ cargo:
 
 claude:
     mkdir -p {{ home_directory() }}/.claude
-    ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
+    cp {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
 
 fish:
     mkdir -p {{ config_directory() }}/fish

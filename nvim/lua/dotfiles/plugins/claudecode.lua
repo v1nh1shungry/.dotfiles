@@ -23,8 +23,6 @@ return {
         },
         split_width_percentage = 0.5,
       },
-      terminal_cmd = "claude --mcp-config="
-        .. vim.fs.joinpath(assert(vim.uv.os_homedir()), ".dotfiles", "claude", "mcp.json"),
     },
   },
 }

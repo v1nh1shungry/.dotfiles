@@ -12,6 +12,18 @@ return {
       "nvim-lua/plenary.nvim",
       "folke/snacks.nvim",
       "ravitemer/codecompanion-history.nvim",
+      {
+        "ravitemer/mcphub.nvim",
+        build = "bundled_build.lua",
+        cmd = "MCPHub",
+        dependencies = "nvim-lua/plenary.nvim",
+        opts = {
+          auto_approve = true,
+          auto_toggle_mcp_servers = false,
+          config = vim.fs.joinpath(vim.fn.stdpath("config"), "mcphub.json"),
+          use_bundled_binary = true,
+        },
+      },
     },
     keys = {
       { "<Leader>aa", "<Cmd>CodeCompanionChat Toggle<CR>", desc = "CodeCompanion" },
@@ -22,7 +34,7 @@ return {
       adapters = {
         acp = {
           opts = {
-            show_defaults = false,
+            show_presets = false,
           },
         },
         http = {
@@ -52,15 +64,8 @@ return {
             })
           end,
           opts = {
-            show_defaults = false,
             show_model_choices = true,
-          },
-        },
-      },
-      display = {
-        chat = {
-          window = {
-            width = 0.5,
+            show_presets = false,
           },
         },
       },
@@ -80,32 +85,35 @@ return {
             },
           },
         },
-      },
-      memory = {
-        opts = {
-          chat = {
-            enabled = true,
+        mcphub = {
+          callback = "mcphub.extensions.codecompanion",
+          opts = {
+            show_result_in_chat = false,
+            show_server_tools_in_chat = false,
           },
         },
       },
-      opts = {
-        language = "Chinese",
-      },
-      strategies = {
+      interactions = {
+        backgroud = {
+          adapter = {
+            model = "qwen3-coder-flash",
+            name = "cli-proxy-api",
+          },
+        },
         chat = {
           adapter = "cli-proxy-api",
           keymaps = {
             send = {
               callback = function(chat)
                 vim.cmd("stopinsert")
-                require("codecompanion.strategies.chat.keymaps").send.callback(chat)
+                require("codecompanion.interactions.chat.keymaps").send.callback(chat)
               end,
             },
           },
           tools = {
             cmd_runner = {
               opts = {
-                requires_approval = function(self)
+                requires_approval_before = function(self)
                   local cmd = vim.split(self.args.cmd, " ", { trimempty = true })
                   if #cmd == 0 then
                     return true
@@ -152,9 +160,6 @@ return {
                 end,
               },
             },
-            opts = {
-              auto_submit_errors = true,
-            },
           },
         },
         cmd = {
@@ -164,8 +169,10 @@ return {
           adapter = "cli-proxy-api",
         },
       },
+      opts = {
+        language = "Chinese",
+      },
     },
-    version = "v17.33.0",
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
@@ -179,8 +186,8 @@ return {
           group = { icon = " ", highlight = "CodeCompanionChatToolGroup" },
           help = { icon = "󰘥 ", highlight = "CodeCompanionChatVariable" },
           image = { icon = " ", highlight = "CodeCompanionChatVariable" },
-          memory = { icon = " ", highlight = "CodeCompanionChatVariable" },
           prompt = { icon = " ", highlight = "CodeCompanionChatTool" },
+          rules = { icon = " ", highlight = "CodeCompanionChatVariable" },
           symbols = { icon = " ", highlight = "CodeCompanionChatVariable" },
           tool = { icon = " ", highlight = "CodeCompanionChatTool" },
           url = { icon = "󰖟 ", highlight = "CodeCompanionChatVariable" },

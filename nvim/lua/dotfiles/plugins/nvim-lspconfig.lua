@@ -85,8 +85,7 @@ return {
       lua_ls = {
         mason = {
           "lua-language-server",
-          -- FIXME: https://github.com/LuaLS/lua-language-server/issues/3301
-          version = "3.15.0",
+          version = vim.g.legacy_glibc and "3.15.0" or nil,
         },
       },
       neocmake = {

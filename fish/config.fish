@@ -14,6 +14,11 @@ end
 
 set -x LESS -rF
 
+if test -d ~/.bun
+    set -x BUN_INSTALL "$HOME/.bun"
+    set -x PATH $BUN_INSTALL/bin $PATH
+end
+
 if test -d ~/.cargo
     fish_add_path -g ~/.cargo/bin
 end

@@ -2,6 +2,7 @@ return {
   {
     "saghen/blink.cmp",
     build = "cargo build --release",
+    dependencies = "xzbdmw/colorful-menu.nvim",
     event = "VeryLazy",
     opts = {
       cmdline = {
@@ -15,6 +16,17 @@ return {
         list = {
           selection = {
             preselect = function() return not require("blink.cmp").snippet_active({ direction = 1 }) end,
+          },
+        },
+        menu = {
+          draw = {
+            columns = { { "kind_icon" }, { "label", gap = 1 } },
+            components = {
+              label = {
+                text = function(ctx) return require("colorful-menu").blink_components_text(ctx) end,
+                highlight = function(ctx) return require("colorful-menu").blink_components_highlight(ctx) end,
+              },
+            },
           },
         },
       },

@@ -74,6 +74,7 @@ return {
     dependencies = "mason-org/mason.nvim",
     event = "VeryLazy",
     opts = { ---@type table<string, dotfiles.plugins.nvim_lspconfig.ServerOpts>
+      basedpyright = {},
       clangd = {
         keys = {
           { "<Leader>ch", "<Cmd>LspClangdSwitchSourceHeader<CR>", desc = "Switch Source/Header" },
@@ -83,14 +84,12 @@ return {
         mason = "json-lsp",
       },
       lua_ls = {
-        mason = {
-          "lua-language-server",
-          version = vim.g.legacy_glibc and "3.15.0" or nil,
-        },
+        mason = "lua-language-server",
       },
       neocmake = {
         mason = "neocmakelsp",
       },
+      ruff = {},
     },
   },
 }

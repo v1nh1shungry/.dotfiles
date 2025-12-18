@@ -26,7 +26,7 @@ return {
     dependencies = {
       "mason-org/mason.nvim",
       opts = {
-        ensure_installed = vim.g.legacy_glibc and {} or { "tree-sitter-cli" },
+        ensure_installed = { "tree-sitter-cli" },
       },
     },
     opts = {
@@ -50,11 +50,13 @@ return {
         "markdown",
         "markdown_inline",
         "printf",
+        "python",
         "query",
         "regex",
         "sql",
         "vim",
         "vimdoc",
+        "yaml",
       },
     },
     opts_extend = { "ensure_installed" },

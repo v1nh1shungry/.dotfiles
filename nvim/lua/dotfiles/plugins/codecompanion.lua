@@ -48,16 +48,6 @@ return {
               name = "cli-proxy-api",
               schema = {
                 model = {
-                  -- FIXME: https://github.com/olimorris/codecompanion.nvim/pull/2472
-                  --        https://github.com/olimorris/codecompanion.nvim/issues/2477#issuecomment-3613212093
-                  choices = function(self)
-                    local models = require("codecompanion.adapters.http.openai_compatible").schema.model.choices(self)
-                    local ret = {}
-                    for _, v in ipairs(models) do
-                      ret[v] = {}
-                    end
-                    return ret
-                  end,
                   default = "gemini-claude-opus-4-5-thinking",
                 },
               },
@@ -110,57 +100,7 @@ return {
               end,
             },
           },
-          tools = {
-            cmd_runner = {
-              opts = {
-                requires_approval_before = function(self)
-                  local cmd = vim.split(self.args.cmd, " ", { trimempty = true })
-                  if #cmd == 0 then
-                    return true
-                  end
-
-                  if
-                    vim.list_contains({
-                      "cat",
-                      "echo",
-                      "head",
-                      "ls",
-                      "pwd",
-                      "tail",
-                      "tree",
-                      "wc",
-                    }, cmd[1])
-                  then
-                    return false
-                  end
-
-                  if
-                    cmd[1] == "git"
-                    and vim.list_contains({
-                      "diff",
-                      "log",
-                      "show",
-                      "status",
-                    }, cmd[2])
-                  then
-                    return false
-                  end
-
-                  if cmd[1] == "find" then
-                    for i = 2, #cmd do
-                      if vim.list_contains({ "-delete", "-exec" }, cmd[i]) then
-                        return true
-                      end
-                    end
-
-                    return false
-                  end
-
-                  return true
-                end,
-              },
-            },
-          },
+          -- TODO: treat cmd_runner's approval carefully.
         },
         cmd = {
           adapter = "cli-proxy-api",

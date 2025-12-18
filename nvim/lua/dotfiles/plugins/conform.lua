@@ -5,7 +5,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       opts = {
-        ensure_installed = vim.g.legacy_glibc and {} or { "stylua" },
+        ensure_installed = { "stylua" },
       },
     },
     keys = {
@@ -24,6 +24,7 @@ return {
         jsonc = { "jq" },
         just = { "just" },
         markdown = { "injected" },
+        python = { "ruff_format" },
         query = { "format-queries" },
       },
       formatters = {

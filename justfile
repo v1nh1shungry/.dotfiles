@@ -6,9 +6,6 @@ theme := "tokyonight_moon"
 _check-theme:
     test -d {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras
 
-alacritty: _check-theme
-    ln -sf {{ justfile_directory() }}/alacritty {{ config_directory() }}
-
 bat: _check-theme
     mkdir -p {{ config_directory() }}/bat/themes
     ln -sf {{ justfile_directory() }}/bat/config {{ config_directory() }}/bat
@@ -51,6 +48,10 @@ git: _check-theme
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}
     mkdir -p {{ config_directory() }}/git
     ln -sf {{ justfile_directory() }}/git/ignore {{ config_directory() }}/git
+
+kitty:
+    kitty +kitten themes Tokyo Night Moon
+    ln -sf {{ justfile_directory() }}/kitty/kitty.conf {{ config_directory() }}/kitty
 
 niri:
     ln -sf {{ justfile_directory() }}/niri {{ config_directory() }}

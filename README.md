@@ -23,7 +23,6 @@
 * [fish](https://fishshell.com)
 * [fisher](https://github.com/jorgebucaran/fisher)
 * [fnm](https://github.com/Schniz/fnm)
-* [foot](https://codeberg.org/dnkl/foot)
 * [fzf](https://github.com/junegunn/fzf)
 * [git-absorb](https://github.com/tummychow/git-absorb)
 * [imv](https://sr.ht/~exec64/imv/)

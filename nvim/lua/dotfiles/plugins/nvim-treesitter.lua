@@ -53,6 +53,7 @@ return {
         "python",
         "query",
         "regex",
+        "rust",
         "sql",
         "vim",
         "vimdoc",

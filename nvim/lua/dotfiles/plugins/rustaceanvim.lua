@@ -1,23 +1,4 @@
--- https://www.lazyvim.org/extras/lang/rust {{{
 return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = { "rust" },
-    },
-  },
-  {
-    "Saecki/crates.nvim",
-    event = "BufRead Cargo.toml",
-    opts = {
-      lsp = {
-        actions = true,
-        completion = true,
-        enabled = true,
-        hover = true,
-      },
-    },
-  },
   {
     "mrcjkb/rustaceanvim",
     config = function()
@@ -55,19 +36,4 @@ return {
     end,
     ft = "rust",
   },
-  {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = { "rust-analyzer" },
-    },
-  },
-  {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        rust = { "rustfmt" },
-      },
-    },
-  },
 }
--- }}}

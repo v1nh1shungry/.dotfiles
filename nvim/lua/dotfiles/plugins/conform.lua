@@ -26,6 +26,7 @@ return {
         markdown = { "injected" },
         python = { "ruff_format" },
         query = { "format-queries" },
+        rust = { "rustfmt" },
       },
       formatters = {
         ["clang-format"] = {

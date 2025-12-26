@@ -2,13 +2,6 @@
   "mcpServers": {
     "exa": {
       "url": "https://mcp.exa.ai/mcp"
-    },
-    "sequentialthinking": {
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
-      "command": "npx"
     }
   },
   "nativeMCPServers": {

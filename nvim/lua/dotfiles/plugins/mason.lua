@@ -30,7 +30,9 @@ return {
     event = "VeryLazy",
     keys = { { "<Leader>pm", "<Cmd>Mason<CR>", desc = "Mason" } },
     opts = {
-      ensure_installed = {},
+      ensure_installed = {
+        "rust-analyzer",
+      },
     },
     opts_extend = { "ensure_installed" },
   },

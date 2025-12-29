@@ -75,6 +75,7 @@ return {
             },
           },
         },
+        lsp = {},
         mcphub = {
           callback = "mcphub.extensions.codecompanion",
           opts = {

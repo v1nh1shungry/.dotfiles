@@ -101,7 +101,78 @@ return {
               end,
             },
           },
-          -- TODO: treat cmd_runner's approval carefully.
+          tools = {
+            ["cmd_runner"] = {
+              opts = {
+                ---@param self CodeCompanion.Tools.Tool
+                require_approval_before = function(self)
+                  ---@type TSTree?
+                  local root = vim.F.npcall(
+                    function() return vim.treesitter.get_string_parser(self.args.cmd, "bash"):parse()[1]:root() end
+                  )
+                  if not root then
+                    return true
+                  end
+
+                  local query = vim.treesitter.query.parse(
+                    "bash",
+                    [[
+                  (command
+                    name: (command_name) @_git
+                    argument: (word) @git_subcmd
+                    (#eq? @_git "git")
+                    (#set! "priority" 200))
+
+                  (command
+                    name: (command_name) @cmd
+                    (#not-eq? @cmd "git"))
+
+                  (redirected_statement) @redirect
+                  ]]
+                  )
+
+                  local safe_cmd = {
+                    ["cat"] = true,
+                    ["echo"] = true,
+                    ["grep"] = true,
+                    ["head"] = true,
+                    ["ls"] = true,
+                    ["pwd"] = true,
+                    ["tail"] = true,
+                    ["tree"] = true,
+                    ["wc"] = true,
+                  }
+
+                  local safe_git_subcmd = {
+                    ["diff"] = true,
+                    ["log"] = true,
+                    ["show"] = true,
+                    ["status"] = true,
+                  }
+
+                  for id, node in query:iter_captures(root, self.args.cmd) do
+                    if query.captures[id] == "redirect" then
+                      return true
+                    end
+
+                    local text = vim.treesitter.get_node_text(node, self.args.cmd)
+                    if query.captures[id] == "git_subcmd" and not safe_git_subcmd[text] then
+                      return true
+                    end
+
+                    if query.captures[id] == "cmd" and not safe_cmd[text] then
+                      return true
+                    end
+                  end
+
+                  return false
+                end,
+              },
+            },
+            ["web_search"] = {
+              enabled = false,
+            },
+          },
         },
         cmd = {
           adapter = "cli-proxy-api",

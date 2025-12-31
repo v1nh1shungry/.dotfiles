@@ -83,6 +83,7 @@ return {
             show_server_tools_in_chat = false,
           },
         },
+        notify = {},
       },
       interactions = {
         backgroud = {

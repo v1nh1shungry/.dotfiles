@@ -119,13 +119,13 @@ return {
                     "bash",
                     [[
                   (command
-                    name: (command_name) @_git
-                    argument: (word) @git_subcmd
+                    (command_name) @_git
+                    . (word) @git_subcmd
                     (#eq? @_git "git")
                     (#set! "priority" 200))
 
                   (command
-                    name: (command_name) @cmd
+                    (command_name) @cmd
                     (#not-eq? @cmd "git"))
 
                   (redirected_statement) @redirect

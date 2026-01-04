@@ -10,6 +10,12 @@ return {
       { ";", mode = { "n", "x", "o" } },
       { "r", function() require("flash").remote() end, desc = "Remote Flash", mode = "o" },
     },
-    opts = {},
+    opts = {
+      label = {
+        rainbow = {
+          enabled = true,
+        },
+      },
+    },
   },
 }

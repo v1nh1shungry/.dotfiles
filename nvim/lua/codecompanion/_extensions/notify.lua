@@ -31,6 +31,19 @@ function M.setup()
     group = augroup,
     pattern = "CodeCompanionChatDone",
   })
+
+  vim.api.nvim_create_autocmd("User", {
+    callback = function()
+      if not focus then
+        vim.system({
+          "notify-send",
+          "🤖 Code Companion",
+          "Waiting for your approval 👻",
+        })
+      end
+    end,
+    pattern = "CodeCompanionApprovalRequested",
+  })
 end
 
 return M

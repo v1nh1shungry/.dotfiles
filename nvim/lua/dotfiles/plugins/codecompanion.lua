@@ -8,6 +8,17 @@ return {
       "CodeCompanionCmd",
       "CodeCompanionHistory",
     },
+    config = function(_, opts)
+      require("codecompanion").setup(opts)
+
+      -- TODO: better confirm UI
+      local confirm = assert(require("codecompanion.utils.ui").confirm)
+      ---@diagnostic disable-next-line: duplicate-set-field
+      require("codecompanion.utils.ui").confirm = function(...)
+        vim.api.nvim_exec_autocmds("User", { pattern = "CodeCompanionApprovalRequested" })
+        return confirm(...)
+      end
+    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "folke/snacks.nvim",

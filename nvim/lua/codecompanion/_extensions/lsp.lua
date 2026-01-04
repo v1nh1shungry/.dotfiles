@@ -2,17 +2,31 @@ local M = {}
 
 local dispatchers ---@type vim.lsp.rpc.Dispatchers
 
----@param id integer
+---@param token string
 ---@param value lsp.WorkDoneProgressBegin|lsp.WorkDoneProgressEnd
-local function send_progress(id, value)
+local function notify_progress(token, value)
   if dispatchers == nil then
     return
   end
 
-  local token = "codecompanion-" .. id
   dispatchers.notification("$/progress", {
     token = token,
     value = value,
+  })
+end
+
+---@param token string
+local function notify_begin(token)
+  notify_progress(token, {
+    kind = "begin",
+    title = "🤖 Crafting",
+  })
+end
+
+---@param token string
+local function notify_end(token)
+  notify_progress(token, {
+    kind = "end",
   })
 end
 
@@ -34,26 +48,27 @@ function M.setup()
   local augroup = vim.api.nvim_create_augroup("codecompanion._extensions.lsp", {})
 
   vim.api.nvim_create_autocmd("User", {
-    callback = function(args)
-      send_progress(args.data.id, {
-        kind = "begin",
-        title = "🤖 Requesting",
-      })
-    end,
-    desc = "Send progress notification when CodeCompanion request starts",
+    callback = function(args) notify_begin("codecompanion-" .. args.data.id) end,
     group = augroup,
-    pattern = "CodeCompanionRequestStarted",
+    pattern = "CodeCompanionChatSubmitted",
   })
 
   vim.api.nvim_create_autocmd("User", {
-    callback = function(args)
-      send_progress(args.data.id, {
-        kind = "end",
-      })
-    end,
-    desc = "Send progress notification when CodeCompanion request finishes",
+    callback = function(args) notify_end("codecompanion-" .. args.data.id) end,
     group = augroup,
-    pattern = "CodeCompanionRequestFinished",
+    pattern = "CodeCompanionChatDone",
+  })
+
+  vim.api.nvim_create_autocmd("User", {
+    callback = function() notify_begin("codecompanion-inline") end,
+    group = augroup,
+    pattern = "CodeCompanionInlineStarted",
+  })
+
+  vim.api.nvim_create_autocmd("User", {
+    callback = function() notify_end("codecompanion-inline") end,
+    group = augroup,
+    pattern = "CodeCompanionInlineFinished",
   })
 end
 

@@ -24,7 +24,7 @@ function M.setup()
         vim.system({
           "notify-send",
           "🤖 Code Companion",
-          "Done!",
+          "🥳 Done!",
         })
       end
     end,
@@ -38,11 +38,11 @@ function M.setup()
         vim.system({
           "notify-send",
           "🤖 Code Companion",
-          "Waiting for your approval 👻",
+          "🥺 Waiting for your approval...",
         })
       end
     end,
-    pattern = "CodeCompanionApprovalRequested",
+    pattern = { "CodeCompanionApprovalRequested", "CodeCompanionDiffAttached" },
   })
 end
 

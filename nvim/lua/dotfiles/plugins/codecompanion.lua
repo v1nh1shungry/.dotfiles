@@ -59,7 +59,7 @@ return {
               name = "cli-proxy-api",
               schema = {
                 model = {
-                  default = "gemini-claude-opus-4-5-thinking",
+                  default = "gemini-3-flash-preview",
                 },
               },
             })

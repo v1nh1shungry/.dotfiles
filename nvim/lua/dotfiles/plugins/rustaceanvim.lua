@@ -28,8 +28,8 @@ return {
           },
           on_attach = function(_, bufnr)
             local map = Dotfiles.map_with({ buffer = bufnr })
-            map({ "<Leader>cR", "<Cmd>RustLsp! runnables<CR>", desc = "Execute" })
-            map({ "<Leader>cT", "<Cmd>RustLsp! testables<CR>", desc = "Run Test" })
+            map({ "<Leader>cR", "<Cmd>RustLsp! runnables<CR>", desc = "Execute (Rust)" })
+            map({ "<Leader>cT", "<Cmd>RustLsp! testables<CR>", desc = "Run Test (Rust)" })
           end,
         },
       }

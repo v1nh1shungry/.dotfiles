@@ -73,9 +73,7 @@ waylandify-electron-app program:
     echo "--enable-wayland-ime" >{{ config_directory() }}/{{ program }}-flags.conf
 
 yazi:
-    mkdir -p {{ config_directory() }}/yazi
-    ln -sf {{ justfile_directory() }}/yazi/yazi.toml {{ config_directory() }}/yazi
-    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/yazi/{{ theme }}.toml {{ config_directory() }}/yazi/theme.toml
+    ln -sf {{ justfile_directory() }}/yazi {{ config_directory() }}
 
 zathura: _check-theme
     mkdir -p {{ config_directory() }}/zathura

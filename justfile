@@ -12,9 +12,6 @@ bat: _check-theme
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/{{ theme }}.tmTheme {{ config_directory() }}/bat/themes
     bat cache --build
 
-brave:
-    echo "--enable-features=TouchpadOverscrollHistoryNavigation,UseOzonePlatform" >{{ justfile_directory() }}/brave-flags.conf
-
 btop: _check-theme
     test -e {{ config_directory() }}/btop/btop.conf
     -rm -r {{ config_directory() }}/btop/themes
@@ -59,6 +56,11 @@ npm:
 nvim:
     ln -sf {{ justfile_directory() }}/nvim {{ config_directory() }}
 
+opencode:
+    mkdir -p {{ config_directory() }}/opencode
+    ln -sf {{ justfile_directory() }}/opencode/opencode.jsonc {{ config_directory() }}/opencode
+    ln -sf {{ justfile_directory() }}/opencode/oh-my-opencode.json {{ config_directory() }}/opencode
+
 pip:
     mkdir -p {{ config_directory() }}/pip
     echo "[global]\nindex-url = https://mirrors.ustc.edu.cn/pypi/simple" >{{ config_directory() }}/pip/pip.conf
@@ -68,9 +70,6 @@ starship:
 
 tmux:
     ln -sf {{ justfile_directory() }}/tmux {{ config_directory() }}
-
-waylandify-electron-app program:
-    echo "--enable-wayland-ime" >{{ config_directory() }}/{{ program }}-flags.conf
 
 yazi:
     ln -sf {{ justfile_directory() }}/yazi {{ config_directory() }}

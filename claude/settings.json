@@ -1,16 +1,35 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "alwaysThinkingEnabled": true,
   "attribution": {
     "commit": "",
     "pr": ""
   },
   "cleanupPeriodDays": 7,
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
+  },
   "env": {
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
   "language": "chinese",
   "permissions": {
-    "defaultMode": "plan"
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(file:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git status:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(rg:*)",
+      "Bash(tail:*)",
+      "Bash(tree:*)",
+      "Bash(wc:*)"
+    ],
+    "defaultMode": "plan",
+    "disableBypassPermissionsMode": "disable"
   }
 }

@@ -31,8 +31,8 @@ return {
     opts = {
       ensure_installed = {
         "bash",
-        "cmake",
         "c",
+        "cmake",
         "cpp",
         "diff",
         "doxygen",

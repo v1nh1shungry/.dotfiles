@@ -25,7 +25,7 @@ cargo:
 
 claude:
     mkdir -p {{ home_directory() }}/.claude
-    cp {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
+    ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
 
 fish:
     mkdir -p {{ config_directory() }}/fish
@@ -55,11 +55,6 @@ npm:
 
 nvim:
     ln -sf {{ justfile_directory() }}/nvim {{ config_directory() }}
-
-opencode:
-    mkdir -p {{ config_directory() }}/opencode
-    ln -sf {{ justfile_directory() }}/opencode/opencode.jsonc {{ config_directory() }}/opencode
-    ln -sf {{ justfile_directory() }}/opencode/oh-my-opencode.json {{ config_directory() }}/opencode
 
 pip:
     mkdir -p {{ config_directory() }}/pip

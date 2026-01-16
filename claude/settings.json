@@ -31,5 +31,6 @@
     ],
     "defaultMode": "plan",
     "disableBypassPermissionsMode": "disable"
-  }
+  },
+  "syntaxHighlightingDisabled": false
 }

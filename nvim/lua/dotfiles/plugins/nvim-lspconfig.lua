@@ -9,7 +9,7 @@ return {
     config = function(_, opts)
       local log_path = vim.lsp.log.get_filename()
       local stat = vim.uv.fs_stat(log_path)
-      if stat and stat.size and stat.size > 50 * 1024 * 1024 then
+      if stat and stat.size and stat.size > 20 * 1024 * 1024 then
         vim.uv.fs_unlink(log_path)
       end
 
@@ -70,6 +70,11 @@ return {
       end
 
       vim.lsp.enable(vim.tbl_keys(opts))
+
+      vim.api.nvim_create_user_command("LspLog", function()
+        vim.cmd("tabnew " .. log_path)
+        vim.cmd("$")
+      end, { desc = "Opens the Nvim LSP client log." })
     end,
     dependencies = "mason-org/mason.nvim",
     event = "VeryLazy",

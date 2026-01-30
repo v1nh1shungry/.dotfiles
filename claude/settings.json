@@ -1,17 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 7,
+  "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
   },
-  "cleanupPeriodDays": 7,
-  "enabledPlugins": {
-    "clangd-lsp@claude-plugins-official": true
-  },
-  "env": {
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
-  },
-  "language": "chinese",
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -32,5 +28,9 @@
     "defaultMode": "plan",
     "disableBypassPermissionsMode": "disable"
   },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
+  },
+  "language": "chinese",
   "syntaxHighlightingDisabled": false
 }

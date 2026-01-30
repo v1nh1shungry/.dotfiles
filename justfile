@@ -56,6 +56,10 @@ npm:
 nvim:
     ln -sf {{ justfile_directory() }}/nvim {{ config_directory() }}
 
+opencode:
+    mkdir -p {{ config_directory() }}/opencode
+    ln -sf {{ justfile_directory() }}/opencode/opencode.jsonc {{ config_directory() }}/opencode
+
 pip:
     mkdir -p {{ config_directory() }}/pip
     echo "[global]\nindex-url = https://mirrors.ustc.edu.cn/pypi/simple" >{{ config_directory() }}/pip/pip.conf

@@ -55,6 +55,10 @@ if command -q nvim
     set -x MANPAGER "nvim +Man!"
 end
 
+if command -q opencode
+    set -x OPENCODE_DISABLE_LSP_DOWNLOAD "true"
+end
+
 if command -q rg
     abbr grep rg
 end

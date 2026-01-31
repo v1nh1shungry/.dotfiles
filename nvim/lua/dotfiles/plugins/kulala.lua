@@ -13,13 +13,6 @@ return {
     },
     opts = {
       scratchpad_default_contents = {},
-      ui = {
-        win_opts = {
-          wo = {
-            signcolumn = "no",
-          },
-        },
-      },
     },
   },
 }

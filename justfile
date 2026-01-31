@@ -59,7 +59,6 @@ nvim:
 opencode:
     mkdir -p {{ config_directory() }}/opencode
     ln -sf {{ justfile_directory() }}/opencode/opencode.jsonc {{ config_directory() }}/opencode
-    ln -sf {{ justfile_directory() }}/opencode/oh-my-opencode.jsonc {{ config_directory() }}/opencode
 
 pip:
     mkdir -p {{ config_directory() }}/pip

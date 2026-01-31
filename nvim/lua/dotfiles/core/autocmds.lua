@@ -47,7 +47,6 @@ do
       vim.opt_local.relativenumber = false
       vim.opt_local.colorcolumn = ""
       vim.opt_local.statuscolumn = ""
-      vim.opt_local.signcolumn = "no"
 
       local ret = vim.fn.maparg("q", "n", false, true)
       if ret.buffer ~= 1 then

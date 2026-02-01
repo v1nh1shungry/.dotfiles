@@ -32,6 +32,7 @@
       "options": {
         "apiKey": "{env:OPENCODE_OPENAI_API_KEY}",
         "baseURL": "{env:OPENCODE_OPENAI_BASE_URL}",
+        "setCacheKey": true
       }
     }
   },

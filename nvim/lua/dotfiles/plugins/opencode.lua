@@ -1,20 +1,16 @@
+local augroup = Dotfiles.augroup("plugins.opencode")
+
 local focus = true
-
-do
-  local augroup = Dotfiles.augroup("utils.focus")
-
-  vim.api.nvim_create_autocmd("FocusGained", {
-    callback = function() focus = true end,
-    desc = "Watch if Neovim gains focus",
-    group = augroup,
-  })
-
-  vim.api.nvim_create_autocmd("FocusLost", {
-    callback = function() focus = false end,
-    desc = "Watch if Neovim gains focus",
-    group = augroup,
-  })
-end
+vim.api.nvim_create_autocmd("FocusGained", {
+  callback = function() focus = true end,
+  desc = "Watch if Neovim gains focus",
+  group = augroup,
+})
+vim.api.nvim_create_autocmd("FocusLost", {
+  callback = function() focus = false end,
+  desc = "Watch if Neovim gains focus",
+  group = augroup,
+})
 
 local function notify(msg)
   if not focus then
@@ -25,6 +21,49 @@ end
 return {
   {
     "sudo-tee/opencode.nvim",
+    config = function(_, opts)
+      local keymap = require("opencode.config").keymap
+      keymap.input_window = {
+        ["#"] = { "context_items", mode = "i" },
+        ["/"] = { "slash_commands", mode = "i" },
+        ["<C-c>"] = { "close" },
+        ["<C-n>"] = { "next_prompt_history", mode = { "i", "n" } },
+        ["<C-p>"] = { "prev_prompt_history", mode = { "i", "n" } },
+        ["<C-s>"] = { "submit_input_prompt" },
+        ["<CR>"] = { "submit_input_prompt" },
+        ["<ESC>"] = { "cancel" },
+        ["<M-v>"] = { "paste_image", mode = "i" },
+        ["<Tab>"] = { "switch_mode" },
+        ["@"] = { "mention", mode = "i" },
+        ["~"] = { "mention_file", mode = "i" },
+      }
+      keymap.output_window = {
+        ["<C-c>"] = { "close" },
+        ["[["] = { "prev_message" },
+        ["]]"] = { "next_message" },
+        ["i"] = { "focus_input" },
+      }
+
+      require("opencode").setup(opts)
+
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(args)
+          Dotfiles.map({ "<C-c>", "<Cmd>stopinsert<CR>", buffer = args.buf, desc = "Enter Normal Mode", mode = "i" })
+          Dotfiles.map({
+            "<C-s>",
+            function()
+              require("opencode.api").submit_input_prompt()
+              vim.cmd("stopinsert")
+            end,
+            buffer = args.buf,
+            desc = "Submit Prompt",
+            mode = "i",
+          })
+        end,
+        group = augroup,
+        pattern = "opencode",
+      })
+    end,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "saghen/blink.cmp",
@@ -41,38 +80,14 @@ return {
         on_done_thinking = function() notify("🥳 Done!") end,
         on_permission_requested = function() notify("🥺 Waiting for your approval...") end,
       },
-      keymap = {
-        input_window = {
-          ["<C-c>"] = false,
-          ["<C-n>"] = { "next_prompt_history", mode = { "i", "n" } },
-          ["<C-p>"] = { "prev_prompt_history", mode = { "i", "n" } },
-          ["<C-s>"] = { "submit_input_prompt", mode = "i" },
-          ["<CR>"] = { "submit_input_prompt" },
-          ["<M-m>"] = false,
-          ["<M-r>"] = false,
-          ["<S-cr>"] = false,
-          ["<down>"] = false,
-          ["<esc>"] = { "cancel" },
-          ["<tab>"] = { "switch_mode" },
-          ["<up>"] = false,
-        },
-        output_window = {
-          ["<C-c>"] = false,
-          ["<M-r>"] = false,
-          ["<esc>"] = { "cancel" },
-          ["<leader>oD"] = false,
-          ["<leader>oO"] = false,
-          ["<leader>oS"] = false,
-          ["<leader>ods"] = false,
-          ["<tab>"] = false,
-        },
-      },
       ui = {
         input = {
           text = {
             wrap = true,
           },
         },
+        input_height = 0.2,
+        window_width = 0.5,
       },
     },
   },

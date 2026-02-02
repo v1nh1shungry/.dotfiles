@@ -21,6 +21,7 @@ end
 return {
   {
     "sudo-tee/opencode.nvim",
+    cmd = "Opencode",
     config = function(_, opts)
       local keymap = require("opencode.config").keymap
       keymap.input_window = {
@@ -30,6 +31,7 @@ return {
         ["<C-n>"] = { "next_prompt_history", mode = { "i", "n" } },
         ["<C-p>"] = { "prev_prompt_history", mode = { "i", "n" } },
         ["<C-s>"] = { "submit_input_prompt" },
+        ["<C-w>z"] = { "toggle_zoom" },
         ["<CR>"] = { "submit_input_prompt" },
         ["<ESC>"] = { "cancel" },
         ["<M-v>"] = { "paste_image", mode = "i" },
@@ -39,6 +41,7 @@ return {
       }
       keymap.output_window = {
         ["<C-c>"] = { "close" },
+        ["<C-w>z"] = { "toggle_zoom" },
         ["[["] = { "prev_message" },
         ["]]"] = { "next_message" },
         ["i"] = { "focus_input" },
@@ -80,6 +83,7 @@ return {
         on_done_thinking = function() notify("🥳 Done!") end,
         on_permission_requested = function() notify("🥺 Waiting for your approval...") end,
       },
+      legacy_commands = false,
       ui = {
         input = {
           text = {

@@ -20,8 +20,8 @@ return {
         cpp = { "clang-format" },
         fish = { "fish_indent" },
         lua = { "stylua", lsp_format = "never" },
-        json = { "jq" },
-        jsonc = { "jq" },
+        json = { "jq", lsp_format = "fallback" },
+        jsonc = { "jq", lsp_format = "fallback" },
         just = { "just" },
         markdown = { "injected" },
         python = { "ruff_format" },
@@ -36,6 +36,9 @@ return {
           options = {
             ignore_errors = true,
           },
+        },
+        jq = {
+          prepend_args = { "-S" },
         },
       },
     },

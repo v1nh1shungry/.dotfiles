@@ -77,6 +77,14 @@ return {
       { "<Leader>aO", "<Cmd>Opencode session select<CR>", desc = "OpenCode (Resume)" },
     },
     opts = {
+      context = {
+        current_file = {
+          enabled = false,
+        },
+        diagnostics = {
+          enabled = false,
+        },
+      },
       default_global_keymaps = false,
       default_mode = "plan",
       hooks = {
@@ -90,7 +98,6 @@ return {
             wrap = true,
           },
         },
-        input_height = 0.2,
         window_width = 0.5,
       },
     },

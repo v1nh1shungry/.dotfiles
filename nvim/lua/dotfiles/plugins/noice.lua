@@ -56,6 +56,16 @@ return {
         {
           filter = {
             event = "msg_show",
+            kind = "progress",
+          },
+          opts = {
+            replace = true,
+          },
+          view = "notify",
+        },
+        {
+          filter = {
+            event = "msg_show",
             kind = { "", "bufwrite", "empty", "undo" },
             max_height = 1,
           },

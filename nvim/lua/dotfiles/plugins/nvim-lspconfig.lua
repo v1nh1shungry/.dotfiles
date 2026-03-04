@@ -95,6 +95,7 @@ return {
         mason = "neocmakelsp",
       },
       ruff = {},
+      vtsls = {},
     },
   },
 }

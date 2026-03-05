@@ -23,10 +23,6 @@ cargo:
     mkdir -p {{ home_directory() }}/.cargo
     ln -sf {{ justfile_directory() }}/cargo/config.toml {{ home_directory() }}/.cargo
 
-claude:
-    mkdir -p {{ home_directory() }}/.claude
-    ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
-
 fish:
     mkdir -p {{ config_directory() }}/fish
     ln -sf {{ justfile_directory() }}/fish/config.fish {{ config_directory() }}/fish

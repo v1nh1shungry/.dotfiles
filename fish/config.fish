@@ -37,7 +37,9 @@ end
 
 abbr l ls
 abbr la "ls -a"
-abbr ll "ls -al"
+abbr ll "ls -alh"
+
+abbr mv "mv -i"
 
 if command -q nvim
     set -x EDITOR $(which nvim)

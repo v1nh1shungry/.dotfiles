@@ -55,6 +55,7 @@ end
 if command -q opencode
     set -x OPENCODE_DISABLE_LSP_DOWNLOAD "true"
     set -x OPENCODE_ENABLE_EXA "true"
+    set -x OPENCODE_EXPERIMENTAL_LSP_TOOL "true"
 end
 
 if command -q rg

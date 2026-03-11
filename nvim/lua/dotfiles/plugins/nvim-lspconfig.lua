@@ -32,7 +32,6 @@ return {
 
       Dotfiles.lsp.register_mappings({
         ["textDocument/rename"] = { "<Leader>cr", vim.lsp.buf.rename, desc = "Rename" },
-        ["textDocument/codeAction"] = { "<Leader>ca", vim.lsp.buf.code_action, desc = "Code Action" },
         ["textDocument/references"] = { "gR", vim.lsp.buf.references, desc = "Go to References" },
         ["textDocument/definition"] = { "gd", vim.lsp.buf.definition, desc = "Go to Definition" },
         ["textDocument/declaration"] = { "gD", vim.lsp.buf.declaration, desc = "Go to Declaration" },

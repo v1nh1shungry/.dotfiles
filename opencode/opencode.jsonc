@@ -17,7 +17,7 @@
       "url": "https://mcp.context7.com/mcp"
     }
   },
-  "model": "openai/gpt-5.3-codex",
+  "model": "openai/gpt-5.4",
   "permission": {
     "bash": {
       "*": "ask",

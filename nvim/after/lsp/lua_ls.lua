@@ -1,5 +1,6 @@
+---@module "lspconfig"
 return {
-  settings = {
+  settings = { ---@type lspconfig.settings.lua_ls
     Lua = {
       addonManager = {
         enable = false,
@@ -8,7 +9,7 @@ return {
         autoRequire = false,
         keywordSnippet = "Disable",
         showWord = "Disable",
-        workspaceWord = "Disable",
+        workspaceWord = false,
       },
       doc = {
         privateName = { "^_" },

@@ -1,6 +1,7 @@
+---@module "lspconfig"
 -- https://www.lazyvim.org/extras/lang/typescript {{{
 return {
-  settings = {
+  settings = { ---@type lspconfig.settings.vtsls
     javascript = {
       inlayHints = {
         enumMemberValues = {

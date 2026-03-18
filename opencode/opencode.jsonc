@@ -21,13 +21,13 @@
   "permission": {
     "bash": {
       "*": "ask",
-      "git diff *": "allow",
-      "git log *": "allow",
-      "git show *": "allow",
-      "git status *": "allow",
-      "grep *": "allow",
-      "ls *": "allow",
-      "rg *": "allow",
+      "rtk git diff *": "allow",
+      "rtk git log *": "allow",
+      "rtk git show *": "allow",
+      "rtk git status *": "allow",
+      "rtk grep *": "allow",
+      "rtk ls *": "allow",
+      "rtk rg *": "allow",
     }
   },
   "plugin": [

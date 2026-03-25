@@ -1,6 +1,7 @@
 return {
   {
     "saghen/blink.cmp",
+    branch = "v1",
     build = "cargo build --release",
     dependencies = "xzbdmw/colorful-menu.nvim",
     event = "VeryLazy",

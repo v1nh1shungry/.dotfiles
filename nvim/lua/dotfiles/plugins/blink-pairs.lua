@@ -19,6 +19,12 @@ return {
       },
       mappings = {
         disabled_filetypes = { "snacks_picker_input" },
+        wrap = {
+          ["<C-b>"] = false,
+          ["<C-S-b>"] = false,
+          ["<M-]>"] = "motion",
+          ["<M-[>"] = "motion",
+        },
       },
     },
   },

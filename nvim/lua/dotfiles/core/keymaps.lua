@@ -32,6 +32,7 @@ do
   remove_lsp_mapping({ "grt" })
   remove_lsp_mapping({ "gO" })
   remove_lsp_mapping({ "<C-s>", mode = "i" })
+  remove_lsp_mapping({ "grx" })
 end
 -- }}}
 

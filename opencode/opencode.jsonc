@@ -16,7 +16,7 @@
     "bash": {
       "*": "ask",
       "file *": "allow",
-      "rtk git blame *": "allow",
+      "git blame *": "allow",
       "rtk git diff *": "allow",
       "rtk git log *": "allow",
       "rtk git show *": "allow",

@@ -21,7 +21,6 @@ return {
         fish = { "fish_indent" },
         lua = { "stylua", lsp_format = "never" },
         json = { "jq", lsp_format = "fallback" },
-        jsonc = { "jq", lsp_format = "fallback" },
         just = { "just" },
         markdown = { "injected" },
         python = { "ruff_format" },

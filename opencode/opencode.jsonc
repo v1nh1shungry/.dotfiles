@@ -8,7 +8,6 @@
   "default_agent": "plan",
   "enabled_providers": [
     "openai",
-    "opencode"
   ],
   "formatter": false,
   "model": "openai/gpt-5.4",
@@ -16,6 +15,7 @@
     "bash": {
       "*": "ask",
       "file *": "allow",
+      "head *": "allow",
       "rtk git blame *": "allow",
       "rtk git diff *": "allow",
       "rtk git grep *": "allow",
@@ -30,17 +30,7 @@
   },
   "plugin": [
     "@tarquinen/opencode-dcp@latest",
-    "superpowers@git+https://github.com/obra/superpowers.git"
+    "@mohak34/opencode-notifier@latest"
   ],
-  "provider": {
-    "openai": {
-      "options": {
-        "apiKey": "{env:OPENCODE_OPENAI_API_KEY}",
-        "baseURL": "{env:OPENCODE_OPENAI_BASE_URL}",
-        "setCacheKey": true
-      }
-    }
-  },
   "share": "disabled",
-  "small_model": "opencode/gpt-5-nano"
 }

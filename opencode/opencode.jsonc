@@ -30,7 +30,9 @@
   },
   "plugin": [
     "@tarquinen/opencode-dcp@latest",
-    "@mohak34/opencode-notifier@latest"
+    "@mohak34/opencode-notifier@latest",
+    "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "share": "disabled",
+  "small_model": "openai/gpt-5.4-mini"
 }

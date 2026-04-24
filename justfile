@@ -54,7 +54,6 @@ nvim:
     ln -sf {{ justfile_directory() }}/nvim {{ config_directory() }}
 
 opencode:
-    mkdir -p {{ config_directory() }}/opencode/plugins
     ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ config_directory() }}/opencode
     ln -sf {{ justfile_directory() }}/opencode/opencode.jsonc {{ config_directory() }}/opencode
     ln -sf {{ justfile_directory() }}/opencode/tui.json {{ config_directory() }}/opencode

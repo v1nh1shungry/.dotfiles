@@ -31,7 +31,6 @@
 * [niri](https://github.com/YaLTeR/niri)
     * [noctalia-shell](https://github.com/noctalia-dev/noctalia-shell)
 * [opencode](https://opencode.ai/)
-    * [rtk](https://github.com/rtk-ai/rtk)
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 * [starship](https://github.com/starship/starship)
 * [tldr](https://github.com/dbrgn/tealdeer)

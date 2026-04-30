@@ -3,14 +3,14 @@
   "agent": {
     "build": {
       "model": "openai/gpt-5.4",
-      "variant": "high"
+      "variant": "medium"
     },
     "explore": {
       "model": "openai/gpt-5.4-mini",
-      "variant": "none"
+      "variant": "low"
     },
     "general": {
-      "model": "openai/gpt-5.4",
+      "model": "openai/gpt-5.4-mini",
       "variant": "medium"
     },
     "plan": {
@@ -23,6 +23,10 @@
     }
   },
   "autoupdate": false,
+  "compaction": {
+    "auto": false,
+    "prune": false
+  },
   "default_agent": "plan",
   "enabled_providers": [
     "openai"
@@ -32,18 +36,26 @@
   "permission": {
     "bash": {
       "*": "ask",
+      "cat *": "allow",
       "file *": "allow",
       "git blame *": "allow",
+      "git clean *": "deny",
       "git diff *": "allow",
       "git grep *": "allow",
       "git log *": "allow",
+      "git push *": "deny",
+      "git rebase *": "deny",
+      "git reset *": "deny",
+      "git restore *": "deny",
       "git show *": "allow",
       "git status *": "allow",
       "grep *": "allow",
       "head *": "allow",
       "ls *": "allow",
+      "pwd": "allow",
       "rg *": "allow",
-      "zgrep *": "allow"
+      "rm *": "deny",
+      "tail *": "allow",
     }
   },
   "plugin": [
@@ -51,5 +63,5 @@
     "@mohak34/opencode-notifier@latest",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
-  "share": "disabled",
+  "share": "disabled"
 }

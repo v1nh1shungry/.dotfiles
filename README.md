@@ -7,6 +7,7 @@
 ## Requirements
 
 * [Brave](https://brave.com/)
+* [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)
 * [Neovim](https://github.com/neovim/neovim)
 * [SPlayer](https://github.com/imsyy/SPlayer)
 * [Spotify](https://open.spotify.com/)

@@ -22,8 +22,6 @@ return {
         wrap = {
           ["<C-b>"] = false,
           ["<C-S-b>"] = false,
-          ["<M-]>"] = "motion",
-          ["<M-[>"] = "motion",
         },
       },
     },

@@ -1,0 +1,43 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.1",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5-turbo",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(file:*)",
+      "Bash(git blame:*)",
+      "Bash(git diff:*)",
+      "Bash(git grep:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git status:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)",
+      "Bash(pwd)",
+      "Bash(rg:*)",
+      "Bash(tail:*)"
+    ],
+    "deny": [
+      "Bash(git clean:*)",
+      "Bash(git push:*)",
+      "Bash(git rebase:*)",
+      "Bash(git reset:*)",
+      "Bash(git restore:*)",
+      "Bash(rm:*)"
+    ],
+    "defaultMode": "plan"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true
+  },
+  "language": "chinese",
+  "theme": "dark"
+}

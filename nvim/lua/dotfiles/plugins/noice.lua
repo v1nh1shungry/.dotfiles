@@ -66,7 +66,7 @@ return {
         {
           filter = {
             event = "msg_show",
-            kind = { "", "bufwrite", "empty", "undo" },
+            kind = { "", "undo" },
             max_height = 1,
           },
           view = "mini",

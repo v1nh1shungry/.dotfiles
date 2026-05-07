@@ -36,7 +36,7 @@ require("lazy").setup(
     vim
       .iter(Dotfiles.user.extra)
       :map(function(spec)
-        if type(spec) == "string" and vim.F.npcall(require, "dotfiles.plugins.extra." .. spec) then
+        if type(spec) == "string" and pcall(require, "dotfiles.plugins.extra." .. spec) then
           return { import = "dotfiles.plugins.extra." .. spec }
         end
         return spec

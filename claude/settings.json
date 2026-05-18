@@ -1,13 +1,20 @@
 {
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
   "env": {
-    "ANTHROPIC_BASE_URL": "https://open.bigmodel.cn/api/anthropic",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "glm-4.5-air",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.1",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "glm-5-turbo",
     "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_SCROLL_SPEED": "3",
+    "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
+    "DISABLE_EXTRA_USAGE_COMMAND": "1",
+    "DISABLE_INSTALL_GITHUB_APP_COMMAND": "1",
+    "DISABLE_UPGRADE_COMMAND": "1",
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
   },
+  "language": "chinese",
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -32,13 +39,10 @@
       "Bash(git reset:*)",
       "Bash(git restore:*)",
       "Bash(rm:*)"
-    ],
-    "defaultMode": "plan"
+    ]
   },
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "clangd-lsp@claude-plugins-official": true
-  },
-  "language": "chinese",
-  "theme": "dark"
+  "showClearContextOnPlanAccept": true,
+  "showThinkingSummaries": true,
+  "theme": "auto",
+  "tui": "fullscreen"
 }

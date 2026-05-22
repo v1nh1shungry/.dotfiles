@@ -23,6 +23,7 @@
       "Bash(git diff:*)",
       "Bash(git grep:*)",
       "Bash(git log:*)",
+      "Bash(git rev-parse:*)",
       "Bash(git show:*)",
       "Bash(git status:*)",
       "Bash(grep:*)",

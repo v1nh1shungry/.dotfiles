@@ -1,0 +1,21 @@
+prefix_rule(
+    pattern=[["cat", "file", "grep", "head", "ls", "pwd", "rg", "tail"]],
+    decision="allow",
+)
+
+prefix_rule(
+    pattern=["git", ["blame", "diff", "grep", "log", "rev-parse", "show", "status"]],
+    decision="allow",
+)
+
+prefix_rule(
+    pattern=["git", ["clean", "push", "rebase", "reset", "restore"]],
+    decision="forbidden",
+)
+
+prefix_rule(
+    pattern=["rm"],
+    decision="forbidden",
+)
+
+# vim: ft=python:

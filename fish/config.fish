@@ -75,6 +75,12 @@ if command -q starship
     starship init fish | source
 end
 
+if command -q tmux
+    set fish_tmux_autostart true
+    set fish_tmux_fixterm false
+    set fish_tmux_no_alias true
+end
+
 if command -q yazi
     function y
         set tmp (mktemp -t "yazi-cwd.XXXXXX")

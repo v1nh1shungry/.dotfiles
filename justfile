@@ -28,6 +28,12 @@ claude:
     ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
     ln -sf {{ justfile_directory() }}/claude/CLAUDE.md {{ home_directory() }}/.claude
 
+codex: _check-theme
+    mkdir -p {{ home_directory() }}/.codex/themes
+    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/{{ theme }}.tmTheme {{ home_directory() }}/.codex/themes
+    ln -sf {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
+    ln -sf {{ justfile_directory() }}/codex/rules {{ home_directory() }}/.codex
+
 fish:
     mkdir -p {{ config_directory() }}/fish
     ln -sf {{ justfile_directory() }}/fish/config.fish {{ config_directory() }}/fish

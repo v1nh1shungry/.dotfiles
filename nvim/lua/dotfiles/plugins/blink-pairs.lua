@@ -1,8 +1,8 @@
 return {
   {
     "saghen/blink.pairs",
-    build = "cargo build --release",
-    dependencies = "folke/snacks.nvim",
+    build = function() require("blink.pairs").build():pwait(60000) end,
+    dependencies = { "saghen/blink.lib", "folke/snacks.nvim" },
     event = { "InsertEnter", "LazyFile" },
     opts = {
       highlights = {

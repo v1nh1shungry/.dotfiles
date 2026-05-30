@@ -1,15 +1,15 @@
 prefix_rule(
-    pattern=[["cat", "file", "grep", "head", "ls", "pwd", "rg", "tail"]],
+    pattern=[["cat", "echo", "file", "grep", "head", "ls", "pwd", "rg", "tail", "wc"]],
     decision="allow",
 )
 
 prefix_rule(
-    pattern=["git", ["blame", "diff", "grep", "log", "rev-parse", "show", "status"]],
+    pattern=["git", ["blame", "diff", "grep", "log", "ls-files", "rev-parse", "show", "status"]],
     decision="allow",
 )
 
 prefix_rule(
-    pattern=["git", ["clean", "push", "rebase", "reset", "restore"]],
+    pattern=["git", ["add", "clean", "commit", "push", "rebase", "reset", "restore", "rm"]],
     decision="forbidden",
 )
 

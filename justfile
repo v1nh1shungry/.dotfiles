@@ -31,7 +31,7 @@ claude:
 codex: _check-theme
     mkdir -p {{ home_directory() }}/.codex/themes
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/{{ theme }}.tmTheme {{ home_directory() }}/.codex/themes
-    ln -sf {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
+    cp {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
     ln -sf {{ justfile_directory() }}/codex/rules {{ home_directory() }}/.codex
 
 fish:
@@ -43,7 +43,7 @@ fontconfig:
     ln -sf {{ justfile_directory() }}/fontconfig {{ config_directory() }}
 
 gdb:
-    wget -P ~ https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
+    curl -L -o ~/.gdbinit https://github.com/cyrus-and/gdb-dashboard/raw/master/.gdbinit
 
 git: _check-theme
     ln -sf {{ justfile_directory() }}/git/.gitconfig {{ home_directory() }}

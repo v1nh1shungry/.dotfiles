@@ -1,6 +1,6 @@
 return {
   {
-    "dlyongemallo/diffview.nvim",
+    "dlyongemallo/diffview-plus.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
       { "<Leader>gD", "<Cmd>DiffviewOpen<CR>", desc = "Diff Pane" },

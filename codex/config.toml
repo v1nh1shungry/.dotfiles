@@ -16,6 +16,9 @@ memories = true
 [feedback]
 enabled = false
 
+[plugins."superpowers@openai-curated"]
+enabled = true
+
 [tui]
-status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit"]
+status_line = ["model-with-reasoning", "git-branch", "context-remaining", "five-hour-limit", "weekly-limit"]
 theme = "tokyonight_moon"

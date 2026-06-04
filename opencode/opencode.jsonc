@@ -10,11 +10,11 @@
     },
     "explore": {
       "hidden": true,
-      "model": "zhipuai-coding-plan/glm-4.7"
+      "model": "deepseek/deepseek-v4-flash"
     },
     "general": {
       "hidden": true,
-      "model": "zhipuai-coding-plan/glm-5.1"
+      "model": "deepseek/deepseek-v4-pro"
     },
     "plan": {
       "disable": true
@@ -26,7 +26,7 @@
       "disable": true
     },
     "title": {
-      "model": "zhipuai-coding-plan/glm-4.5-air"
+      "model": "deepseek/deepseek-v4-flash"
     }
   },
   "autoupdate": false,
@@ -35,8 +35,8 @@
     "prune": false
   },
   "enabled_providers": [
-    "openai",
-    "zhipuai-coding-plan"
+    "deepseek",
+    "openai"
   ],
   "formatter": false,
   "lsp": true,

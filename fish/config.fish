@@ -55,7 +55,6 @@ end
 if command -q opencode
     set -x OPENCODE_DISABLE_LSP_DOWNLOAD "true"
     set -x OPENCODE_ENABLE_EXA "true"
-    set -x OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS "true"
     set -x OPENCODE_EXPERIMENTAL_LSP_TOOL "true"
     set -x OPENCODE_EXPERIMENTAL_WEBSOCKETS "true"
 end

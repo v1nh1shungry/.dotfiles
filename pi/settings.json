@@ -1,0 +1,12 @@
+{
+  "collapseChangelog": true,
+  "defaultModel": "deepseek-v4-flash",
+  "defaultProvider": "deepseek",
+  "defaultThinkingLevel": "high",
+  "enableInstallTelemetry": false,
+  "lastChangelogVersion": "0.78.1",
+  "packages": [
+    "npm:@gotgenes/pi-permission-system",
+    "npm:pi-tool-display"
+  ]
+}

@@ -33,6 +33,7 @@ codex: _check-theme
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/{{ theme }}.tmTheme {{ home_directory() }}/.codex/themes
     cp {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
     ln -sf {{ justfile_directory() }}/codex/rules {{ home_directory() }}/.codex
+    ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ home_directory() }}/.codex
 
 fish:
     mkdir -p {{ config_directory() }}/fish
@@ -69,6 +70,12 @@ opencode:
     ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ config_directory() }}/opencode
     ln -sf {{ justfile_directory() }}/opencode/opencode.jsonc {{ config_directory() }}/opencode
     ln -sf {{ justfile_directory() }}/opencode/tui.json {{ config_directory() }}/opencode
+
+pi:
+    mkdir -p {{ home_directory() }}/.pi/agent/extensions/pi-permission-system
+    ln -sf {{ justfile_directory() }}/pi/extensions/pi-permission-system/config.json {{ home_directory() }}/.pi/agent/extensions/pi-permission-system
+    ln -sf {{ justfile_directory() }}/pi/settings.json {{ home_directory() }}/.pi/agent
+    ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ home_directory() }}/.pi/agent
 
 pip:
     mkdir -p {{ config_directory() }}/pip

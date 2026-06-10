@@ -1,0 +1,6 @@
+run:
+  docker run -d --name hermes --restart unless-stopped -v ~/.hermes:/opt/data nousresearch/hermes-agent gateway run
+
+setup:
+  mkdir -p ~/.hermes
+  docker run -it --rm -v ~/.hermes:/opt/data nousresearch/hermes-agent setup

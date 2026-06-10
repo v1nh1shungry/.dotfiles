@@ -1,0 +1,31 @@
+services:
+  rsshub:
+    depends_on:
+      - redis
+    environment:
+      CACHE_TYPE: redis
+      NODE_ENV: production
+      REDIS_URL: "redis://redis:6379/"
+      TWITTER_AUTH_TOKEN: ${TWITTER_AUTH_TOKEN}
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:1200/healthz"]
+      timeout: 10s
+    image: diygod/rsshub:chromium-bundled
+    ports:
+      - "1200:1200"
+    restart: unless-stopped
+  redis:
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_period: 5s
+      test: ["CMD", "redis-cli", "ping"]
+      timeout: 10s
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+volumes:
+  redis-data:

@@ -35,6 +35,10 @@ codex: _check-theme
     ln -sf {{ justfile_directory() }}/codex/rules {{ home_directory() }}/.codex
     ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ home_directory() }}/.codex
 
+docker:
+    mkdir -p {{ home_directory() }}/.docker
+    ln -sf {{ justfile_directory() }}/docker/config.json {{ home_directory() }}/.docker
+
 fish:
     mkdir -p {{ config_directory() }}/fish
     ln -sf {{ justfile_directory() }}/fish/config.fish {{ config_directory() }}/fish

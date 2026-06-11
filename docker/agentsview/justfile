@@ -1,0 +1,2 @@
+run:
+  docker run -d --name agentsview --restart unless-stopped -p 127.0.0.1:8080:8080 -v agentsview-data:/data -v "$HOME/.local/share/opencode:/agents/opencode:ro" -e OPENCODE_DIR=/agents/opencode ghcr.io/kenn-io/agentsview:latest --host 0.0.0.0 --no-browser --no-update-check

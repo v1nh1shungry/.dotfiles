@@ -23,7 +23,7 @@
       "model": "opencode-go/deepseek-v4-flash"
     }
   },
-  "autoupdate": false,
+  "autoupdate": "notify",
   "enabled_providers": [
     "openai",
     "opencode-go"
@@ -34,6 +34,7 @@
     "bash": {
       "*": "ask",
       "cat *": "allow",
+      "date *": "allow",
       "echo *": "allow",
       "file *": "allow",
       "git add *": "deny",

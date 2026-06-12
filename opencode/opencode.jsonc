@@ -11,7 +11,8 @@
     },
     "general": {
       "hidden": true,
-      "model": "opencode-go/glm-5.1"
+      "model": "opencode-go/deepseek-v4-pro",
+      "variant": "max"
     },
     "plan": {
       "disable": true

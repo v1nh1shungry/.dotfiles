@@ -39,7 +39,6 @@ return {
         "doxygen",
         "fish",
         "gitcommit",
-        "glsl",
         "html",
         "http",
         "javascript",

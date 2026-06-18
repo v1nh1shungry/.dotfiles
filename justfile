@@ -23,11 +23,6 @@ cargo:
     mkdir -p {{ home_directory() }}/.cargo
     ln -sf {{ justfile_directory() }}/cargo/config.toml {{ home_directory() }}/.cargo
 
-claude:
-    mkdir -p {{ home_directory() }}/.claude
-    ln -sf {{ justfile_directory() }}/claude/settings.json {{ home_directory() }}/.claude
-    ln -sf {{ justfile_directory() }}/claude/CLAUDE.md {{ home_directory() }}/.claude
-
 codex: _check-theme
     mkdir -p {{ home_directory() }}/.codex/themes
     ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/{{ theme }}.tmTheme {{ home_directory() }}/.codex/themes
@@ -74,12 +69,6 @@ opencode:
     ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ config_directory() }}/opencode
     ln -sf {{ justfile_directory() }}/opencode/opencode.jsonc {{ config_directory() }}/opencode
     ln -sf {{ justfile_directory() }}/opencode/tui.json {{ config_directory() }}/opencode
-
-pi:
-    mkdir -p {{ home_directory() }}/.pi/agent/extensions/pi-permission-system
-    ln -sf {{ justfile_directory() }}/pi/extensions/pi-permission-system/config.json {{ home_directory() }}/.pi/agent/extensions/pi-permission-system
-    ln -sf {{ justfile_directory() }}/pi/settings.json {{ home_directory() }}/.pi/agent
-    ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ home_directory() }}/.pi/agent
 
 pip:
     mkdir -p {{ config_directory() }}/pip

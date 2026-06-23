@@ -146,7 +146,7 @@ end
 -- }}}
 
 vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
-  callback = function() vim.highlight.hl_op({ timeout = 300 }) end,
+  callback = function() vim.hl.hl_op({ timeout = 300 }) end,
   desc = "Highlight yanked & pasted text",
   group = Dotfiles.augroup("core.autocmds.highlight-on-yank-or-paste"),
 })

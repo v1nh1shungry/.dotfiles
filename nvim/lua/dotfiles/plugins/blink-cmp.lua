@@ -1,14 +1,10 @@
 return {
   {
     "saghen/blink.cmp",
-    branch = "v1",
-    build = "cargo build --release",
-    dependencies = "xzbdmw/colorful-menu.nvim",
+    build = function() require('blink.cmp').build():pwait() end,
+    dependencies = { "saghen/blink.lib", "xzbdmw/colorful-menu.nvim" },
     event = "VeryLazy",
     opts = {
-      cmdline = {
-        enabled = false,
-      },
       completion = {
         documentation = {
           auto_show = true,
@@ -29,11 +25,6 @@ return {
               },
             },
           },
-        },
-      },
-      fuzzy = {
-        prebuilt_binaries = {
-          download = false,
         },
       },
       keymap = {

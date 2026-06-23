@@ -40,7 +40,6 @@ return {
         "fish",
         "gitcommit",
         "html",
-        "http",
         "javascript",
         "jsdoc",
         "json",

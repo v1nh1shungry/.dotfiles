@@ -54,6 +54,9 @@ kitty:
     kitty +kitten themes Tokyo Night Moon
     ln -sf {{ justfile_directory() }}/kitty/kitty.conf {{ config_directory() }}/kitty
 
+mise:
+    ln -sf {{ justfile_directory() }}/mise {{ config_directory() }}
+
 niri:
     ln -sf {{ justfile_directory() }}/niri {{ config_directory() }}
 

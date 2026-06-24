@@ -18,17 +18,13 @@ if test -d ~/.cargo
     fish_add_path -g ~/.cargo/bin
 end
 
+# Should be placed before tools installed by mise
+if command -q mise
+    mise activate fish | source
+end
+
 if command -q eza
     alias ls "eza --icons --hyperlink"
-end
-
-if command -q fnm
-    fnm env --use-on-cd | source
-    set -x FNM_NODE_DIST_MIRROR https://mirrors.ustc.edu.cn/node/
-end
-
-if test -e ~/.local/share/nvim/lazy/fzf/bin/fzf
-    fish_add_path -g ~/.local/share/nvim/lazy/fzf/bin
 end
 
 if command -q fzf && command -q delta

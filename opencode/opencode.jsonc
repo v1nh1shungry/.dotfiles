@@ -7,12 +7,12 @@
     },
     "explore": {
       "hidden": true,
-      "model": "opencode-go/deepseek-v4-flash"
+      "model": "opencode-go/deepseek-v4-flash",
+      "variant": "max"
     },
     "general": {
       "hidden": true,
-      "model": "opencode-go/deepseek-v4-pro",
-      "variant": "max"
+      "model": "opencode-go/kimi-k2.7-code"
     },
     "plan": {
       "disable": true
@@ -21,7 +21,8 @@
       "disable": true
     },
     "title": {
-      "model": "opencode-go/deepseek-v4-flash"
+      "model": "opencode-go/deepseek-v4-flash",
+      "variant": "low"
     }
   },
   "autoupdate": "notify",
@@ -40,6 +41,7 @@
       "file *": "allow",
       "git add *": "deny",
       "git blame *": "allow",
+      "git check-ignore *": "allow",
       "git clean *": "deny",
       "git commit *": "deny",
       "git diff *": "allow",

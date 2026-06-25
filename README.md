@@ -1,16 +1,12 @@
-# .dotfiles
+# 🏠 .dotfiles
 
 `$HOME` sweet `$HOME`
 
-<img width="1920" height="1080" alt="Demo" src="https://github.com/user-attachments/assets/c27e7c3e-3773-437e-a929-cf8a81632a91" />
-
 ## Requirements
 
-* [Brave](https://brave.com/)
+* [Brave Origin](https://brave.com/origin/)
 * [Neovim](https://github.com/neovim/neovim)
 * [SPlayer](https://github.com/imsyy/SPlayer)
-* [Spotify](https://open.spotify.com/)
-    * [spicetify](https://spicetify.app/)
 * [WeChat](https://weixin.qq.com/)
 * [bat](https://github.com/sharkdp/bat)
 * [btop](https://github.com/aristocratos/btop)
@@ -25,6 +21,7 @@
 * [imv](https://sr.ht/~exec64/imv/)
 * [jq](https://github.com/jqlang/jq)
 * [just](https://github.com/casey/just)
+* [kitty](https://sw.kovidgoyal.net/kitty/)
 * [localsend](https://github.com/localsend/localsend)
 * [niri](https://github.com/YaLTeR/niri)
     * [noctalia-shell](https://github.com/noctalia-dev/noctalia-shell)

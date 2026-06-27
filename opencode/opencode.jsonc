@@ -25,7 +25,11 @@
       "variant": "low"
     }
   },
-  "autoupdate": "notify",
+  "autoupdate": false,
+  "compaction": {
+    "auto": false,
+    "prune": false
+  },
   "enabled_providers": [
     "openai",
     "opencode-go"

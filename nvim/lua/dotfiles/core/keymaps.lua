@@ -143,8 +143,8 @@ map({ "<BS>", "<C-o>s", mode = "s" })
 map({
   "dm",
   function()
-    local ok, input = pcall(string.char, vim.fn.getchar())
-    if not ok or not input:match("%a") then
+    local input = vim.npcall(string.char, vim.fn.getchar())
+    if not input or not input:match("%a") then
       Snacks.notify.error("Invalid mark: operation cancelled")
       return
     end

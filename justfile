@@ -23,13 +23,6 @@ cargo:
     mkdir -p {{ home_directory() }}/.cargo
     ln -sf {{ justfile_directory() }}/cargo/config.toml {{ home_directory() }}/.cargo
 
-codex: _check-theme
-    mkdir -p {{ home_directory() }}/.codex/themes
-    ln -sf {{ data_directory() }}/nvim/lazy/tokyonight.nvim/extras/sublime/{{ theme }}.tmTheme {{ home_directory() }}/.codex/themes
-    cp {{ justfile_directory() }}/codex/config.toml {{ home_directory() }}/.codex
-    ln -sf {{ justfile_directory() }}/codex/rules {{ home_directory() }}/.codex
-    ln -sf {{ justfile_directory() }}/opencode/AGENTS.md {{ home_directory() }}/.codex
-
 docker:
     mkdir -p {{ home_directory() }}/.docker
     ln -sf {{ justfile_directory() }}/docker/config.json {{ home_directory() }}/.docker

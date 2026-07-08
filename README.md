@@ -23,6 +23,7 @@
 * [just](https://github.com/casey/just)
 * [kitty](https://sw.kovidgoyal.net/kitty/)
 * [localsend](https://github.com/localsend/localsend)
+* [mise](https://mise.jdx.dev/)
 * [niri](https://github.com/YaLTeR/niri)
     * [noctalia-shell](https://github.com/noctalia-dev/noctalia-shell)
 * [opencode](https://opencode.ai/)

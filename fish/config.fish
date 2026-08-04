@@ -24,7 +24,7 @@ if command -q mise
 end
 
 if command -q eza
-    alias ls "eza --icons --hyperlink"
+    alias ls "eza --icons auto"
 end
 
 if command -q fzf && command -q delta

@@ -23,11 +23,6 @@ if command -q mise
     mise activate fish | source
 end
 
-if command -q cmake
-    set -x CMAKE_EXPORT_COMPILE_COMMANDS "ON"
-    set -x CMAKE_GENERATOR "Ninja"
-end
-
 if command -q eza
     alias ls "eza --icons auto"
 end

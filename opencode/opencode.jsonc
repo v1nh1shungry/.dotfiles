@@ -3,12 +3,12 @@
   "agent": {
     "build": {
       "model": "openai/gpt-5.6-sol",
-      "variant": "xhigh"
+      "variant": "high"
     },
     "explore": {
       "hidden": true,
       "model": "deepseek/deepseek-v4-flash",
-      "variant": "max"
+      "variant": "low"
     },
     "general": {
       "hidden": true,
@@ -22,8 +22,8 @@
       "disable": true
     },
     "title": {
-      "model": "deepseek/deepseek-v4-flash",
-      "variant": "low"
+      "model": "openai/gpt-5.6-luna",
+      "variant": "none"
     }
   },
   "autoupdate": false,
@@ -40,6 +40,7 @@
   "permission": {
     "bash": {
       "*": "ask",
+      // allow
       "cat *": "allow",
       "cd *": "allow",
       "cut *": "allow",
@@ -47,30 +48,20 @@
       "du *": "allow",
       "echo *": "allow",
       "exit *": "allow",
+      "false": "allow",
       "file *": "allow",
-      "git add *": "deny",
       "git blame *": "allow",
       "git branch --show-current": "allow",
       "git cat-file *": "allow",
       "git check-ignore *": "allow",
-      "git checkout *": "deny",
-      "git clean *": "deny",
-      "git commit *": "deny",
       "git diff *": "allow",
       "git grep *": "allow",
       "git log *": "allow",
       "git ls-files *": "allow",
       "git ls-tree *": "allow",
-      "git merge *": "deny",
       "git merge-base *": "allow",
-      "git pull *": "deny",
-      "git push *": "deny",
-      "git rebase *": "deny",
-      "git reset *": "deny",
-      "git restore *": "deny",
       "git rev-list *": "allow",
       "git rev-parse *": "allow",
-      "git rm *": "deny",
       "git show *": "allow",
       "git status *": "allow",
       "grep *": "allow",
@@ -78,15 +69,32 @@
       "jq *": "allow",
       "ls *": "allow",
       "mkdir *": "allow",
+      "nm *": "allow",
       "printf *": "allow",
       "pwd": "allow",
+      "readlink *": "allow",
       "rg *": "allow",
-      "rm *": "deny",
       "sort *": "allow",
+      "stat *": "allow",
       "tail *": "allow",
       "test *": "allow",
+      "true": "allow",
       "uniq *": "allow",
-      "wc *": "allow"
+      "wc *": "allow",
+      "which *": "allow",
+      // deny
+      "git add *": "deny",
+      "git checkout *": "deny",
+      "git clean *": "deny",
+      "git commit *": "deny",
+      "git merge *": "deny",
+      "git pull *": "deny",
+      "git push *": "deny",
+      "git rebase *": "deny",
+      "git reset *": "deny",
+      "git restore *": "deny",
+      "git rm *": "deny",
+      "rm *": "deny"
     },
     "external_directory": {
       "/tmp/**": "allow"

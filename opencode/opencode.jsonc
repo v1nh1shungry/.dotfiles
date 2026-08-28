@@ -7,13 +7,13 @@
     },
     "explore": {
       "hidden": true,
-      "model": "deepseek/deepseek-v4-flash",
+      "model": "openai/gpt-5.6-luna",
       "variant": "low"
     },
     "general": {
       "hidden": true,
       "model": "openai/gpt-5.6-luna",
-      "variant": "xhigh"
+      "variant": "high"
     },
     "plan": {
       "disable": true
@@ -32,7 +32,6 @@
     "prune": false
   },
   "enabled_providers": [
-    "deepseek",
     "openai"
   ],
   "formatter": false,
@@ -69,9 +68,11 @@
       "jq *": "allow",
       "ls *": "allow",
       "mkdir *": "allow",
+      "nl *": "allow",
       "nm *": "allow",
       "printf *": "allow",
       "pwd": "allow",
+      "read *": "allow",
       "readlink *": "allow",
       "rg *": "allow",
       "sort *": "allow",
@@ -101,8 +102,9 @@
     }
   },
   "plugin": [
-    "@tarquinen/opencode-dcp@latest",
+    "@dietrichgebert/ponytail",
     "@mohak34/opencode-notifier@latest",
+    "@tarquinen/opencode-dcp@latest",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "provider": {

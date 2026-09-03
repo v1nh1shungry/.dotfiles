@@ -73,7 +73,7 @@ return {
       vim.api.nvim_create_user_command("LspLog", function()
         vim.cmd("tabnew " .. log_path)
         vim.cmd("$")
-      end, { desc = "Opens the Nvim LSP client log." })
+      end, { desc = "Opens Nvim LSP client log." })
     end,
     dependencies = "mason-org/mason.nvim",
     event = "VeryLazy",

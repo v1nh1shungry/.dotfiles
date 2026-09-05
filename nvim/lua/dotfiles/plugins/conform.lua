@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
+    init = function() vim.o.formatexpr = require("conform").formatexpr end,
     dependencies = {
       "williamboman/mason.nvim",
       opts = {

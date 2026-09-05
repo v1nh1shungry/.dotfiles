@@ -2,8 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "agent": {
     "build": {
-      "model": "openai/gpt-5.6-sol",
-      "variant": "high"
+      "model": "openai/gpt-6-astra",
+      "variant": "medium"
     },
     "explore": {
       "hidden": true,
@@ -107,12 +107,5 @@
     "@tarquinen/opencode-dcp@latest",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
-  "provider": {
-    "openai": {
-      "options": {
-        "headerTimeout": 30000
-      }
-    }
-  },
   "share": "disabled"
 }

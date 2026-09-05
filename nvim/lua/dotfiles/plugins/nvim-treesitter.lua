@@ -15,9 +15,9 @@ return {
       Dotfiles.treesitter.on_available(function(buf)
         vim.treesitter.start(buf)
 
-        vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        vim.bo[buf].indentexpr = require("nvim-treesitter").indentexpr
 
-        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        vim.wo.foldexpr = vim.treesitter.foldexpr
         vim.wo.foldmethod = "expr"
       end)
     end,

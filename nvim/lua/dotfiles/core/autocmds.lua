@@ -1,14 +1,4 @@
 -- https://www.lazyvim.org/configuration/general#auto-commands {{{
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
-  end,
-  desc = "Check for external buffer changes",
-  group = Dotfiles.augroup("core.autocmds.checktime"),
-})
-
 vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(event)
     local exclude = { "gitcommit", "man" }
@@ -33,7 +23,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
       return
     end
 
-    vim.fn.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(event.match) or event.match, ":p:h"), "p")
+    vim.fs.mkdir(vim.fn.fnamemodify(vim.uv.fs_realpath(event.match) or event.match, ":p:h"), { parents = true })
   end,
   desc = "Create directory if it doesn't exist",
   group = Dotfiles.augroup("core.autocmds.create-dir"),

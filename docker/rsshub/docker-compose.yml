@@ -5,6 +5,7 @@ services:
     environment:
       CACHE_TYPE: redis
       NODE_ENV: production
+      NO_RANDOM_UA: 1
       REDIS_URL: "redis://redis:6379/"
       TWITTER_AUTH_TOKEN: ${TWITTER_AUTH_TOKEN}
     healthcheck:

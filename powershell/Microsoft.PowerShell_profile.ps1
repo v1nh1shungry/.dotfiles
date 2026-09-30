@@ -291,7 +291,6 @@ Set-PSReadLineKeyHandler -Key Ctrl+r `
     if ($command) {
         [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
         [Microsoft.PowerShell.PSConsoleReadLine]::Insert(($command -join "`n"))
-        [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
     }
 }
 Set-PSReadLineKeyHandler -Key Ctrl+j -Function AcceptLine

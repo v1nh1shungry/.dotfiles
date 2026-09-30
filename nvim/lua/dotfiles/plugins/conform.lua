@@ -3,7 +3,7 @@ return {
     "stevearc/conform.nvim",
     init = function() vim.o.formatexpr = require("conform").formatexpr end,
     dependencies = {
-      "williamboman/mason.nvim",
+      "mason-org/mason.nvim",
       opts = {
         ensure_installed = { "stylua" },
       },

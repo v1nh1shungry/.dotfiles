@@ -1,26 +1,6 @@
 [cmake]
 detect_extensions = ["cmake"]
 
-[custom.cpp]
-command = "gcc -dumpfullversion"
-detect_extensions = ["cpp", "cc", "hpp", "cxx"]
-format = "via [$symbol v$output-gcc]($style) "
-style = "bold cyan"
-symbol = ""
-
-[custom.lua]
-command = "nvim -v | head -1 | cut -d- -f1"
-detect_extensions = ["lua"]
-format = "via [$symbol $output]($style) "
-style = "bold blue"
-symbol = ""
-
-[custom.vim]
-command = "nvim -v | head -1 | cut -d- -f1"
-detect_extensions = ["vim"]
-format = "via [$symbol $output]($style) "
-style = "bold green"
-symbol = ""
-
-[lua]
-disabled = true
+[cpp]
+disabled = false
+symbol = " "

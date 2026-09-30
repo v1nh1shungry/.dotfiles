@@ -6,7 +6,7 @@
 
 * [Brave Origin](https://brave.com/origin/)
 * [Neovim](https://github.com/neovim/neovim)
-* [SPlayer](https://github.com/imsyy/SPlayer)
+* [SPlayer Next](https://github.com/SPlayer-Dev/SPlayer-Next)
 * [WeChat](https://weixin.qq.com/)
 * [bat](https://github.com/sharkdp/bat)
 * [btop](https://github.com/aristocratos/btop)

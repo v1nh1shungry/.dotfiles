@@ -21,14 +21,10 @@
 
 [merge]
   conflictstyle = zdiff3
-  tool = diffview
 
 [mergetool]
   keepBackup = false
   prompt = false
-
-[mergetool "diffview"]
-  cmd = nvim -n -c "DiffviewOpen" "$MERGE"
 
 [pull]
   rebase = true

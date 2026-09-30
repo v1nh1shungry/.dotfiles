@@ -8,15 +8,11 @@ set -x LC_ALL "en_US.UTF-8"
 
 set fish_greeting
 
-if test -d ~/.local/bin
-    fish_add_path -g ~/.local/bin
-end
+fish_add_path -g ~/.local/bin
 
 set -x LESS -rF
 
-if test -d ~/.cargo
-    fish_add_path -g ~/.cargo/bin
-end
+fish_add_path -g ~/.cargo/bin
 
 # Should be placed before tools installed by mise
 if command -q mise
@@ -38,7 +34,7 @@ abbr ll "ls -alh"
 abbr mv "mv -i"
 
 if command -q nvim
-    set -x EDITOR $(which nvim)
+    set -x EDITOR nvim
     set -x VISUAL $EDITOR
     set -x SUDO_EDITOR $EDITOR
 
@@ -52,10 +48,6 @@ if command -q opencode
     set -x OPENCODE_ENABLE_EXA "true"
     set -x OPENCODE_EXPERIMENTAL_LSP_TOOL "true"
     set -x OPENCODE_EXPERIMENTAL_WEBSOCKETS "true"
-end
-
-if command -q rg
-    abbr grep rg
 end
 
 if command -q rustup

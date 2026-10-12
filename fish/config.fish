@@ -44,12 +44,6 @@ if command -q nvim
     set -x MANPAGER "nvim +Man!"
 end
 
-if command -q opencode
-    set -x OPENCODE_ENABLE_EXA "true"
-    set -x OPENCODE_EXPERIMENTAL_LSP_TOOL "true"
-    set -x OPENCODE_EXPERIMENTAL_WEBSOCKETS "true"
-end
-
 if command -q rustup
     set -x RUSTUP_UPDATE_ROOT https://mirrors.ustc.edu.cn/rust-static/rustup
     set -x RUSTUP_DIST_SERVER https://mirrors.ustc.edu.cn/rust-static

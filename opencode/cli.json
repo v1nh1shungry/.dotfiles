@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "prompt": {
+    "image_preview": true,
+    "paste": "full"
+  },
+  "session": {
+    "image_preview": true,
+    "scrollbar": true,
+    "sidebar": "auto",
+    "thinking": "show"
+  },
+  "theme": {
+    "name": "tokyonight"
+  }
+}

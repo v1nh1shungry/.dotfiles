@@ -1,112 +1,103 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "agent": {
+  "agents": {
     "build": {
-      "model": "openai/gpt-6.1-sol",
-      "variant": "high"
+      "model": "openai/gpt-6.1-sol#high"
     },
     "explore": {
       "hidden": true,
-      "model": "openai/gpt-6-luna",
-      "variant": "low"
+      "model": "openai/gpt-6-luna#low"
     },
     "general": {
       "hidden": true,
-      "model": "openai/gpt-6-luna",
-      "variant": "high"
+      "model": "openai/gpt-6-luna#high"
     },
     "plan": {
-      "disable": true
-    },
-    "scout": {
-      "disable": true
+      "disabled": true
     },
     "title": {
-      "model": "openai/gpt-6-luna",
-      "variant": "none"
+      "model": "openai/gpt-6-luna#none"
     }
   },
-  "autoupdate": false,
   "compaction": {
-    "auto": false,
-    "prune": false
+    "auto": false
   },
-  "enabled_providers": [
-    "openai"
-  ],
+  "experimental": {
+    "policies": [
+      { "action": "provider.use", "resource": "*", "effect": "deny" },
+      { "action": "provider.use", "resource": "openai", "effect": "allow" }
+    ]
+  },
   "formatter": false,
-  "lsp": true,
-  "permission": {
-    "bash": {
-      "*": "ask",
-      // allow
-      "cat *": "allow",
-      "cd *": "allow",
-      "cut *": "allow",
-      "date *": "allow",
-      "diff *": "allow",
-      "du *": "allow",
-      "echo *": "allow",
-      "exit *": "allow",
-      "false": "allow",
-      "file *": "allow",
-      "git blame *": "allow",
-      "git branch --show-current": "allow",
-      "git cat-file *": "allow",
-      "git check-ignore *": "allow",
-      "git diff *": "allow",
-      "git grep *": "allow",
-      "git log *": "allow",
-      "git ls-files *": "allow",
-      "git ls-tree *": "allow",
-      "git merge-base *": "allow",
-      "git rev-list *": "allow",
-      "git rev-parse *": "allow",
-      "git show *": "allow",
-      "git status *": "allow",
-      "grep *": "allow",
-      "head *": "allow",
-      "jq *": "allow",
-      "ls *": "allow",
-      "mkdir *": "allow",
-      "nl *": "allow",
-      "nm *": "allow",
-      "printf *": "allow",
-      "pwd": "allow",
-      "read *": "allow",
-      "readlink *": "allow",
-      "rg *": "allow",
-      "sort *": "allow",
-      "stat *": "allow",
-      "tail *": "allow",
-      "test *": "allow",
-      "true": "allow",
-      "uniq *": "allow",
-      "wc *": "allow",
-      "which *": "allow",
-      // deny
-      "git add *": "deny",
-      "git checkout *": "deny",
-      "git clean *": "deny",
-      "git commit *": "deny",
-      "git merge *": "deny",
-      "git pull *": "deny",
-      "git push *": "deny",
-      "git rebase *": "deny",
-      "git reset *": "deny",
-      "git restore *": "deny",
-      "git rm *": "deny",
-      "rm *": "deny"
-    },
-    "external_directory": {
-      "/tmp/**": "allow"
-    }
-  },
-  "plugin": [
+  "permissions": [
+    { "action": "external_directory", "resource": "/tmp/**", "effect": "allow" },
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    // allow
+    { "action": "shell", "resource": "cat *", "effect": "allow" },
+    { "action": "shell", "resource": "cd *", "effect": "allow" },
+    { "action": "shell", "resource": "cut *", "effect": "allow" },
+    { "action": "shell", "resource": "date *", "effect": "allow" },
+    { "action": "shell", "resource": "diff *", "effect": "allow" },
+    { "action": "shell", "resource": "du *", "effect": "allow" },
+    { "action": "shell", "resource": "echo *", "effect": "allow" },
+    { "action": "shell", "resource": "exit *", "effect": "allow" },
+    { "action": "shell", "resource": "false", "effect": "allow" },
+    { "action": "shell", "resource": "file *", "effect": "allow" },
+    { "action": "shell", "resource": "git blame *", "effect": "allow" },
+    { "action": "shell", "resource": "git branch --show-current", "effect": "allow" },
+    { "action": "shell", "resource": "git cat-file *", "effect": "allow" },
+    { "action": "shell", "resource": "git check-ignore *", "effect": "allow" },
+    { "action": "shell", "resource": "git diff *", "effect": "allow" },
+    { "action": "shell", "resource": "git grep *", "effect": "allow" },
+    { "action": "shell", "resource": "git log *", "effect": "allow" },
+    { "action": "shell", "resource": "git ls-files *", "effect": "allow" },
+    { "action": "shell", "resource": "git ls-tree *", "effect": "allow" },
+    { "action": "shell", "resource": "git merge-base *", "effect": "allow" },
+    { "action": "shell", "resource": "git rev-list *", "effect": "allow" },
+    { "action": "shell", "resource": "git rev-parse *", "effect": "allow" },
+    { "action": "shell", "resource": "git show *", "effect": "allow" },
+    { "action": "shell", "resource": "git status *", "effect": "allow" },
+    { "action": "shell", "resource": "grep *", "effect": "allow" },
+    { "action": "shell", "resource": "head *", "effect": "allow" },
+    { "action": "shell", "resource": "jq *", "effect": "allow" },
+    { "action": "shell", "resource": "ls *", "effect": "allow" },
+    { "action": "shell", "resource": "mkdir *", "effect": "allow" },
+    { "action": "shell", "resource": "nl *", "effect": "allow" },
+    { "action": "shell", "resource": "nm *", "effect": "allow" },
+    { "action": "shell", "resource": "printf *", "effect": "allow" },
+    { "action": "shell", "resource": "pwd", "effect": "allow" },
+    { "action": "shell", "resource": "read *", "effect": "allow" },
+    { "action": "shell", "resource": "readlink *", "effect": "allow" },
+    { "action": "shell", "resource": "rg *", "effect": "allow" },
+    { "action": "shell", "resource": "sort *", "effect": "allow" },
+    { "action": "shell", "resource": "stat *", "effect": "allow" },
+    { "action": "shell", "resource": "tail *", "effect": "allow" },
+    { "action": "shell", "resource": "test *", "effect": "allow" },
+    { "action": "shell", "resource": "true", "effect": "allow" },
+    { "action": "shell", "resource": "uniq *", "effect": "allow" },
+    { "action": "shell", "resource": "wc *", "effect": "allow" },
+    { "action": "shell", "resource": "which *", "effect": "allow" },
+    // deny
+    { "action": "shell", "resource": "git add *", "effect": "deny" },
+    { "action": "shell", "resource": "git checkout *", "effect": "deny" },
+    { "action": "shell", "resource": "git clean *", "effect": "deny" },
+    { "action": "shell", "resource": "git commit *", "effect": "deny" },
+    { "action": "shell", "resource": "git merge *", "effect": "deny" },
+    { "action": "shell", "resource": "git pull *", "effect": "deny" },
+    { "action": "shell", "resource": "git push *", "effect": "deny" },
+    { "action": "shell", "resource": "git rebase *", "effect": "deny" },
+    { "action": "shell", "resource": "git reset *", "effect": "deny" },
+    { "action": "shell", "resource": "git restore *", "effect": "deny" },
+    { "action": "shell", "resource": "git rm *", "effect": "deny" },
+    { "action": "shell", "resource": "rm *", "effect": "deny" }
+  ],
+  "plugins": [
     "@dietrichgebert/ponytail",
     "@mohak34/opencode-notifier@latest",
     "@tarquinen/opencode-dcp@latest",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
-  "share": "disabled"
+  "share": "disabled",
+  "snapshots": false,
+  "update": "disable"
 }

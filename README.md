@@ -25,7 +25,7 @@
 * [localsend](https://github.com/localsend/localsend)
 * [mise](https://mise.jdx.dev/)
 * [niri](https://github.com/YaLTeR/niri)
-    * [noctalia-shell](https://github.com/noctalia-dev/noctalia-shell)
+    * [noctalia](https://github.com/noctalia-dev/noctalia)
 * [opencode](https://opencode.ai/)
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 * [starship](https://github.com/starship/starship)

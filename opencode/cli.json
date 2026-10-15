@@ -1,13 +1,14 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
   "prompt": {
+    "editor": false,
     "image_preview": true,
     "paste": "full"
   },
   "session": {
     "image_preview": true,
     "scrollbar": true,
-    "sidebar": "auto",
+    "sidebar": "hide",
     "thinking": "show"
   },
   "theme": {

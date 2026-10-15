@@ -31,6 +31,8 @@
   "formatter": false,
   "permissions": [
     { "action": "external_directory", "resource": "/tmp/**", "effect": "allow" },
+    { "action": "worktree_create", "resource": "*", "effect": "ask" },
+    { "action": "worktree_remove", "resource": "*", "effect": "ask" },
     { "action": "shell", "resource": "*", "effect": "ask" },
     // allow
     { "action": "shell", "resource": "cat *", "effect": "allow" },

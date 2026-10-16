@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
+  "animations": false,
   "prompt": {
     "editor": false,
     "image_preview": true,

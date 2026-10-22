@@ -32,7 +32,6 @@
 * [tldr](https://github.com/dbrgn/tealdeer)
 * [tmux](https://github.com/tmux/tmux)
     * [tpm](https://github.com/tmux-plugins/tpm)
-* [tokei](https://github.com/XAMPPRocky/tokei)
 * [uv](https://github.com/astral-sh/uv)
 * [yazi](https://github.com/sxyazi/yazi)
 * [zathura](https://github.com/pwmt/zathura)

@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/v2/cli.json",
-  "animations": false,
   "prompt": {
     "editor": false,
     "image_preview": true,
@@ -9,7 +8,6 @@
   "session": {
     "image_preview": true,
     "scrollbar": true,
-    "sidebar": "hide",
     "thinking": "show"
   },
   "theme": {
